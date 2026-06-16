@@ -1,0 +1,3975 @@
+{
+ "冂": {
+  "char": "冂",
+  "standalone": true,
+  "pinyin": "jiōng",
+  "meaning": "wide"
+ },
+ "一": {
+  "char": "一",
+  "standalone": true,
+  "pinyin": "yī",
+  "meaning": "one"
+ },
+ "人": {
+  "char": "人",
+  "standalone": true,
+  "pinyin": "rén",
+  "meaning": "person"
+ },
+ "亻": {
+  "char": "亻",
+  "standalone": false,
+  "pinyin": "rén",
+  "meaning": "person (radical)"
+ },
+ "尔": {
+  "char": "尔",
+  "standalone": true,
+  "pinyin": "ěr",
+  "meaning": "you"
+ },
+ "女": {
+  "char": "女",
+  "standalone": true,
+  "pinyin": "nǚ",
+  "meaning": "woman"
+ },
+ "子": {
+  "char": "子",
+  "standalone": true,
+  "pinyin": "zǐ",
+  "meaning": "child"
+ },
+ "了": {
+  "char": "了",
+  "standalone": true,
+  "pinyin": "le",
+  "meaning": "(completed action)"
+ },
+ "马": {
+  "char": "马",
+  "standalone": true,
+  "pinyin": "mǎ",
+  "meaning": "horse"
+ },
+ "父": {
+  "char": "父",
+  "standalone": true,
+  "pinyin": "fù",
+  "meaning": "father"
+ },
+ "巴": {
+  "char": "巴",
+  "standalone": true,
+  "pinyin": "bā",
+  "meaning": "to desire"
+ },
+ "宀": {
+  "char": "宀",
+  "standalone": false,
+  "pinyin": "gài",
+  "meaning": "roof (radical)"
+ },
+ "豕": {
+  "char": "豕",
+  "standalone": true,
+  "pinyin": "shǐ",
+  "meaning": "pig"
+ },
+ "二": {
+  "char": "二",
+  "standalone": true,
+  "pinyin": "èr",
+  "meaning": "two"
+ },
+ "囗": {
+  "char": "囗",
+  "standalone": true,
+  "pinyin": "wéi",
+  "meaning": "enclosure"
+ },
+ "儿": {
+  "char": "儿",
+  "standalone": true,
+  "pinyin": "ér",
+  "meaning": "son"
+ },
+ "口": {
+  "char": "口",
+  "standalone": true,
+  "pinyin": "kǒu",
+  "meaning": "mouth"
+ },
+ "⺀": {
+  "char": "⺀",
+  "standalone": true,
+  "meaning": "ice"
+ },
+ "大": {
+  "char": "大",
+  "standalone": true,
+  "pinyin": "dà",
+  "meaning": "big"
+ },
+ "亅": {
+  "char": "亅",
+  "standalone": true,
+  "pinyin": "jué",
+  "meaning": "hook"
+ },
+ "八": {
+  "char": "八",
+  "standalone": true,
+  "pinyin": "bā",
+  "meaning": "eight"
+ },
+ "丷": {
+  "char": "丷",
+  "standalone": true,
+  "pinyin": "ha",
+  "meaning": "kwukyel"
+ },
+ "木": {
+  "char": "木",
+  "standalone": true,
+  "pinyin": "mù",
+  "meaning": "tree"
+ },
+ "田": {
+  "char": "田",
+  "standalone": true,
+  "pinyin": "tián",
+  "meaning": "field"
+ },
+ "乞": {
+  "char": "乞",
+  "standalone": true,
+  "pinyin": "qǐ",
+  "meaning": "to beg"
+ },
+ "曷": {
+  "char": "曷",
+  "standalone": true,
+  "pinyin": "hé",
+  "meaning": "what"
+ },
+ "⺮": {
+  "char": "⺮",
+  "standalone": true,
+  "pinyin": "zhú",
+  "meaning": "bamboo"
+ },
+ "毛": {
+  "char": "毛",
+  "standalone": true,
+  "pinyin": "máo",
+  "meaning": "hair"
+ },
+ "手": {
+  "char": "手",
+  "standalone": true,
+  "pinyin": "shǒu",
+  "meaning": "hand"
+ },
+ "目": {
+  "char": "目",
+  "standalone": true,
+  "pinyin": "mù",
+  "meaning": "eye"
+ },
+ "冖": {
+  "char": "冖",
+  "standalone": true,
+  "pinyin": "mì",
+  "meaning": "cover"
+ },
+ "与": {
+  "char": "与",
+  "standalone": true,
+  "pinyin": "yǔ",
+  "meaning": "and"
+ },
+ "礻": {
+  "char": "礻",
+  "standalone": false,
+  "pinyin": "shì",
+  "meaning": "spirit (radical)"
+ },
+ "畐": {
+  "char": "畐",
+  "standalone": true,
+  "pinyin": "fú",
+  "meaning": "to fill"
+ },
+ "乌": {
+  "char": "乌",
+  "standalone": true,
+  "pinyin": "wū",
+  "meaning": "crow"
+ },
+ "小": {
+  "char": "小",
+  "standalone": true,
+  "pinyin": "xiǎo",
+  "meaning": "small"
+ },
+ "扌": {
+  "char": "扌",
+  "standalone": false,
+  "pinyin": "shǒu",
+  "meaning": "hand (radical)"
+ },
+ "戈": {
+  "char": "戈",
+  "standalone": true,
+  "pinyin": "gē",
+  "meaning": "spear"
+ },
+ "冉": {
+  "char": "冉",
+  "standalone": true,
+  "pinyin": "rǎn",
+  "meaning": "tender"
+ },
+ "且": {
+  "char": "且",
+  "standalone": true,
+  "pinyin": "qiě",
+  "meaning": "moreover"
+ },
+ "亠": {
+  "char": "亠",
+  "standalone": true,
+  "pinyin": "tóu",
+  "meaning": "lid"
+ },
+ "自": {
+  "char": "自",
+  "standalone": true,
+  "pinyin": "zì",
+  "meaning": "self"
+ },
+ "畀": {
+  "char": "畀",
+  "standalone": true,
+  "pinyin": "bì",
+  "meaning": "to give"
+ },
+ "⺼": {
+  "char": "⺼",
+  "standalone": true,
+  "meaning": "meat"
+ },
+ "却": {
+  "char": "却",
+  "standalone": true,
+  "pinyin": "què",
+  "meaning": "still"
+ },
+ "犭": {
+  "char": "犭",
+  "standalone": false,
+  "pinyin": "quǎn",
+  "meaning": "dog (radical)"
+ },
+ "苗": {
+  "char": "苗",
+  "standalone": true,
+  "pinyin": "miáo",
+  "meaning": "sprouts"
+ },
+ "句": {
+  "char": "句",
+  "standalone": true,
+  "pinyin": "jù",
+  "meaning": "sentence"
+ },
+ "艹": {
+  "char": "艹",
+  "standalone": false,
+  "pinyin": "cǎo",
+  "meaning": "grass (radical)"
+ },
+ "采": {
+  "char": "采",
+  "standalone": true,
+  "pinyin": "cǎi",
+  "meaning": "to collect"
+ },
+ "仌": {
+  "char": "仌",
+  "standalone": true,
+  "pinyin": "bīng",
+  "meaning": "frozen"
+ },
+ "纟": {
+  "char": "纟",
+  "standalone": false,
+  "pinyin": "sī",
+  "meaning": "silk (radical)"
+ },
+ "氏": {
+  "char": "氏",
+  "standalone": true,
+  "pinyin": "shì",
+  "meaning": "clan"
+ },
+ "斤": {
+  "char": "斤",
+  "standalone": true,
+  "pinyin": "jīn",
+  "meaning": "a catty (about 500 grams)"
+ },
+ "尤": {
+  "char": "尤",
+  "standalone": true,
+  "pinyin": "yóu",
+  "meaning": "especially"
+ },
+ "丿": {
+  "char": "丿",
+  "standalone": true,
+  "pinyin": "piě",
+  "meaning": "slash"
+ },
+ "工": {
+  "char": "工",
+  "standalone": true,
+  "pinyin": "gōng",
+  "meaning": "labor"
+ },
+ "丨": {
+  "char": "丨",
+  "standalone": true,
+  "pinyin": "shù",
+  "meaning": "number one"
+ },
+ "乂": {
+  "char": "乂",
+  "standalone": true,
+  "pinyin": "yì",
+  "meaning": "to govern"
+ },
+ "讠": {
+  "char": "讠",
+  "standalone": false,
+  "pinyin": "yán",
+  "meaning": "speech (radical)"
+ },
+ "果": {
+  "char": "果",
+  "standalone": true,
+  "pinyin": "guǒ",
+  "meaning": "fruit"
+ },
+ "岂": {
+  "char": "岂",
+  "standalone": true,
+  "pinyin": "qǐ",
+  "meaning": "what"
+ },
+ "几": {
+  "char": "几",
+  "standalone": true,
+  "pinyin": "jǐ",
+  "meaning": "small table"
+ },
+ "兀": {
+  "char": "兀",
+  "standalone": true,
+  "pinyin": "wù",
+  "meaning": "weak"
+ },
+ "交": {
+  "char": "交",
+  "standalone": true,
+  "pinyin": "jiāo",
+  "meaning": "to connect"
+ },
+ "户": {
+  "char": "户",
+  "standalone": true,
+  "pinyin": "hù",
+  "meaning": "door"
+ },
+ "冡": {
+  "char": "冡",
+  "standalone": true,
+  "pinyin": "méng"
+ },
+ "合": {
+  "char": "合",
+  "standalone": true,
+  "pinyin": "hé",
+  "meaning": "fit, combine"
+ },
+ "凡": {
+  "char": "凡",
+  "standalone": true,
+  "pinyin": "fán",
+  "meaning": "any"
+ },
+ "白": {
+  "char": "白",
+  "standalone": true,
+  "pinyin": "bái",
+  "meaning": "white"
+ },
+ "勺": {
+  "char": "勺",
+  "standalone": true,
+  "pinyin": "sháo",
+  "meaning": "spoon"
+ },
+ "舌": {
+  "char": "舌",
+  "standalone": true,
+  "pinyin": "shé",
+  "meaning": "tongue"
+ },
+ "兑": {
+  "char": "兑",
+  "standalone": true,
+  "pinyin": "duì",
+  "meaning": "cash"
+ },
+ "乍": {
+  "char": "乍",
+  "standalone": true,
+  "pinyin": "zhà",
+  "meaning": "first time"
+ },
+ "卖": {
+  "char": "卖",
+  "standalone": true,
+  "pinyin": "mài",
+  "meaning": "sell"
+ },
+ "辶": {
+  "char": "辶",
+  "standalone": false,
+  "pinyin": "chuò",
+  "meaning": "walk (radical)"
+ },
+ "文": {
+  "char": "文",
+  "standalone": true,
+  "pinyin": "wén",
+  "meaning": "language, writing"
+ },
+ "禾": {
+  "char": "禾",
+  "standalone": true,
+  "pinyin": "hé",
+  "meaning": "cereal"
+ },
+ "中": {
+  "char": "中",
+  "standalone": true,
+  "pinyin": "zhōng",
+  "meaning": "middle, China"
+ },
+ "日": {
+  "char": "日",
+  "standalone": true,
+  "pinyin": "rì",
+  "meaning": "sun, day"
+ },
+ "取": {
+  "char": "取",
+  "standalone": true,
+  "pinyin": "qǔ",
+  "meaning": "to take"
+ },
+ "石": {
+  "char": "石",
+  "standalone": true,
+  "pinyin": "shí",
+  "meaning": "stone"
+ },
+ "疋": {
+  "char": "疋",
+  "standalone": true,
+  "pinyin": "pǐ",
+  "meaning": "roll"
+ },
+ "门": {
+  "char": "门",
+  "standalone": true,
+  "pinyin": "mén",
+  "meaning": "door"
+ },
+ "廾": {
+  "char": "廾",
+  "standalone": true,
+  "pinyin": "gǒng",
+  "meaning": "two hands"
+ },
+ "台": {
+  "char": "台",
+  "standalone": true,
+  "pinyin": "tái",
+  "meaning": "platform"
+ },
+ "心": {
+  "char": "心",
+  "standalone": true,
+  "pinyin": "xīn",
+  "meaning": "heart"
+ },
+ "厶": {
+  "char": "厶",
+  "standalone": true,
+  "pinyin": "sī",
+  "meaning": "private"
+ },
+ "并": {
+  "char": "并",
+  "standalone": true,
+  "pinyin": "bìng",
+  "meaning": "to combine"
+ },
+ "立": {
+  "char": "立",
+  "standalone": true,
+  "pinyin": "lì",
+  "meaning": "to stand"
+ },
+ "昌": {
+  "char": "昌",
+  "standalone": true,
+  "pinyin": "chāng",
+  "meaning": "sunlight"
+ },
+ "今": {
+  "char": "今",
+  "standalone": true,
+  "pinyin": "jīn",
+  "meaning": "modern"
+ },
+ "咅": {
+  "char": "咅",
+  "standalone": true,
+  "pinyin": "pǒu",
+  "meaning": "to spit out"
+ },
+ "阝": {
+  "char": "阝",
+  "standalone": false,
+  "pinyin": "yì",
+  "meaning": "mound/city (radical)"
+ },
+ "彐": {
+  "char": "彐",
+  "standalone": true,
+  "pinyin": "jì",
+  "meaning": "snout"
+ },
+ "氺": {
+  "char": "氺",
+  "standalone": true,
+  "pinyin": "shui"
+ },
+ "弟": {
+  "char": "弟",
+  "standalone": true,
+  "pinyin": "dì",
+  "meaning": "young brother"
+ },
+ "元": {
+  "char": "元",
+  "standalone": true,
+  "pinyin": "yuán",
+  "meaning": "yuan, dollar"
+ },
+ "丁": {
+  "char": "丁",
+  "standalone": true,
+  "pinyin": "dīng",
+  "meaning": "male adult"
+ },
+ "召": {
+  "char": "召",
+  "standalone": true,
+  "pinyin": "zhào",
+  "meaning": "imperial decree"
+ },
+ "乎": {
+  "char": "乎",
+  "standalone": true,
+  "pinyin": "hū",
+  "meaning": "interrogative or exclamatory final particle"
+ },
+ "屮": {
+  "char": "屮",
+  "standalone": true,
+  "pinyin": "chè",
+  "meaning": "sprout"
+ },
+ "凵": {
+  "char": "凵",
+  "standalone": true,
+  "pinyin": "qiǎn",
+  "meaning": "container"
+ },
+ "夕": {
+  "char": "夕",
+  "standalone": true,
+  "pinyin": "xī",
+  "meaning": "evening; eve"
+ },
+ "射": {
+  "char": "射",
+  "standalone": true,
+  "pinyin": "shè",
+  "meaning": "to shoot"
+ },
+ "亥": {
+  "char": "亥",
+  "standalone": true,
+  "pinyin": "hài",
+  "meaning": "12th terrestrial branch"
+ },
+ "氵": {
+  "char": "氵",
+  "standalone": false,
+  "pinyin": "shuǐ",
+  "meaning": "water (radical)"
+ },
+ "殳": {
+  "char": "殳",
+  "standalone": true,
+  "pinyin": "shū",
+  "meaning": "tool"
+ },
+ "覀": {
+  "char": "覀",
+  "standalone": true,
+  "pinyin": "xī",
+  "meaning": "west"
+ },
+ "谷": {
+  "char": "谷",
+  "standalone": true,
+  "pinyin": "gǔ",
+  "meaning": "valley"
+ },
+ "甬": {
+  "char": "甬",
+  "standalone": true,
+  "pinyin": "yǒng",
+  "meaning": "path"
+ },
+ "哥": {
+  "char": "哥",
+  "standalone": true,
+  "pinyin": "gē",
+  "meaning": "older brother"
+ },
+ "欠": {
+  "char": "欠",
+  "standalone": true,
+  "pinyin": "qiàn",
+  "meaning": "to lack"
+ },
+ "占": {
+  "char": "占",
+  "standalone": true,
+  "pinyin": "zhàn",
+  "meaning": "to divine"
+ },
+ "灬": {
+  "char": "灬",
+  "standalone": false,
+  "pinyin": "huǒ",
+  "meaning": "fire (radical)"
+ },
+ "军": {
+  "char": "军",
+  "standalone": true,
+  "pinyin": "jūn",
+  "meaning": "army"
+ },
+ "音": {
+  "char": "音",
+  "standalone": true,
+  "pinyin": "yīn",
+  "meaning": "sound; music"
+ },
+ "足": {
+  "char": "足",
+  "standalone": true,
+  "pinyin": "zú",
+  "meaning": "foot"
+ },
+ "艮": {
+  "char": "艮",
+  "standalone": true,
+  "pinyin": "gěn",
+  "meaning": "blunt"
+ },
+ "羊": {
+  "char": "羊",
+  "standalone": true,
+  "pinyin": "yáng",
+  "meaning": "sheep"
+ },
+ "故": {
+  "char": "故",
+  "standalone": true,
+  "pinyin": "gù",
+  "meaning": "old; reason"
+ },
+ "扁": {
+  "char": "扁",
+  "standalone": true,
+  "pinyin": "biǎn",
+  "meaning": "flat"
+ },
+ "力": {
+  "char": "力",
+  "standalone": true,
+  "pinyin": "lì",
+  "meaning": "strength"
+ },
+ "⺊": {
+  "char": "⺊",
+  "standalone": true
+ },
+ "云": {
+  "char": "云",
+  "standalone": true,
+  "pinyin": "yún",
+  "meaning": "cloud"
+ },
+ "黄": {
+  "char": "黄",
+  "standalone": true,
+  "pinyin": "huáng",
+  "meaning": "yellow"
+ },
+ "丩": {
+  "char": "丩",
+  "standalone": true,
+  "pinyin": "jiū",
+  "meaning": "to connect"
+ },
+ "司": {
+  "char": "司",
+  "standalone": true,
+  "pinyin": "sī",
+  "meaning": "to take charge of"
+ },
+ "勹": {
+  "char": "勹",
+  "standalone": true,
+  "pinyin": "bāo",
+  "meaning": "wrap"
+ },
+ "敝": {
+  "char": "敝",
+  "standalone": true,
+  "pinyin": "bì",
+  "meaning": "to break"
+ },
+ "奈": {
+  "char": "奈",
+  "standalone": true,
+  "pinyin": "nài",
+  "meaning": "but"
+ },
+ "也": {
+  "char": "也",
+  "standalone": true,
+  "pinyin": "yě",
+  "meaning": "also"
+ },
+ "钅": {
+  "char": "钅",
+  "standalone": false,
+  "pinyin": "jīn",
+  "meaning": "metal (radical)"
+ },
+ "勾": {
+  "char": "勾",
+  "standalone": true,
+  "pinyin": "gōu",
+  "meaning": "to hook"
+ },
+ "方": {
+  "char": "方",
+  "standalone": true,
+  "pinyin": "fāng",
+  "meaning": "square"
+ },
+ "月": {
+  "char": "月",
+  "standalone": true,
+  "pinyin": "yuè",
+  "meaning": "moon, month"
+ },
+ "吾": {
+  "char": "吾",
+  "standalone": true,
+  "pinyin": "wú",
+  "meaning": "I"
+ },
+ "未": {
+  "char": "未",
+  "standalone": true,
+  "pinyin": "wèi",
+  "meaning": "not yet, future"
+ },
+ "又": {
+  "char": "又",
+  "standalone": true,
+  "pinyin": "yòu",
+  "meaning": "and"
+ },
+ "十": {
+  "char": "十",
+  "standalone": true,
+  "pinyin": "shí",
+  "meaning": "ten"
+ },
+ "耂": {
+  "char": "耂",
+  "standalone": true,
+  "pinyin": "lǎo",
+  "meaning": "old"
+ },
+ "匕": {
+  "char": "匕",
+  "standalone": true,
+  "pinyin": "bǐ",
+  "meaning": "spoon"
+ },
+ "刂": {
+  "char": "刂",
+  "standalone": true,
+  "pinyin": "dāo",
+  "meaning": "knife"
+ },
+ "帀": {
+  "char": "帀",
+  "standalone": true,
+  "pinyin": "zā",
+  "meaning": "to rotate"
+ },
+ "彳": {
+  "char": "彳",
+  "standalone": false,
+  "pinyin": "chì",
+  "meaning": "step (radical)"
+ },
+ "青": {
+  "char": "青",
+  "standalone": true,
+  "pinyin": "qīng",
+  "meaning": "nature's color"
+ },
+ "寸": {
+  "char": "寸",
+  "standalone": true,
+  "pinyin": "cùn",
+  "meaning": "inch"
+ },
+ "那": {
+  "char": "那",
+  "standalone": true,
+  "pinyin": "nà",
+  "meaning": "that"
+ },
+ "才": {
+  "char": "才",
+  "standalone": true,
+  "pinyin": "cái",
+  "meaning": "ability"
+ },
+ "土": {
+  "char": "土",
+  "standalone": true,
+  "pinyin": "tǔ",
+  "meaning": "soil"
+ },
+ "尼": {
+  "char": "尼",
+  "standalone": true,
+  "pinyin": "ní",
+  "meaning": "Buddhist nun"
+ },
+ "走": {
+  "char": "走",
+  "standalone": true,
+  "pinyin": "zǒu",
+  "meaning": "to walk"
+ },
+ "己": {
+  "char": "己",
+  "standalone": true,
+  "pinyin": "jǐ",
+  "meaning": "self"
+ },
+ "六": {
+  "char": "六",
+  "standalone": true,
+  "pinyin": "liù",
+  "meaning": "six"
+ },
+ "奂": {
+  "char": "奂",
+  "standalone": true,
+  "pinyin": "huàn",
+  "meaning": "numerous"
+ },
+ "⺈": {
+  "char": "⺈",
+  "standalone": true
+ },
+ "用": {
+  "char": "用",
+  "standalone": true,
+  "pinyin": "yòng",
+  "meaning": "to use"
+ },
+ "乚": {
+  "char": "乚",
+  "standalone": true,
+  "pinyin": "gōu",
+  "meaning": "secret"
+ },
+ "玉": {
+  "char": "玉",
+  "standalone": true,
+  "pinyin": "yù",
+  "meaning": "jade"
+ },
+ "尚": {
+  "char": "尚",
+  "standalone": true,
+  "pinyin": "shàng",
+  "meaning": "still"
+ },
+ "巾": {
+  "char": "巾",
+  "standalone": true,
+  "pinyin": "jīn",
+  "meaning": "cloth"
+ },
+ "矦": {
+  "char": "矦",
+  "standalone": true,
+  "pinyin": "hóu",
+  "meaning": "target in archery"
+ },
+ "不": {
+  "char": "不",
+  "standalone": true,
+  "pinyin": "bù",
+  "meaning": "no"
+ },
+ "屋": {
+  "char": "屋",
+  "standalone": true,
+  "pinyin": "wū",
+  "meaning": "building"
+ },
+ "非": {
+  "char": "非",
+  "standalone": true,
+  "pinyin": "fēi",
+  "meaning": "not"
+ },
+ "车": {
+  "char": "车",
+  "standalone": true,
+  "pinyin": "chē",
+  "meaning": "cart"
+ },
+ "你": {
+  "char": "你",
+  "standalone": true,
+  "pinyin": "nǐ",
+  "meaning": "you"
+ },
+ "豸": {
+  "char": "豸",
+  "standalone": true,
+  "pinyin": "zhì",
+  "meaning": "badger"
+ },
+ "皃": {
+  "char": "皃",
+  "standalone": true,
+  "pinyin": "mào",
+  "meaning": "countenance"
+ },
+ "柬": {
+  "char": "柬",
+  "standalone": true,
+  "pinyin": "jiǎn",
+  "meaning": "card"
+ },
+ "至": {
+  "char": "至",
+  "standalone": true,
+  "pinyin": "zhì",
+  "meaning": "reach"
+ },
+ "京": {
+  "char": "京",
+  "standalone": true,
+  "pinyin": "jīng",
+  "meaning": "capital city"
+ },
+ "罢": {
+  "char": "罢",
+  "standalone": true,
+  "pinyin": "bà",
+  "meaning": "to cease"
+ },
+ "真": {
+  "char": "真",
+  "standalone": true,
+  "pinyin": "zhēn",
+  "meaning": "real"
+ },
+ "穴": {
+  "char": "穴",
+  "standalone": true,
+  "pinyin": "xué",
+  "meaning": "cave"
+ },
+ "卷": {
+  "char": "卷",
+  "standalone": true,
+  "pinyin": "juǎn",
+  "meaning": "book"
+ },
+ "先": {
+  "char": "先",
+  "standalone": true,
+  "pinyin": "xiān",
+  "meaning": "first"
+ },
+ "卜": {
+  "char": "卜",
+  "standalone": true,
+  "pinyin": "bo",
+  "meaning": "divination"
+ },
+ "夂": {
+  "char": "夂",
+  "standalone": true,
+  "pinyin": "zhǐ",
+  "meaning": "to go"
+ },
+ "入": {
+  "char": "入",
+  "standalone": true,
+  "pinyin": "rù",
+  "meaning": "to enter"
+ },
+ "王": {
+  "char": "王",
+  "standalone": true,
+  "pinyin": "wáng",
+  "meaning": "king"
+ },
+ "厂": {
+  "char": "厂",
+  "standalone": true,
+  "pinyin": "chǎng",
+  "meaning": "cliff"
+ },
+ "另": {
+  "char": "另",
+  "standalone": true,
+  "pinyin": "lìng",
+  "meaning": "another"
+ },
+ "壴": {
+  "char": "壴",
+  "standalone": true,
+  "pinyin": "zhù",
+  "meaning": "drum"
+ },
+ "壬": {
+  "char": "壬",
+  "standalone": true,
+  "pinyin": "rén",
+  "meaning": "9th heavenly stem"
+ },
+ "孝": {
+  "char": "孝",
+  "standalone": true,
+  "pinyin": "xiào",
+  "meaning": "filial piety"
+ },
+ "攵": {
+  "char": "攵",
+  "standalone": false,
+  "pinyin": "pū",
+  "meaning": "tap (radical)"
+ },
+ "者": {
+  "char": "者",
+  "standalone": true,
+  "pinyin": "zhě",
+  "meaning": "that which"
+ },
+ "乛": {
+  "char": "乛",
+  "standalone": true,
+  "pinyin": "ya",
+  "meaning": "kwukyel"
+ },
+ "少": {
+  "char": "少",
+  "standalone": true,
+  "pinyin": "shǎo",
+  "meaning": "few"
+ },
+ "黑": {
+  "char": "黑",
+  "standalone": true,
+  "pinyin": "hēi",
+  "meaning": "black"
+ },
+ "犬": {
+  "char": "犬",
+  "standalone": true,
+  "pinyin": "quǎn",
+  "meaning": "dog"
+ },
+ "是": {
+  "char": "是",
+  "standalone": true,
+  "pinyin": "shì",
+  "meaning": "to be"
+ },
+ "余": {
+  "char": "余",
+  "standalone": true,
+  "pinyin": "yú",
+  "meaning": "surplus"
+ },
+ "斗": {
+  "char": "斗",
+  "standalone": true,
+  "pinyin": "dòu",
+  "meaning": "to struggle"
+ },
+ "化": {
+  "char": "化",
+  "standalone": true,
+  "pinyin": "huà",
+  "meaning": "change; -ise"
+ },
+ "乙": {
+  "char": "乙",
+  "standalone": true,
+  "pinyin": "yǐ",
+  "meaning": "second"
+ },
+ "冋": {
+  "char": "冋",
+  "standalone": true,
+  "pinyin": "jiōng",
+  "meaning": "desert"
+ },
+ "夭": {
+  "char": "夭",
+  "standalone": true,
+  "pinyin": "yāo",
+  "meaning": "young"
+ },
+ "匋": {
+  "char": "匋",
+  "standalone": true,
+  "pinyin": "táo",
+  "meaning": "pottery"
+ },
+ "旨": {
+  "char": "旨",
+  "standalone": true,
+  "pinyin": "zhǐ",
+  "meaning": "aim"
+ },
+ "昭": {
+  "char": "昭",
+  "standalone": true,
+  "pinyin": "zhāo",
+  "meaning": "bright"
+ },
+ "乃": {
+  "char": "乃",
+  "standalone": true,
+  "pinyin": "nǎi",
+  "meaning": "then"
+ },
+ "丶": {
+  "char": "丶",
+  "standalone": true,
+  "pinyin": "diǎn",
+  "meaning": "dot"
+ },
+ "皿": {
+  "char": "皿",
+  "standalone": true,
+  "pinyin": "mǐn",
+  "meaning": "dish"
+ },
+ "卩": {
+  "char": "卩",
+  "standalone": true,
+  "pinyin": "jié",
+  "meaning": "seal"
+ },
+ "隹": {
+  "char": "隹",
+  "standalone": true,
+  "pinyin": "zhuī",
+  "meaning": "short-tailed bird"
+ },
+ "广": {
+  "char": "广",
+  "standalone": true,
+  "pinyin": "guǎng",
+  "meaning": "broad"
+ },
+ "廷": {
+  "char": "廷",
+  "standalone": true,
+  "pinyin": "tíng",
+  "meaning": "courtyard"
+ },
+ "妾": {
+  "char": "妾",
+  "standalone": true,
+  "pinyin": "qiè",
+  "meaning": "concubine"
+ },
+ "酋": {
+  "char": "酋",
+  "standalone": true,
+  "pinyin": "qiú",
+  "meaning": "chief of tribe"
+ },
+ "千": {
+  "char": "千",
+  "standalone": true,
+  "pinyin": "qiān",
+  "meaning": "thousand"
+ },
+ "里": {
+  "char": "里",
+  "standalone": true,
+  "pinyin": "lǐ",
+  "meaning": "inside, in"
+ },
+ "可": {
+  "char": "可",
+  "standalone": true,
+  "pinyin": "kě",
+  "meaning": "may"
+ },
+ "夷": {
+  "char": "夷",
+  "standalone": true,
+  "pinyin": "yí",
+  "meaning": "ancient barbarian tribes"
+ },
+ "尗": {
+  "char": "尗",
+  "standalone": true,
+  "pinyin": "shū",
+  "meaning": "younger brother"
+ },
+ "弓": {
+  "char": "弓",
+  "standalone": true,
+  "pinyin": "gōng",
+  "meaning": "bow"
+ },
+ "长": {
+  "char": "长",
+  "standalone": true,
+  "pinyin": "zhǎng",
+  "meaning": "long"
+ },
+ "卓": {
+  "char": "卓",
+  "standalone": true,
+  "pinyin": "zhuō",
+  "meaning": "profound"
+ },
+ "娄": {
+  "char": "娄",
+  "standalone": true,
+  "pinyin": "lóu",
+  "meaning": "a constellation"
+ },
+ "彦": {
+  "char": "彦",
+  "standalone": true,
+  "pinyin": "yàn",
+  "meaning": "elegant"
+ },
+ "页": {
+  "char": "页",
+  "standalone": true,
+  "pinyin": "yè",
+  "meaning": "page"
+ },
+ "永": {
+  "char": "永",
+  "standalone": true,
+  "pinyin": "yǒng",
+  "meaning": "long"
+ },
+ "忄": {
+  "char": "忄",
+  "standalone": false,
+  "pinyin": "xīn",
+  "meaning": "heart (radical)"
+ },
+ "火": {
+  "char": "火",
+  "standalone": true,
+  "pinyin": "huǒ",
+  "meaning": "fire"
+ },
+ "因": {
+  "char": "因",
+  "standalone": true,
+  "pinyin": "yīn",
+  "meaning": "because, reason"
+ },
+ "坐": {
+  "char": "坐",
+  "standalone": true,
+  "pinyin": "zuò",
+  "meaning": "sit; take (transport)"
+ },
+ "支": {
+  "char": "支",
+  "standalone": true,
+  "pinyin": "zhī",
+  "meaning": "to support"
+ },
+ "申": {
+  "char": "申",
+  "standalone": true,
+  "pinyin": "shēn",
+  "meaning": "to report"
+ },
+ "寺": {
+  "char": "寺",
+  "standalone": true,
+  "pinyin": "sì",
+  "meaning": "court"
+ },
+ "监": {
+  "char": "监",
+  "standalone": true,
+  "pinyin": "jiān",
+  "meaning": "to supervise"
+ },
+ "录": {
+  "char": "录",
+  "standalone": true,
+  "pinyin": "lù",
+  "meaning": "to copy"
+ },
+ "票": {
+  "char": "票",
+  "standalone": true,
+  "pinyin": "piào",
+  "meaning": "ticket"
+ },
+ "冗": {
+  "char": "冗",
+  "standalone": true,
+  "pinyin": "rǒng",
+  "meaning": "excessive"
+ },
+ "直": {
+  "char": "直",
+  "standalone": true,
+  "pinyin": "zhí",
+  "meaning": "straight"
+ },
+ "虫": {
+  "char": "虫",
+  "standalone": true,
+  "pinyin": "chóng",
+  "meaning": "insect"
+ },
+ "昔": {
+  "char": "昔",
+  "standalone": true,
+  "pinyin": "xī",
+  "meaning": "past"
+ },
+ "弋": {
+  "char": "弋",
+  "standalone": true,
+  "pinyin": "yì",
+  "meaning": "to catch"
+ },
+ "衣": {
+  "char": "衣",
+  "standalone": true,
+  "pinyin": "yī",
+  "meaning": "cloth"
+ },
+ "夬": {
+  "char": "夬",
+  "standalone": true,
+  "pinyin": "guài",
+  "meaning": "decisive"
+ },
+ "龙": {
+  "char": "龙",
+  "standalone": true,
+  "pinyin": "lóng",
+  "meaning": "dragon"
+ },
+ "耳": {
+  "char": "耳",
+  "standalone": true,
+  "pinyin": "ěr",
+  "meaning": "ear"
+ },
+ "关": {
+  "char": "关",
+  "standalone": true,
+  "pinyin": "guān",
+  "meaning": "frontier pass"
+ },
+ "吉": {
+  "char": "吉",
+  "standalone": true,
+  "pinyin": "jí",
+  "meaning": "lucky"
+ },
+ "昏": {
+  "char": "昏",
+  "standalone": true,
+  "pinyin": "hūn",
+  "meaning": "dusk"
+ },
+ "牙": {
+  "char": "牙",
+  "standalone": true,
+  "pinyin": "yá",
+  "meaning": "tooth"
+ },
+ "冬": {
+  "char": "冬",
+  "standalone": true,
+  "pinyin": "dōng",
+  "meaning": "winter"
+ },
+ "平": {
+  "char": "平",
+  "standalone": true,
+  "pinyin": "píng",
+  "meaning": "flat"
+ },
+ "刀": {
+  "char": "刀",
+  "standalone": true,
+  "pinyin": "dāo",
+  "meaning": "knife"
+ },
+ "七": {
+  "char": "七",
+  "standalone": true,
+  "pinyin": "qī",
+  "meaning": "seven"
+ },
+ "並": {
+  "char": "並",
+  "standalone": true,
+  "pinyin": "bìng",
+  "meaning": "to combine"
+ },
+ "仑": {
+  "char": "仑",
+  "standalone": true,
+  "pinyin": "lún",
+  "meaning": "logical reasons"
+ },
+ "㐬": {
+  "char": "㐬",
+  "standalone": true,
+  "pinyin": "liú",
+  "meaning": "pennant"
+ },
+ "癶": {
+  "char": "癶",
+  "standalone": true,
+  "pinyin": "bō",
+  "meaning": "legs"
+ },
+ "彡": {
+  "char": "彡",
+  "standalone": true,
+  "pinyin": "shān",
+  "meaning": "hair"
+ },
+ "本": {
+  "char": "本",
+  "standalone": true,
+  "pinyin": "běn",
+  "meaning": "root"
+ },
+ "觜": {
+  "char": "觜",
+  "standalone": true,
+  "pinyin": "zī",
+  "meaning": "beak"
+ },
+ "旁": {
+  "char": "旁",
+  "standalone": true,
+  "pinyin": "páng",
+  "meaning": "side"
+ },
+ "桼": {
+  "char": "桼",
+  "standalone": true,
+  "pinyin": "qī",
+  "meaning": "the varnish tree"
+ },
+ "冫": {
+  "char": "冫",
+  "standalone": false,
+  "pinyin": "bīng",
+  "meaning": "ice (radical)"
+ },
+ "⺌": {
+  "char": "⺌",
+  "standalone": true
+ },
+ "从": {
+  "char": "从",
+  "standalone": true,
+  "pinyin": "cóng",
+  "meaning": "from"
+ },
+ "莫": {
+  "char": "莫",
+  "standalone": true,
+  "pinyin": "mò",
+  "meaning": "cannot"
+ },
+ "斿": {
+  "char": "斿",
+  "standalone": true,
+  "pinyin": "yóu",
+  "meaning": "to swim"
+ },
+ "争": {
+  "char": "争",
+  "standalone": true,
+  "pinyin": "zhēng",
+  "meaning": "to dispute"
+ },
+ "敕": {
+  "char": "敕",
+  "standalone": true,
+  "pinyin": "chì",
+  "meaning": "an imperial order or decree"
+ },
+ "正": {
+  "char": "正",
+  "standalone": true,
+  "pinyin": "zhèng",
+  "meaning": "straight"
+ },
+ "米": {
+  "char": "米",
+  "standalone": true,
+  "pinyin": "mǐ",
+  "meaning": "rice"
+ },
+ "示": {
+  "char": "示",
+  "standalone": true,
+  "pinyin": "shì",
+  "meaning": "altar"
+ },
+ "退": {
+  "char": "退",
+  "standalone": true,
+  "pinyin": "tuì",
+  "meaning": "to retreat"
+ },
+ "半": {
+  "char": "半",
+  "standalone": true,
+  "pinyin": "bàn",
+  "meaning": "half"
+ },
+ "包": {
+  "char": "包",
+  "standalone": true,
+  "pinyin": "bāo",
+  "meaning": "wrap"
+ },
+ "牛": {
+  "char": "牛",
+  "standalone": true,
+  "pinyin": "niú",
+  "meaning": "ox"
+ },
+ "勿": {
+  "char": "勿",
+  "standalone": true,
+  "pinyin": "wù",
+  "meaning": "must not"
+ },
+ "我": {
+  "char": "我",
+  "standalone": true,
+  "pinyin": "wǒ",
+  "meaning": "I, me"
+ },
+ "鸟": {
+  "char": "鸟",
+  "standalone": true,
+  "pinyin": "niǎo",
+  "meaning": "bird"
+ },
+ "各": {
+  "char": "各",
+  "standalone": true,
+  "pinyin": "gè",
+  "meaning": "individual"
+ },
+ "兵": {
+  "char": "兵",
+  "standalone": true,
+  "pinyin": "bīng",
+  "meaning": "soldier"
+ },
+ "乇": {
+  "char": "乇",
+  "standalone": true,
+  "pinyin": "tuō",
+  "meaning": "to depend on"
+ },
+ "孚": {
+  "char": "孚",
+  "standalone": true,
+  "pinyin": "fú",
+  "meaning": "to brood over eggs"
+ },
+ "发": {
+  "char": "发",
+  "standalone": true,
+  "pinyin": "fā",
+  "meaning": "develop, send out"
+ },
+ "皮": {
+  "char": "皮",
+  "standalone": true,
+  "pinyin": "pí",
+  "meaning": "skin"
+ },
+ "它": {
+  "char": "它",
+  "standalone": true,
+  "pinyin": "tā",
+  "meaning": "it"
+ },
+ "胡": {
+  "char": "胡",
+  "standalone": true,
+  "pinyin": "hú",
+  "meaning": "recklessly"
+ },
+ "枼": {
+  "char": "枼",
+  "standalone": true,
+  "pinyin": "yè",
+  "meaning": "table"
+ },
+ "兆": {
+  "char": "兆",
+  "standalone": true,
+  "pinyin": "zhào",
+  "meaning": "omen"
+ },
+ "匸": {
+  "char": "匸",
+  "standalone": true,
+  "pinyin": "xì",
+  "meaning": "box"
+ },
+ "虍": {
+  "char": "虍",
+  "standalone": true,
+  "pinyin": "hū",
+  "meaning": "tiger"
+ },
+ "免": {
+  "char": "免",
+  "standalone": true,
+  "pinyin": "miǎn",
+  "meaning": "to spare"
+ },
+ "侯": {
+  "char": "侯",
+  "standalone": true,
+  "pinyin": "hóu",
+  "meaning": "marquis"
+ },
+ "尸": {
+  "char": "尸",
+  "standalone": true,
+  "pinyin": "shī",
+  "meaning": "body"
+ },
+ "禹": {
+  "char": "禹",
+  "standalone": true,
+  "pinyin": "yǔ",
+  "meaning": "legendary Hsia dynasty founder"
+ },
+ "见": {
+  "char": "见",
+  "standalone": true,
+  "pinyin": "jiàn",
+  "meaning": "to see"
+ },
+ "此": {
+  "char": "此",
+  "standalone": true,
+  "pinyin": "cǐ",
+  "meaning": "this"
+ },
+ "相": {
+  "char": "相",
+  "standalone": true,
+  "pinyin": "xiāng",
+  "meaning": "mutual"
+ },
+ "上": {
+  "char": "上",
+  "standalone": true,
+  "pinyin": "shàng",
+  "meaning": "up, go to"
+ },
+ "良": {
+  "char": "良",
+  "standalone": true,
+  "pinyin": "liáng",
+  "meaning": "good"
+ },
+ "闵": {
+  "char": "闵",
+  "standalone": true,
+  "pinyin": "mǐn",
+  "meaning": "to mourn"
+ },
+ "助": {
+  "char": "助",
+  "standalone": true,
+  "pinyin": "zhù",
+  "meaning": "to help"
+ },
+ "干": {
+  "char": "干",
+  "standalone": true,
+  "pinyin": "gàn",
+  "meaning": "arid"
+ },
+ "啇": {
+  "char": "啇",
+  "standalone": true,
+  "pinyin": "dì",
+  "meaning": "stalk"
+ },
+ "矢": {
+  "char": "矢",
+  "standalone": true,
+  "pinyin": "shǐ",
+  "meaning": "arrow"
+ },
+ "舟": {
+  "char": "舟",
+  "standalone": true,
+  "pinyin": "zhōu",
+  "meaning": "boat"
+ },
+ "比": {
+  "char": "比",
+  "standalone": true,
+  "pinyin": "bǐ",
+  "meaning": "compare"
+ },
+ "古": {
+  "char": "古",
+  "standalone": true,
+  "pinyin": "gǔ",
+  "meaning": "old"
+ },
+ "咸": {
+  "char": "咸",
+  "standalone": true,
+  "pinyin": "xián",
+  "meaning": "all"
+ },
+ "爫": {
+  "char": "爫",
+  "standalone": true,
+  "pinyin": "zhǎo",
+  "meaning": "claws"
+ },
+ "饣": {
+  "char": "饣",
+  "standalone": false,
+  "pinyin": "shí",
+  "meaning": "food (radical)"
+ },
+ "反": {
+  "char": "反",
+  "standalone": true,
+  "pinyin": "fǎn",
+  "meaning": "reverse"
+ },
+ "每": {
+  "char": "每",
+  "standalone": true,
+  "pinyin": "měi",
+  "meaning": "each"
+ },
+ "疏": {
+  "char": "疏",
+  "standalone": true,
+  "pinyin": "shū",
+  "meaning": "to neglect"
+ },
+ "快": {
+  "char": "快",
+  "standalone": true,
+  "pinyin": "kuài",
+  "meaning": "speedy"
+ },
+ "夫": {
+  "char": "夫",
+  "standalone": true,
+  "pinyin": "fū",
+  "meaning": "man"
+ },
+ "分": {
+  "char": "分",
+  "standalone": true,
+  "pinyin": "fēn",
+  "meaning": "to divide"
+ },
+ "寅": {
+  "char": "寅",
+  "standalone": true,
+  "pinyin": "yín",
+  "meaning": "to respect"
+ },
+ "建": {
+  "char": "建",
+  "standalone": true,
+  "pinyin": "jiàn",
+  "meaning": "to build"
+ },
+ "隶": {
+  "char": "隶",
+  "standalone": true,
+  "pinyin": "lì",
+  "meaning": "subservient"
+ },
+ "早": {
+  "char": "早",
+  "standalone": true,
+  "pinyin": "zǎo",
+  "meaning": "early, morning"
+ },
+ "令": {
+  "char": "令",
+  "standalone": true,
+  "pinyin": "lìng",
+  "meaning": "command"
+ },
+ "向": {
+  "char": "向",
+  "standalone": true,
+  "pinyin": "xiàng",
+  "meaning": "towards"
+ },
+ "井": {
+  "char": "井",
+  "standalone": true,
+  "pinyin": "jǐng",
+  "meaning": "well"
+ },
+ "匡": {
+  "char": "匡",
+  "standalone": true,
+  "pinyin": "kuāng",
+  "meaning": "to correct"
+ },
+ "巳": {
+  "char": "巳",
+  "standalone": true,
+  "pinyin": "sì",
+  "meaning": "the hours from 9 to 11"
+ },
+ "奇": {
+  "char": "奇",
+  "standalone": true,
+  "pinyin": "qí",
+  "meaning": "strange"
+ },
+ "开": {
+  "char": "开",
+  "standalone": true,
+  "pinyin": "kāi",
+  "meaning": "to open"
+ },
+ "式": {
+  "char": "式",
+  "standalone": true,
+  "pinyin": "shì",
+  "meaning": "formula"
+ },
+ "兄": {
+  "char": "兄",
+  "standalone": true,
+  "pinyin": "xiōng",
+  "meaning": "elder brother"
+ },
+ "亲": {
+  "char": "亲",
+  "standalone": true,
+  "pinyin": "qīn",
+  "meaning": "relatives"
+ },
+ "加": {
+  "char": "加",
+  "standalone": true,
+  "pinyin": "jiā",
+  "meaning": "to add to"
+ },
+ "贝": {
+  "char": "贝",
+  "standalone": true,
+  "pinyin": "bèi",
+  "meaning": "sea shell"
+ },
+ "無": {
+  "char": "無",
+  "standalone": true,
+  "pinyin": "wú",
+  "meaning": "no"
+ },
+ "舛": {
+  "char": "舛",
+  "standalone": true,
+  "pinyin": "chuǎn",
+  "meaning": "mistaken"
+ },
+ "韦": {
+  "char": "韦",
+  "standalone": true,
+  "pinyin": "wéi",
+  "meaning": "tanned leather"
+ },
+ "共": {
+  "char": "共",
+  "standalone": true,
+  "pinyin": "gòng",
+  "meaning": "all"
+ },
+ "⺗": {
+  "char": "⺗",
+  "standalone": true,
+  "meaning": "heart"
+ },
+ "圭": {
+  "char": "圭",
+  "standalone": true,
+  "pinyin": "guī",
+  "meaning": "jade tablet"
+ },
+ "首": {
+  "char": "首",
+  "standalone": true,
+  "pinyin": "shǒu",
+  "meaning": "first; head"
+ },
+ "到": {
+  "char": "到",
+  "standalone": true,
+  "pinyin": "dào",
+  "meaning": "to go to"
+ },
+ "列": {
+  "char": "列",
+  "standalone": true,
+  "pinyin": "liè",
+  "meaning": "a line"
+ },
+ "执": {
+  "char": "执",
+  "standalone": true,
+  "pinyin": "zhí",
+  "meaning": "to execute"
+ },
+ "巩": {
+  "char": "巩",
+  "standalone": true,
+  "pinyin": "gǒng",
+  "meaning": "to bind"
+ },
+ "宗": {
+  "char": "宗",
+  "standalone": true,
+  "pinyin": "zōng",
+  "meaning": "ancestry"
+ },
+ "亼": {
+  "char": "亼",
+  "standalone": true,
+  "pinyin": "jí",
+  "meaning": "to assemble"
+ },
+ "㝵": {
+  "char": "㝵",
+  "standalone": true,
+  "pinyin": "dé",
+  "meaning": "to obtain"
+ },
+ "安": {
+  "char": "安",
+  "standalone": true,
+  "pinyin": "ān",
+  "meaning": "peaceful"
+ },
+ "齿": {
+  "char": "齿",
+  "standalone": true,
+  "pinyin": "chǐ",
+  "meaning": "teeth"
+ },
+ "央": {
+  "char": "央",
+  "standalone": true,
+  "pinyin": "yāng",
+  "meaning": "central"
+ },
+ "爪": {
+  "char": "爪",
+  "standalone": true,
+  "pinyin": "zhǎo",
+  "meaning": "claws"
+ },
+ "亦": {
+  "char": "亦",
+  "standalone": true,
+  "pinyin": "yì",
+  "meaning": "also"
+ },
+ "员": {
+  "char": "员",
+  "standalone": true,
+  "pinyin": "yuán",
+  "meaning": "employee"
+ },
+ "羽": {
+  "char": "羽",
+  "standalone": true,
+  "pinyin": "yǔ",
+  "meaning": "feather"
+ },
+ "亍": {
+  "char": "亍",
+  "standalone": true,
+  "pinyin": "chù",
+  "meaning": "to take small steps"
+ },
+ "易": {
+  "char": "易",
+  "standalone": true,
+  "pinyin": "yì",
+  "meaning": "to change"
+ },
+ "主": {
+  "char": "主",
+  "standalone": true,
+  "pinyin": "zhǔ",
+  "meaning": "to own"
+ },
+ "头": {
+  "char": "头",
+  "standalone": true,
+  "pinyin": "tóu",
+  "meaning": "head"
+ },
+ "买": {
+  "char": "买",
+  "standalone": true,
+  "pinyin": "mǎi",
+  "meaning": "buy"
+ },
+ "戋": {
+  "char": "戋",
+  "standalone": true,
+  "pinyin": "jiān",
+  "meaning": "small"
+ },
+ "耑": {
+  "char": "耑",
+  "standalone": true,
+  "pinyin": "duān",
+  "meaning": "specialized"
+ },
+ "委": {
+  "char": "委",
+  "standalone": true,
+  "pinyin": "wěi",
+  "meaning": "to appoint"
+ },
+ "垂": {
+  "char": "垂",
+  "standalone": true,
+  "pinyin": "chuí",
+  "meaning": "to hang"
+ },
+ "雨": {
+  "char": "雨",
+  "standalone": true,
+  "pinyin": "yǔ",
+  "meaning": "rain"
+ },
+ "求": {
+  "char": "求",
+  "standalone": true,
+  "pinyin": "qiú",
+  "meaning": "to seek"
+ },
+ "成": {
+  "char": "成",
+  "standalone": true,
+  "pinyin": "chéng",
+  "meaning": "to accomplish"
+ },
+ "对": {
+  "char": "对",
+  "standalone": true,
+  "pinyin": "duì",
+  "meaning": "correct"
+ },
+ "更": {
+  "char": "更",
+  "standalone": true,
+  "pinyin": "gèng",
+  "meaning": "more, even more"
+ },
+ "总": {
+  "char": "总",
+  "standalone": true,
+  "pinyin": "zǒng",
+  "meaning": "sum; always"
+ },
+ "龶": {
+  "char": "龶",
+  "standalone": true
+ },
+ "衤": {
+  "char": "衤",
+  "standalone": false,
+  "pinyin": "yī",
+  "meaning": "clothing (radical)"
+ },
+ "及": {
+  "char": "及",
+  "standalone": true,
+  "pinyin": "jí",
+  "meaning": "to extend"
+ },
+ "卬": {
+  "char": "卬",
+  "standalone": true,
+  "pinyin": "áng",
+  "meaning": "lofty"
+ },
+ "尺": {
+  "char": "尺",
+  "standalone": true,
+  "pinyin": "chǐ",
+  "meaning": "ruler"
+ },
+ "酉": {
+  "char": "酉",
+  "standalone": true,
+  "pinyin": "yǒu",
+  "meaning": "wine"
+ },
+ "生": {
+  "char": "生",
+  "standalone": true,
+  "pinyin": "shēng",
+  "meaning": "life"
+ },
+ "去": {
+  "char": "去",
+  "standalone": true,
+  "pinyin": "qù",
+  "meaning": "to go away"
+ },
+ "⺍": {
+  "char": "⺍",
+  "standalone": true
+ },
+ "肰": {
+  "char": "肰",
+  "standalone": true,
+  "pinyin": "rán",
+  "meaning": "dog meat"
+ },
+ "卯": {
+  "char": "卯",
+  "standalone": true,
+  "pinyin": "mǎo",
+  "meaning": "4th terrestrial branch"
+ },
+ "亡": {
+  "char": "亡",
+  "standalone": true,
+  "pinyin": "wáng",
+  "meaning": "death"
+ },
+ "奥": {
+  "char": "奥",
+  "standalone": true,
+  "pinyin": "ào",
+  "meaning": "mysterious"
+ },
+ "业": {
+  "char": "业",
+  "standalone": true,
+  "pinyin": "yè",
+  "meaning": "trade, undertaking"
+ },
+ "予": {
+  "char": "予",
+  "standalone": true,
+  "pinyin": "yǔ",
+  "meaning": "to give"
+ },
+ "攸": {
+  "char": "攸",
+  "standalone": true,
+  "pinyin": "yōu",
+  "meaning": "distant"
+ },
+ "豆": {
+  "char": "豆",
+  "standalone": true,
+  "pinyin": "dòu",
+  "meaning": "beans"
+ },
+ "止": {
+  "char": "止",
+  "standalone": true,
+  "pinyin": "zhǐ",
+  "meaning": "to stop"
+ },
+ "匀": {
+  "char": "匀",
+  "standalone": true,
+  "pinyin": "yún",
+  "meaning": "equal"
+ },
+ "聿": {
+  "char": "聿",
+  "standalone": true,
+  "pinyin": "yù",
+  "meaning": "writing brush"
+ },
+ "泉": {
+  "char": "泉",
+  "standalone": true,
+  "pinyin": "quán",
+  "meaning": "spring"
+ },
+ "呈": {
+  "char": "呈",
+  "standalone": true,
+  "pinyin": "chéng",
+  "meaning": "to petition"
+ },
+ "其": {
+  "char": "其",
+  "standalone": true,
+  "pinyin": "qí",
+  "meaning": "that; its"
+ },
+ "术": {
+  "char": "术",
+  "standalone": true,
+  "pinyin": "shù",
+  "meaning": "skill"
+ },
+ "尧": {
+  "char": "尧",
+  "standalone": true,
+  "pinyin": "yáo",
+  "meaning": "a legendary ancient emperor-sage"
+ },
+ "告": {
+  "char": "告",
+  "standalone": true,
+  "pinyin": "gào",
+  "meaning": "to tell"
+ },
+ "民": {
+  "char": "民",
+  "standalone": true,
+  "pinyin": "mín",
+  "meaning": "citizens"
+ },
+ "帝": {
+  "char": "帝",
+  "standalone": true,
+  "pinyin": "dì",
+  "meaning": "supreme ruler"
+ },
+ "洛": {
+  "char": "洛",
+  "standalone": true,
+  "pinyin": "luò",
+  "meaning": "a river in the Shanxi province"
+ },
+ "曼": {
+  "char": "曼",
+  "standalone": true,
+  "pinyin": "màn",
+  "meaning": "long"
+ },
+ "束": {
+  "char": "束",
+  "standalone": true,
+  "pinyin": "shù",
+  "meaning": "to bind"
+ },
+ "鱼": {
+  "char": "鱼",
+  "standalone": true,
+  "pinyin": "yú",
+  "meaning": "fish"
+ },
+ "爰": {
+  "char": "爰",
+  "standalone": true,
+  "pinyin": "yuán",
+  "meaning": "to lead on to"
+ },
+ "舍": {
+  "char": "舍",
+  "standalone": true,
+  "pinyin": "shě",
+  "meaning": "house"
+ },
+ "帛": {
+  "char": "帛",
+  "standalone": true,
+  "pinyin": "bó",
+  "meaning": "silk"
+ },
+ "延": {
+  "char": "延",
+  "standalone": true,
+  "pinyin": "yán",
+  "meaning": "to defer"
+ },
+ "由": {
+  "char": "由",
+  "standalone": true,
+  "pinyin": "yóu",
+  "meaning": "cause"
+ },
+ "北": {
+  "char": "北",
+  "standalone": true,
+  "pinyin": "běi",
+  "meaning": "north"
+ },
+ "囱": {
+  "char": "囱",
+  "standalone": true,
+  "pinyin": "cōng",
+  "meaning": "chimney"
+ },
+ "水": {
+  "char": "水",
+  "standalone": true,
+  "pinyin": "shuǐ",
+  "meaning": "water"
+ },
+ "务": {
+  "char": "务",
+  "standalone": true,
+  "pinyin": "wù",
+  "meaning": "affairs"
+ },
+ "东": {
+  "char": "东",
+  "standalone": true,
+  "pinyin": "dōng",
+  "meaning": "east"
+ },
+ "朵": {
+  "char": "朵",
+  "standalone": true,
+  "pinyin": "duǒ",
+  "meaning": "cluster of flowers"
+ },
+ "氐": {
+  "char": "氐",
+  "standalone": true,
+  "pinyin": "dī",
+  "meaning": "the name of an ancient tribe"
+ },
+ "丘": {
+  "char": "丘",
+  "standalone": true,
+  "pinyin": "qiū",
+  "meaning": "mound"
+ },
+ "番": {
+  "char": "番",
+  "standalone": true,
+  "pinyin": "fān",
+  "meaning": "to take turns"
+ },
+ "喿": {
+  "char": "喿",
+  "standalone": true,
+  "pinyin": "zào",
+  "meaning": "the sound of birds chirping"
+ },
+ "付": {
+  "char": "付",
+  "standalone": true,
+  "pinyin": "fù",
+  "meaning": "give"
+ },
+ "幺": {
+  "char": "幺",
+  "standalone": true,
+  "pinyin": "yāo",
+  "meaning": "one"
+ },
+ "州": {
+  "char": "州",
+  "standalone": true,
+  "pinyin": "zhōu",
+  "meaning": "state"
+ },
+ "代": {
+  "char": "代",
+  "standalone": true,
+  "pinyin": "dài",
+  "meaning": "era"
+ },
+ "丂": {
+  "char": "丂",
+  "standalone": true,
+  "pinyin": "kǎo",
+  "meaning": "obstruction of breath (qi)"
+ },
+ "甲": {
+  "char": "甲",
+  "standalone": true,
+  "pinyin": "jiǎ",
+  "meaning": "armor"
+ },
+ "介": {
+  "char": "介",
+  "standalone": true,
+  "pinyin": "jiè",
+  "meaning": "agent"
+ },
+ "间": {
+  "char": "间",
+  "standalone": true,
+  "pinyin": "jiān",
+  "meaning": "between"
+ },
+ "㐱": {
+  "char": "㐱",
+  "standalone": true,
+  "pinyin": "zhěn",
+  "meaning": "bushy"
+ },
+ "言": {
+  "char": "言",
+  "standalone": true,
+  "pinyin": "yán",
+  "meaning": "words"
+ },
+ "士": {
+  "char": "士",
+  "standalone": true,
+  "pinyin": "shì",
+  "meaning": "scholar"
+ },
+ "天": {
+  "char": "天",
+  "standalone": true,
+  "pinyin": "tiān",
+  "meaning": "sky, day, weather"
+ },
+ "焦": {
+  "char": "焦",
+  "standalone": true,
+  "pinyin": "jiāo",
+  "meaning": "burned"
+ },
+ "下": {
+  "char": "下",
+  "standalone": true,
+  "pinyin": "xià",
+  "meaning": "below"
+ },
+ "具": {
+  "char": "具",
+  "standalone": true,
+  "pinyin": "jù",
+  "meaning": "tool"
+ },
+ "厄": {
+  "char": "厄",
+  "standalone": true,
+  "pinyin": "è",
+  "meaning": "adversity"
+ },
+ "兴": {
+  "char": "兴",
+  "standalone": true,
+  "pinyin": "xìng",
+  "meaning": "to thrive"
+ },
+ "专": {
+  "char": "专",
+  "standalone": true,
+  "pinyin": "zhuān",
+  "meaning": "concentrated"
+ },
+ "充": {
+  "char": "充",
+  "standalone": true,
+  "pinyin": "chōng",
+  "meaning": "to fill"
+ },
+ "市": {
+  "char": "市",
+  "standalone": true,
+  "pinyin": "shì",
+  "meaning": "market, city"
+ },
+ "象": {
+  "char": "象",
+  "standalone": true,
+  "pinyin": "xiàng",
+  "meaning": "elephant"
+ },
+ "出": {
+  "char": "出",
+  "standalone": true,
+  "pinyin": "chū",
+  "meaning": "to go out"
+ },
+ "唐": {
+  "char": "唐",
+  "standalone": true,
+  "pinyin": "táng",
+  "meaning": "the Tang dynasty"
+ },
+ "羔": {
+  "char": "羔",
+  "standalone": true,
+  "pinyin": "gāo",
+  "meaning": "lamb"
+ },
+ "常": {
+  "char": "常",
+  "standalone": true,
+  "pinyin": "cháng",
+  "meaning": "often"
+ },
+ "苟": {
+  "char": "苟",
+  "standalone": true,
+  "pinyin": "gǒu",
+  "meaning": "careless"
+ },
+ "宜": {
+  "char": "宜",
+  "standalone": true,
+  "pinyin": "yí",
+  "meaning": "suitable"
+ },
+ "疒": {
+  "char": "疒",
+  "standalone": true,
+  "pinyin": "nè",
+  "meaning": "sickness"
+ },
+ "叟": {
+  "char": "叟",
+  "standalone": true,
+  "pinyin": "sǒu",
+  "meaning": "old man"
+ },
+ "贯": {
+  "char": "贯",
+  "standalone": true,
+  "pinyin": "guàn",
+  "meaning": "to pierce"
+ },
+ "邦": {
+  "char": "邦",
+  "standalone": true,
+  "pinyin": "bāng",
+  "meaning": "country"
+ },
+ "以": {
+  "char": "以",
+  "standalone": true,
+  "pinyin": "yǐ",
+  "meaning": "according to"
+ },
+ "乑": {
+  "char": "乑",
+  "standalone": true,
+  "pinyin": "yín",
+  "meaning": "to stand side by side"
+ },
+ "官": {
+  "char": "官",
+  "standalone": true,
+  "pinyin": "guān",
+  "meaning": "official"
+ },
+ "旦": {
+  "char": "旦",
+  "standalone": true,
+  "pinyin": "dàn",
+  "meaning": "dawn"
+ },
+ "竟": {
+  "char": "竟",
+  "standalone": true,
+  "pinyin": "jìng",
+  "meaning": "finally"
+ },
+ "呆": {
+  "char": "呆",
+  "standalone": true,
+  "pinyin": "dāi",
+  "meaning": "dull"
+ },
+ "定": {
+  "char": "定",
+  "standalone": true,
+  "pinyin": "dìng",
+  "meaning": "to decide"
+ },
+ "罒": {
+  "char": "罒",
+  "standalone": true,
+  "pinyin": "wǎng",
+  "meaning": "net"
+ },
+ "雚": {
+  "char": "雚",
+  "standalone": true,
+  "pinyin": "guàn",
+  "meaning": "heron"
+ },
+ "完": {
+  "char": "完",
+  "standalone": true,
+  "pinyin": "wán",
+  "meaning": "to complete"
+ },
+ "㠯": {
+  "char": "㠯",
+  "standalone": true,
+  "pinyin": "yǐ",
+  "meaning": "according to"
+ },
+ "肖": {
+  "char": "肖",
+  "standalone": true,
+  "pinyin": "xiào",
+  "meaning": "to resemble"
+ },
+ "行": {
+  "char": "行",
+  "standalone": true,
+  "pinyin": "háng / xíng",
+  "meaning": "row; walk"
+ },
+ "鬲": {
+  "char": "鬲",
+  "standalone": true,
+  "pinyin": "gé",
+  "meaning": "earthen pot"
+ },
+ "甘": {
+  "char": "甘",
+  "standalone": true,
+  "pinyin": "gān",
+  "meaning": "sweet"
+ },
+ "匹": {
+  "char": "匹",
+  "standalone": true,
+  "pinyin": "pǐ",
+  "meaning": "bolt of cloth"
+ },
+ "巨": {
+  "char": "巨",
+  "standalone": true,
+  "pinyin": "jù",
+  "meaning": "large"
+ },
+ "多": {
+  "char": "多",
+  "standalone": true,
+  "pinyin": "duō",
+  "meaning": "much"
+ },
+ "弗": {
+  "char": "弗",
+  "standalone": true,
+  "pinyin": "fú",
+  "meaning": "not"
+ },
+ "糸": {
+  "char": "糸",
+  "standalone": true,
+  "pinyin": "mì",
+  "meaning": "silk"
+ },
+ "廴": {
+  "char": "廴",
+  "standalone": true,
+  "pinyin": "yǐn",
+  "meaning": "to walk"
+ },
+ "冒": {
+  "char": "冒",
+  "standalone": true,
+  "pinyin": "mào",
+  "meaning": "to risk"
+ },
+ "而": {
+  "char": "而",
+  "standalone": true,
+  "pinyin": "ér",
+  "meaning": "and"
+ },
+ "川": {
+  "char": "川",
+  "standalone": true,
+  "pinyin": "chuān",
+  "meaning": "stream"
+ },
+ "龺": {
+  "char": "龺",
+  "standalone": true,
+  "pinyin": "gān",
+  "meaning": "sunlight"
+ },
+ "辛": {
+  "char": "辛",
+  "standalone": true,
+  "pinyin": "xīn",
+  "meaning": "bitter"
+ },
+ "夌": {
+  "char": "夌",
+  "standalone": true,
+  "pinyin": "líng",
+  "meaning": "to dawdle"
+ },
+ "袁": {
+  "char": "袁",
+  "standalone": true,
+  "pinyin": "yuán",
+  "meaning": "robe"
+ },
+ "叚": {
+  "char": "叚",
+  "standalone": true,
+  "pinyin": "jiǎ",
+  "meaning": "false"
+ },
+ "釆": {
+  "char": "釆",
+  "standalone": true,
+  "pinyin": "biàn",
+  "meaning": "to distinguish"
+ },
+ "气": {
+  "char": "气",
+  "standalone": true,
+  "pinyin": "qì",
+  "meaning": "air, weather"
+ },
+ "失": {
+  "char": "失",
+  "standalone": true,
+  "pinyin": "shī",
+  "meaning": "to lose"
+ },
+ "三": {
+  "char": "三",
+  "standalone": true,
+  "pinyin": "sān",
+  "meaning": "three"
+ },
+ "显": {
+  "char": "显",
+  "standalone": true,
+  "pinyin": "xiǎn",
+  "meaning": "clear"
+ },
+ "布": {
+  "char": "布",
+  "standalone": true,
+  "pinyin": "Bù",
+  "meaning": "cotton"
+ },
+ "亢": {
+  "char": "亢",
+  "standalone": true,
+  "pinyin": "kàng",
+  "meaning": "high"
+ },
+ "丄": {
+  "char": "丄",
+  "standalone": true,
+  "pinyin": "shàng",
+  "meaning": "above"
+ },
+ "亭": {
+  "char": "亭",
+  "standalone": true,
+  "pinyin": "tíng",
+  "meaning": "pavilion"
+ },
+ "禺": {
+  "char": "禺",
+  "standalone": true,
+  "pinyin": "yú",
+  "meaning": "district"
+ },
+ "尢": {
+  "char": "尢",
+  "standalone": true,
+  "pinyin": "yóu",
+  "meaning": "weak"
+ },
+ "髟": {
+  "char": "髟",
+  "standalone": true,
+  "pinyin": "biāo",
+  "meaning": "long hair"
+ },
+ "宾": {
+  "char": "宾",
+  "standalone": true,
+  "pinyin": "bīn",
+  "meaning": "guest"
+ },
+ "歹": {
+  "char": "歹",
+  "standalone": true,
+  "pinyin": "dǎi",
+  "meaning": "corpse"
+ },
+ "昷": {
+  "char": "昷",
+  "standalone": true,
+  "pinyin": "wēn",
+  "meaning": "warm"
+ },
+ "呙": {
+  "char": "呙",
+  "standalone": true,
+  "pinyin": "guō",
+  "meaning": "to chat"
+ },
+ "考": {
+  "char": "考",
+  "standalone": true,
+  "pinyin": "kǎo",
+  "meaning": "to test"
+ },
+ "匚": {
+  "char": "匚",
+  "standalone": true,
+  "pinyin": "fāng",
+  "meaning": "box"
+ },
+ "卉": {
+  "char": "卉",
+  "standalone": true,
+  "pinyin": "huì",
+  "meaning": "general term for plants"
+ },
+ "毌": {
+  "char": "毌",
+  "standalone": true,
+  "pinyin": "guàn",
+  "meaning": "old form of 貫"
+ },
+ "厷": {
+  "char": "厷",
+  "standalone": true,
+  "pinyin": "gōng",
+  "meaning": "forearm"
+ },
+ "圣": {
+  "char": "圣",
+  "standalone": true,
+  "pinyin": "shèng",
+  "meaning": "holy"
+ },
+ "革": {
+  "char": "革",
+  "standalone": true,
+  "pinyin": "gé",
+  "meaning": "leather"
+ },
+ "便": {
+  "char": "便",
+  "standalone": true,
+  "pinyin": "pián",
+  "meaning": "cheap (便宜)"
+ },
+ "只": {
+  "char": "只",
+  "standalone": true,
+  "pinyin": "zhī",
+  "meaning": "only"
+ },
+ "山": {
+  "char": "山",
+  "standalone": true,
+  "pinyin": "shān",
+  "meaning": "mountain"
+ },
+ "约": {
+  "char": "约",
+  "standalone": true,
+  "pinyin": "yuē",
+  "meaning": "treaty"
+ },
+ "斥": {
+  "char": "斥",
+  "standalone": true,
+  "pinyin": "chì",
+  "meaning": "to scold"
+ },
+ "西": {
+  "char": "西",
+  "standalone": true,
+  "pinyin": "xī",
+  "meaning": "west"
+ },
+ "身": {
+  "char": "身",
+  "standalone": true,
+  "pinyin": "shēn",
+  "meaning": "body, self"
+ },
+ "仓": {
+  "char": "仓",
+  "standalone": true,
+  "pinyin": "cāng",
+  "meaning": "granary"
+ },
+ "曰": {
+  "char": "曰",
+  "standalone": true,
+  "pinyin": "yuē",
+  "meaning": "to speak"
+ },
+ "步": {
+  "char": "步",
+  "standalone": true,
+  "pinyin": "bù",
+  "meaning": "walk"
+ },
+ "知": {
+  "char": "知",
+  "standalone": true,
+  "pinyin": "zhī",
+  "meaning": "to know"
+ },
+ "星": {
+  "char": "星",
+  "standalone": true,
+  "pinyin": "xīng",
+  "meaning": "star"
+ },
+ "空": {
+  "char": "空",
+  "standalone": true,
+  "pinyin": "kōng",
+  "meaning": "hollow"
+ },
+ "景": {
+  "char": "景",
+  "standalone": true,
+  "pinyin": "jǐng",
+  "meaning": "scenery"
+ },
+ "义": {
+  "char": "义",
+  "standalone": true,
+  "pinyin": "yì",
+  "meaning": "right conduct"
+ },
+ "炎": {
+  "char": "炎",
+  "standalone": true,
+  "pinyin": "yán",
+  "meaning": "flame"
+ },
+ "祭": {
+  "char": "祭",
+  "standalone": true,
+  "pinyin": "jì",
+  "meaning": "to sacrifice to"
+ },
+ "佥": {
+  "char": "佥",
+  "standalone": true,
+  "pinyin": "qiān",
+  "meaning": "all"
+ },
+ "色": {
+  "char": "色",
+  "standalone": true,
+  "pinyin": "sè",
+  "meaning": "color"
+ },
+ "瓜": {
+  "char": "瓜",
+  "standalone": true,
+  "pinyin": "guā",
+  "meaning": "melon"
+ },
+ "衰": {
+  "char": "衰",
+  "standalone": true,
+  "pinyin": "shuāi",
+  "meaning": "weak"
+ },
+ "公": {
+  "char": "公",
+  "standalone": true,
+  "pinyin": "gōng",
+  "meaning": "fair"
+ },
+ "林": {
+  "char": "林",
+  "standalone": true,
+  "pinyin": "lín",
+  "meaning": "forest"
+ },
+ "亏": {
+  "char": "亏",
+  "standalone": true,
+  "pinyin": "kuī",
+  "meaning": "to lose"
+ },
+ "氿": {
+  "char": "氿",
+  "standalone": true,
+  "pinyin": "guǐ",
+  "meaning": "spring"
+ },
+ "朔": {
+  "char": "朔",
+  "standalone": true,
+  "pinyin": "shuò",
+  "meaning": "beginning"
+ },
+ "戉": {
+  "char": "戉",
+  "standalone": true,
+  "pinyin": "yuè",
+  "meaning": "halberd"
+ },
+ "吏": {
+  "char": "吏",
+  "standalone": true,
+  "pinyin": "lì",
+  "meaning": "government official"
+ },
+ "瓦": {
+  "char": "瓦",
+  "standalone": true,
+  "pinyin": "wǎ",
+  "meaning": "tile"
+ },
+ "难": {
+  "char": "难",
+  "standalone": true,
+  "pinyin": "nán",
+  "meaning": "hard"
+ },
+ "奴": {
+  "char": "奴",
+  "standalone": true,
+  "pinyin": "nú",
+  "meaning": "slave"
+ },
+ "若": {
+  "char": "若",
+  "standalone": true,
+  "pinyin": "ruò",
+  "meaning": "if"
+ },
+ "夜": {
+  "char": "夜",
+  "standalone": true,
+  "pinyin": "yè",
+  "meaning": "night"
+ },
+ "罙": {
+  "char": "罙",
+  "standalone": true,
+  "pinyin": "mí",
+  "meaning": "deep"
+ },
+ "暴": {
+  "char": "暴",
+  "standalone": true,
+  "pinyin": "bào",
+  "meaning": "violent"
+ },
+ "办": {
+  "char": "办",
+  "standalone": true,
+  "pinyin": "bàn",
+  "meaning": "to set up"
+ },
+ "烝": {
+  "char": "烝",
+  "standalone": true,
+  "pinyin": "zhēng",
+  "meaning": "to rise"
+ },
+ "戊": {
+  "char": "戊",
+  "standalone": true,
+  "pinyin": "wù",
+  "meaning": "5th heavenly stem"
+ },
+ "师": {
+  "char": "师",
+  "standalone": true,
+  "pinyin": "shī",
+  "meaning": "teacher"
+ },
+ "迷": {
+  "char": "迷",
+  "standalone": true,
+  "pinyin": "mí",
+  "meaning": "to bewitch"
+ },
+ "沓": {
+  "char": "沓",
+  "standalone": true,
+  "pinyin": "tà",
+  "meaning": "connected"
+ },
+ "肘": {
+  "char": "肘",
+  "standalone": true,
+  "pinyin": "zhǒu",
+  "meaning": "elbow"
+ },
+ "復": {
+  "char": "復",
+  "standalone": true,
+  "pinyin": "fù",
+  "meaning": "again"
+ },
+ "刑": {
+  "char": "刑",
+  "standalone": true,
+  "pinyin": "xíng",
+  "meaning": "punishment"
+ },
+ "某": {
+  "char": "某",
+  "standalone": true,
+  "pinyin": "mǒu",
+  "meaning": "some"
+ },
+ "原": {
+  "char": "原",
+  "standalone": true,
+  "pinyin": "yuán",
+  "meaning": "source"
+ },
+ "丬": {
+  "char": "丬",
+  "standalone": true,
+  "pinyin": "qiáng",
+  "meaning": "half of tree trunk"
+ },
+ "活": {
+  "char": "活",
+  "standalone": true,
+  "pinyin": "huó",
+  "meaning": "to exist"
+ },
+ "折": {
+  "char": "折",
+  "standalone": true,
+  "pinyin": "zhé",
+  "meaning": "to break"
+ },
+ "齐": {
+  "char": "齐",
+  "standalone": true,
+  "pinyin": "qí",
+  "meaning": "even"
+ },
+ "衮": {
+  "char": "衮",
+  "standalone": true,
+  "pinyin": "gǔn",
+  "meaning": "imperial robe"
+ },
+ "则": {
+  "char": "则",
+  "standalone": true,
+  "pinyin": "zé",
+  "meaning": "rule"
+ },
+ "希": {
+  "char": "希",
+  "standalone": true,
+  "pinyin": "xī",
+  "meaning": "hope"
+ },
+ "犾": {
+  "char": "犾",
+  "standalone": true,
+  "pinyin": "yín"
+ },
+ "丙": {
+  "char": "丙",
+  "standalone": true,
+  "pinyin": "bǐng",
+  "meaning": "third"
+ },
+ "皇": {
+  "char": "皇",
+  "standalone": true,
+  "pinyin": "huáng",
+  "meaning": "royal"
+ },
+ "荅": {
+  "char": "荅",
+  "standalone": true,
+  "pinyin": "dā",
+  "meaning": "to answer"
+ },
+ "责": {
+  "char": "责",
+  "standalone": true,
+  "pinyin": "zé",
+  "meaning": "one's responsibility"
+ },
+ "角": {
+  "char": "角",
+  "standalone": true,
+  "pinyin": "jiǎo",
+  "meaning": "angle"
+ },
+ "居": {
+  "char": "居",
+  "standalone": true,
+  "pinyin": "jū",
+  "meaning": "to live"
+ },
+ "片": {
+  "char": "片",
+  "standalone": true,
+  "pinyin": "piàn",
+  "meaning": "slice"
+ },
+ "臣": {
+  "char": "臣",
+  "standalone": true,
+  "pinyin": "chén",
+  "meaning": "minister"
+ },
+ "虽": {
+  "char": "虽",
+  "standalone": true,
+  "pinyin": "suī",
+  "meaning": "although"
+ },
+ "既": {
+  "char": "既",
+  "standalone": true,
+  "pinyin": "jì",
+  "meaning": "since; both…and…"
+ },
+ "迶": {
+  "char": "迶",
+  "standalone": true,
+  "pinyin": "yòu",
+  "meaning": "to walk"
+ },
+ "尃": {
+  "char": "尃",
+  "standalone": true,
+  "pinyin": "fū",
+  "meaning": "to announce"
+ },
+ "单": {
+  "char": "单",
+  "standalone": true,
+  "pinyin": "dān",
+  "meaning": "single"
+ },
+ "周": {
+  "char": "周",
+  "standalone": true,
+  "pinyin": "zhōu",
+  "meaning": "Zhou dynasty"
+ },
+ "庶": {
+  "char": "庶",
+  "standalone": true,
+  "pinyin": "shù",
+  "meaning": "numerous"
+ },
+ "敬": {
+  "char": "敬",
+  "standalone": true,
+  "pinyin": "jìng",
+  "meaning": "to respect"
+ },
+ "宛": {
+  "char": "宛",
+  "standalone": true,
+  "pinyin": "wǎn",
+  "meaning": "to seem"
+ },
+ "君": {
+  "char": "君",
+  "standalone": true,
+  "pinyin": "jūn",
+  "meaning": "sovereign"
+ },
+ "客": {
+  "char": "客",
+  "standalone": true,
+  "pinyin": "kè",
+  "meaning": "guest"
+ },
+ "曹": {
+  "char": "曹",
+  "standalone": true,
+  "pinyin": "cáo",
+  "meaning": "ministers"
+ },
+ "厉": {
+  "char": "厉",
+  "standalone": true,
+  "pinyin": "lì",
+  "meaning": "whetstone"
+ },
+ "啬": {
+  "char": "啬",
+  "standalone": true,
+  "pinyin": "sè",
+  "meaning": "miserly"
+ },
+ "刍": {
+  "char": "刍",
+  "standalone": true,
+  "pinyin": "chú",
+  "meaning": "to mow"
+ },
+ "允": {
+  "char": "允",
+  "standalone": true,
+  "pinyin": "yǔn",
+  "meaning": "to grant"
+ },
+ "贵": {
+  "char": "贵",
+  "standalone": true,
+  "pinyin": "guì",
+  "meaning": "expensive"
+ },
+ "兰": {
+  "char": "兰",
+  "standalone": true,
+  "pinyin": "lán",
+  "meaning": "orchid"
+ },
+ "吕": {
+  "char": "吕",
+  "standalone": true,
+  "pinyin": "lǚ",
+  "meaning": "a musical note"
+ },
+ "厓": {
+  "char": "厓",
+  "standalone": true,
+  "pinyin": "yá",
+  "meaning": "precipice"
+ },
+ "冎": {
+  "char": "冎",
+  "standalone": true,
+  "pinyin": "guǎ",
+  "meaning": "bone"
+ },
+ "敏": {
+  "char": "敏",
+  "standalone": true,
+  "pinyin": "mǐn",
+  "meaning": "fast"
+ },
+ "前": {
+  "char": "前",
+  "standalone": true,
+  "pinyin": "qián",
+  "meaning": "in front"
+ },
+ "甫": {
+  "char": "甫",
+  "standalone": true,
+  "pinyin": "fǔ",
+  "meaning": "to begin"
+ },
+ "丈": {
+  "char": "丈",
+  "standalone": true,
+  "pinyin": "zhàng",
+  "meaning": "gentleman"
+ },
+ "般": {
+  "char": "般",
+  "standalone": true,
+  "pinyin": "bān",
+  "meaning": "sort"
+ },
+ "彗": {
+  "char": "彗",
+  "standalone": true,
+  "pinyin": "huì",
+  "meaning": "comet"
+ },
+ "孰": {
+  "char": "孰",
+  "standalone": true,
+  "pinyin": "shú",
+  "meaning": "who? which? what? which one?"
+ },
+ "黾": {
+  "char": "黾",
+  "standalone": true,
+  "pinyin": "miǎn",
+  "meaning": "frog"
+ },
+ "曲": {
+  "char": "曲",
+  "standalone": true,
+  "pinyin": "qū",
+  "meaning": "crooked"
+ },
+ "区": {
+  "char": "区",
+  "standalone": true,
+  "pinyin": "qū",
+  "meaning": "area, district"
+ },
+ "矛": {
+  "char": "矛",
+  "standalone": true,
+  "pinyin": "máo",
+  "meaning": "spear"
+ },
+ "乔": {
+  "char": "乔",
+  "standalone": true,
+  "pinyin": "qiáo",
+  "meaning": "tall"
+ },
+ "㢟": {
+  "char": "㢟",
+  "standalone": true,
+  "pinyin": "chān",
+  "meaning": "to walk slowly"
+ },
+ "路": {
+  "char": "路",
+  "standalone": true,
+  "pinyin": "lù",
+  "meaning": "road"
+ },
+ "俞": {
+  "char": "俞",
+  "standalone": true,
+  "pinyin": "yú",
+  "meaning": "to consent"
+ },
+ "癸": {
+  "char": "癸",
+  "standalone": true,
+  "pinyin": "guǐ",
+  "meaning": "10th heavenly stem"
+ },
+ "幸": {
+  "char": "幸",
+  "standalone": true,
+  "pinyin": "xìng",
+  "meaning": "favor"
+ },
+ "亚": {
+  "char": "亚",
+  "standalone": true,
+  "pinyin": "yà",
+  "meaning": "Asia"
+ },
+ "逢": {
+  "char": "逢",
+  "standalone": true,
+  "pinyin": "féng",
+  "meaning": "to happen to meet"
+ },
+ "次": {
+  "char": "次",
+  "standalone": true,
+  "pinyin": "cì",
+  "meaning": "order"
+ },
+ "夋": {
+  "char": "夋",
+  "standalone": true,
+  "pinyin": "qūn",
+  "meaning": "to dawdle"
+ },
+ "冈": {
+  "char": "冈",
+  "standalone": true,
+  "pinyin": "gāng",
+  "meaning": "ridge or crest of hill"
+ },
+ "兼": {
+  "char": "兼",
+  "standalone": true,
+  "pinyin": "jiān",
+  "meaning": "both"
+ },
+ "夸": {
+  "char": "夸",
+  "standalone": true,
+  "pinyin": "kuā",
+  "meaning": "extravagant"
+ },
+ "冏": {
+  "char": "冏",
+  "standalone": true,
+  "pinyin": "jiǒng",
+  "meaning": "bright"
+ },
+ "䍃": {
+  "char": "䍃",
+  "standalone": true,
+  "pinyin": "yóu",
+  "meaning": "vase"
+ },
+ "复": {
+  "char": "复",
+  "standalone": true,
+  "pinyin": "fù",
+  "meaning": "again"
+ },
+ "危": {
+  "char": "危",
+  "standalone": true,
+  "pinyin": "wēi",
+  "meaning": "dangerous"
+ },
+ "敖": {
+  "char": "敖",
+  "standalone": true,
+  "pinyin": "áo",
+  "meaning": "to ramble"
+ },
+ "高": {
+  "char": "高",
+  "standalone": true,
+  "pinyin": "gāo",
+  "meaning": "tall, high"
+ },
+ "或": {
+  "char": "或",
+  "standalone": true,
+  "pinyin": "huò",
+  "meaning": "or"
+ },
+ "九": {
+  "char": "九",
+  "standalone": true,
+  "pinyin": "jiǔ",
+  "meaning": "nine"
+ },
+ "皆": {
+  "char": "皆",
+  "standalone": true,
+  "pinyin": "jiē",
+  "meaning": "all"
+ },
+ "匈": {
+  "char": "匈",
+  "standalone": true,
+  "pinyin": "xiōng",
+  "meaning": "breast"
+ },
+ "保": {
+  "char": "保",
+  "standalone": true,
+  "pinyin": "bǎo",
+  "meaning": "protect"
+ },
+ "乏": {
+  "char": "乏",
+  "standalone": true,
+  "pinyin": "fá",
+  "meaning": "poor"
+ },
+ "昆": {
+  "char": "昆",
+  "standalone": true,
+  "pinyin": "Kūn",
+  "meaning": "elder brother"
+ },
+ "董": {
+  "char": "董",
+  "standalone": true,
+  "pinyin": "dǒng",
+  "meaning": "to direct"
+ },
+ "会": {
+  "char": "会",
+  "standalone": true,
+  "pinyin": "huì",
+  "meaning": "to assemble"
+ },
+ "夆": {
+  "char": "夆",
+  "standalone": true,
+  "pinyin": "féng",
+  "meaning": "to resist"
+ },
+ "再": {
+  "char": "再",
+  "standalone": true,
+  "pinyin": "zài",
+  "meaning": "again"
+ },
+ "五": {
+  "char": "五",
+  "standalone": true,
+  "pinyin": "wǔ",
+  "meaning": "five"
+ },
+ "尹": {
+  "char": "尹",
+  "standalone": true,
+  "pinyin": "yǐn",
+  "meaning": "to govern"
+ },
+ "颉": {
+  "char": "颉",
+  "standalone": true,
+  "pinyin": "jié",
+  "meaning": "contest"
+ },
+ "哉": {
+  "char": "哉",
+  "standalone": true,
+  "pinyin": "zāi",
+  "meaning": "final exclamatory particle"
+ },
+ "氾": {
+  "char": "氾",
+  "standalone": true,
+  "pinyin": "fàn",
+  "meaning": "to flood"
+ },
+ "罗": {
+  "char": "罗",
+  "standalone": true,
+  "pinyin": "luō",
+  "meaning": "gauze"
+ },
+ "咠": {
+  "char": "咠",
+  "standalone": true,
+  "pinyin": "qì",
+  "meaning": "to whisper"
+ },
+ "屯": {
+  "char": "屯",
+  "standalone": true,
+  "pinyin": "tún",
+  "meaning": "village"
+ },
+ "必": {
+  "char": "必",
+  "standalone": true,
+  "pinyin": "bì",
+  "meaning": "surely"
+ },
+ "叒": {
+  "char": "叒",
+  "standalone": true,
+  "pinyin": "ruò",
+  "meaning": "obedient"
+ },
+ "冝": {
+  "char": "冝",
+  "standalone": true,
+  "pinyin": "yí",
+  "meaning": "suitable"
+ },
+ "昜": {
+  "char": "昜",
+  "standalone": true,
+  "pinyin": "yáng",
+  "meaning": "bright"
+ },
+ "母": {
+  "char": "母",
+  "standalone": true,
+  "pinyin": "mǔ",
+  "meaning": "mother"
+ },
+ "曾": {
+  "char": "曾",
+  "standalone": true,
+  "pinyin": "céng",
+  "meaning": "already"
+ },
+ "丌": {
+  "char": "丌",
+  "standalone": true,
+  "pinyin": "jī",
+  "meaning": "table"
+ },
+ "厃": {
+  "char": "厃",
+  "standalone": true,
+  "pinyin": "wěi",
+  "meaning": "to look upward"
+ },
+ "龹": {
+  "char": "龹",
+  "standalone": true,
+  "pinyin": "quǎn",
+  "meaning": "Form of 卷 used as a phonetic component"
+ },
+ "㔾": {
+  "char": "㔾",
+  "standalone": true,
+  "pinyin": "xiān",
+  "meaning": "seal"
+ },
+ "缶": {
+  "char": "缶",
+  "standalone": true,
+  "pinyin": "fǒu",
+  "meaning": "earthen crock or jar"
+ },
+ "产": {
+  "char": "产",
+  "standalone": true,
+  "pinyin": "chǎn",
+  "meaning": "to give birth"
+ },
+ "廿": {
+  "char": "廿",
+  "standalone": true,
+  "pinyin": "niàn",
+  "meaning": "twenty"
+ },
+ "旲": {
+  "char": "旲",
+  "standalone": true,
+  "pinyin": "tái",
+  "meaning": "daylight"
+ },
+ "世": {
+  "char": "世",
+  "standalone": true,
+  "pinyin": "shì",
+  "meaning": "generation"
+ },
+ "丸": {
+  "char": "丸",
+  "standalone": true,
+  "pinyin": "wán",
+  "meaning": "ball"
+ },
+ "品": {
+  "char": "品",
+  "standalone": true,
+  "pinyin": "pǐn",
+  "meaning": "article"
+ },
+ "丰": {
+  "char": "丰",
+  "standalone": true,
+  "pinyin": "fēng",
+  "meaning": "abundant"
+ },
+ "卄": {
+  "char": "卄",
+  "standalone": true,
+  "pinyin": "niàn",
+  "meaning": "twenty"
+ },
+ "禸": {
+  "char": "禸",
+  "standalone": true,
+  "pinyin": "róu",
+  "meaning": "rump"
+ },
+ "镸": {
+  "char": "镸",
+  "standalone": true,
+  "pinyin": "cháng",
+  "meaning": "long"
+ },
+ "内": {
+  "char": "内",
+  "standalone": true,
+  "pinyin": "nèi",
+  "meaning": "inside"
+ },
+ "屰": {
+  "char": "屰",
+  "standalone": true,
+  "pinyin": "nì",
+  "meaning": "disobedient"
+ },
+ "右": {
+  "char": "右",
+  "standalone": true,
+  "pinyin": "yòu",
+  "meaning": "right"
+ },
+ "⺳": {
+  "char": "⺳",
+  "standalone": true,
+  "meaning": "net"
+ },
+ "丞": {
+  "char": "丞",
+  "standalone": true,
+  "pinyin": "chéng",
+  "meaning": "to aid"
+ },
+ "有": {
+  "char": "有",
+  "standalone": true,
+  "pinyin": "yǒu",
+  "meaning": "to have"
+ },
+ "夗": {
+  "char": "夗",
+  "standalone": true,
+  "pinyin": "yuàn",
+  "meaning": "to turn over when asleep"
+ },
+ "万": {
+  "char": "万",
+  "standalone": true,
+  "pinyin": "wàn",
+  "meaning": "ten thousand"
+ },
+ "享": {
+  "char": "享",
+  "standalone": true,
+  "pinyin": "xiǎng",
+  "meaning": "to share"
+ },
+ "电": {
+  "char": "电",
+  "standalone": true,
+  "pinyin": "diàn",
+  "meaning": "electricity"
+ },
+ "刖": {
+  "char": "刖",
+  "standalone": true,
+  "pinyin": "yuè",
+  "meaning": "cutting off the feet as a form of punishment"
+ },
+ "凶": {
+  "char": "凶",
+  "standalone": true,
+  "pinyin": "xiōng",
+  "meaning": "culprit"
+ },
+ "之": {
+  "char": "之",
+  "standalone": true,
+  "pinyin": "zhī",
+  "meaning": "marks preceding phrase as modifier of following phrase"
+ },
+ "重": {
+  "char": "重",
+  "standalone": true,
+  "pinyin": "zhòng",
+  "meaning": "heavy"
+ },
+ "双": {
+  "char": "双",
+  "standalone": true,
+  "pinyin": "shuāng",
+  "meaning": "pair"
+ },
+ "氶": {
+  "char": "氶",
+  "standalone": true,
+  "pinyin": "zhěng",
+  "meaning": "name of a river in Shandong"
+ }
+}

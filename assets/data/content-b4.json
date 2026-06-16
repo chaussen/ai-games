@@ -1,0 +1,4138 @@
+{
+ "band": "B4",
+ "name": "Senior",
+ "cn": "高级",
+ "subtitle": "Band 4 · Senior",
+ "years": "Year 7 – 10",
+ "level": "Aligned to VCAA Levels 7–10 · F–10 Sequence v2.0读写作业 (dúxiě zuòyè) includes VCE-style preparation",
+ "frontMatter": {
+  "dearStudent": {
+   "titleZh": "欢迎来到 Band 4",
+   "titleEn": "Welcome to the senior book",
+   "lead": "This is the most advanced book in the series. You will discuss your future, the media, social issues, history, study and work, intercultural identity, classical literature, and public speaking. The topics are real — the kind of things you actually think and argue about.",
+   "leadEn": ""
+  },
+  "conventions": [
+   {
+    "zh": "汉字为主 — texts are in characters. Main texts and poems are written in characters; pinyin appears only as a footnote, for genuinely new words.",
+    "en": ""
+   },
+   {
+    "zh": "中文指令 — instructions are in Chinese. Activity lines are written in Chinese, with English support where you need it.",
+    "en": ""
+   },
+   {
+    "zh": "你的作业 — which homework do you do? There are two kinds: 听说作业 (Listening & speaking — reading, oral discussion, paragraph writing) and 读写作业 (Reading & writing — structured composition, peer review, and VCE-style tasks).",
+    "en": ""
+   },
+   {
+    "zh": "复习 — every unit opens with review. Characters and structures from earlier bands keep coming back.",
+    "en": ""
+   },
+   {
+    "zh": "生字 — every unit teaches six new characters. Each comes with its stroke order, common compounds, and an example sentence — 48 across the book.",
+    "en": ""
+   },
+   {
+    "zh": "课文 — every unit has a longer text to read. A letter, an opinion piece, a story, a poem appreciation or a speech, 180–250 字 long.",
+    "en": ""
+   },
+   {
+    "zh": "诵读 — every unit has a classical poem. Some return from earlier bands, now read for deeper appreciation, with a key-word gloss and a note on the poet.",
+    "en": ""
+   }
+  ]
+ },
+ "units": [
+  {
+   "n": 1,
+   "id": "u1",
+   "theme": {
+    "zh": "我的未来",
+    "en": "My Future"
+   },
+   "objective": {
+    "zh": "谈谈我将来的计划和愿望，并说出理由。",
+    "en": "Talk about my future plans and aspirations, and give reasons."
+   },
+   "core": {
+    "review": [
+     "读一读: 大声读出，用手指在桌上写一遍笔顺 — 想·心·学·家·人·大·日·月·年",
+     "先自己读，再和同桌互相检查：你读一个字，同桌说出一个含有这个字的词。",
+     "说一说: ① 你小时候想过长大后要做什么？当时为什么那样想？ ② 现在你的想法和那时候一样吗？如果变了，是什么让你有了不一样的想法？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《登鹳雀楼》 王之涣",
+      "titleEn": "Recite · On the Stork Tower · (唐 · B3 revisit)",
+      "poem": "《登鹳雀楼》",
+      "poemPinyin": "dēng guàn què lóu",
+      "lines": [
+       {
+        "zh": "白日依山尽，黄河入海流。",
+        "py": "bái rì yī shān jìn Huáng Hé rù hǎi liú"
+       },
+       {
+        "zh": "欲穷千里目，更上一层楼。",
+        "py": "yù qióng qiān lǐ mù gèng shàng yì céng lóu"
+       }
+      ],
+      "meaning": "意译 — 白色的夕阳沿着远山慢慢沉下去，黄河朝着大海滚滚流去。想要把千里的风光看个够，那就要再登上一层高楼。",
+      "note": "诗人背景: 王之涣（688—742），盛唐诗人。这首诗写他登上鹳雀楼看到的壮阔景象，以及由此生发的哲理思考。鹳雀楼位于山西永济，是古代四大名楼之一。"
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "将",
+      "strokes": "9 笔 strokes",
+      "breakdown": "形声 点·提·竖·撇·横撇·点·横·竖钩·点",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "寸",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声字。左\"爿\"(pán) 是声旁，右\"寸\"(手/测量) 是形旁。本义\"拿、握\"，引申为\"将要\"——手里拿着未来，就是\"将要\"。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "将来 · 即将 · 将军",
+        "en": "future · about to · general"
+       },
+       {
+        "term": "造句",
+        "zh": "我将努力实现我的梦想。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "希",
+      "strokes": "7 笔 strokes",
+      "breakdown": "会意 撇·点·横·撇·竖·横折钩·竖",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "巾",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "会意字。上部\"㐅\"(交错的线条)，下部\"巾\"(布匹)。本义是稀疏的布，后借用为\"希望\"——心中稀少但珍贵的东西。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "希望 · 希腊 · 稀少",
+        "en": "hope · Greece · rare"
+       },
+       {
+        "term": "造句",
+        "zh": "我希望将来成为一名医生。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "望",
+      "strokes": "11 笔 strokes",
+      "breakdown": "会意 亡(声) + 月 + 王",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "月",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "会意字。上\"亡\"提示读音，下面\"月\"(月亮)和\"王\"(像人站立)。一个人站着抬头看月亮——\"望\"就是心中有向往。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "希望 · 愿望 · 望远",
+        "en": "wish · gaze afar"
+       },
+       {
+        "term": "造句",
+        "zh": "只要心中有希望，未来就有光亮。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "未",
+      "strokes": "5 笔 strokes",
+      "breakdown": "指事 横·横·竖·撇·捺",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "木",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "指事字。在\"木\"上方加一横，表示树枝还没长到最高——\"未\"就是还没到来。与\"末\"(树梢)不同：未的上横短，末的上横长。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "未来 · 未知 · 未必",
+        "en": "future · unknown · not necessarily"
+       },
+       {
+        "term": "造句",
+        "zh": "未来掌握在我们自己手中。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "努",
+      "strokes": "7 笔 strokes",
+      "breakdown": "形声 奴(声) + 力(形)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "力",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声字。上\"奴\"(nú→nǔ) 是声旁，下\"力\"(力量) 是形旁。用力量去做事，把力使出来——\"努力\"就是把力气都使出来。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "努力 · 努嘴 · 努一把力",
+        "en": "work hard · pout · make an extra effort"
+       },
+       {
+        "term": "造句",
+        "zh": "只要努力，就没有做不到的事。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "功",
+      "strokes": "5 笔 strokes",
+      "breakdown": "形声 工(声) + 力(形)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "力",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声字。左\"工\"(gōng) 是声旁，右\"力\"(力量) 是形旁。用力量做出成果——\"功\"就是通过努力获得的成就。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "成功 · 功课 · 功夫",
+        "en": "success · schoolwork · skill, kung fu"
+       },
+       {
+        "term": "造句",
+        "zh": "爸爸的故事让我知道，成功来自坚持。",
+        "en": ""
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (6) · Characters · stroke order · 字源 · 组词",
+    "recognise": [
+     "职业",
+     "梦想",
+     "目标",
+     "实现",
+     "坚持",
+     "机会",
+     "训练"
+    ],
+    "vocab": [
+     {
+      "zh": "将来",
+      "py": "",
+      "en": "future"
+     },
+     {
+      "zh": "希望",
+      "py": "",
+      "en": "hope, wish"
+     },
+     {
+      "zh": "打算",
+      "py": "",
+      "en": "plan, intend"
+     },
+     {
+      "zh": "梦想",
+      "py": "",
+      "en": "dream"
+     },
+     {
+      "zh": "目标",
+      "py": "",
+      "en": "goal, target"
+     },
+     {
+      "zh": "职业",
+      "py": "",
+      "en": "career, profession"
+     },
+     {
+      "zh": "努力",
+      "py": "",
+      "en": "strive, work hard"
+     },
+     {
+      "zh": "成功",
+      "py": "",
+      "en": "success, succeed"
+     },
+     {
+      "zh": "实现",
+      "py": "",
+      "en": "realize, achieve"
+     },
+     {
+      "zh": "坚持",
+      "py": "",
+      "en": "persist, persevere"
+     },
+     {
+      "zh": "机会",
+      "py": "",
+      "en": "opportunity"
+     },
+     {
+      "zh": "为了",
+      "py": "",
+      "en": "for the sake of"
+     },
+     {
+      "zh": "如果…就…",
+      "py": "",
+      "en": "if… then…"
+     },
+     {
+      "zh": "只要…就…",
+      "py": "",
+      "en": "as long as… then…"
+     },
+     {
+      "zh": "因为",
+      "py": "",
+      "en": "because"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "我希望…",
+      "py": "wǒ xī wàng",
+      "en": "I hope that…"
+     },
+     {
+      "zh": "如果…就…",
+      "py": "rú guǒ jiù",
+      "en": "if… then…"
+     },
+     {
+      "zh": "为了…",
+      "py": "wèi le",
+      "en": "in order to…"
+     },
+     {
+      "zh": "只要努力，就…",
+      "py": "zhǐ yào nǔ lì jiù",
+      "en": "as long as you work hard, then…"
+     }
+    ],
+    "text": {
+     "kind": "reading",
+     "titleZh": "课文 — 阅读",
+     "titleEn": "Text · Reading · ~230 字",
+     "readingTitle": "写给十年后的自己",
+     "paragraphs": [
+      "十年后的我，你好！今天是我十三岁的生日，我想给你写一封信。现在的我，有很多梦想。我希望将来能当一名医生，因为我想帮助生病的人。每次看到爷爷奶奶身体不舒服，我就想：要是我能帮他们就好了。",
+      "我知道，要成为一名医生不容易——需要很多年的学习和训练。可是我相信，只要努力，就没有做不到的事。爸爸常跟我说，成功不是因为聪明，而是因为坚持。他小时候家里很穷¹，可是他每天都努力学习，后来考上了好大学，改变了生活。我特别佩服²他。",
+      "十年后的我，如果你现在已经是一名医生了，我要对你说：你辛苦了。如果你还在为梦想努力，我想对你说：继续加油³！记住你看过的那首诗——欲穷千里目，更上一层楼。—— 十三岁的你"
+     ],
+     "footnotes": "注释 footnotes ¹ 穷 (qióng) = poor · ² 佩服 (pèifú) = admire · ³ 加油 (jiāyóu) = keep going"
+    },
+    "culture": {
+     "zh": "中国家庭非常重视教育和职业。有一句老话叫\"望子成龙，望女成凤\"¹——意思是父母希望孩子有出息²，像龙³和凤凰⁴一样飞得高。很多华人移民到澳大利亚，也是为了通过努力，给孩子一个更好的未来。",
+     "en": "¹ 望子成龙，望女成凤 — \"hope your son becomes a dragon, your daughter a phoenix\": a saying for parents' high hopes. ² 出息 (chūxi) = promising. ³ 龙 dragon — power & excellence. ⁴ 凤凰 phoenix — grace & high achievement."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，回答 · Listen & answer. 老师说一个人的未来计划，听完回答：① 他/她想做什么职业？ ② 为什么？ ③ 他/她现在怎么努力？",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "词语搭配 · Match. 把职业和它需要的能力连起来。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "用句型造句 · Use the patterns（如果…就… / 为了…）. ① 用\"如果…就…\"补完：如果我不放弃，。 ，我就很开心。 ② 用\"为了…\"改写：我想考好成绩。我每天认真听课。→ 我为了，。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "阅读回答 · Answer. ① 作者想做什么？为什么？ ② 爸爸的故事说明了什么道理？ ③ 课文引用了哪一句诗？\"更上一层楼\"在这里是什么意思？ ④ 你有一个梦想吗？如果十年后才能实现，你愿意坚持吗？为什么？",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional形声字识别 · Identify. 从六个学写字中找出所有形声字，说出形旁和声旁。声旁有没有提示意思？声旁读音和整字读音一样吗？jiāng将nǔ努gōng功",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional意近字辨析 · Distinguish. \"希\"和\"望\"都可表示希望。查一查\"希望\"\"愿望\"\"盼望\"意思有什么不同，各造一句。",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 未来访谈",
+     "titleEn": "Activity · Future Interview",
+     "steps": [
+      "两人一组，轮换采访。用下面的问题，至少问五个，记录同学的回答。",
+      "向全班做一个简短的汇报。"
+     ],
+     "frame": "我采访了＿＿。他/她希望将来＿＿，因为＿＿。他/她觉得需要＿＿的能力。为了这个目标，他/她现在＿＿。"
+    },
+    "speak": {
+     "label": "说一说 · 我的未来 · 一分钟发言",
+     "frame": "我希望将来成为＿＿。因为＿＿。为了这个目标，我需要＿＿。如果＿＿，我就＿＿。我相信，只要努力，总有一天＿＿。"
+    },
+    "reflect": [
+     "说出我的未来规划和理由",
+     "用\"希望\"\"如果…就…\"\"为了…\"造句",
+     "正确写 将·希·望·未·努·功",
+     "分析至少两个形声字（说形旁和声旁）",
+     "完整朗读课文，理解大意"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "朗读课文给家人听。背诵《登鹳雀楼》，想想\"更上一层楼\"对你的意义。"
+       ],
+       [
+        "2",
+        "朗读课文第二遍。找出用了\"为了…\"\"如果…就…\"\"只要…就…\"的句子，大声读出来。"
+       ],
+       [
+        "3",
+        "跟家人讨论：爸爸或妈妈小时候的梦想是什么？实现了吗？为什么？"
+       ],
+       [
+        "4",
+        "口头准备一分钟\"我的未来\"演讲，录音自己听一遍。"
+       ],
+       [
+        "5",
+        "写一段话给五年后的自己（约100字）。写完把 将·希·望·未·努·功 各描一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：将·希·望·未·努·功 各三遍。",
+        "背诵《登鹳雀楼》，想想\"更上一层楼\"对你的意义。"
+       ],
+       [
+        "2",
+        "抄写词语：将来·希望·梦想·努力·成功·职业·坚持·实现 各两遍。默写：将·希·望。",
+        "朗读课文，标注不认识的词。"
+       ],
+       [
+        "3",
+        "从课文找三个\"如果…就…\"或\"为了…\"的句子，抄一遍。默写：未·努·功。",
+        "口头准备一分钟\"我的未来\"演讲，录音自己听。"
+       ],
+       [
+        "4",
+        "写一封信给十年后的自己（120–150字），用上 希望·努力·成功·如果…就…·为了…。请同学互评。",
+        "给家人做一分钟演讲，请家人提一个建议。"
+       ],
+       [
+        "5",
+        "根据建议修改信，写最终版。默写全单元六个字。",
+        "分析 将·努·功 的形声结构：说出形旁和声旁。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "梦",
+      "py": "mèng",
+      "strokes": "11",
+      "radical": "上下",
+      "words": "会意: 林(模糊)+夕(夜晚)+冖(覆盖)。夜晚在模糊的树林下——梦。"
+     },
+     {
+      "char": "坚",
+      "py": "jiān",
+      "strokes": "7",
+      "radical": "上下",
+      "words": "会意: 臤(坚固)+土(大地)。像大地一样坚固——坚。"
+     },
+     {
+      "char": "持",
+      "py": "chí",
+      "strokes": "9",
+      "radical": "左右",
+      "words": "形声: 扌(形)+寺(声 sì→chí)。用手拿着不放——持，引申为\"坚持\"。"
+     },
+     {
+      "char": "职",
+      "py": "zhí",
+      "strokes": "11",
+      "radical": "左右",
+      "words": "形声: 耳(形)+戠(声 zhí)。耳朵听命就是职责——职。"
+     }
+    ],
+    "furtherCharsTitle": "字 — 梦·坚·持·职",
+    "radical": {
+     "titleZh": "部首角 — 形声字规律",
+     "titleEn": "Radical Corner",
+     "intro": "形声字是汉字中最大的一类：形旁提示意义的方向，声旁提示大概的读音。本单元的三个形声字：",
+     "family": []
+    },
+    "read": {
+     "titleZh": "读一读 — 一个小和尚的梦想",
+     "titleEn": "Read · ~230 字",
+     "paragraphs": [
+      "从前，一座山上的小庙¹里住着一个小和尚²。他每天都做一样的事：扫地、念经³、挑水。有一天，老和尚问他：\"你的梦想是什么？\"小和尚想了想，说：\"我想让这座山变得更好看。\"老和尚笑了笑：\"那可不简单。\"",
+      "小和尚没有放弃。他每天做完功课⁴，就去后山种一棵小树。一年、两年、三年……十年过去了。后山原来光秃秃的⁵，现在变成了一片小树林。小鸟飞来了，花儿也开了。有人问他：\"你一个人种这么多树，不累吗？\"小和尚说：\"只要每天做一点点，就不觉得难。种树是这样，做任何事都是这样。\""
+     ],
+     "footnotes": "注释 ¹ 庙 (miào) = temple · ² 和尚 (héshang) = monk · ³ 念经 (niànjīng) = chant sutras · ⁴ 功课 (gōngkè) = daily duties · ⁵ 光秃秃 (guāngtūtū) = bare"
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write · 书信 · 120–150 字",
+     "prompt": "用本单元的词语和句型（希望·努力·坚持·成功·梦想·如果…就…·只要…就…），写一封信给好朋友，告诉他/她你的一个梦想，以及你打算如何实现它。",
+     "en": "Write · 书信 · 120–150 字"
+    }
+   }
+  },
+  {
+   "n": 2,
+   "id": "u2",
+   "theme": {
+    "zh": "媒体与流行文化",
+    "en": "Media & Pop Culture"
+   },
+   "objective": {
+    "zh": "讨论媒体，从两方面发表看法。",
+    "en": "Discuss the media and give a balanced opinion."
+   },
+   "core": {
+    "review": [
+     "读一读: 将·希·望·未·努·功 + 闻·电·网·视",
+     "先自己读，再和同桌互相检查：你读一个字，同桌说出一个含有这个字的词。",
+     "说一说: ① 你每天花多少时间上网？主要做什么？ ② 如果一天不上网，生活会有什么不一样？写下两三个上网\"好\"和\"不好\"的地方。"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 信息韵律",
+      "titleEn": "Recite · (media-literacy rhyme)",
+      "poem": "信息韵律",
+      "poemPinyin": "",
+      "lines": [
+       {
+        "zh": "新闻多，消息快，",
+        "py": "xīn wén duō xiāo xi kuài"
+       },
+       {
+        "zh": "真假消息要分开。",
+        "py": "zhēn jiǎ xiāo xi yào fēn kāi"
+       },
+       {
+        "zh": "多想想，多看看，",
+        "py": "duō xiǎng xiang duō kàn kan"
+       },
+       {
+        "zh": "做聪明的信息人。",
+        "py": "zuò cōng míng de xìn xī rén"
+       }
+      ],
+      "meaning": "意译 — 新闻很多，消息传得很快。真的和假的消息，要学会把它们分开。遇事多想一想、多看一看，做一个聪明的、会判断信息的人。",
+      "note": "背景: 这是一首关于媒体素养的现代韵律诗，提醒年轻人在信息时代保持清醒的判断力。"
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "媒",
+      "strokes": "12 笔 strokes",
+      "breakdown": "形声 女(形) + 某(声 mǒu→méi)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "女",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声字。左\"女\"提示与人事往来有关，右\"某\"是声旁。本义是\"媒人\"(婚姻介绍人)，引申为\"媒介\"——连接两端的人或事物。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "媒体 · 媒介 · 媒人",
+        "en": "media · medium · matchmaker"
+       },
+       {
+        "term": "造句",
+        "zh": "社交媒体改变了我们的生活方式。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "闻",
+      "strokes": "9 笔 strokes",
+      "breakdown": "会意 门 + 耳",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "门 (門)",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "会意字。外面是\"门\"，里面是\"耳\"。本义是\"听见\"——人在门里，用耳朵听外面的声音。像一个人站在门口认真听！",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "新闻 · 闻名 · 听闻",
+        "en": "news · famous · hear"
+       },
+       {
+        "term": "造句",
+        "zh": "我每天看新闻，了解世界各地发生的事。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "流",
+      "strokes": "10 笔 strokes",
+      "breakdown": "形声 氵(形) + 㐬(声)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "氵 (三点水)",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声字。左\"氵\"(水) 是形旁，右\"㐬\"是声旁，表示水流动的样子。本义是水的流动，引申为传播、散布。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "流行 · 流动 · 交流",
+        "en": "popular · flow · exchange"
+       },
+       {
+        "term": "造句",
+        "zh": "社交媒体上的信息流得非常快。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "行",
+      "strokes": "6 笔 strokes",
+      "breakdown": "会意 彳(小步走) + 亍(停步)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "彳",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "会意字。左\"彳\"(chì, 小步走)，右\"亍\"(chù, 停步)——走走停停就是\"行\"。本义是行走、行动，引申为\"流行\"\"可行\"。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "流行 · 行动 · 不行",
+        "en": "popular · action · not OK"
+       },
+       {
+        "term": "造句",
+        "zh": "这个视频在网上很流行。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "影",
+      "strokes": "15 笔 strokes",
+      "breakdown": "形声 景(声 jǐng→yǐng) + 彡(形)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "彡",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声字。左\"景\"是声旁，右\"彡\"(shān, 纹路、光影) 是形旁。\"影\"就是光照在物体上产生的影子，引申为\"图像\"\"影片\"。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "影响 · 电影 · 影子",
+        "en": "influence · movie · shadow"
+       },
+       {
+        "term": "造句",
+        "zh": "流行文化对年轻人有很大的影响。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "响",
+      "strokes": "9 笔 strokes",
+      "breakdown": "形声 口(形) + 向(声 xiàng→xiǎng)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "口",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声字。左\"口\"(嘴巴、声音) 是形旁，右\"向\"是声旁。\"响\"就是发出声音，引申为\"影响\"\"反响\"。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "影响 · 响亮 · 响应",
+        "en": "influence · loud · respond"
+       },
+       {
+        "term": "造句",
+        "zh": "媒体的声音能影响很多人的想法。",
+        "en": ""
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (6) · Characters · stroke order · 字源 · 组词",
+    "recognise": [
+     "信",
+     "观",
+     "点",
+     "浪"
+    ],
+    "vocab": [
+     {
+      "zh": "媒体",
+      "py": "",
+      "en": "media"
+     },
+     {
+      "zh": "新闻",
+      "py": "",
+      "en": "news"
+     },
+     {
+      "zh": "社交媒体",
+      "py": "",
+      "en": "social media"
+     },
+     {
+      "zh": "流行",
+      "py": "",
+      "en": "popular, trendy"
+     },
+     {
+      "zh": "影响",
+      "py": "",
+      "en": "influence, affect"
+     },
+     {
+      "zh": "信息",
+      "py": "",
+      "en": "information"
+     },
+     {
+      "zh": "观点",
+      "py": "",
+      "en": "viewpoint"
+     },
+     {
+      "zh": "真假",
+      "py": "",
+      "en": "true and false"
+     },
+     {
+      "zh": "好处",
+      "py": "",
+      "en": "advantage, benefit"
+     },
+     {
+      "zh": "坏处",
+      "py": "",
+      "en": "disadvantage"
+     },
+     {
+      "zh": "一方面…另一方面…",
+      "py": "",
+      "en": "on the one hand… on the other…"
+     },
+     {
+      "zh": "我认为",
+      "py": "",
+      "en": "I think, in my opinion"
+     },
+     {
+      "zh": "刷手机",
+      "py": "",
+      "en": "scroll on phone"
+     },
+     {
+      "zh": "限制",
+      "py": "",
+      "en": "limit, restrict"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "一方面…另一方面…",
+      "py": "yì fāng miàn lìng yì fāng miàn",
+      "en": "on one hand… on the other hand…"
+     },
+     {
+      "zh": "我认为…",
+      "py": "wǒ rèn wéi",
+      "en": "in my view…"
+     },
+     {
+      "zh": "影响",
+      "py": "yǐng xiǎng",
+      "en": "to influence; influence"
+     }
+    ],
+    "text": {
+     "kind": "reading",
+     "titleZh": "课文 — 阅读",
+     "titleEn": "Text · Reading · ~210 字",
+     "readingTitle": "社交媒体和我",
+     "paragraphs": [
+      "你每天在社交媒体上花多少时间？我看过自己的手机记录¹——每天差不多两个小时。这个数字²让我吓了一跳³。",
+      "我觉得，社交媒体一方面很方便。通过它，我可以随时跟朋友们聊天。另一方面，它也有不少问题。有些信息不一定是真的；有时候刷着刷着⁴，一个小时就过去了。我还发现，社交媒体对我的影响不只是时间——它还会影响我的心情。",
+      "现在我的做法是：每天给自己定一个时间限制⁵，超过了就关掉手机。做信息的主人⁶，不做信息的奴隶⁷。"
+     ],
+     "footnotes": "注释 footnotes ¹ 手机记录 = screen time · ² 数字 = figure · ³ 吓了一跳 = gave me a shock · ⁴ 刷着刷着 = scrolling on and on · ⁵ 限制 = limit · ⁶ 主人 = master · ⁷ 奴隶 = slave"
+    },
+    "culture": {
+     "zh": "在中国，年轻人常用抖音¹、微博²和B站³来看视频、分享生活。在澳大利亚，更流行 YouTube、Instagram 和 TikTok。不管在哪个国家，全球的年轻人都在用社交媒体表达⁴自己。但不同国家流行的内容不同：中国年轻人喜欢在B站看二次元⁵视频和弹幕⁶，澳大利亚年轻人则更常在 YouTube 上看教程⁷和游戏视频。",
+     "en": "¹ 抖音 Douyin (Chinese TikTok) · ² 微博 Weibo · ³ B站 Bilibili · ⁴ 表达 express · ⁵ 二次元 anime/manga subculture · ⁶ 弹幕 \"bullet comments\" · ⁷ 教程 tutorial"
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，辨好坏 · Listen & note one good / one bad. 老师说一句关于社交媒体的话，写出它说的一个好处和一个坏处。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "发表看法 · Give a balanced opinion（一方面…另一方面… / 我认为…）. ① 用\"一方面…另一方面…\"评价：玩手机游戏／社交媒体（任选一个）。 ② 用\"我认为…\"回答（至少两句）：网上所有的信息都能相信吗？",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "好处和坏处分类 · Sort the pros & cons. 把社交媒体的\"好处\"和\"坏处\"分别写进表格，每边至少三条，再和同桌交换看看。可参考的词语（也可以自己想）：得到新闻快 · 认识朋友 · 浪费时间 · 影响睡觉 · 学到知识 · 容易相信假信息",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "阅读回答 · Answer. ① 作者每天花多长时间在社交媒体上？看到这个数字后什么感觉？ ② 作者用\"一方面…另一方面…\"说了什么好处和坏处？ ③ 作者用什么办法控制使用时间？ ④ 你同意\"做信息的主人，不做信息的奴隶(núlì)\"吗？为什么？",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional形声分析 · Analyse. 找出六个学写字中的形声字，写出形旁和声旁。响=口+向；影=景+彡；媒=女+某；流=氵+㐬。那么 闻 和 行 呢？是形声还是会意？为什么？",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional小调查 · Survey. 采访三位同学：最常用什么社交媒体？每天花多少时间？记下结果，和全班分享你的发现。",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 媒体辩论",
+     "titleEn": "Activity · Media Debate",
+     "steps": [
+      "每组讨论五分钟，想出至少三个理由，用上\"一方面…另一方面…\"\"我认为…\"\"影响\"。",
+      "每组选两位代表发言，每人一分半钟。",
+      "听完双方发言后，全班投票：哪一方更有道理？"
+     ],
+     "frame": "我们认为社交媒体对年轻人好/不好。一方面，＿＿。另一方面，＿＿。所以，我们认为＿＿。"
+    },
+    "speak": {
+     "label": "说一说 · 我最常用的媒体 · 一分钟发言",
+     "frame": "我常用的媒体是＿＿。我认为它一方面＿＿，另一方面＿＿。它对年轻人的影响是＿＿。"
+    },
+    "reflect": [
+     "从两方面发表对媒体的看法",
+     "用\"一方面…另一方面…\"表达观点",
+     "用\"我认为\"说出自己的见解",
+     "正确写 媒·闻·流·行·影·响",
+     "完整朗读课文，理解大意"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "朗读课文给家人听。背诵《信息韵律》，想想你觉得最重要的媒体习惯是什么。"
+       ],
+       [
+        "2",
+        "朗读课文第二遍。找出用了\"一方面…另一方面…\"\"我认为…\"的句子，大声读出来。"
+       ],
+       [
+        "3",
+        "记录自己一天使用媒体的时间。晚上跟家人讨论：用得最多的是什么？能少用一点吗？"
+       ],
+       [
+        "4",
+        "口头准备一分钟发言\"我最常用的媒体\"，录音自己听一遍。"
+       ],
+       [
+        "5",
+        "写一段话发表你对社交媒体的看法（约100字），用上\"一方面…另一方面…\"。写完把 媒·闻·流·行·影·响 各描一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：媒·闻·流·行·影·响 各三遍。",
+        "背诵《信息韵律》，想想最重要的媒体习惯。"
+       ],
+       [
+        "2",
+        "抄写词语：媒体·新闻·社交媒体·流行·影响·信息·观点 各两遍。默写：媒·闻·流。",
+        "朗读课文，标注不认识的词。"
+       ],
+       [
+        "3",
+        "从课文找三个\"一方面…另一方面…\"或\"我认为…\"的句子，抄一遍。默写：行·影·响。",
+        "口头准备一分钟发言\"我最常用的媒体\"。"
+       ],
+       [
+        "4",
+        "写一篇议论文：社交媒体对年轻人好还是不好？（120–150字），用上 一方面…另一方面…·我认为…·影响。请同学互评。",
+        "给家人做一分钟发言，请家人提一个建议。"
+       ],
+       [
+        "5",
+        "根据建议修改文章，写最终版。默写全单元六个字。",
+        "分析 响·影 的形声结构，说声旁还出现在哪些字里。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "信",
+      "py": "xìn",
+      "strokes": "9",
+      "radical": "左右",
+      "words": "会意: 亻(人)+言(说话)。人说话要讲信用——信。引申为信息、书信。"
+     },
+     {
+      "char": "观",
+      "py": "guān",
+      "strokes": "6",
+      "radical": "左右",
+      "words": "形声: 又(形, 手)+见。用手遮目看远方——观。引申为观点。"
+     },
+     {
+      "char": "点",
+      "py": "diǎn",
+      "strokes": "9",
+      "radical": "上下",
+      "words": "形声: 占(声 zhān→diǎn)+灬(形, 火)。火上的小点——点。引申为\"观点\"\"重点\"。"
+     },
+     {
+      "char": "浪",
+      "py": "làng",
+      "strokes": "10",
+      "radical": "左右",
+      "words": "形声: 氵(形)+良(声 liáng→làng)。水上的大波——浪。引申为\"浪费\"。"
+     }
+    ],
+    "furtherCharsTitle": "字 — 信·观·点·浪",
+    "radical": {
+     "titleZh": "部首角 — 会意 vs 形声",
+     "titleEn": "Radical Corner",
+     "intro": "会意字：把两个或多个表义的部分放在一起，组合出新的意思。形声字：一个部分提示意义（形旁），一个提示读音（声旁）。",
+     "family": []
+    },
+    "read": {
+     "titleZh": "读一读 — 聪明的上网人",
+     "titleEn": "Read · ~250 字",
+     "paragraphs": [
+      "小明今年十二岁，和很多同学一样，他也很喜欢上网。有一次，他在一个短视频¹平台上看到一个视频，说\"每天喝三瓶可乐可以变聪明\"。小明觉得很好玩，但他没有马上相信。",
+      "他想：这个说法有科学根据²吗？他打开搜索引擎³查了查，发现很多医生都说，喝太多可乐对身体不好，根本不会让人变聪明。小明把发现告诉了妈妈。妈妈笑着说：\"你看，做一个聪明的上网人，就是要学会问'这是真的吗？'\"",
+      "从那以后，小明每次看到让人惊讶的信息，都会先想一想、查一查，再决定要不要相信。他觉得，会判断真假——这个能力比考一百分还重要！"
+     ],
+     "footnotes": "注释 ¹ 短视频 = short video · ² 科学根据 = scientific basis · ³ 搜索引擎 = search engine"
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write · 议论文 · 120–150 字",
+     "prompt": "用本单元的词语和句型（媒体·信息·真假·影响·一方面…另一方面…·我认为…），写一篇议论文，谈谈你对\"社交媒体对年轻人影响\"的看法。题目自拟。",
+     "en": "Write · 议论文 · 120–150 字"
+    }
+   }
+  },
+  {
+   "n": 3,
+   "id": "u3",
+   "theme": {
+    "zh": "社会议题",
+    "en": "Social Issues"
+   },
+   "objective": {
+    "zh": "对社会议题陈述并支持看法，用\"被\"字句。",
+    "en": "State and support a view on a social issue, using the 被 passive."
+   },
+   "core": {
+    "review": [
+     "读一读: 媒·闻·流·行·影·响 + 社·会·境 + 问·题·保·护·环·境",
+     "部首回顾: 礻(示字旁) → 社·神·礼 · 讠(言字旁) → 论·说·话·讲 · 衤(衣字旁) → 被·衬·衫",
+     "说一说: ① 你觉得最重要的社会问题是什么？为什么？ ② 你听说过哪些环境保护的方法？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《悯农·其二》 李绅",
+      "titleEn": "Recite · Pity the Farmer II · (唐)",
+      "poem": "《悯农·其二》",
+      "poemPinyin": "mǐn nóng qí èr",
+      "lines": [
+       {
+        "zh": "锄禾日当午，汗滴禾下土。",
+        "py": "chú hé rì dāng wǔ hàn dī hé xià tǔ"
+       },
+       {
+        "zh": "谁知盘中餐，粒粒皆辛苦。",
+        "py": "shéi zhī pán zhōng cān lì lì jiē xīn kǔ"
+       }
+      ],
+      "meaning": "意译 — 农民在正午的烈日下锄草，汗水一滴滴落在禾苗下的泥土里。有谁知道碗中的米饭，每一粒都来自辛苦的劳动？",
+      "note": "诗人背景: 李绅（772—846），唐代诗人。\"悯\"是同情、可怜的意思。这首诗写农民的辛苦，提醒人们珍惜粮食。"
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "社",
+      "strokes": "7 笔 strokes",
+      "breakdown": "会意 点·横撇·竖·点·横·竖·横",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "礻 (示字旁) — 与祭祀、神灵、福祉有关",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "会意。左\"礻\"是\"示\"的变形，表示神灵；右\"土\"表示土地。古人祭拜土地神的地方叫\"社\"，引申为人群聚集的地方→社会。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "社会 · 社区 · 社交",
+        "en": "society · community · social"
+       },
+       {
+        "term": "造句",
+        "zh": "社会是由很多人组成的。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "题",
+      "strokes": "15 笔 strokes",
+      "breakdown": "形声 是(声) + 页(形)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "页 (页字旁) — 与头部、页面有关",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。左\"是\"提示读音，右\"页\"表示与头部有关（\"题目\"原指额头，后转指文章的标题）。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "问题 · 题目 · 话题",
+        "en": "question · topic · conversation topic"
+       },
+       {
+        "term": "造句",
+        "zh": "这个问题很难回答。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "论",
+      "strokes": "6 笔 strokes",
+      "breakdown": "形声 讠(形) + 仑(声 lún)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "讠 (言字旁) — 与说话、语言有关",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。左\"讠\"(言) 表示讨论；右\"仑\"提示读音，又有\"条理、次序\"之意——有条理地讨论。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "讨论 · 论点 · 无论",
+        "en": "discuss · argument · no matter"
+       },
+       {
+        "term": "造句",
+        "zh": "我们在课堂上讨论社会问题。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "解",
+      "strokes": "13 笔 strokes",
+      "breakdown": "会意 角 + 刀 + 牛",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "角 (角字旁)",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "会意。左\"角\"(动物的角)，右上\"刀\"，右下\"牛\"。用刀把牛角从牛身上分解下来→解剖、分解→理解、解决！非常形象。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "解决 · 了解 · 解释",
+        "en": "solve · understand · explain"
+       },
+       {
+        "term": "造句",
+        "zh": "大家一起想办法解决问题。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "决",
+      "strokes": "6 笔 strokes",
+      "breakdown": "形声 冫 + 夬(声 guài/jué)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "冫 (两点水)",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。右\"夬\"提示读音，有\"决断\"之意；冫旁借用\"冰裂\"的意象——果断地分开→决定。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "决定 · 解决 · 决心",
+        "en": "decide · solve · determination"
+       },
+       {
+        "term": "造句",
+        "zh": "我们决定一起保护环境。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "被",
+      "strokes": "10 笔 strokes",
+      "breakdown": "形声 衤(形) + 皮(声 pí)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "衤 (衣字旁) — 与衣物、覆盖有关",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。左\"衤\"(衣) 表示覆盖在身上的东西；右\"皮\"提示读音。本义是\"被子\"，盖在人身上→覆盖、遭受→虚化为被动标记。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "被子 · 被动 · 被…了",
+        "en": "blanket · passive · was…"
+       },
+       {
+        "term": "造句",
+        "zh": "河流被污染了。",
+        "en": ""
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (6) · Characters · stroke order · 字源 · 组词",
+    "recognise": [
+     "责",
+     "任",
+     "公",
+     "平",
+     "改",
+     "变"
+    ],
+    "vocab": [
+     {
+      "zh": "社会",
+      "py": "",
+      "en": "society"
+     },
+     {
+      "zh": "问题",
+      "py": "",
+      "en": "problem, question"
+     },
+     {
+      "zh": "环境",
+      "py": "",
+      "en": "environment"
+     },
+     {
+      "zh": "保护",
+      "py": "",
+      "en": "protect"
+     },
+     {
+      "zh": "解决",
+      "py": "",
+      "en": "solve"
+     },
+     {
+      "zh": "被",
+      "py": "",
+      "en": "by (passive marker)"
+     },
+     {
+      "zh": "责任",
+      "py": "",
+      "en": "responsibility"
+     },
+     {
+      "zh": "公平",
+      "py": "",
+      "en": "fair, fairness"
+     },
+     {
+      "zh": "改变",
+      "py": "",
+      "en": "change"
+     },
+     {
+      "zh": "不但…而且…",
+      "py": "",
+      "en": "not only… but also…"
+     },
+     {
+      "zh": "虽然…但是…",
+      "py": "",
+      "en": "although… however…"
+     },
+     {
+      "zh": "总之",
+      "py": "",
+      "en": "in conclusion"
+     },
+     {
+      "zh": "污染",
+      "py": "",
+      "en": "pollute, pollution"
+     },
+     {
+      "zh": "浪费",
+      "py": "",
+      "en": "waste"
+     },
+     {
+      "zh": "社会议题",
+      "py": "",
+      "en": "social issue"
+     },
+     {
+      "zh": "塑料袋",
+      "py": "",
+      "en": "plastic bag"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "我觉得…应该…",
+      "py": "wǒ jué de yīng gāi",
+      "en": "I feel we should…"
+     },
+     {
+      "zh": "被字句",
+      "py": "bèi zì jù",
+      "en": "the 被 passive pattern"
+     },
+     {
+      "zh": "不但…而且…",
+      "py": "bú dàn ér qiě",
+      "en": "not only… but also…"
+     },
+     {
+      "zh": "虽然…但是…",
+      "py": "suī rán dàn shì",
+      "en": "although… (still)…"
+     },
+     {
+      "zh": "总之",
+      "py": "zǒng zhī",
+      "en": "in short"
+     }
+    ],
+    "text": {
+     "kind": "reading",
+     "titleZh": "课文 — 阅读",
+     "titleEn": "Text · Reading · ~200 字",
+     "readingTitle": "为什么我们要保护环境？",
+     "paragraphs": [
+      "我觉得，保护环境是今天最重要的社会问题之一。你有没有注意到，这几年天气越来越奇怪了？有些地方的河流已经被污染得不能游泳了。塑料袋被风吹进海里以后，一百年都不会消失¹。有些人说：\"我一个人做得不够。\"可是我觉得，如果每个人都不做，问题就永远不会被解决。我们不但应该自己行动²，而且要鼓励³身边的人一起做。保护环境不只是保护地球⁴，也是保护我们自己的未来。总之，地球是我们的家，保护它是我们的责任。"
+     ],
+     "footnotes": "注释 footnotes ¹ 消失 = disappear · ² 行动 = take action · ³ 鼓励 = encourage · ⁴ 地球 = the Earth"
+    },
+    "culture": {
+     "zh": "在中国，\"光盘行动\"¹鼓励人们把盘子里的食物吃干净，不浪费一粒米——这与《悯农》中\"粒粒皆辛苦\"的精神完全一致。很多餐厅在墙上贴着标语²，提醒顾客按需点菜。在澳大利亚，回收系统非常完善³，每个家庭都有不同颜色的垃圾桶用于分类⁴。这些做法告诉我们：环境问题没有国界⁵，每个国家、每个人都有责任。",
+     "en": "¹ 光盘行动 \"Clean Plate Campaign\" · ² 标语 slogan · ³ 完善 well-developed · ⁴ 分类 sort · ⁵ 国界 national border"
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，回答 · Listen & answer. 老师说一段话，听完回答：① 什么被污染了？ ② 我们应该怎么做？",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "把下列句子改成\"被\"字句 · Rewrite as passive. 例：风吹走了塑料袋。→ 塑料袋被风吹走了。 ① 人们污染了河流。 ② 我们解决了问题。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "用关联词连句 · Join with connectives（不但…而且… / 虽然…但是…）. ① 用\"不但…而且…\"连接：保护环境很重要。我们应该鼓励(gǔlì)别人也这样做。 ② 用\"虽然…但是…\"完成：虽然一个人做的不够，。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "阅读回答 · Answer. ① 作者觉得最重要的社会问题是什么？ ② 为什么\"一个人做得不够\"？ ③ 作者认为我们应该怎么做？ ④ 找出课文中的三个\"被\"字句。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional会意字分析 · Analyse. \"解\"字由哪三部分组成？合起来表示什么意思？用\"解\"造一个句子。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional社会议题调查 · Investigate. 选一个你关心的社会议题（环境污染、浪费食物、不公平现象），写三句话说明为什么它重要，并提两个解决办法。",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 小小议会",
+     "titleEn": "Activity · Mini Parliament",
+     "steps": [],
+     "frame": "我们组选的社会议题是＿＿。这个问题的原因是＿＿。如果＿＿，就会＿＿。我们觉得应该＿＿。总之，＿＿。"
+    },
+    "speak": {
+     "label": "说一说 · 一个社会问题 · Speak",
+     "frame": "我觉得＿＿是一个重要的社会问题。因为＿＿。如果＿＿，就会＿＿。我们应该＿＿。不但要＿＿，而且要＿＿。总之，＿＿。"
+    },
+    "reflect": [
+     "说出至少三个社会议题",
+     "用\"被\"字句表达被动意思",
+     "用\"不但…而且…\"连接两个想法",
+     "用\"虽然…但是…\"表达转折",
+     "正确写 社·题·论·解·决·被",
+     "分析\"解\"的会意结构"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "背诵《悯农·其二》。"
+       ],
+       [
+        "2",
+        "朗读课文两遍给家人听。"
+       ],
+       [
+        "3",
+        "想一个社会问题，写出两个解决办法（用中文）。"
+       ],
+       [
+        "4",
+        "口头发表你对某个社会议题的看法，用到\"不但…而且…\"和\"总之\"。"
+       ],
+       [
+        "5",
+        "写 社·题·论·解·决·被 各一遍，注意笔顺。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：社·题·论·解·决·被 各三遍。",
+        "背诵《悯农》，说说它与社会公平的联系。"
+       ],
+       [
+        "2",
+        "抄写生词：社会·问题·环境·保护·解决·责任 各三遍。默写：社·题·论。",
+        "朗读课文，解释\"被\"字句的用法。"
+       ],
+       [
+        "3",
+        "从课文找三个\"被\"字句，抄一遍。用\"不但…而且…\"\"虽然…但是…\"各造一句。默写：解·决·被。",
+        "跟家人讨论一个社会问题，用上新句型。"
+       ],
+       [
+        "4",
+        "写一篇议论文（120–150字）：选一个社会议题，说明看法，提出解决办法。同学互评。",
+        "朗读你的议论文，听听别人的反馈。"
+       ],
+       [
+        "5",
+        "参考互评意见修改议论文。默写全单元六字。分析\"解\"的会意结构。",
+        "口头总结本单元学到的三个最重要的东西。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "责",
+      "py": "zé",
+      "strokes": "8",
+      "radical": "贝",
+      "words": "形声: 龶(zé)+贝(钱财/价值) → 责任、指责"
+     },
+     {
+      "char": "任",
+      "py": "rèn",
+      "strokes": "6",
+      "radical": "亻",
+      "words": "形声: 亻(人)+壬(rén) → 人承担的担子"
+     },
+     {
+      "char": "改",
+      "py": "gǎi",
+      "strokes": "7",
+      "radical": "攵",
+      "words": "会意: 己(自己)+攵(手拿工具) → 自己动手改变"
+     },
+     {
+      "char": "变",
+      "py": "biàn",
+      "strokes": "8",
+      "radical": "又",
+      "words": "形声: 䜌(luán)省声 → 变化、改变"
+     }
+    ],
+    "furtherCharsTitle": "字 — 责·任·改·变",
+    "radical": {
+     "titleZh": "部首角 — 讠（言字旁）家族",
+     "titleEn": "Radical Corner",
+     "intro": "讠表示\"说话、语言\"。大多数带讠的字都是形声字：讠表意，右边表音。",
+     "family": []
+    },
+    "read": {
+     "titleZh": "读一读 — 青年社会责任",
+     "titleEn": "Read · ~230 字",
+     "paragraphs": [
+      "近年来，越来越多的年轻人开始关心社会问题。有的关注环境保护，有的关注教育公平，还有的关注动物权益¹。在一个叫\"青年社会责任\"的讨论会上，一位十六岁的学生说：\"很多人觉得我们太小，不能改变什么。可是我告诉他们——虽然我们年轻，但是我们也有想法，也有能力。改变不一定很大，从小事做起，每一个小改变都会带来不同。\"",
+      "另一个学生接着说：\"对。去年我们学校组织²了'无塑料袋日'活动。开始的时候只有十几个人参与³，现在全校都参与了。不但浪费减少了，而且大家的环保意识⁴也提高了。这让我相信——问题可以被解决，只要我们愿意行动。\""
+     ],
+     "footnotes": "注释 ¹ 权益 = rights · ² 组织 = organize · ³ 参与 = participate · ⁴ 意识 = awareness"
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write · 议论文 · 120–150 字",
+     "prompt": "写一篇议论文，选一个你关心的社会议题。要求：开头用\"我觉得…\"点明议题和观点；中间用\"不但…而且…\"或\"虽然…但是…\"给一到两个理由；提出至少一个解决办法（用\"应该\"或\"被\"字句）；结尾用\"总之\"总结。",
+     "en": "Write · 议论文 · 120–150 字"
+    }
+   }
+  },
+  {
+   "n": 4,
+   "id": "u4",
+   "theme": {
+    "zh": "历史与文化",
+    "en": "History & Culture"
+   },
+   "objective": {
+    "zh": "讲述一个历史或文化故事，用\"把\"和\"被\"字句。",
+    "en": "Recount a historical or cultural story, using the 把 and 被 constructions."
+   },
+   "core": {
+    "review": [
+     "读一读: 社·题·论·解·决·被 + 古·国·文·化 + 历·史·长·城",
+     "部首回顾: 纟(绞丝旁) → 统·经·纪·纸 · 厂(厂字头) → 历·原·厅 · 亻(单人旁) → 化·什·代·传",
+     "说一说: ① 你知道哪些中国历史故事？给大家讲一个。 ② 澳大利亚有什么古老的文化遗产？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 历史韵律",
+      "titleEn": "Recite · (history rhyme)",
+      "poem": "历史韵律",
+      "poemPinyin": "",
+      "lines": [
+       {
+        "zh": "五千年，大中华，",
+        "py": "wǔ qiān nián dà Zhōng huá"
+       },
+       {
+        "zh": "长城故宫真伟大。",
+        "py": "Cháng chéng Gù gōng zhēn wěi dà"
+       },
+       {
+        "zh": "古到今，代代传，",
+        "py": "gǔ dào jīn dài dài chuán"
+       },
+       {
+        "zh": "中华文化放光华。",
+        "py": "Zhōng huá wén huà fàng guāng huá"
+       }
+      ],
+      "meaning": "意译 — Five thousand years of great China — the Great Wall and the Forbidden City are truly magnificent. From ancient times to today, passed down generation by generation, Chinese culture shines brightly.",
+      "note": "背景: 这首韵律诗回顾了中国悠久的历史和灿烂的文化。\"五千年\"指中华文明的大约长度，长城和故宫是中国最著名的两个历史建筑。"
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "历",
+      "strokes": "4 笔 strokes",
+      "breakdown": "形声 厂(形) + 力(声 lì)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "厂 (厂字头) — 与山崖、房屋有关",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。外\"厂\"(山崖)，里\"力\"提示读音。本义\"经过、经历\"——像一个人用力走过山崖下的路→经历→历史（经历过的过去）。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "历史 · 经历 · 日历",
+        "en": "history · experience · calendar"
+       },
+       {
+        "term": "造句",
+        "zh": "中国有五千年的历史。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "史",
+      "strokes": "5 笔 strokes",
+      "breakdown": "会意 竖·横折·横·撇·捺",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "口 / 丨",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "会意。甲骨文像一只手拿着记录用的册子。本义是\"记录事情的人\"——史官。后引申为被记录下来的过去→历史。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "历史 · 史书 · 史记",
+        "en": "history · history book · Records of the Historian"
+       },
+       {
+        "term": "造句",
+        "zh": "历史让我们了解过去。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "化",
+      "strokes": "4 笔 strokes",
+      "breakdown": "会意 亻(正立) + 匕(倒立)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "亻 (单人旁)",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "会意。左\"亻\"(人)，右\"匕\"(一个倒着的人)。一个正立的人和一个倒立的人→变化、转变。非常形象！",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "文化 · 变化 · 化学",
+        "en": "culture · change · chemistry"
+       },
+       {
+        "term": "造句",
+        "zh": "中国文化很有意思。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "统",
+      "strokes": "9 笔 strokes",
+      "breakdown": "形声 纟(形) + 充(声 chōng)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "纟 (绞丝旁) — 与丝线、连接有关",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。左\"纟\"(丝线) 表示\"把东西连在一起\"；右\"充\"提示读音。本义是丝的头绪，引申为\"总起来、统一、系统\"。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "传统 · 统一 · 系统",
+        "en": "tradition · unify · system"
+       },
+       {
+        "term": "造句",
+        "zh": "春节是中国的传统节日。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "发",
+      "strokes": "5 笔 strokes",
+      "breakdown": "形声 繁体 發 — 射箭",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "又 (又字旁)",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。繁体\"發\"由\"癶\"\"弓\"\"殳\"组成，本义是射箭——把箭发出去。简化字\"发\"保留发射的核心意思，引申为\"发展、发生、出发\"。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "发展 · 发现 · 发生",
+        "en": "develop · discover · happen"
+       },
+       {
+        "term": "造句",
+        "zh": "科技发展得很快。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "展",
+      "strokes": "10 笔 strokes",
+      "breakdown": "形声 尸(声) + 展开",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "尸 (尸字头)",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。上\"尸\"提示读音（古今音变），下部表示\"展开、伸展\"。本义是展开、铺开→展览、发展。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "发展 · 展览 · 展开",
+        "en": "develop · exhibition · unfold"
+       },
+       {
+        "term": "造句",
+        "zh": "长城展览着中国的历史。",
+        "en": ""
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (6) · Characters · stroke order · 字源 · 组词",
+    "recognise": [
+     "古",
+     "城",
+     "丝",
+     "绸",
+     "路",
+     "建",
+     "筑"
+    ],
+    "vocab": [
+     {
+      "zh": "历史",
+      "py": "",
+      "en": "history"
+     },
+     {
+      "zh": "古代",
+      "py": "",
+      "en": "ancient times"
+     },
+     {
+      "zh": "文化",
+      "py": "",
+      "en": "culture"
+     },
+     {
+      "zh": "传统",
+      "py": "",
+      "en": "tradition"
+     },
+     {
+      "zh": "发展",
+      "py": "",
+      "en": "develop, development"
+     },
+     {
+      "zh": "长城",
+      "py": "",
+      "en": "the Great Wall"
+     },
+     {
+      "zh": "据说",
+      "py": "",
+      "en": "it is said that"
+     },
+     {
+      "zh": "把",
+      "py": "",
+      "en": "(object marker)"
+     },
+     {
+      "zh": "对…来说",
+      "py": "",
+      "en": "as far as… is concerned"
+     },
+     {
+      "zh": "象征",
+      "py": "",
+      "en": "symbol, symbolize"
+     },
+     {
+      "zh": "统一",
+      "py": "",
+      "en": "unify"
+     },
+     {
+      "zh": "修建",
+      "py": "",
+      "en": "build, construct"
+     },
+     {
+      "zh": "连接",
+      "py": "",
+      "en": "connect"
+     },
+     {
+      "zh": "古时候",
+      "py": "",
+      "en": "in ancient times"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "古时候…后来…",
+      "py": "gǔ shí hou hòu lái",
+      "en": "in ancient times… later…"
+     },
+     {
+      "zh": "把字句",
+      "py": "bǎ zì jù",
+      "en": "the 把 disposal pattern"
+     },
+     {
+      "zh": "据说",
+      "py": "jù shuō",
+      "en": "it is said that…"
+     },
+     {
+      "zh": "对…来说",
+      "py": "duì lái shuō",
+      "en": "as for / for…"
+     },
+     {
+      "zh": "不只是…也是…",
+      "py": "bù zhǐ shì yě shì",
+      "en": "not just… but also…"
+     }
+    ],
+    "text": {
+     "kind": "reading",
+     "titleZh": "课文 — 阅读",
+     "titleEn": "Text · Reading · ~210 字",
+     "readingTitle": "长城的故事",
+     "paragraphs": [
+      "据说，长城最早是两千多年前开始建的。那时候，不同的国家之间常常打仗。后来，秦始皇统一了中国，他把不同的城墙连接了起来，这就有了最早的\"万里长城\"。以后很多朝代¹都对长城进行了修建和加固²。今天我们能看到的长城，大部分是明朝建的。",
+      "古时候建长城非常不容易。没有机器³，每一块大石头都是人一块一块搬上去的。很多人把一辈子⁴的时间都花在了长城上。今天，长城不只是一道古老的城墙——它是中国文化的象征，也是全世界了解中国历史的一个窗口⁵。"
+     ],
+     "footnotes": "注释 footnotes ¹ 朝代 = dynasty · ² 加固 = reinforce · ³ 机器 = machine · ⁴ 一辈子 = a lifetime · ⁵ 窗口 = window, gateway"
+    },
+    "culture": {
+     "zh": "中国有\"四大发明\"¹——造纸²、印刷³、火药⁴、指南针⁵。这些发明不仅改变了中国，也改变了全世界。造纸让书写变得方便，印刷让知识传播得更快，火药改变了战争的方式，指南针帮助人们在大海上不迷路。今天，当我们用纸写字、看书、放烟花、用导航的时候，都应该感谢古代中国人的智慧⁶。",
+     "en": "¹ 四大发明 Four Great Inventions · ² 造纸 papermaking · ³ 印刷 printing · ⁴ 火药 gunpowder · ⁵ 指南针 compass · ⁶ 智慧 wisdom"
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，回答 · Listen & answer. 老师讲一段长城的历史，听完回答：① 谁把不同的城墙连接了起来？ ② 长城今天象征什么？",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "改成\"把\"字句 · Rewrite. 例：秦始皇连接了不同的城墙。→ 秦始皇把不同的城墙连接了起来。 ① 工人们搬上去了大石头。 ② 他写完了历史作业。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "用句型 · Use the patterns（据说 / 对…来说）. ① 用\"据说\"改写：明朝修建了大部分的长城。→ 据说，。 ② 用\"对…来说\"完成：对中国人来说，长城。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "阅读回答 · Answer. ① 长城最早是什么时候开始建的？ ② 谁把不同的城墙连接了起来？ ③ 古时候建长城为什么非常不容易？ ④ 找出课文中的两个\"把\"字句。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional形声字分析 · Analyse. \"历\"字的部首是什么？声旁是什么？\"历\"和\"力\"的读音有什么关系？另找一个带\"厂\"部首的字，写出它的意思。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional历史文化调查 · Investigate. 选一个你感兴趣的历史建筑或文化遗产（中国的、澳大利亚的或其他国家的），用五句话介绍它的历史、特点和意义。",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 历史小讲台",
+     "titleEn": "Activity · History Mini-talk",
+     "steps": [],
+     "frame": "今天我想给大家讲一个故事，是关于＿＿的。古时候，＿＿。后来，＿＿。这个故事告诉我们＿＿。对＿＿来说，＿＿是一个很重要的＿＿。"
+    },
+    "speak": {
+     "label": "说一说 · 一个历史或文化 · Speak",
+     "frame": "＿＿有很长的历史。古时候，＿＿。后来，＿＿。据说，＿＿。今天，＿＿不只是一＿＿，也是一＿＿。对＿＿来说，＿＿象征＿＿。"
+    },
+    "reflect": [
+     "讲述一个中国历史故事",
+     "用\"把\"字句表达对事物的处置",
+     "用\"被\"字句表达被动（复习）",
+     "用\"据说\"和\"对…来说\"表达",
+     "正确写 历·史·化·统·发·展",
+     "分析\"历\"的形声结构"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "背诵\"历史韵律\"。"
+       ],
+       [
+        "2",
+        "朗读课文两遍给家人听，解释\"据说\"和\"把\"字句的用法。"
+       ],
+       [
+        "3",
+        "想一个中国历史故事或文化传统，写三句话介绍它（用中文）。"
+       ],
+       [
+        "4",
+        "口头讲述\"长城的故事\"，用到\"据说\"\"把\"和\"对…来说\"。"
+       ],
+       [
+        "5",
+        "写 历·史·化·统·发·展 各一遍，注意笔顺。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：历·史·化·统·发·展 各三遍。",
+        "背诵\"历史韵律\"，说说它让你想到了什么。"
+       ],
+       [
+        "2",
+        "抄写生词：历史·古代·文化·传统·发展·长城 各三遍。默写：历·史·化。",
+        "朗读课文，解释\"把\"字句和\"被\"字句的不同。"
+       ],
+       [
+        "3",
+        "从课文找两个\"把\"字句和一个\"被\"字句，抄一遍。用\"据说\"\"对…来说\"各造一句。默写：统·发·展。",
+        "跟家人讨论\"四大发明\"中哪一个影响最大，为什么。"
+       ],
+       [
+        "4",
+        "写一篇短文（120–150字）：介绍一个你感兴趣的历史建筑或文化传统。同学互评。",
+        "口头朗读你的短文，听同学的反馈。"
+       ],
+       [
+        "5",
+        "参考互评意见修改短文。默写全单元六字。分析\"化\"的会意结构和\"历\"的形声结构。",
+        "口头总结本单元关于中国历史文化最重要的三个知识点。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "古",
+      "py": "gǔ",
+      "strokes": "5",
+      "radical": "口",
+      "words": "会意: 十(多)+口(说) → 口口相传的旧事 → 古代"
+     },
+     {
+      "char": "城",
+      "py": "chéng",
+      "strokes": "9",
+      "radical": "土",
+      "words": "形声: 土+成(chéng) → 土筑的城墙"
+     },
+     {
+      "char": "建",
+      "py": "jiàn",
+      "strokes": "8",
+      "radical": "廴",
+      "words": "会意: 聿(手拿笔)+廴(长行) → 设立、建造"
+     },
+     {
+      "char": "筑",
+      "py": "zhù",
+      "strokes": "12",
+      "radical": "⺮",
+      "words": "形声: ⺮(竹)+巩(gǒng) → 用竹木建造"
+     }
+    ],
+    "furtherCharsTitle": "字 — 古·城·建·筑",
+    "radical": {
+     "titleZh": "部首角 — 纟（绞丝旁）家族",
+     "titleEn": "Radical Corner",
+     "intro": "纟表示\"丝线、绳子、纺织\"。丝线用来连接、编织、记录（古代\"结绳记事\"）——因此这个部首常出现在与\"连接、系统、记录\"相关的字中。",
+     "family": []
+    },
+    "read": {
+     "titleZh": "读一读 — 丝绸之路",
+     "titleEn": "Read · ~250 字",
+     "paragraphs": [
+      "中国的丝绸¹之路是世界上最古老的贸易²路线之一。两千多年前，中国的丝绸经过这条路线被运到了很远的地方——罗马、波斯³、印度。那时候，欧洲人从来没有见过这么美丽、这么柔软⁴的布。他们把丝绸当成比黄金还贵重⁵的东西。",
+      "丝绸之路不只是一条贸易的路，也是文化交流的桥梁⁶。通过这条路，中国的造纸、印刷技术传到了西方；同时，西方的音乐、艺术、宗教⁷也传到了中国。可以说，在古代，丝绸之路把东西方连接在了一起。今天，\"一带一路\"延续着丝绸之路的精神。历史告诉我们：开放和交流能让文化发展得更好。"
+     ],
+     "footnotes": "注释 ¹ 丝绸 = silk · ² 贸易 = trade · ³ 波斯 = Persia · ⁴ 柔软 = soft · ⁵ 贵重 = precious · ⁶ 桥梁 = bridge · ⁷ 宗教 = religion"
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write · 短文 · 120–150 字",
+     "prompt": "介绍一个你知道的历史建筑、文化传统或历史故事。要求：开头用\"据说\"引入；中间叙述历史或过程，用到\"古时候…后来…\"以及至少一个\"把\"字句；结尾用\"对…来说\"说明意义，用\"不只是一…，也是一…\"收尾。",
+     "en": "Write · 短文 · 120–150 字"
+    }
+   }
+  },
+  {
+   "n": 5,
+   "id": "u5",
+   "theme": {
+    "zh": "学习与工作",
+    "en": "Study & Work"
+   },
+   "objective": {
+    "zh": "谈学习、工作和目标，用\"只要…就…\"。",
+    "en": "Discuss study, work and goals, using \"as long as… then…\"."
+   },
+   "core": {
+    "review": [
+     "读一读: 历·史·化·统·发·展 + 学·习·工·努 — 按正确笔顺写一写。",
+     "说一说: ① 你为什么学中文？学中文对你将来有什么帮助？ ② 你觉得\"努力学习\"和\"聪明\"哪个更重要？为什么？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《长歌行》",
+      "titleEn": "Recite · Long Song Ballad · 汉乐府 (Hàn)",
+      "poem": "《长歌行》",
+      "poemPinyin": "cháng gē xíng",
+      "lines": [
+       {
+        "zh": "少壮不努力，",
+        "py": "shào zhuàng bù nǔ lì"
+       },
+       {
+        "zh": "老大徒伤悲。",
+        "py": "lǎo dà tú shāng bēi"
+       }
+      ],
+      "meaning": "意译 — 年轻力壮时不努力，年老了只能白白地悲伤后悔。",
+      "note": "诗人背景: 《长歌行》出自汉代的乐府诗。乐府是汉代收集民歌的机构。诗中用\"阳光晒露水、秋天草木凋零、河流奔向大海不再回头\"层层比喻时间一去不复返。两千年来，下面这两句一直是中国人劝学的经典名句。"
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "职",
+      "strokes": "11 笔 strokes",
+      "breakdown": "形声 耳(形) + 戠(声 zhí)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "耳 — 跟听、感知、记忆有关",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。耳(形旁) 表示与听、感知有关；戠(声旁) 提示读音。古代\"职\"本义是记住职责——耳听、心记，就是\"职\"。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "职业 · 职位 · 职责",
+        "en": "profession · position · responsibility"
+       },
+       {
+        "term": "造句",
+        "zh": "我将来想找一份有趣的职业。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "业",
+      "strokes": "5 笔 strokes",
+      "breakdown": "象形 / 会意 竖·竖·点·撇·横",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "一",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "古字形像一个人在架子前工作的样子。本义是古代乐架上的大版，后引申为学业、事业。字形对称、笔画简洁却有力。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "职业 · 毕业 · 事业",
+        "en": "profession · graduate · career"
+       },
+       {
+        "term": "造句",
+        "zh": "我爸爸的事业是医生。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "选",
+      "strokes": "9 笔 strokes",
+      "breakdown": "形声 辶(形) + 先(声 xiān/xuǎn)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "辶 — 走之底，表示走路、移动",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。辶(形旁) 表示与行动、走路有关；先(声旁) 韵母相近，提示读音。\"选\"就是从一群里面先挑出来——走进去、挑出来。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "选择 · 选手 · 选举",
+        "en": "choose · competitor · election"
+       },
+       {
+        "term": "造句",
+        "zh": "我需要选择一门课外活动。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "择",
+      "strokes": "8 笔 strokes",
+      "breakdown": "形声 扌(形) + 睪(声 yì/zé)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "扌 — 提手旁，表示手、动作",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。扌(形旁) 表示与手有关；睪(声旁) 提示读音。用手挑选东西，就是\"择\"。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "选择 · 抉择 · 择业",
+        "en": "choose · decide · choose a career"
+       },
+       {
+        "term": "造句",
+        "zh": "选择职业是一件很重要的事。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "适",
+      "strokes": "9 笔 strokes",
+      "breakdown": "形声 辶(形) + 舌(声 shé/shì)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "辶 — 走之底",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。辶(形旁) 表示与走路、到达有关；舌(声旁) 提示读音。本义是去往、到达——去对了地方就是\"适合\"。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "适合 · 合适 · 适应",
+        "en": "suitable · appropriate · adapt"
+       },
+       {
+        "term": "造句",
+        "zh": "这个工作很适合我。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "合",
+      "strokes": "6 笔 strokes",
+      "breakdown": "会意 人(亼, 盖子) + 口(容器)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "口",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "会意。上部\"人\"(亼) 像盖子，下部\"口\"像容器。盖子盖在容器上，严丝合缝——合在一起，表示吻合、适合。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "适合 · 合作 · 合适",
+        "en": "suitable · cooperate · appropriate"
+       },
+       {
+        "term": "造句",
+        "zh": "这个职业很合适我。",
+        "en": ""
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (6) · Characters · stroke order · 字源 · 组词",
+    "recognise": [
+     "经",
+     "验",
+     "坚",
+     "持",
+     "继",
+     "续"
+    ],
+    "vocab": [
+     {
+      "zh": "职业",
+      "py": "",
+      "en": "profession"
+     },
+     {
+      "zh": "选择",
+      "py": "",
+      "en": "choose"
+     },
+     {
+      "zh": "工作",
+      "py": "",
+      "en": "work, job"
+     },
+     {
+      "zh": "努力",
+      "py": "",
+      "en": "work hard"
+     },
+     {
+      "zh": "坚持",
+      "py": "",
+      "en": "persist"
+     },
+     {
+      "zh": "只要…就…",
+      "py": "",
+      "en": "as long as… then…"
+     },
+     {
+      "zh": "适合",
+      "py": "",
+      "en": "suitable"
+     },
+     {
+      "zh": "经验",
+      "py": "",
+      "en": "experience"
+     },
+     {
+      "zh": "为了…",
+      "py": "",
+      "en": "for the sake of…"
+     },
+     {
+      "zh": "成功",
+      "py": "",
+      "en": "succeed, success"
+     },
+     {
+      "zh": "认真",
+      "py": "",
+      "en": "serious, earnest"
+     },
+     {
+      "zh": "将来",
+      "py": "",
+      "en": "future"
+     },
+     {
+      "zh": "目标",
+      "py": "",
+      "en": "goal"
+     },
+     {
+      "zh": "进步",
+      "py": "",
+      "en": "progress"
+     },
+     {
+      "zh": "优势",
+      "py": "",
+      "en": "advantage"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "只要…就…",
+      "py": "zhǐ yào jiù",
+      "en": "as long as… then…"
+     },
+     {
+      "zh": "为了…",
+      "py": "wèi le",
+      "en": "in order to…"
+     },
+     {
+      "zh": "适合",
+      "py": "shì hé",
+      "en": "to suit; be suitable for"
+     }
+    ],
+    "text": {
+     "kind": "reading",
+     "titleZh": "课文 — 阅读",
+     "titleEn": "Text · Reading · ~230 字",
+     "readingTitle": "我为什么学中文",
+     "paragraphs": [
+      "很多人问我：\"你为什么这么认真学中文？\"我的答案很简单——因为它是我的语言，也是我未来的钥匙¹。小时候，我觉得学中文很麻烦：每个周末要去中文学校。可是后来我慢慢发现，会中文让我跟爷爷奶奶聊天不用翻译，回中国的时候可以自己点菜——那种感觉真好！",
+      "现在，我学中文不只是为了跟家人说话。我知道，将来找工作的时候，会中英双语是一个很大的优势。很多公司都在找会说中文和英文的人。学中文，是在投资²我的未来。",
+      "当然，学中文不简单。有时候写汉字写到手指酸³。可是我相信，只要坚持，就一定会有进步。就像爸爸说的：\"种一棵树最好的时间是十年前，其次⁴是现在。\"学习，什么时候开始都不晚。"
+     ],
+     "footnotes": "注释 footnotes ¹ 钥匙 = key · ² 投资 = invest · ³ 手指酸 = fingers ache · ⁴ 其次 = next best"
+    },
+    "culture": {
+     "zh": "中国人常说\"活到老，学到老\"——人一生都要学习。在古代，读书人要通过\"科举考试\"¹才能做官，所以学习跟未来紧紧连在一起。今天虽然没有了科举，这个观念²还是影响着中国人。在澳大利亚，掌握³中英双语的人越来越受欢迎。随着中澳贸易越来越多，很多公司需要会说中文的员工。所以，学中文不只是在学一种语言，也是在为自己的未来打开一扇门。",
+     "en": "¹ 科举 imperial examination — ancient China's civil-service exam · ² 观念 concept · ³ 掌握 master"
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，回答 · Listen & answer. 老师说一个人学中文的理由，听完回答：① 他/她为什么学中文？ ② 用了哪个句型？",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "职业配对 · Match. 将职业和工作内容连线。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "用句型 · Use the patterns（只要…就… / 为了…）. ① 用\"只要…就…\"造句（学习/目标）：只要，就。 ② 用\"为了…\"改写：他想找好工作，所以他努力学习。→ 他为了，。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "阅读理解 · Answer. ① 作者小时候对学中文是什么感觉？ ② 现在作者学中文有哪些原因？（至少两个） ③ 作者用哪句话说明自己不怕困难？ ④ \"种一棵树最好的时间是十年前，其次是现在\"——这句话是什么意思？你同意吗？",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional形声分析 · Analyse. 职 = ＿＿(形旁) + ＿＿(声旁)；择 = ＿＿(形旁) + ＿＿(声旁)。再找两个你认识的形声字，写出结构。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional部首角 · Radical. 本单元有两个带\"辶\"的字：选、适。加上 近·远·过·边·道·达，按\"距离/移动/选择到达\"分类，每字写一遍。",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 职业访谈",
+     "titleEn": "Activity · Career Interview",
+     "steps": [],
+     "frame": "我采访了＿＿。他/她将来想做＿＿，因为＿＿。这个职业很＿＿他/她。为了实现目标，他/她＿＿。只要＿＿，就＿＿。"
+    },
+    "speak": {
+     "label": "说一说 · 我学中文的目标 · Speak",
+     "frame": "我学中文是为了＿＿。只要＿＿，就＿＿。我将来想做＿＿，因为＿＿。这个职业适合我，因为＿＿。"
+    },
+    "reflect": [
+     "用\"只要…就…\"说条件句",
+     "用\"为了…\"说明目的",
+     "用\"适合\"说匹配关系",
+     "说出三种职业及其工作内容",
+     "说出我学中文的目的和理由",
+     "写 职·业·选·择·适·合",
+     "分析形声字的结构（形旁+声旁）"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "背诵劝学古训\"少壮不努力，老大徒伤悲\"。"
+       ],
+       [
+        "2",
+        "朗读课文《我为什么学中文》给家人听，请家人签字。"
+       ],
+       [
+        "3",
+        "口头讨论：\"学中文对我将来有什么帮助？\"跟家人聊一聊，记下家人的看法。"
+       ],
+       [
+        "4",
+        "采访一位家人：他/她年轻时学了什么技能，对现在有什么帮助。"
+       ],
+       [
+        "5",
+        "描红：写 职·业·选·择·适·合 各一遍。写一句话：我将来想做＿＿。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写六字：职·业·选·择·适·合 各三遍。标出每个形声字的结构（形旁+声旁）。",
+        "背诵\"少壮不努力，老大徒伤悲\"。"
+       ],
+       [
+        "2",
+        "抄写生词：职业·选择·坚持·适合·经验·成功 各三遍。默写：职·业·选。",
+        "朗读课文给家人听，请家人签字。"
+       ],
+       [
+        "3",
+        "从课文找出\"只要…就…\"和\"为了…\"的句子，各抄一句。默写：择·适·合。",
+        "口头说说你学中文的三个理由（用\"为了…\"）。"
+       ],
+       [
+        "4",
+        "写一封短信给父母（120–150字）：将来想做什么、为什么学中文、怎么努力实现目标。同学互评。",
+        "把信读给父母听，问他们的意见。"
+       ],
+       [
+        "5",
+        "根据反馈修改书信，写最终版。默写全单元六字并完成形声分析。",
+        "口头总结：回顾你学中文以来最大的进步是什么。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "经",
+      "py": "jīng",
+      "strokes": "8",
+      "radical": "纟",
+      "words": "形声: 纟(丝线,形)+巠(声)。织布的纵线→经历、经典。"
+     },
+     {
+      "char": "验",
+      "py": "yàn",
+      "strokes": "10",
+      "radical": "马",
+      "words": "形声: 马(形)+佥(声)。古代检查马匹→检验、验证。"
+     },
+     {
+      "char": "坚",
+      "py": "jiān",
+      "strokes": "7",
+      "radical": "土",
+      "words": "会意: 臤(坚固)+土(泥土)。像大地一样坚硬、坚定。"
+     },
+     {
+      "char": "持",
+      "py": "chí",
+      "strokes": "9",
+      "radical": "扌",
+      "words": "形声: 扌(手,形)+寺(声)。手拿着不放→保持、坚持。"
+     }
+    ],
+    "furtherCharsTitle": "字 — 经·验·坚·持",
+    "radical": {
+     "titleZh": "部首角 — 辶（走之底）vs 扌（提手旁）",
+     "titleEn": "Radical Corner",
+     "intro": "辶 — 走路、移动、方向：",
+     "family": [
+      {
+       "zh": "选",
+       "py": "xuǎn",
+       "en": "choose"
+      },
+      {
+       "zh": "适",
+       "py": "shì",
+       "en": "suit"
+      },
+      {
+       "zh": "过",
+       "py": "guò",
+       "en": "pass"
+      },
+      {
+       "zh": "达",
+       "py": "dá",
+       "en": "arrive"
+      },
+      {
+       "zh": "道",
+       "py": "dào",
+       "en": "road"
+      },
+      {
+       "zh": "进",
+       "py": "jìn",
+       "en": "advance"
+      },
+      {
+       "zh": "择",
+       "py": "zé",
+       "en": "pick"
+      },
+      {
+       "zh": "持",
+       "py": "chí",
+       "en": "hold"
+      },
+      {
+       "zh": "找",
+       "py": "zhǎo",
+       "en": "seek"
+      },
+      {
+       "zh": "打",
+       "py": "dǎ",
+       "en": "hit"
+      },
+      {
+       "zh": "把",
+       "py": "bǎ",
+       "en": "grasp"
+      },
+      {
+       "zh": "推",
+       "py": "tuī",
+       "en": "push"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读 — 做你喜欢的事",
+     "titleEn": "Read · ~190 字",
+     "paragraphs": [
+      "小明的表哥大学刚毕业，正在找工作。他在两个选择之间想了很久：一个是去大公司上班，工资高但工作很枯燥¹；另一个是去一家小设计公司，工资低但做他喜欢的设计。",
+      "表哥问爸爸的意见。爸爸说：\"选职业，不只是看工资。适合你的、让你每天有动力²起床的，才是好工作。我年轻的时候，为了赚钱做了一份不喜欢的工作，每天都不开心。后来我换了工作，虽然钱少了一点，可是人快乐多了。\"表哥想了三天，最后选择了小设计公司。他说：\"只要做我喜欢的事，我就觉得每一天都有意义³。\""
+     ],
+     "footnotes": "注释 ¹ 枯燥 = boring · ² 动力 = motivation · ³ 意义 = meaning"
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write · VCE 风格书信 · 120–150 字",
+     "prompt": "假设你是十年后的自己，给现在的你写一封信。第一段：你现在做什么工作？怎么样？第二段：回头看学中文的经历，它对你有什么帮助？第三段：给现在的自己一个建议。",
+     "en": "Write · VCE 风格书信 · 120–150 字"
+    }
+   }
+  },
+  {
+   "n": 6,
+   "id": "u6",
+   "theme": {
+    "zh": "跨文化身份",
+    "en": "Intercultural Identity"
+   },
+   "objective": {
+    "zh": "反思我的跨文化身份，用\"既是…又是…\"\"对我来说…\"。",
+    "en": "Reflect on my bicultural identity, using \"both… and…\" and \"for me…\"."
+   },
+   "core": {
+    "review": [
+     "读一读: 职·业·选·择·适·合 + 身·份·文·化·国 — 按正确笔顺写一写。",
+     "说一说: ① 你觉得自己的身份是什么？你是\"中国人\"\"澳大利亚人\"还是\"华裔澳大利亚人\"？为什么？ ② 在什么场合你觉得自己更\"中国\"，在什么场合更\"澳大利亚\"？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《静夜思》 李白",
+      "titleEn": "Recite · Quiet Night Thoughts · (唐 · 最后一次重温)",
+      "poem": "《静夜思》",
+      "poemPinyin": "jìng yè sī",
+      "lines": [
+       {
+        "zh": "床前明月光，疑是地上霜。",
+        "py": "chuáng qián míng yuè guāng yí shì dì shàng shuāng"
+       },
+       {
+        "zh": "举头望明月，低头思故乡。",
+        "py": "jǔ tóu wàng míng yuè dī tóu sī gù xiāng"
+       }
+      ],
+      "meaning": "意译 — 床前洒满了明亮的月光，好像地上铺了一层白霜。抬起头望着天上的明月，低下头想起了遥远的故乡。简简单单二十个字，写出了所有游子心中的思念。",
+      "note": "诗人背景: 李白（701—762），唐代最伟大的诗人之一，被称为\"诗仙\"。这首诗写于他离开家乡漫游的时候。他一生走过千山万水，但家乡永远是他最深的牵挂。这是我们从 Band 1 就开始背诵的诗——现在你长大了，在两个文化、两个\"家\"之间，你心中的\"故乡\"在哪里？"
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "身",
+      "strokes": "7 笔 strokes",
+      "breakdown": "象形 撇·竖·横折钩·横·横·横·撇",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "身 — 身字旁，跟身体、自身有关",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "象形。古字形像一个人侧身站立、突出腹部的样子。本义是怀孕，后引申为人的身体、自己。是最基本的人体象形字之一。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "身份 · 身体 · 本身",
+        "en": "identity · body · oneself"
+       },
+       {
+        "term": "造句",
+        "zh": "对我来说，身份不是固定的标签。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "份",
+      "strokes": "6 笔 strokes",
+      "breakdown": "形声 亻(形) + 分(声 fēn/fèn)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "亻 (单人旁) — 跟人有关",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。亻(形旁) 表示与人有关；分(声旁) 提示读音，又有\"分开、分配\"之意。\"份\"就是分给每个人的那一部分——份额、身份。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "身份 · 月份 · 一份",
+        "en": "identity · month · a portion"
+       },
+       {
+        "term": "造句",
+        "zh": "跨文化的身份是一种财富。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "认",
+      "strokes": "4 笔 strokes",
+      "breakdown": "形声 讠(形) + 人(声 rén/rèn)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "讠 (言字旁) — 跟说话、语言有关",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。讠(形旁) 表示与言语有关；人(声旁) 提示读音。用语言去辨别、确认一个人或一件事——\"认\"就是从\"说\"中去识别。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "认识 · 认真 · 承认",
+        "en": "know · serious · admit"
+       },
+       {
+        "term": "造句",
+        "zh": "我慢慢认识到，文化身份是不断变化的。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "同",
+      "strokes": "6 笔 strokes",
+      "breakdown": "会意 冂 + 一 + 口",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "冂 (同字框)",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "会意。外面是\"冂\"(远界)，里面是\"一\"和\"口\"。古人认为，在同一个界限内，说一样的话、做一样的事——就是\"同\"。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "同学 · 同样 · 共同",
+        "en": "classmate · same · together"
+       },
+       {
+        "term": "造句",
+        "zh": "两种文化同时影响着我。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "属",
+      "strokes": "12 笔 strokes",
+      "breakdown": "形声 尾(省形) + 蜀(声 shǔ)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "尸 (尸字头)",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。尾(省形，形旁) 表示跟从、连接；蜀(声旁) 提示读音。本义是连接、跟从——从一个东西连到另一个东西，就是归属关系。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "属于 · 家属 · 金属",
+        "en": "belong to · family member · metal"
+       },
+       {
+        "term": "造句",
+        "zh": "我既属于中国文化，也属于澳大利亚文化。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "既",
+      "strokes": "9 笔 strokes",
+      "breakdown": "会意 皀(食器) + 旡(吃完转头)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "旡 (jì) — 注意不是\"艮\"",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "会意。古字形像一个人跪坐在食器前、已经吃完饭转过头的样子。本义是\"已经完成\"，后引申为\"既然\"\"既…又…\"的并列连接。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "既然 · 既是…又是… · 既而",
+        "en": "since · both…and… · then"
+       },
+       {
+        "term": "造句",
+        "zh": "我既是澳大利亚人，又是华裔。",
+        "en": ""
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (6) · Characters · stroke order · 字源 · 组词",
+    "recognise": [
+     "移",
+     "民",
+     "融",
+     "合",
+     "骄",
+     "傲",
+     "根"
+    ],
+    "vocab": [
+     {
+      "zh": "身份",
+      "py": "",
+      "en": "identity"
+     },
+     {
+      "zh": "文化",
+      "py": "",
+      "en": "culture"
+     },
+     {
+      "zh": "华人",
+      "py": "",
+      "en": "overseas Chinese"
+     },
+     {
+      "zh": "移民",
+      "py": "",
+      "en": "immigrant"
+     },
+     {
+      "zh": "既是…又是…",
+      "py": "",
+      "en": "both… and…"
+     },
+     {
+      "zh": "对我来说",
+      "py": "",
+      "en": "for me, in my view"
+     },
+     {
+      "zh": "属于",
+      "py": "",
+      "en": "belong to"
+     },
+     {
+      "zh": "根",
+      "py": "",
+      "en": "root"
+     },
+     {
+      "zh": "自豪",
+      "py": "",
+      "en": "proud"
+     },
+     {
+      "zh": "融合",
+      "py": "",
+      "en": "blend, integrate"
+     },
+     {
+      "zh": "传统",
+      "py": "",
+      "en": "tradition"
+     },
+     {
+      "zh": "价值观",
+      "py": "",
+      "en": "values"
+     },
+     {
+      "zh": "标签",
+      "py": "",
+      "en": "label"
+     },
+     {
+      "zh": "困惑",
+      "py": "",
+      "en": "confused"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "既是…又是…",
+      "py": "jì shì yòu shì",
+      "en": "is both… and…"
+     },
+     {
+      "zh": "对我来说…",
+      "py": "duì wǒ lái shuō",
+      "en": "as for me…"
+     },
+     {
+      "zh": "属于",
+      "py": "shǔ yú",
+      "en": "to belong to"
+     }
+    ],
+    "text": {
+     "kind": "reading",
+     "titleZh": "课文 — 阅读",
+     "titleEn": "Text · Reading · ~230 字",
+     "readingTitle": "我是谁？",
+     "paragraphs": [
+      "\"你是中国人还是澳大利亚人？\"这个问题，我从小被问过很多次。每次我都不知道怎么回答——因为对我来说，这个问题本身就不太对。",
+      "我在家说中文，在学校说英文；过年吃饺子，圣诞节也拆礼物。我不愿意在\"中国\"和\"澳大利亚\"之间选一个——因为这两个，都住在我的心里。",
+      "有人觉得跨文化的身份会让人困惑¹，但我觉得，这恰恰是我的财富²。我既了解中国的传统和节日，也习惯澳大利亚的生活方式和价值观³。对我来说，身份不是一个固定的标签⁴，而是一个不断成长的东西。就像一棵树，根在一个地方，枝叶伸向另一个方向。两种文化都是我的养分⁵。"
+     ],
+     "footnotes": "注释 footnotes ¹ 困惑 = confused · ² 财富 = treasure · ³ 价值观 = values · ⁴ 标签 = label · ⁵ 养分 = nourishment"
+    },
+    "culture": {
+     "zh": "澳大利亚是一个多元文化国家，有超过一百二十万华人生活在这里。从十九世纪的淘金¹时代到今天，华人在澳大利亚的历史已经超过两百年。跨文化身份不是一种\"分裂\"²，而是一种优势。研究显示，拥有两种文化背景的人往往更灵活、更有创造力、更能理解不同的观点³。你不需要在中国文化和澳大利亚文化之间做选择——你可以同时拥有两个世界。",
+     "en": "¹ 淘金 gold rush · ² 分裂 split, divide · ³ 观点 perspective, viewpoint"
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，回答 · Listen & answer. 老师说一句关于身份的话，听完回答：这个人属于哪两种文化？两种文化给了他/她什么？",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "用\"既是…又是…\"造句 · Make sentences. 例：我既是中国人的后代，又是澳大利亚的公民。 仿照例句，写两句你自己的。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "用句型 · Use the patterns（对我来说… / 属于）. ① 用\"对我来说…\"写一句你的看法。 ② 用\"属于\"写一句：说明你属于什么群体或文化。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "阅读理解 · Answer. ① 作者为什么觉得\"你是中国人还是澳大利亚人\"这个问题\"不太对\"？ ② 作者认为跨文化身份是\"困惑\"还是\"财富\"？为什么？ ③ \"就像一棵树，根在一个地方，枝叶伸向另一个方向\"——这句话用了什么修辞手法？它在说什么？ ④ 你觉得自己的\"根\"在哪里？\"枝叶\"伸向了哪些方向？",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional形声分析 · Analyse. 份 = ＿＿(形旁) + ＿＿(声旁)；认 = ＿＿(形旁) + ＿＿(声旁)。再找一个带\"讠\"的形声字，写出结构。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional反义词配对 · Antonyms. 从课文和词语表中找出反义词：困惑 ↔ · 固定 ↔ · 分裂 ↔ 。再想一组跟\"身份\"有关的反义词。",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 身份地图",
+     "titleEn": "Activity · Identity Map",
+     "steps": [],
+     "frame": "我的根是＿＿。从根往上，我既＿＿，又＿＿。两种文化对我的影响是＿＿。对我来说，跨文化的身份是＿＿。"
+    },
+    "speak": {
+     "label": "说一说 · 我的跨文化身份 · Speak",
+     "frame": "对我来说，我既是＿＿又是＿＿。两种文化对我的影响是＿＿。我觉得跨文化身份是＿＿，因为＿＿。"
+    },
+    "reflect": [
+     "反思我的跨文化身份",
+     "用\"既是…又是…\"表达双重身份",
+     "用\"对我来说…\"表达个人看法",
+     "用\"属于\"表达归属关系",
+     "说出三种跨文化身份的优势",
+     "写 身·份·认·同·属·既 六个汉字"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "背诵《静夜思》。想一想：你的\"故乡\"是哪里？"
+       ],
+       [
+        "2",
+        "朗读课文《我是谁？》给家人听，请家人签字。"
+       ],
+       [
+        "3",
+        "画一个\"身份地图\"（参照课堂活动），用中文标注各个部分。"
+       ],
+       [
+        "4",
+        "口头讨论：跟家人聊一聊\"我们家是哪里的？\"听听家人对身份的看法。"
+       ],
+       [
+        "5",
+        "描红：写 身·份·认·同·属·既 各一遍。写一句话：对我来说，我是＿＿。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写六字：身·份·认·同·属·既 各三遍。标出每个形声字的结构（形旁+声旁）。",
+        "背诵《静夜思》，说说你对\"故乡\"的新理解。"
+       ],
+       [
+        "2",
+        "抄写生词：身份·文化·移民·属于·融合·自豪 各三遍。默写：身·份·认。",
+        "朗读课文给家人听，请家人签字。"
+       ],
+       [
+        "3",
+        "从课文中找\"既是…又是…\"和\"对我来说…\"的句子，各抄一句。默写：同·属·既。",
+        "口头说说跨文化身份的优势（至少三个）。"
+       ],
+       [
+        "4",
+        "写一篇反思文章《学中文对我的意义》（120–150字）。同学互评修改。",
+        "把文章读给家人听，问他们的意见和反馈。"
+       ],
+       [
+        "5",
+        "根据反馈写最终版本。默写全单元六字并完成形声分析。",
+        "口头总结：你对\"身份\"有了什么新的认识？"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "融",
+      "py": "róng",
+      "strokes": "16",
+      "radical": "虫",
+      "words": "形声: 鬲(炊具,形)+虫(声)。热气上升、冰雪融化→不同东西融合、和谐共处。"
+     },
+     {
+      "char": "骄",
+      "py": "jiāo",
+      "strokes": "9",
+      "radical": "马",
+      "words": "形声: 马(形)+乔(声)。本义高大的马→骄傲、自豪。马象征力量和高贵。"
+     },
+     {
+      "char": "傲",
+      "py": "ào",
+      "strokes": "12",
+      "radical": "亻",
+      "words": "形声: 亻(人,形)+敖(声)。人昂头挺胸→\"骄傲\"可褒（自豪）也可贬（自负）。"
+     },
+     {
+      "char": "根",
+      "py": "gēn",
+      "strokes": "10",
+      "radical": "木",
+      "words": "形声: 木(树木,形)+艮(声)。植物的根→事物的根本、来源。你的根在哪里？"
+     }
+    ],
+    "furtherCharsTitle": "字 — 融·骄·傲·根",
+    "radical": {
+     "titleZh": "部首角 — 讠（言字旁）家族",
+     "titleEn": "Radical Corner",
+     "intro": "讠是\"言\"的简写，表示\"说话、语言\"。本单元的\"认\"(讠+人)就是\"用语言去辨别\"。讠字家族的核心都是\"用语言做事\"：",
+     "family": [
+      {
+       "zh": "说",
+       "py": "shuō",
+       "en": "say"
+      },
+      {
+       "zh": "话",
+       "py": "huà",
+       "en": "speech"
+      },
+      {
+       "zh": "认",
+       "py": "rèn",
+       "en": "recognise"
+      },
+      {
+       "zh": "识",
+       "py": "shí",
+       "en": "know"
+      },
+      {
+       "zh": "记",
+       "py": "jì",
+       "en": "remember"
+      },
+      {
+       "zh": "讲",
+       "py": "jiǎng",
+       "en": "explain"
+      },
+      {
+       "zh": "读",
+       "py": "dú",
+       "en": "read"
+      },
+      {
+       "zh": "让",
+       "py": "ràng",
+       "en": "yield"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读 — 两种语言，两个世界",
+     "titleEn": "Read · ~180 字",
+     "paragraphs": [
+      "我最好的朋友也是华裔¹澳大利亚人。我们在一起的时候，常常一会儿说中文，一会儿说英文。有时候一句话里，前一半是英文，后一半是中文——我们觉得这样最自然。",
+      "有一次，同学的妈妈问我们：\"你们为什么总在两种语言之间跳来跳去？会不会搞混²？\"我们笑了。对我们来说，这不是\"搞混\"，而是\"融合\"。就像吃东西——早餐吃麦片³，晚餐吃米饭；就像节日——既过圣诞节，也过春节。两种语言，就是我们的两个世界。不需要选一个，因为两个都是我们的。"
+     ],
+     "footnotes": "注释 ¹ 华裔 = of Chinese descent · ² 搞混 = mix up · ³ 麦片 = cereal"
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write · VCE 风格反思 · 120–150 字",
+     "prompt": "题目：《我的跨文化身份》。第一段：用\"对我来说…\"开头，说说你的文化身份。第二段：用\"既是…又是…\"描述两种文化对你的影响，举一个具体例子。第三段：用\"属于\"说说你希望自己的身份怎样继续成长。提示：可以参考课文的\"树\"比喻，或创造你自己的比喻。",
+     "en": "Write · VCE 风格反思 · 120–150 字"
+    }
+   }
+  },
+  {
+   "n": 7,
+   "id": "u7",
+   "theme": {
+    "zh": "文学与艺术",
+    "en": "Literature & Art"
+   },
+   "objective": {
+    "zh": "读懂并回应一首古诗，说出它表达了什么感情。",
+    "en": "Read and respond to a classical poem, naming the feeling it expresses."
+   },
+   "core": {
+    "review": [
+     "读一读: 一边用手指跟着笔画写，一边读出 — 诗·词·表·达·描·写·讲·言·说·文·艺·术·感·情",
+     "部首回顾: 讠（言字旁）→ 诗·词·讲·说·话·语。讠是\"言\"的简化，跟说话、语言有关。你还能想到哪些带讠的字？",
+     "说一说: ① 诗和普通文章有什么不一样？你会怎么跟一个没学过诗的人解释？ ② 你读过哪些中国诗？最喜欢哪一首？为什么？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《春晓》 孟浩然",
+      "titleEn": "Recite · Spring Dawn · (唐)",
+      "poem": "《春晓》",
+      "poemPinyin": "chūn xiǎo",
+      "lines": [
+       {
+        "zh": "春眠不觉晓，处处闻啼鸟。",
+        "py": "chūn mián bù jué xiǎo chù chù wén tí niǎo"
+       },
+       {
+        "zh": "夜来风雨声，花落知多少。",
+        "py": "yè lái fēng yǔ shēng huā luò zhī duō shǎo"
+       }
+      ],
+      "meaning": "意译 — 春天睡得香甜，不知不觉天已经亮了，到处都能听到鸟儿的叫声。昨夜里听到风声雨声，不知道有多少花儿被打落了。",
+      "note": "诗人背景: 孟浩然（689—740），唐朝山水田园诗人，诗风清新自然。全班可同时复习《静夜思》——两首诗，一首写思乡，一首写春日，都用最简单的语言写出最真的感受。"
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "诗",
+      "strokes": "8 笔 strokes",
+      "breakdown": "形声 讠(形) + 寺(声 sì→shī)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "讠 (言字旁) — 跟说话、语言有关",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。讠(言,形旁) 表示跟语言有关；寺(声旁) 提示读音。古代\"诗\"是一种有韵律的语言。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "古诗 · 诗人 · 诗歌",
+        "en": "ancient poem · poet · poetry"
+       },
+       {
+        "term": "造句",
+        "zh": "我最喜欢的古诗是李白的《静夜思》。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "词",
+      "strokes": "7 笔 strokes",
+      "breakdown": "形声 讠(形) + 司(声 sī→cí)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "讠 (言字旁) — 跟说话、语言有关",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。讠(言,形旁) 表示跟语言有关；司(声旁) 提示读音。古代\"词\"也是一种诗歌形式（宋词）。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "词语 · 词典 · 宋词",
+        "en": "word · dictionary · Song lyric"
+       },
+       {
+        "term": "造句",
+        "zh": "这个词我不认识，你能帮我查一查词典吗？",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "表",
+      "strokes": "8 笔 strokes",
+      "breakdown": "会意 毛(皮毛) + 衣(衣服)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "衣 (衣字底)",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "会意。上面是\"毛\"(皮毛)，下面是\"衣\"(衣服)，本义是衣服的外层。引申为\"表达\"——把内心的东西表现出来。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "表达 · 表示 · 手表",
+        "en": "express · indicate · watch"
+       },
+       {
+        "term": "造句",
+        "zh": "这首诗表达了诗人对故乡的思念。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "达",
+      "strokes": "6 笔 strokes",
+      "breakdown": "形声 辶(形) + 大(声 dà)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "辶 (走之底) — 跟走路、移动有关",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。辶(chuò,形旁) 表示跟行走、到达有关；大(声旁) 提示读音。本义是\"到达\"，后引申为\"表达\"——把意思传达出去。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "表达 · 到达 · 发达",
+        "en": "express · arrive · developed"
+       },
+       {
+        "term": "造句",
+        "zh": "他用中文清楚地表达了自己的想法。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "描",
+      "strokes": "11 笔 strokes",
+      "breakdown": "形声 扌(形) + 苗(声 miáo)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "扌 (提手旁) — 跟手和动作有关",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。扌(手,形旁) 表示用手描绘；苗(声旁) 提示读音。本义是用手描摹，引申为用语言描写。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "描写 · 描述 · 描红",
+        "en": "describe · depict · trace in red"
+       },
+       {
+        "term": "造句",
+        "zh": "这段文章描写了春天的美景。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "写",
+      "strokes": "5 笔 strokes",
+      "breakdown": "形声 冖(秃宝盖) + 与",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "冖 (秃宝盖) — 像覆盖的盖子",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。冖是形旁，本义是把东西放置到屋里。后引申为\"书写\"。复习字——本单元再次巩固。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "描写 · 写作 · 写字",
+        "en": "describe · writing · write"
+       },
+       {
+        "term": "造句",
+        "zh": "请把这首诗写下来。",
+        "en": ""
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (6) · Characters · stroke order · 字源 · 组词",
+    "recognise": [
+     "景",
+     "物",
+     "意",
+     "境",
+     "流",
+     "传"
+    ],
+    "vocab": [
+     {
+      "zh": "诗",
+      "py": "",
+      "en": "poem"
+     },
+     {
+      "zh": "古诗",
+      "py": "",
+      "en": "ancient poem"
+     },
+     {
+      "zh": "诗人",
+      "py": "",
+      "en": "poet"
+     },
+     {
+      "zh": "表达",
+      "py": "",
+      "en": "express"
+     },
+     {
+      "zh": "描写",
+      "py": "",
+      "en": "describe, depict"
+     },
+     {
+      "zh": "感情",
+      "py": "",
+      "en": "emotion, feeling"
+     },
+     {
+      "zh": "意境",
+      "py": "",
+      "en": "artistic conception"
+     },
+     {
+      "zh": "月亮",
+      "py": "",
+      "en": "moon"
+     },
+     {
+      "zh": "故乡",
+      "py": "",
+      "en": "hometown"
+     },
+     {
+      "zh": "思念",
+      "py": "",
+      "en": "miss, think of"
+     },
+     {
+      "zh": "文学",
+      "py": "",
+      "en": "literature"
+     },
+     {
+      "zh": "艺术",
+      "py": "",
+      "en": "art"
+     },
+     {
+      "zh": "欣赏",
+      "py": "",
+      "en": "appreciate"
+     },
+     {
+      "zh": "打动",
+      "py": "",
+      "en": "move (emotionally)"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "这首诗表达了…",
+      "py": "zhè shǒu shī biǎo dá le",
+      "en": "this poem expresses…"
+     },
+     {
+      "zh": "描写了…",
+      "py": "miáo xiě le",
+      "en": "it describes / depicts…"
+     },
+     {
+      "zh": "让我想起…",
+      "py": "ràng wǒ xiǎng qǐ",
+      "en": "it reminds me of…"
+     }
+    ],
+    "text": {
+     "kind": "reading",
+     "titleZh": "课文 — 诗歌赏析",
+     "titleEn": "Text · Poem Appreciation",
+     "readingTitle": "《静夜思》— 李白（唐）",
+     "paragraphs": [
+      "这首诗只有二十个字，可是它表达的思念之情，一千多年来打动了无数读者。诗人李白深夜睡不着，看到床前的月光。月光太亮了，亮得像地上结了一层白霜。他抬起头望向天上的明月，又慢慢低下头——想到了远方的故乡。",
+      "\"举头\"和\"低头\"，不只是动作，更是心情的变化。月亮在这首诗里，不只是一种景物——它是连接诗人和故乡的一座桥。因为不管你在地球的哪个角落，看到的都是同一个月亮。这首诗让我想起：每次回中国看爷爷奶奶，离开的时候，我也总是不舍得。"
+     ],
+     "footnotes": "注释: 疑(yí)=好像 · 举(jǔ)=抬起 · 望(wàng)=看远处 · 思(sī)=思念"
+    },
+    "culture": {
+     "zh": "李白（701—762）是唐朝最伟大的诗人之一，被称为\"诗仙\"¹。唐诗是中国文学的高峰。唐朝（618—907）是中国历史上文化最繁荣²的朝代³之一，留下了近五万首诗。除了李白，还有杜甫（\"诗圣\"⁴）、王维、白居易等伟大的诗人。唐诗让世界看到了中国语言的美。",
+     "en": "¹ 诗仙 immortal poet · ² 繁荣 flourishing · ³ 朝代 dynasty · ⁴ 诗圣 sage of poetry"
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，说感情 · Listen & name the feeling. 老师有感情地朗诵《静夜思》，听完回答：① 这首诗描写了什么？ ② 表达了什么感情？",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "配对 · Match. 把诗句和它的大意连起来。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "朗读与感受 · Read aloud. 有感情地朗读《静夜思》三遍：第一遍慢读，感受每个字的音韵；第二遍闭上眼睛读，想象画面；第三遍用你自己的声音表达思念之情。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "赏析 · Appreciate（表达了… / 让我想起…）. ① 用\"表达了…\"说一句：《静夜思》表达了。 ② 用\"让我想起…\"写感受：这首诗让我想起。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional形声字分析 · Analyse. 诗（讠+寺）· 词（讠+司）——找出形旁（义符）和声旁（音符），各写一遍。你还能找到本单元其他的形声字吗？",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional写诗配画 · Illustrate. 选《静夜思》中最让你感动的一句，画一幅画来配这句诗，在画下面写上诗句。",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 诗歌朗读会",
+     "titleEn": "Activity · Poetry Recital",
+     "steps": [],
+     "frame": "我选的这首诗是《＿＿》，是＿＿（作者）写的。这首诗描写了＿＿，表达了＿＿的感情。我最喜欢的一句是\"＿＿\"，因为＿＿。我想用＿＿（什么样的声音/感情）来朗读这首诗。"
+    },
+    "speak": {
+     "label": "说一说 · 我最喜欢的诗 · Speak",
+     "frame": "我最喜欢的诗是《＿＿》。这首诗描写了＿＿。它表达了＿＿的感情。我最喜欢的一句是\"＿＿\"，因为它让我想起＿＿。这首诗的语言＿＿（简洁/优美/有力），读起来＿＿。"
+    },
+    "reflect": [
+     "有感情地背诵《静夜思》",
+     "说出《静夜思》表达了什么感情",
+     "用\"表达了…\"\"描写了…\"\"让我想起…\"说感受",
+     "读懂一首简单的古诗",
+     "写 诗·词·表·达·描·写",
+     "认出讠（言字旁）和辶（走之底）"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "背诵《静夜思》给家人听。"
+       ],
+       [
+        "2",
+        "朗读课文两遍，找到三个描写感情的词。"
+       ],
+       [
+        "3",
+        "查找一个关于李白的小故事，口头讲给家人听。"
+       ],
+       [
+        "4",
+        "口头赏析一首你喜欢的诗：说出诗名、作者、描写了什么、表达的感情。"
+       ],
+       [
+        "5",
+        "写 诗·词·表·达·描·写 各一遍（先书空，再落笔）。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：诗·词·表·达·描·写 各三遍。",
+        "背诵《静夜思》。"
+       ],
+       [
+        "2",
+        "抄写词语表（前8个）各三遍。默写：诗·词·表。",
+        "朗读课文，解释\"疑是地上霜\"的意思。"
+       ],
+       [
+        "3",
+        "从课文中找三个打动人心的句子，抄一遍。默写：达·描·写。",
+        "跟家人讨论：你有没有想念某个地方或某个人的时候？用什么来表达？"
+       ],
+       [
+        "4",
+        "写一篇文学赏析（120–150字）：赏析《静夜思》，包括作者、内容、表达的感情、你的感受。",
+        "把赏析读给一个人听，请对方给你反馈（peer review）。"
+       ],
+       [
+        "5",
+        "根据反馈修改赏析。默写全单元六字。",
+        "完成形声分析：诗（讠+寺）· 词（讠+司）· 描（扌+苗），各写出形旁和声旁。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "景",
+      "py": "jǐng",
+      "strokes": "12",
+      "radical": "日",
+      "words": "景色 (jǐngsè scenery) · 风景 (fēngjǐng landscape)"
+     },
+     {
+      "char": "物",
+      "py": "wù",
+      "strokes": "8",
+      "radical": "牜",
+      "words": "事物 (shìwù) · 景物 (jǐngwù) · 人物 (rénwù)"
+     },
+     {
+      "char": "意",
+      "py": "yì",
+      "strokes": "13",
+      "radical": "心",
+      "words": "意思 (yìsi) · 意境 (yìjìng) · 意义 (yìyì)"
+     },
+     {
+      "char": "境",
+      "py": "jìng",
+      "strokes": "14",
+      "radical": "土",
+      "words": "意境 (yìjìng) · 环境 (huánjìng) · 境界 (jìngjiè)"
+     }
+    ],
+    "furtherCharsTitle": "字 — 景·物·意·境",
+    "radical": {
+     "titleZh": "部首角 — 讠（言字旁）家族",
+     "titleEn": "Radical Corner",
+     "intro": "讠是\"言\"(yán) 的简化写法，出现在很多跟说话、语言、表达有关的字里。下面六个字都是形声字：形旁都是讠，声旁各不相同，提示读音。",
+     "family": []
+    },
+    "read": {
+     "titleZh": "读一读 — 唐诗之美",
+     "titleEn": "Read · ~250 字",
+     "paragraphs": [
+      "唐诗为什么能打动一代又一代的人？因为它用最简单的语言说出了最深的感情。",
+      "比如孟浩然的《春晓》：\"春眠不觉晓，处处闻啼鸟。夜来风雨声，花落知多少。\"这首诗只有二十个字，却让读者感受到春天的美好和一丝淡淡的伤感¹——花开得好好的，一夜风雨后，不知落了多少。",
+      "再看王维的《相思》：\"红豆²生南国，春来发几枝。愿君多采撷³，此物最相思。\"红豆本是南方的一种植物，但在诗人的笔下，它成了思念的象征⁴。这种把一个简单的景物变成情感的载体⁵的写法，就是唐诗了不起的地方。唐诗教给我们：好的文学不需要很多字，但每一个字都值得品味⁶。"
+     ],
+     "footnotes": "注释 ¹ 伤感 = sad feeling · ² 红豆 = red bean · ³ 采撷 = pick · ⁴ 象征 = symbol · ⁵ 载体 = carrier · ⁶ 品味 = savour"
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write · 文学赏析 · 120–150 字",
+     "prompt": "赏析孟浩然的《春晓》。要包括：这首诗写了什么内容、表达了什么样的感情、你最喜欢的一句是什么（为什么）、这首诗让你想起了什么。可以用\"描写了…\"\"表达了…\"\"让我想起…\"这些表达。",
+     "en": "Write · 文学赏析 · 120–150 字"
+    }
+   }
+  },
+  {
+   "n": 8,
+   "id": "u8",
+   "theme": {
+    "zh": "演讲与表达",
+    "en": "Presentation & Speaking"
+   },
+   "objective": {
+    "zh": "做一个有结构的短演讲，用\"首先…其次…最后…\"\"总之…\"。",
+    "en": "Give a structured short speech, using \"first… next… finally…\" and \"in summary…\"."
+   },
+   "core": {
+    "review": [
+     "读一读: 一边用手指跟着笔画写，一边读出 — 诗·词·表·达·描·写·讲·言·说·演·首·其·总·结",
+     "部首回顾: 讠（言字旁）→ 诗·词·讲·说·话·语·论·谈。回忆一下：讠旁的形声字有什么规律？",
+     "说一说: ① 好的演讲是什么样的？你听过让你印象深刻的演讲吗？ ② 如果让你做一分钟演讲，你会紧张吗？最难的是什么？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 全系列诗歌大回顾",
+      "titleEn": "Recite · (four-year recital journey)",
+      "poem": "",
+      "poemPinyin": "",
+      "lines": [],
+      "meaning": "",
+      "note": "从 B1 到 B4，我们一起走过的诗: 今天，全班一起选一首大声背诵，庆祝四年的诵读之旅！"
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "演",
+      "strokes": "14 笔 strokes",
+      "breakdown": "形声 氵(形) + 寅(声 yín→yǎn)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "氵 (三点水) — 水流延伸、铺开之义",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。氵(水,形旁) 本义是水流长远；寅(声旁) 提示读音。引申为\"表演\"（把东西展现出来）和\"演变\"。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "演讲 · 表演 · 演员",
+        "en": "speech · perform · actor"
+       },
+       {
+        "term": "造句",
+        "zh": "他在台上的演讲非常精彩，大家都被打动了。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "讲",
+      "strokes": "6 笔 strokes",
+      "breakdown": "形声 讠(形) + 冓(声 gòu→jiǎng)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "讠 (言字旁) — 跟说话、语言有关",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。讠(言,形旁) 表示跟说话有关；冓(声旁) 提示读音。本义是\"讲解、述说\"。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "演讲 · 讲话 · 讲课",
+        "en": "speech · talk · lecture"
+       },
+       {
+        "term": "造句",
+        "zh": "老师请每个同学讲一讲自己为什么学中文。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "首",
+      "strokes": "9 笔 strokes",
+      "breakdown": "象形 点·撇·横·撇·竖·横折·横·横·横",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "首 — 本身就是部首，像人的头",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "象形。古文字形像一个有头发和眼睛的头。本义是\"头\"，引申为\"第一\"\"首先\"。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "首先 · 首都 · 一首诗",
+        "en": "first of all · capital · a poem"
+       },
+       {
+        "term": "造句",
+        "zh": "首先，我想感谢大家的到来。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "其",
+      "strokes": "8 笔 strokes",
+      "breakdown": "象形 横·竖·竖·横·横·横·撇·点",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "八 (八字底)",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "象形。古文字像簸箕（bòji）的形状。后来借用作代词\"那、他（它）的\"。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "其次 · 其他 · 其中",
+        "en": "secondly · other · among them"
+       },
+       {
+        "term": "造句",
+        "zh": "我喜欢中文，其中一个原因是我可以读古诗。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "总",
+      "strokes": "9 笔 strokes",
+      "breakdown": "形声 忩(声) + 心(形)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "心 (心字底) — 跟思想和感情有关",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。心(形旁) 跟思想有关；上半部分是声旁。本义是\"汇总、概括\"，引申为\"总之\"\"总是\"。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "总之 · 总是 · 总结",
+        "en": "in summary · always · summarize"
+       },
+       {
+        "term": "造句",
+        "zh": "总之，学中文对我来说很重要。",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "结",
+      "strokes": "9 笔 strokes",
+      "breakdown": "形声 纟(形) + 吉(声 jí→jié)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "纟 (绞丝旁) — 跟丝线、编织有关",
+        "en": ""
+       },
+       {
+        "term": "字源",
+        "zh": "形声。纟(糸,形旁) 表示跟丝线有关；吉(声旁) 提示读音。本义是\"打结\"，引申为\"结束、结论\"——像把一根线打个结，把东西收拢起来。",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "总结 · 结束 · 结构",
+        "en": "conclude · finish · structure"
+       },
+       {
+        "term": "造句",
+        "zh": "演讲的最后，他用一句话做了总结。",
+        "en": ""
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (6) · Characters · stroke order · 字源 · 组词",
+    "recognise": [
+     "点",
+     "例",
+     "楚",
+     "信",
+     "众"
+    ],
+    "vocab": [
+     {
+      "zh": "演讲",
+      "py": "",
+      "en": "speech, lecture"
+     },
+     {
+      "zh": "首先",
+      "py": "",
+      "en": "first of all"
+     },
+     {
+      "zh": "其次",
+      "py": "",
+      "en": "next, secondly"
+     },
+     {
+      "zh": "最后",
+      "py": "",
+      "en": "finally, last"
+     },
+     {
+      "zh": "总之",
+      "py": "",
+      "en": "in summary"
+     },
+     {
+      "zh": "观点",
+      "py": "",
+      "en": "viewpoint"
+     },
+     {
+      "zh": "例子",
+      "py": "",
+      "en": "example"
+     },
+     {
+      "zh": "比如",
+      "py": "",
+      "en": "for example"
+     },
+     {
+      "zh": "清楚",
+      "py": "",
+      "en": "clear"
+     },
+     {
+      "zh": "自信",
+      "py": "",
+      "en": "confident"
+     },
+     {
+      "zh": "听众",
+      "py": "",
+      "en": "audience"
+     },
+     {
+      "zh": "结构",
+      "py": "",
+      "en": "structure"
+     },
+     {
+      "zh": "表达",
+      "py": "",
+      "en": "express"
+     },
+     {
+      "zh": "总结",
+      "py": "",
+      "en": "summarize"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "首先…其次…最后…",
+      "py": "shǒu xiān qí cì zuì hòu",
+      "en": "first… next… finally…"
+     },
+     {
+      "zh": "比如…",
+      "py": "bǐ rú",
+      "en": "for example…"
+     },
+     {
+      "zh": "总之…",
+      "py": "zǒng zhī",
+      "en": "in short…"
+     }
+    ],
+    "text": {
+     "kind": "reading",
+     "titleZh": "课文 — 演讲示范",
+     "titleEn": "Text · Model Speech",
+     "readingTitle": "我为什么学中文 — 一篇一分钟演讲",
+     "paragraphs": [
+      "老师们、同学们，大家好。今天我想谈谈我为什么学中文。",
+      "首先，中文是我的母语之一。学好中文，让我能更好地跟家人沟通¹，了解我的根²。",
+      "其次，会中文对我的未来很有帮助。中国是世界上人口最多的国家，经济发展³很快。比如，我认识一位叔叔，他因为会中文，在一家大公司找到了很好的工作。",
+      "最后，学中文让我看到了更大的世界。通过⁴中文，我可以读古诗、听中国歌、了解中国文化。",
+      "总之，学中文对我来说，不只是学一门语言，更是连接我和我的文化、我的未来的一座桥。谢谢大家。"
+     ],
+     "footnotes": "注释 footnotes ¹ 沟通 = communicate · ² 根 = roots · ³ 经济发展 = economic development · ⁴ 通过 = through"
+    },
+    "culture": {
+     "zh": "一个好的演讲有三个要素¹：清楚的观点、有力的例子、自信的表达。在中国学校，从小学开始就有\"课前三分钟演讲\"的活动——每天上课前，一个学生站在讲台上，就一个话题发表看法。这不仅是练习口才²，更是培养自信和逻辑思维³。在澳大利亚，演讲也是重要的能力——从课堂报告到求职面试⁴，好的表达能力会让你走得更远。",
+     "en": "¹ 要素 key element · ² 口才 eloquence · ³ 逻辑思维 logical thinking · ⁴ 求职面试 job interview"
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听演讲，找结构 · Listen & map the structure. 老师念一段一分钟演讲，写出它的结构，再说说结尾是怎么总结的。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "用\"首先…其次…最后…\"列提纲 · Outline. 选一个话题，列一个演讲提纲。话题： 首先， 其次， 最后， 总之，。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "用\"比如…\"举例 · Examples. ① 运动对健康很重要。比如，。 ② 读书可以让人变聪明。比如，。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "准备一分钟演讲稿 · Prepare. 选一个你熟悉的话题（我为什么喜欢运动／我喜欢的书／我的朋友），用\"首先…其次…最后…\"和\"总之…\"的结构，准备一篇一分钟演讲稿。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional分析好句子 · Analyse. 在课文中找出三个你觉得写得好的句子，抄写下来，说一说每个句子好在哪里。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional形声字分析 · Analyse. 讲（讠+冓）· 结（纟+吉）——找出形旁和声旁。想一想：部首讠和纟分别表示什么？",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 课堂演讲会",
+     "titleEn": "Activity · Class Speech Day",
+     "steps": [],
+     "frame": "演讲者: 老师们、同学们，大家好。今天我想谈谈＿＿。首先，＿＿。其次，＿＿。最后，＿＿。比如，＿＿。总之，＿＿。谢谢大家。"
+    },
+    "speak": {
+     "label": "说一说 · 一分钟演讲 · 话题自选",
+     "frame": "老师们、同学们，大家好。今天我想谈谈＿＿。首先，＿＿。其次，＿＿。比如，＿＿。最后，＿＿。总之，＿＿。谢谢大家！"
+    },
+    "reflect": [
+     "做一个有开头、中间、结尾的结构化演讲",
+     "用\"首先…其次…最后…\"组织内容",
+     "用\"比如…\"举例支持观点",
+     "用\"总之…\"做总结",
+     "写 演·讲·首·其·总·结",
+     "认出讠·纟·心 三个部首"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "背诵一首你最喜欢的中国诗，录下来自己听。"
+       ],
+       [
+        "2",
+        "写好一分钟演讲的提纲（用\"首先…其次…最后…\"结构）。"
+       ],
+       [
+        "3",
+        "朗读课文两遍，注意语气和停顿。"
+       ],
+       [
+        "4",
+        "对着镜子练习演讲，注意眼神和手势。"
+       ],
+       [
+        "5",
+        "写 演·讲·首·其·总·结 各一遍（先书空，再落笔）。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：演·讲·首·其·总·结 各三遍。",
+        "背诵一首学过的诗，并说说为什么喜欢。"
+       ],
+       [
+        "2",
+        "抄写词语表（前8个）各三遍。默写：演·讲·首。",
+        "朗读课文演讲稿，模仿演讲的语气。"
+       ],
+       [
+        "3",
+        "从课文中找三句用\"首先…其次…最后…\"或\"比如\"的句子，抄一遍。默写：其·总·结。",
+        "跟家人说说：你觉得课文里的演讲好在哪里？"
+       ],
+       [
+        "4",
+        "写一篇演讲稿（120–150字）：选一个话题，用课堂学到的演讲结构写。同学或家人互评。",
+        "把演讲稿读给对方听，请对方给三条反馈。"
+       ],
+       [
+        "5",
+        "根据反馈修改演讲稿，定稿。完成形声分析：讲（讠+冓）· 结（纟+吉）。",
+        "录一段两分钟的演讲录音。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "楚",
+      "py": "chǔ",
+      "strokes": "13",
+      "radical": "木",
+      "words": "清楚 (qīngchu) · 苦楚 (kǔchǔ)"
+     },
+     {
+      "char": "信",
+      "py": "xìn",
+      "strokes": "9",
+      "radical": "亻",
+      "words": "自信 (zìxìn) · 相信 (xiāngxìn) · 信用 (xìnyòng)"
+     },
+     {
+      "char": "众",
+      "py": "zhòng",
+      "strokes": "6",
+      "radical": "人",
+      "words": "听众 (tīngzhòng) · 观众 (guānzhòng) · 大众 (dàzhòng)"
+     },
+     {
+      "char": "例",
+      "py": "lì",
+      "strokes": "8",
+      "radical": "亻",
+      "words": "例子 (lìzi) · 比如 (bǐrú) · 例外 (lìwài)"
+     }
+    ],
+    "furtherCharsTitle": "字 — 楚·信·众·例",
+    "radical": {
+     "titleZh": "部首角 — 会意字探秘",
+     "titleEn": "Radical Corner",
+     "intro": "众 (zhòng) — audience, crowd: 品字形——三个人（人+人+人）叠在一起，表示\"很多人\"。这是最直观的会意方式之一。同类的会意字：",
+     "family": [
+      {
+       "zh": "从",
+       "py": "cóng",
+       "en": "两人相随"
+      },
+      {
+       "zh": "众",
+       "py": "zhòng",
+       "en": "三人成群"
+      },
+      {
+       "zh": "森",
+       "py": "sēn",
+       "en": "三木成林"
+      },
+      {
+       "zh": "晶",
+       "py": "jīng",
+       "en": "三日发光"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读 — 自信的力量",
+     "titleEn": "Read · ~280 字",
+     "paragraphs": [
+      "李华刚到澳大利亚的时候，一句英文都不会说。上课听不懂，下课没有朋友，他觉得很孤独¹。",
+      "有一天，老师让大家做自我介绍。李华很害怕——他怕自己的英文不好，别人会笑他。可是他想起爸爸说过的话：\"不会不可怕，不敢才可怕。\"于是他站了起来，慢慢地说：\"大家好，我叫李华。我来自中国。我正在学英文。\"就这几句话，他说得很吃力²，但是他说完了。",
+      "全班都安静了一秒——然后响起了掌声。下课后，好几个同学过来跟他说话，有一个叫汤姆的男孩说：\"你的发音不错！我们一起练习英文吧。\"从那以后，李华再也不怕开口了。他发现：自信不是天生³的，而是练出来的。每一次开口，都是在给自己增加一份勇气⁴。两年后，李华在全校演讲比赛中得了第二名。"
+     ],
+     "footnotes": "注释 ¹ 孤独 = lonely · ² 吃力 = with difficulty · ³ 天生 = innate · ⁴ 勇气 = courage"
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write · 两分钟演讲稿 · 120–150 字",
+     "prompt": "准备一个两分钟的口头演讲（录音或当堂讲）。话题二选一：A：我最骄傲的一件事——用\"首先…其次…最后…\"\"比如…\"\"总之…\"的结构，讲一件让你骄傲的事。B：学中文对我的意义——结合你自己的经历，说说学中文给了你什么。要求：120–150字的演讲稿，录音时长约两分钟。写好后先说给一个同学听，听取反馈再修改定稿。",
+     "en": "Write · 两分钟演讲稿 · 120–150 字"
+    }
+   }
+  }
+ ],
+ "endMatter": {
+  "review": {
+   "titleZh": "综合复习",
+   "titleEn": "Review Through Play",
+   "lead": "",
+   "blocks": [
+    {
+     "titleZh": "字卡快闪 & 形声 / 会意分析",
+     "titleEn": "Flash & Analyse",
+     "body": "认读全部 48 个核心学写字。从中分析至少 5 个形声字（说出形旁和声旁）和 3 个会意字（说出各部件如何组合出意思）。两人一组，一人出字卡，一人分析，再交换。"
+    },
+    {
+     "titleZh": "口语挑战",
+     "titleEn": "Speaking Challenge",
+     "body": "抽一张话题卡，用 30 秒准备，再说一分钟： ①未来规划②媒体看法③社会问题④历史故事⑤学习目标⑥跨文化身份⑦诗歌赏析⑧一分钟演讲"
+    },
+    {
+     "titleZh": "写作挑战",
+     "titleEn": "Writing Challenge · 读写作业",
+     "body": ""
+    }
+   ]
+  },
+  "appendix": {
+   "titleZh": "Band 4 学写字 (48)",
+   "titleEn": "with 形声 / 会意 analysis",
+   "rows": [
+    [
+     "1",
+     "将·希·望·未·努·功",
+     "形声: 努(力+奴) · 功(力+工)"
+    ],
+    [
+     "2",
+     "媒·闻·流·行·影·响",
+     "会意: 闻(门+耳)"
+    ],
+    [
+     "3",
+     "社·题·论·解·决·被",
+     "会意: 解(刀+牛+角)"
+    ],
+    [
+     "4",
+     "历·史·化·统·发·展",
+     "形声: 历(厂+力)"
+    ],
+    [
+     "5",
+     "职·业·选·择·适·合",
+     "形声: 职(耳+戠) · 择(扌+睪)"
+    ],
+    [
+     "6",
+     "身·份·认·同·属·既",
+     "形声: 份(亻+分)"
+    ],
+    [
+     "7",
+     "诗·词·表·达·描·写",
+     "形声: 诗(讠+寺) · 词(讠+司)"
+    ],
+    [
+     "8",
+     "演·讲·首·其·总·结",
+     "形声: 讲(讠+冓) · 结(纟+吉)"
+    ]
+   ]
+  }
+ }
+}

@@ -1,0 +1,4050 @@
+{
+ "band": "B2",
+ "name": "Elementary",
+ "cn": "初级",
+ "subtitle": "Band 2 · Elementary",
+ "years": "Year 3 – 4",
+ "level": "Aligned to and exceeding VCAA Levels 3 & 4F–10 Sequence v2.0",
+ "frontMatter": {
+  "dearStudent": {
+   "titleZh": "欢迎回来！",
+   "titleEn": "Welcome back",
+   "lead": "In Band 2, you will talk about your day, school, weather, hobbies, shopping, and festivals. You will learn 6 new characters every unit — about 48 this year — and start learning about radicals (部首 bùshǒu) that help you understand characters faster.",
+   "leadEn": ""
+  },
+  "conventions": [
+   {
+    "zh": "生词带拼音 — pinyin on new words. Characters you already know appear without pinyin; new words still show it. The pinyin is fading — you're reading more on your own!",
+    "en": ""
+   },
+   {
+    "zh": "你的作业 — which homework do you do? There are two kinds: 听说作业 (listening & speaking — talk lots, write a little) and 读写作业 (reading & writing — speak, and also read and write more).",
+    "en": ""
+   },
+   {
+    "zh": "复习 — every unit starts with review. A quick warm-up of what you already learned.",
+    "en": ""
+   },
+   {
+    "zh": "生字 — six new characters each unit. 48 across the book, each with stroke order, a radical, a compound word, an example sentence, and a 田字格 to write in.",
+    "en": ""
+   },
+   {
+    "zh": "诵读 — every unit has a poem. Poems show full pinyin above each line. Say them out loud and feel the rhythm.",
+    "en": ""
+   },
+   {
+    "zh": "带回家 — take it home, if you like. A short 5-day plan, bilingual, that you can finish on your own. It's optional.",
+    "en": ""
+   }
+  ]
+ },
+ "units": [
+  {
+   "n": 1,
+   "id": "u1",
+   "theme": {
+    "zh": "我的一天",
+    "en": "My Day"
+   },
+   "objective": {
+    "zh": "说出我一天的活动和时间，用“了”说做过的事。",
+    "en": "Describe my daily routine with times, and use 了 for completed actions."
+   },
+   "core": {
+    "review": [
+     "读一读: 口·大·人·你·好·家·一·二·三·手·小·吃·喝·看·写",
+     "部首快闪: 口字旁的字？女字旁？三点水？",
+     "说一说: 你早餐吃了什么？你几点吃早餐？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《早起歌》",
+      "titleEn": "Recite · Morning Routine Rhyme",
+      "poem": "《早起歌》",
+      "poemPinyin": "",
+      "lines": [
+       {
+        "zh": "太阳出来眯眯笑，小朋友们起得早。",
+        "py": "tài yáng chū lái mī mī xiào xiǎo péng yǒu men qǐ de zǎo"
+       },
+       {
+        "zh": "穿好衣裳刷好牙，天天上学不迟到。",
+        "py": "chuān hǎo yī shang shuā hǎo yá tiān tiān shàng xué bù chí dào"
+       }
+      ],
+      "meaning": "意思 — The sun comes out smiling. Children wake up early. Get dressed, brush teeth. Off to school — never late!",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "日",
+      "strokes": "4 笔bǐ strokes",
+      "breakdown": "①竖 ②横折 ③横 ④横",
+      "facts": [
+       {
+        "term": "看一看",
+        "zh": "\"日\" is a sun with a dot inside — originally a circle with a centre!",
+        "en": ""
+       },
+       {
+        "term": "部首",
+        "zh": "日字旁 — time & light words: 早·时·晚·明·星·春 (from B1!)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "日子 (rìzi) · 生日 (shēngrì)",
+        "en": "day · birthday"
+       },
+       {
+        "term": "句子",
+        "zh": "今天是一个好日子。",
+        "en": "Today is a good day."
+       }
+      ]
+     },
+     {
+      "char": "早",
+      "strokes": "6 笔bǐ strokes",
+      "breakdown": "①竖 ②横折 ③横 ④横 ⑤横 ⑥竖",
+      "facts": [
+       {
+        "term": "看一看",
+        "zh": "日 (sun) on top + 十 (ten) below. Sun at ten = still early morning!",
+        "en": ""
+       },
+       {
+        "term": "部首",
+        "zh": "日字旁",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "早上 (zǎoshang) · 早餐 (zǎocān)",
+        "en": "breakfast"
+       },
+       {
+        "term": "句子",
+        "zh": "我早上七点起床。",
+        "en": "I get up at 7."
+       }
+      ]
+     },
+     {
+      "char": "上",
+      "strokes": "3 笔bǐ strokes",
+      "breakdown": "①竖 ②横 ③横",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "上学 (shàngxué) · 早上 (zǎoshang)",
+        "en": "go to school"
+       },
+       {
+        "term": "句子",
+        "zh": "我八点半上学。",
+        "en": "I go to school at 8:30."
+       }
+      ]
+     },
+     {
+      "char": "时",
+      "strokes": "7 笔bǐ strokes",
+      "breakdown": "①竖 ②横折 ③横 ④横 ⑤横 ⑥竖钩 ⑦点",
+      "facts": [
+       {
+        "term": "看一看",
+        "zh": "Left 日 (day) + right 寸 (measure). Measuring the day = time!",
+        "en": ""
+       },
+       {
+        "term": "部首",
+        "zh": "日字旁 (left side)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "时间 (shíjiān) · 小时 (xiǎoshí)",
+        "en": "hour"
+       },
+       {
+        "term": "句子",
+        "zh": "现在几点？",
+        "en": "What time is it now?"
+       }
+      ]
+     },
+     {
+      "char": "了",
+      "strokes": "2 笔bǐ strokes",
+      "breakdown": "①横钩 ②竖钩",
+      "facts": [
+       {
+        "term": "语法",
+        "zh": "了 goes after a verb to show the action is done. 吃了 = ate. 起床了 = got up.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "吃了 (chīle) · 去了 (qùle) · 起床了 (qǐchuángle)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我七点起床了。",
+        "en": "I got up at 7."
+       }
+      ]
+     },
+     {
+      "char": "晚",
+      "strokes": "11 笔bǐ strokes",
+      "breakdown": "①竖 ②横折 ③横 ④横 ⑤撇 ⑥横折 ⑦竖 ⑧横折 ⑨横 ⑩撇 ⑪竖折折钩",
+      "facts": [
+       {
+        "term": "看一看",
+        "zh": "Left 日 (day) + right part for sound. The sun setting = evening!",
+        "en": ""
+       },
+       {
+        "term": "部首",
+        "zh": "日字旁",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "晚上 (wǎnshang) · 晚餐 (wǎncān) · 晚安 (wǎn’ān)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我晚上九点睡觉。",
+        "en": "I go to bed at 9."
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (6) · Characters",
+    "recognise": [
+     "起",
+     "床",
+     "饭",
+     "睡",
+     "觉",
+     "午",
+     "放",
+     "学"
+    ],
+    "vocab": [
+     {
+      "zh": "起床",
+      "py": "qǐchuáng",
+      "en": "get up"
+     },
+     {
+      "zh": "上学",
+      "py": "shàngxué",
+      "en": "go to school"
+     },
+     {
+      "zh": "吃饭",
+      "py": "chīfàn",
+      "en": "eat a meal"
+     },
+     {
+      "zh": "睡觉",
+      "py": "shuìjiào",
+      "en": "sleep"
+     },
+     {
+      "zh": "刷牙",
+      "py": "shuāyá",
+      "en": "brush teeth"
+     },
+     {
+      "zh": "早上",
+      "py": "zǎoshang",
+      "en": "morning"
+     },
+     {
+      "zh": "中午",
+      "py": "zhōngwǔ",
+      "en": "midday"
+     },
+     {
+      "zh": "下午",
+      "py": "xiàwǔ",
+      "en": "afternoon"
+     },
+     {
+      "zh": "晚上",
+      "py": "wǎnshang",
+      "en": "evening"
+     },
+     {
+      "zh": "几点",
+      "py": "jǐ diǎn",
+      "en": "what time"
+     },
+     {
+      "zh": "…点半",
+      "py": "…diǎn bàn",
+      "en": "half past…"
+     },
+     {
+      "zh": "先…然后…",
+      "py": "xiān…ránhòu…",
+      "en": "first…then…"
+     },
+     {
+      "zh": "放学",
+      "py": "fàngxué",
+      "en": "school ends"
+     },
+     {
+      "zh": "看书",
+      "py": "kàn shū",
+      "en": "read a book"
+     },
+     {
+      "zh": "了",
+      "py": "le",
+      "en": "(completed action)"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "几点…",
+      "py": "jǐ diǎn",
+      "en": "at what time…?"
+     },
+     {
+      "zh": "先…然后…",
+      "py": "xiān rán hòu",
+      "en": "first…, then…"
+     },
+     {
+      "zh": "(动词)了",
+      "py": "le",
+      "en": "(verb) + 了 — already done"
+     },
+     {
+      "zh": "早上/晚上",
+      "py": "zǎo shang wǎn shang",
+      "en": "in the morning / evening"
+     }
+    ],
+    "text": {
+     "kind": "dialogue",
+     "titleZh": "课文 — 对话",
+     "titleEn": "Text · Dialogue · ~100 字",
+     "lead": "安娜和明明在聊天。",
+     "turns": [
+      {
+       "who": "安娜",
+       "say": "小明，你几点起床？",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "我早上七点起床了。",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "然后你做什么？",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "我先刷牙、吃饭，然后八点半上学。",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "下午呢？放学以后做什么？",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "我先做作业，然后看书。",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "你几点睡觉？",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "我晚上九点睡觉了。我的一天很忙！",
+       "py": ""
+      }
+     ]
+    },
+    "culture": {
+     "zh": "在中国，很多学生中午在学校吃午饭（午餐 wǔcān），下午还有课，放学比澳大利亚晚，常常四五点才放学。有些学生晚上还要上补习班 (bǔxíbān)。",
+     "en": "In China, many students eat lunch at school and finish later — often 4 or 5 pm. Some even go to extra classes (补习班) in the evening."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，排序 Listen & number. 老师念小明的一天，按你听到的在词下写 1–5。",
+      "en": "Number the actions 1–5 as you hear Mingming’s day."
+     },
+     {
+      "optional": false,
+      "text": "连一连 Match. Match each word to its meaning.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "问答 Ask & Answer. 你几点起床？你几点睡觉？用“先…然后…”说你的早上。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "画钟写时间 Draw the clock, write the time. 画两个钟面：我早上＿点起床，我晚上＿点睡觉。再写下来。",
+      "en": "Draw the hands on two clock faces for when you get up / go to bed, then write the times."
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional用“了”改写 Rewrite with 了. 我七点起床。→ 我七点起床了。我吃饭。→ 我。我上学。→ 我。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional部首找一找 Find the radical. 圈出带“日字旁”的字：",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 我的时间表",
+     "titleEn": "Activity · My Timetable",
+     "steps": [
+      "画一个钟面或写时间。",
+      "跟同学说：",
+      "问同学：你几点起床？几点睡觉？"
+     ],
+     "frame": "我早上＿＿点起床。我先＿＿，然后＿＿。我晚上＿＿点睡觉。"
+    },
+    "speak": {
+     "label": "说一说 · Speak",
+     "frame": "我的一天：我早上＿＿点起床。我先＿＿，然后＿＿。下午我＿＿。我晚上＿＿点睡觉。我很忙！"
+    },
+    "reflect": [
+     "说我早上/下午/晚上做什么",
+     "问和说时间",
+     "用“先…然后…”",
+     "用“了”说做过的事",
+     "写 日·早·上·时·了·晚",
+     "找到日字旁的字"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "念《早起歌》给家人听 (niàn 《zǎo qǐ gē》)。"
+       ],
+       [
+        "2",
+        "用中文说你的早上（用 先…然后…）。"
+       ],
+       [
+        "3",
+        "教家人说“我__点起床了”。"
+       ],
+       [
+        "4",
+        "画你一天的四个活动，标时间。"
+       ],
+       [
+        "5",
+        "写 日·早·上·时·了·晚 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：日·早·上·时·了·晚 各三遍。",
+        "念《早起歌》给家人听。"
+       ],
+       [
+        "2",
+        "抄写：早上·晚上·几点 各三遍。默写：日·早·上。",
+        "用“先…然后…”说你的早上给家人听。"
+       ],
+       [
+        "3",
+        "抄写：我早上七点起床了。我晚上九点睡觉了。各两遍。默写：时·了·晚。",
+        "教一个家人说“我__点起床了”。"
+       ],
+       [
+        "4",
+        "写一段话介绍你的一天 — 4-5句。默写：日·早·上·时·了·晚。",
+        "录一段中文说你的一天。"
+       ],
+       [
+        "5",
+        "默写全单元 6 字。修改短文。",
+        "找出三个带日字旁的字，各组一个词。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "起",
+      "py": "qǐ",
+      "strokes": "10",
+      "radical": "走",
+      "words": "起床 (qǐchuáng) · 起来 (qǐlái)"
+     },
+     {
+      "char": "睡",
+      "py": "shuì",
+      "strokes": "13",
+      "radical": "目",
+      "words": "睡觉 (shuìjiào) · 睡着 (shuìzháo)"
+     },
+     {
+      "char": "饭",
+      "py": "fàn",
+      "strokes": "7",
+      "radical": "饣(食)",
+      "words": "吃饭 (chīfàn) · 早饭 (zǎofàn)"
+     },
+     {
+      "char": "午",
+      "py": "wǔ",
+      "strokes": "4",
+      "radical": "十",
+      "words": "中午 (zhōngwǔ) · 下午 (xiàwǔ)"
+     }
+    ],
+    "furtherCharsTitle": "字",
+    "radical": {
+     "titleZh": "部首角",
+     "titleEn": "Radical Corner",
+     "intro": "When 日 sits on the left, the character is often about time: 日(rì)·早(zǎo)·时(shí)·晚(wǎn)·明(míng)·星(xīng)·春(chūn, from B1!). Can you find three 日字旁 characters in this unit?",
+     "family": [
+      {
+       "zh": "日",
+       "py": "rì",
+       "en": "day"
+      },
+      {
+       "zh": "早",
+       "py": "zǎo",
+       "en": "early"
+      },
+      {
+       "zh": "时",
+       "py": "shí",
+       "en": "time"
+      },
+      {
+       "zh": "晚",
+       "py": "wǎn",
+       "en": "evening"
+      },
+      {
+       "zh": "明",
+       "py": "míng",
+       "en": "bright"
+      },
+      {
+       "zh": "星",
+       "py": "xīng",
+       "en": "star"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read",
+     "paragraphs": [
+      "小明每天早上七点起床。他先刷牙、吃早饭，然后八点半去上学。中午，他在学校吃午饭。下午三点放学，他先做作业，然后看一会儿书。晚上九点，小明就睡觉了。小明的一天很忙，可是很开心。"
+     ],
+     "footnotes": ""
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写一段话介绍你的一天 — 5-7句。用上 几点、先…然后…、早上/下午/晚上、了。",
+     "en": "Write · Write a paragraph about your day."
+    }
+   }
+  },
+  {
+   "n": 2,
+   "id": "u2",
+   "theme": {
+    "zh": "我的学校",
+    "en": "My School"
+   },
+   "objective": {
+    "zh": "说学校的科目和我喜欢什么，用“因为”给理由。",
+    "en": "Talk about school subjects and give reasons with 因为."
+   },
+   "core": {
+    "review": [
+     "读一读: 日·早·上·时·了·晚 + 家·学·看·写",
+     "部首快闪: 日字旁的字有哪些？",
+     "说一说: 你几点上学？你喜欢上学吗？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 课堂韵律",
+      "titleEn": "Recite · Classroom Rhyme",
+      "poem": "",
+      "poemPinyin": "",
+      "lines": [
+       {
+        "zh": "上课铃声响，快快进课堂。",
+        "py": "shàng kè líng shēng xiǎng kuài kuài jìn kè táng"
+       },
+       {
+        "zh": "书本摆整齐，等着老师把课上。",
+        "py": "shū běn bǎi zhěng qí děng zhe lǎo shī bǎ kè shàng"
+       }
+      ],
+      "meaning": "意思 — The bell rings — quickly to class. Books ready, waiting for the teacher.",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "学",
+      "strokes": "8 笔bǐ strokes",
+      "breakdown": "①点 ②点 ③撇 ④点 ⑤横钩 ⑥横钩 ⑦竖钩 ⑧横",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "子 (child — learning begins young!)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "学校 (xuéxiào) · 学习 (xuéxí) · 同学 (tóngxué)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我喜欢上学。",
+        "en": "I like going to school."
+       }
+      ]
+     },
+     {
+      "char": "校",
+      "strokes": "10 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "木 (tree — ancient schools were under trees!)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "学校 (xuéxiào) · 校长 (xiàozhǎng)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我们的学校很大。",
+        "en": "Our school is very big."
+       }
+      ]
+     },
+     {
+      "char": "课",
+      "strokes": "10 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "讠 (言字旁 — speech! Lessons involve talking.)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "上课 (shàngkè) · 下课 (xiàkè) · 课本 (kèběn)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我们今天有中文课。",
+        "en": "We have Chinese class today."
+       }
+      ]
+     },
+     {
+      "char": "文",
+      "strokes": "4 笔bǐ strokes",
+      "breakdown": "①点 ②横 ③撇 ④捺",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "中文 (Zhōngwén) · 英文 (Yīngwén) · 文化 (wénhuà)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我喜欢学中文。",
+        "en": "I like learning Chinese."
+       }
+      ]
+     },
+     {
+      "char": "因",
+      "strokes": "6 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "囗 (enclosure)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "因为 (yīnwèi) · 原因 (yuányīn)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我喜欢体育课，因为我喜欢运动。",
+        "en": "I like PE because I like sports."
+       }
+      ]
+     },
+     {
+      "char": "为",
+      "strokes": "4 笔bǐ strokes",
+      "breakdown": "①点 ②撇 ③横折钩 ④点",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "因为 (yīnwèi) · 为了 (wèile) · 为什么 (wèishénme)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "因为下雨了，我们不能去公园。",
+        "en": "Because it’s raining, we can’t go to the park."
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (6) · Characters",
+    "recognise": [
+     "数",
+     "体",
+     "育",
+     "美",
+     "术",
+     "音",
+     "科",
+     "英"
+    ],
+    "vocab": [
+     {
+      "zh": "学校",
+      "py": "xuéxiào",
+      "en": "school"
+     },
+     {
+      "zh": "上课",
+      "py": "shàngkè",
+      "en": "have class"
+     },
+     {
+      "zh": "下课",
+      "py": "xiàkè",
+      "en": "class ends"
+     },
+     {
+      "zh": "数学",
+      "py": "shùxué",
+      "en": "maths"
+     },
+     {
+      "zh": "体育",
+      "py": "tǐyù",
+      "en": "PE"
+     },
+     {
+      "zh": "美术",
+      "py": "měishù",
+      "en": "art"
+     },
+     {
+      "zh": "音乐",
+      "py": "yīnyuè",
+      "en": "music"
+     },
+     {
+      "zh": "科学",
+      "py": "kēxué",
+      "en": "science"
+     },
+     {
+      "zh": "中文",
+      "py": "Zhōngwén",
+      "en": "Chinese"
+     },
+     {
+      "zh": "英文",
+      "py": "Yīngwén",
+      "en": "English"
+     },
+     {
+      "zh": "因为",
+      "py": "yīnwèi",
+      "en": "because"
+     },
+     {
+      "zh": "喜欢",
+      "py": "xǐhuan",
+      "en": "like"
+     },
+     {
+      "zh": "最",
+      "py": "zuì",
+      "en": "most"
+     },
+     {
+      "zh": "有意思",
+      "py": "yǒuyìsi",
+      "en": "interesting"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "我们有…课",
+      "py": "wǒ men yǒu kè",
+      "en": "we have … class"
+     },
+     {
+      "zh": "我最喜欢…因为…",
+      "py": "wǒ zuì xǐ huan yīn wèi",
+      "en": "I like … best, because …"
+     },
+     {
+      "zh": "…很有意思",
+      "py": "hěn yǒu yì si",
+      "en": "… is really interesting"
+     }
+    ],
+    "text": {
+     "kind": "dialogue",
+     "titleZh": "课文 — 对话",
+     "titleEn": "Text · Dialogue · ~90 字",
+     "lead": "",
+     "turns": [
+      {
+       "who": "安娜",
+       "say": "你今天有什么课？",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "我们有数学、体育和中文课。",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "你最喜欢什么课？",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "我最喜欢体育课，因为我喜欢运动。你呢？",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "我喜欢美术，我会画画。",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "中文课也很有意思，因为我会写很多汉字了。",
+       "py": ""
+      }
+     ]
+    },
+    "culture": {
+     "zh": "在中国，学生从小学就开始学英文；在澳大利亚，很多学校也教中文。两个国家都很重视学外语。中国的学校一天通常有六七节课，上午四节、下午两三节。",
+     "en": "In China students start English in primary school; in Australia many schools teach Chinese. Both value language learning. A Chinese school day often has 6–7 lessons."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，打√ Listen & tick. 老师念今天的课，听到就打√。",
+      "en": "Tick the subjects you hear."
+     },
+     {
+      "optional": false,
+      "text": "连一连 Match. Match each subject to its meaning.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "问答 Ask & Answer. 你今天有什么课？你最喜欢什么课？为什么？（用“因为”）",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "写课表 My timetable. 填一填这个星期的课表，每天写一两门课，再说：“星期一我们有＿＿课。”",
+      "en": "Fill in this Mon–Fri grid with a class or two per day."
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional用“因为”说理由 Give reasons. 用“因为”说喜欢两门课的理由。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional部首找一找 Find the radical. 圈出带“讠(言字旁)”的字：",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 我的理想课表",
+     "titleEn": "Activity · My Ideal Timetable",
+     "steps": [],
+     "frame": ""
+    },
+    "speak": {
+     "label": "说一说 · Speak",
+     "frame": "我们学校有＿＿、＿＿和＿＿课。我最喜欢＿＿课，因为＿＿。＿＿课也很有意思。"
+    },
+    "reflect": [
+     "说六门课的中文名",
+     "用“因为”说理由",
+     "写 学·校·课·文·因·为",
+     "找到讠(言字旁)"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "念课堂韵律给家人听。"
+       ],
+       [
+        "2",
+        "说三样你学校的科目（中文）。"
+       ],
+       [
+        "3",
+        "教家人说“我最喜欢…课”。"
+       ],
+       [
+        "4",
+        "画你的课表，写三个科目。"
+       ],
+       [
+        "5",
+        "写 学·校·课·文·因·为 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：学·校·课·文·因·为 各三遍。",
+        "念课堂韵律。"
+       ],
+       [
+        "2",
+        "抄写：数学·体育·美术·音乐 各三遍。默写：学·校·课。",
+        "说科目给家人听。"
+       ],
+       [
+        "3",
+        "抄写：我最喜欢体育课，因为我喜欢运动。两遍。默写：文·因·为。",
+        "教家人说“我最喜欢…课”。"
+       ],
+       [
+        "4",
+        "写一段话介绍你的课表（4-5句）。默写全单元6字。",
+        "录一段中文说你的学校。"
+       ],
+       [
+        "5",
+        "修改短文。",
+        "找出三个带 讠 的字。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "数",
+      "py": "shù",
+      "strokes": "13",
+      "radical": "攵",
+      "words": "数学 (shùxué)"
+     },
+     {
+      "char": "音",
+      "py": "yīn",
+      "strokes": "9",
+      "radical": "音",
+      "words": "音乐 (yīnyuè)"
+     },
+     {
+      "char": "美",
+      "py": "měi",
+      "strokes": "9",
+      "radical": "羊",
+      "words": "美术 (měishù)"
+     }
+    ],
+    "furtherCharsTitle": "字",
+    "radical": {
+     "titleZh": "部首角",
+     "titleEn": "Radical Corner",
+     "intro": "Lessons and talking share the speech radical: 课·语·说·话·读 — all about words and speaking.",
+     "family": [
+      {
+       "zh": "课",
+       "py": "kè",
+       "en": "lesson"
+      },
+      {
+       "zh": "语",
+       "py": "yǔ",
+       "en": "language"
+      },
+      {
+       "zh": "说",
+       "py": "shuō",
+       "en": "speak"
+      },
+      {
+       "zh": "话",
+       "py": "huà",
+       "en": "talk"
+      },
+      {
+       "zh": "读",
+       "py": "dú",
+       "en": "read"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read",
+     "paragraphs": [
+      "我叫安娜，今年三年级。我们学校有很多课。我最喜欢美术课，因为我喜欢画画。我也喜欢中文课，因为我会写很多汉字了。"
+     ],
+     "footnotes": ""
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写一段话介绍你的学校和你喜欢的课（4-6句）。",
+     "en": "Write"
+    }
+   }
+  },
+  {
+   "n": 3,
+   "id": "u3",
+   "theme": {
+    "zh": "天气与季节",
+    "en": "Weather & Seasons"
+   },
+   "objective": {
+    "zh": "描述天气和季节，说我喜欢哪个季节和为什么。",
+    "en": "Describe weather and seasons, and say which I like and why."
+   },
+   "core": {
+    "review": [
+     "读一读: 学·校·课·文·日·早·时·春 · 天",
+     "说一说: 今天天气怎么样？你喜欢什么天气？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《春晓》",
+      "titleEn": "Recite · Spring Dawn · 孟浩然 (Táng)",
+      "poem": "《春晓》",
+      "poemPinyin": "chūn xiǎo",
+      "lines": [
+       {
+        "zh": "春眠不觉晓，处处闻啼鸟。",
+        "py": "chūn mián bù jué xiǎo chù chù wén tí niǎo"
+       },
+       {
+        "zh": "夜来风雨声，花落知多少。",
+        "py": "yè lái fēng yǔ shēng huā luò zhī duō shǎo"
+       }
+      ],
+      "meaning": "意思 — Spring sleep — unaware of dawn. Everywhere I hear birds singing. Last night, wind and rain. How many flowers have fallen?",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "天",
+      "strokes": "4 笔bǐ strokes",
+      "breakdown": "①横 ②横 ③撇 ④捺",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "天气 (tiānqì) · 今天 (jīntiān) · 春天 (chūntiān)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "今天天气很好。",
+        "en": "The weather is good today."
+       }
+      ]
+     },
+     {
+      "char": "气",
+      "strokes": "4 笔bǐ strokes",
+      "breakdown": "①撇 ②横 ③横 ④横折弯钩",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "天气 (tiānqì) · 空气 (kōngqì) · 生气 (shēngqì)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "今天的空气很新鲜。",
+        "en": "The air is fresh today."
+       }
+      ]
+     },
+     {
+      "char": "春",
+      "strokes": "9 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "日 (B1 review — learned in U8!)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "春天 (chūntiān) · 春节 (Chūnjié) · 春风 (chūnfēng)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "春天来了，花开了。",
+        "en": "Spring is here, flowers bloom."
+       }
+      ]
+     },
+     {
+      "char": "夏",
+      "strokes": "10 笔bǐ strokes",
+      "breakdown": "①横 ②撇 ③竖 ④横折 ⑤横 ⑥横 ⑦横 ⑧撇 ⑨横撇 ⑩捺",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "夏天 (xiàtiān) · 夏季 (xiàjì) · 夏令营 (xiàlìngyíng)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "夏天很热，我喜欢游泳。",
+        "en": "Summer is hot; I like swimming."
+       }
+      ]
+     },
+     {
+      "char": "冬",
+      "strokes": "5 笔bǐ strokes",
+      "breakdown": "①撇 ②横撇 ③捺 ④点 ⑤点",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "冬天 (dōngtiān) · 冬季 (dōngjì)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "冬天很冷，有时候下雪。",
+        "en": "Winter is cold; sometimes it snows."
+       }
+      ]
+     },
+     {
+      "char": "雨",
+      "strokes": "8 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "雨字头 → 雪 (xuě snow) · 雷 (léi thunder) — weather words!",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "下雨 (xiàyǔ) · 雨水 (yǔshuǐ) · 风雨 (fēngyǔ)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "今天下雨了，不能去公园。",
+        "en": "It’s raining; can’t go to the park."
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (6) · Characters",
+    "recognise": [
+     "秋",
+     "冷",
+     "热",
+     "晴",
+     "风",
+     "雪"
+    ],
+    "vocab": [
+     {
+      "zh": "天气",
+      "py": "tiānqì",
+      "en": "weather"
+     },
+     {
+      "zh": "晴天",
+      "py": "qíngtiān",
+      "en": "sunny"
+     },
+     {
+      "zh": "阴天",
+      "py": "yīntiān",
+      "en": "cloudy"
+     },
+     {
+      "zh": "下雨",
+      "py": "xiàyǔ",
+      "en": "rain"
+     },
+     {
+      "zh": "刮风",
+      "py": "guāfēng",
+      "en": "windy"
+     },
+     {
+      "zh": "春天",
+      "py": "chūntiān",
+      "en": "spring"
+     },
+     {
+      "zh": "夏天",
+      "py": "xiàtiān",
+      "en": "summer"
+     },
+     {
+      "zh": "秋天",
+      "py": "qiūtiān",
+      "en": "autumn"
+     },
+     {
+      "zh": "冬天",
+      "py": "dōngtiān",
+      "en": "winter"
+     },
+     {
+      "zh": "热",
+      "py": "rè",
+      "en": "hot"
+     },
+     {
+      "zh": "冷",
+      "py": "lěng",
+      "en": "cold"
+     },
+     {
+      "zh": "暖和",
+      "py": "nuǎnhuo",
+      "en": "warm"
+     },
+     {
+      "zh": "凉快",
+      "py": "liángkuai",
+      "en": "cool"
+     },
+     {
+      "zh": "舒服",
+      "py": "shūfu",
+      "en": "comfortable"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "今天天气…",
+      "py": "jīn tiān tiān qì",
+      "en": "today's weather is …"
+     },
+     {
+      "zh": "…天比较…",
+      "py": "tiān bǐ jiào",
+      "en": "… days are rather …"
+     },
+     {
+      "zh": "我喜欢…天因为…",
+      "py": "wǒ xǐ huan tiān yīn wèi",
+      "en": "I like … days because …"
+     }
+    ],
+    "text": {
+     "kind": "dialogue",
+     "titleZh": "课文 — 对话",
+     "titleEn": "Text · Dialogue · ~90 字",
+     "lead": "",
+     "turns": [
+      {
+       "who": "安娜",
+       "say": "今天天气怎么样？",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "今天是晴天，很暖和。",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "你喜欢哪个季节？",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "我喜欢夏天，因为可以游泳。可是夏天太热了。",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "我喜欢秋天，不冷也不热，很舒服。",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "对，秋天的天气最舒服。冬天会下雪吗？",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "墨尔本不常下雪，冬天只是比较冷。",
+       "py": ""
+      }
+     ]
+    },
+    "culture": {
+     "zh": "中国和澳大利亚的季节相反！中国冬天时澳大利亚是夏天。因为中国在北半球，澳大利亚在南半球。中国人过年穿棉袄，澳大利亚的圣诞节是夏天，穿短袖去海边。",
+     "en": "China and Australia have opposite seasons — when it’s winter in China it’s summer here, because they are in different hemispheres."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，圈一圈 Listen & circle. 老师念天气，圈出你听到的。",
+      "en": "Circle the weather you hear."
+     },
+     {
+      "optional": false,
+      "text": "连一连 Match. Match each weather word.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "季节配对 Season match. 把季节连到天气。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "填空 Fill in. 今天是天，比较。我喜欢天，因为。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional画四季图 Draw four seasons. 画四季图，每个写一句天气。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional部首找一找 Find the radical. 圈出带“雨字头”的字：",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 天气预报员",
+     "titleEn": "Activity · Weather Reporter",
+     "steps": [],
+     "frame": ""
+    },
+    "speak": {
+     "label": "说一说 · Speak",
+     "frame": "今天天气＿＿。我喜欢＿＿天，因为＿＿。＿＿天比较＿＿，不＿＿也不＿＿。"
+    },
+    "reflect": [
+     "说四种天气和四个季节",
+     "用“比较”描述",
+     "写 天·气·春·夏·冬·雨",
+     "找到雨字头"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "背诵《春晓》。"
+       ],
+       [
+        "2",
+        "看窗外说今天天气（中文）。"
+       ],
+       [
+        "3",
+        "教家人说“今天天气…”。"
+       ],
+       [
+        "4",
+        "画四季图，各写一句天气。"
+       ],
+       [
+        "5",
+        "写 天·气·春·夏·冬·雨 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：天·气·春·夏·冬·雨 各三遍。",
+        "背诵《春晓》。"
+       ],
+       [
+        "2",
+        "抄写：春天·夏天·秋天·冬天 各三遍。默写：天·气·春。",
+        "看窗外说天气。"
+       ],
+       [
+        "3",
+        "抄写：我喜欢秋天，不冷也不热。两遍。默写：夏·冬·雨。",
+        "教家人说“今天天气…”。"
+       ],
+       [
+        "4",
+        "写一段话介绍四季（5-6句）。默写全单元6字。",
+        "录一段天气预报。"
+       ],
+       [
+        "5",
+        "修改短文。",
+        "找三个带雨字头的字。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "秋",
+      "py": "qiū",
+      "strokes": "9",
+      "radical": "禾",
+      "words": "秋天 · 秋季"
+     },
+     {
+      "char": "冷",
+      "py": "lěng",
+      "strokes": "7",
+      "radical": "冫",
+      "words": "冷天 · 很冷"
+     },
+     {
+      "char": "热",
+      "py": "rè",
+      "strokes": "10",
+      "radical": "灬",
+      "words": "热天 · 很热"
+     },
+     {
+      "char": "雪",
+      "py": "xuě",
+      "strokes": "11",
+      "radical": "雨",
+      "words": "下雪 · 雪花"
+     }
+    ],
+    "furtherCharsTitle": "字",
+    "radical": {
+     "titleZh": "部首角",
+     "titleEn": "Radical Corner",
+     "intro": "雨字头: 雨·雪·雷·雾 (all weather!) · 冫(两点水): 冷·凉·冰·冻 (all cold!)",
+     "family": [
+      {
+       "zh": "雪",
+       "py": "xuě",
+       "en": "snow"
+      },
+      {
+       "zh": "雷",
+       "py": "léi",
+       "en": "thunder"
+      },
+      {
+       "zh": "冷",
+       "py": "lěng",
+       "en": "cold"
+      },
+      {
+       "zh": "冰",
+       "py": "bīng",
+       "en": "ice"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read",
+     "paragraphs": [
+      "澳大利亚有四个季节，可是和中国相反。十二月到二月是夏天，很热，大家去海边游泳。三月到五月是秋天，天气很舒服。六月到八月是冬天，有时候会下雨，可是不常下雪。九月到十一月是春天，花都开了，很漂亮。我最喜欢春天，因为不冷也不热。"
+     ],
+     "footnotes": ""
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写一段话介绍四季（4-6句）。用上 …天比较…、因为、我喜欢…天。",
+     "en": "Write"
+    }
+   }
+  },
+  {
+   "n": 4,
+   "id": "u4",
+   "theme": {
+    "zh": "活动与运动",
+    "en": "Hobbies & Sport"
+   },
+   "objective": {
+    "zh": "说我喜欢做什么运动，我会做什么。",
+    "en": "Say what sports and hobbies I like and what I can do."
+   },
+   "core": {
+    "review": [
+     "读一读: 天·气·春·夏·冬·雨 + 手·打·跑",
+     "部首: 提手旁的字？足字旁？",
+     "说一说: 周末你喜欢做什么？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 运动韵律",
+      "titleEn": "Recite · Sports Rhyme",
+      "poem": "",
+      "poemPinyin": "",
+      "lines": [
+       {
+        "zh": "拍拍手，跺跺脚，跑跑步来跳跳高。",
+        "py": "pāi pāi shǒu duò duò jiǎo pǎo pǎo bù lái tiào tiào gāo"
+       },
+       {
+        "zh": "天天运动身体好，快快乐乐长大了。",
+        "py": "tiān tiān yùn dòng shēn tǐ hǎo kuài kuài lè lè zhǎng dà le"
+       }
+      ],
+      "meaning": "意思 — Clap your hands, stomp your feet — run and jump! Exercise every day keeps you healthy and happy.",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "运",
+      "strokes": "7 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "辶 (走之底)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "运动 (yùndòng) · 好运 (hǎo yùn) · 运气 (yùnqì)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "运动对身体好。",
+        "en": "Exercise is good for you."
+       }
+      ]
+     },
+     {
+      "char": "动",
+      "strokes": "6 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "力 (strength)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "运动 (yùndòng) · 动物 (dòngwù) · 活动 (huódòng)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我喜欢运动。",
+        "en": "I like sports."
+       }
+      ]
+     },
+     {
+      "char": "打",
+      "strokes": "5 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "扌 (提手旁)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "打球 (dǎ qiú) · 打篮球 (dǎ lánqiú) · 打开 (dǎkāi)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我会打篮球。",
+        "en": "I can play basketball."
+       }
+      ]
+     },
+     {
+      "char": "踢",
+      "strokes": "15 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "⻊ (足字旁)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "踢足球 (tī zúqiú) · 踢球 (tī qiú)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "周末我和爸爸踢足球。",
+        "en": "On weekends I play soccer with Dad."
+       }
+      ]
+     },
+     {
+      "char": "跑",
+      "strokes": "12 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "⻊ (足字旁)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "跑步 (pǎobù) · 跑车 (pǎochē)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我每天早上跑步。",
+        "en": "I run every morning."
+       }
+      ]
+     },
+     {
+      "char": "游",
+      "strokes": "12 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "氵 (三点水)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "游泳 (yóuyǒng) · 游戏 (yóuxì) · 旅游 (lǚyóu)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "夏天我喜欢去海边游泳。",
+        "en": "In summer I like to swim at the beach."
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (6) · Characters",
+    "recognise": [
+     "球",
+     "篮",
+     "足",
+     "泳",
+     "骑",
+     "跳"
+    ],
+    "vocab": [
+     {
+      "zh": "运动",
+      "py": "yùndòng",
+      "en": "sport"
+     },
+     {
+      "zh": "足球",
+      "py": "zúqiú",
+      "en": "soccer"
+     },
+     {
+      "zh": "篮球",
+      "py": "lánqiú",
+      "en": "basketball"
+     },
+     {
+      "zh": "游泳",
+      "py": "yóuyǒng",
+      "en": "swimming"
+     },
+     {
+      "zh": "跑步",
+      "py": "pǎobù",
+      "en": "running"
+     },
+     {
+      "zh": "打",
+      "py": "dǎ",
+      "en": "play (hands)"
+     },
+     {
+      "zh": "踢",
+      "py": "tī",
+      "en": "kick"
+     },
+     {
+      "zh": "跑",
+      "py": "pǎo",
+      "en": "run"
+     },
+     {
+      "zh": "会",
+      "py": "huì",
+      "en": "can"
+     },
+     {
+      "zh": "周末",
+      "py": "zhōumò",
+      "en": "weekend"
+     },
+     {
+      "zh": "常常",
+      "py": "chángcháng",
+      "en": "often"
+     },
+     {
+      "zh": "一起",
+      "py": "yìqǐ",
+      "en": "together"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "我喜欢…",
+      "py": "wǒ xǐ huan",
+      "en": "I like …"
+     },
+     {
+      "zh": "我会…",
+      "py": "wǒ huì",
+      "en": "I can …"
+     },
+     {
+      "zh": "打/踢/跑/游",
+      "py": "dǎ tī pǎo yóu",
+      "en": "hit / kick / run / swim"
+     },
+     {
+      "zh": "周末我常常…",
+      "py": "zhōu mò wǒ cháng cháng",
+      "en": "on weekends I often …"
+     }
+    ],
+    "text": {
+     "kind": "dialogue",
+     "titleZh": "课文 — 对话",
+     "titleEn": "Text · Dialogue · ~90 字",
+     "lead": "",
+     "turns": [
+      {
+       "who": "安娜",
+       "say": "周末你喜欢做什么？",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "我喜欢踢足球，也喜欢游泳。你呢？",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "我喜欢打篮球和跑步。",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "你会游泳吗？",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "我不太会，可是我想学。",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "太好了！周末我们一起去运动吧！",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "好！星期六下午怎么样？",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "没问题！",
+       "py": ""
+      }
+     ]
+    },
+    "culture": {
+     "zh": "在中国，乒乓球和羽毛球最受欢迎；在澳大利亚，板球和澳式足球更流行。两国的孩子都喜欢运动！中国的学校每天都有体育课，学生还要做广播体操 (guǎngbō tǐcāo)。",
+     "en": "In China, table tennis and badminton are most popular; in Australia, cricket and Aussie Rules. Chinese schools have daily PE and morning exercises."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听与做 Listen & act. 听到“踢”做踢的动作，“打”做打的动作，“跑”原地跑，“游”做游泳。",
+      "en": "Hear the verb — do the action."
+     },
+     {
+      "optional": false,
+      "text": "连一连 Match (verb + sport). 把动词连到运动。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "问答 Ask & Answer. 你喜欢什么运动？你会什么？我会。我不太会。我想学。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "选词填空 Choose & fill. 我会篮球（打/踢）。周末我常常（游泳/跑步）。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional部首找一找 Find radicals. 圈出带“⻊(足字旁)”的字：",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional用“了” Use 了. 我昨天了。再写一句。",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 运动采访",
+     "titleEn": "Activity · Sports Survey",
+     "steps": [],
+     "frame": ""
+    },
+    "speak": {
+     "label": "说一说 · Speak",
+     "frame": "我喜欢＿＿和＿＿。我会＿＿。周末我常常＿＿。运动很有意思！"
+    },
+    "reflect": [
+     "说五种运动",
+     "用“打/踢/跑/游”说运动",
+     "说“我会/不太会”",
+     "写 运·动·打·踢·跑·游",
+     "区分⻊和扌"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "念运动韵律带动作。"
+       ],
+       [
+        "2",
+        "说三个你会做的运动。"
+       ],
+       [
+        "3",
+        "教家人说“我会…”。"
+       ],
+       [
+        "4",
+        "画你做运动的样子，写一句。"
+       ],
+       [
+        "5",
+        "写 运·动·打·踢·跑·游 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：运·动·打·踢·跑·游 各三遍。",
+        "念运动韵律带动作。"
+       ],
+       [
+        "2",
+        "抄写：足球·篮球·游泳·跑步 各三遍。默写：运·动·打。",
+        "说三个你会做的运动。"
+       ],
+       [
+        "3",
+        "抄写：我喜欢踢足球。我会游泳。各两遍。默写：踢·跑·游。",
+        "教家人说“我会…”。"
+       ],
+       [
+        "4",
+        "写一段话介绍你的周末运动（4-5句）。默写全单元6字。",
+        "录一段中文说你的运动。"
+       ],
+       [
+        "5",
+        "修改短文。",
+        "各找两个带⻊和扌的字。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "球",
+      "py": "qiú",
+      "strokes": "11",
+      "radical": "王",
+      "words": "足球 · 篮球"
+     },
+     {
+      "char": "篮",
+      "py": "lán",
+      "strokes": "16",
+      "radical": "⺮",
+      "words": "篮球 · 篮子"
+     },
+     {
+      "char": "跳",
+      "py": "tiào",
+      "strokes": "13",
+      "radical": "⻊",
+      "words": "跳高 · 跳舞"
+     },
+     {
+      "char": "泳",
+      "py": "yǒng",
+      "strokes": "8",
+      "radical": "氵",
+      "words": "游泳"
+     }
+    ],
+    "furtherCharsTitle": "字",
+    "radical": {
+     "titleZh": "部首角",
+     "titleEn": "Radical Corner",
+     "intro": "⻊ (foot) → 跑·踢·跳 — things you do with your feet. 扌 (hand) → 打·拍·指 — things you do with your hands.",
+     "family": []
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read",
+     "paragraphs": [
+      "我喜欢运动。周末我常常和朋友一起踢足球，也喜欢打篮球。夏天我去海边游泳，可是我不太会跑步。天天运动，身体好！我觉得运动又健康又有意思。"
+     ],
+     "footnotes": ""
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写一段话介绍你喜欢的运动（4-6句）。用上 喜欢、会、常常、周末。",
+     "en": "Write"
+    }
+   }
+  },
+  {
+   "n": 5,
+   "id": "u5",
+   "theme": {
+    "zh": "在澳大利亚",
+    "en": "Life in Australia"
+   },
+   "objective": {
+    "zh": "说我住在哪里、这里有什么、我们常常做什么。",
+    "en": "Say where I live, what’s here, and what we often do."
+   },
+   "core": {
+    "review": [
+     "读一读: 运·动·打·跑·家·门·海",
+     "说一说: 你住在哪里？你家附近有什么？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 自然韵律",
+      "titleEn": "Recite · Nature Rhyme",
+      "poem": "",
+      "poemPinyin": "",
+      "lines": [
+       {
+        "zh": "蓝蓝的天，白白的云，绿绿的树，清清的水。",
+        "py": "lán lán de tiān bái bái de yún lǜ lǜ de shù qīng qīng de shuǐ"
+       },
+       {
+        "zh": "美丽的地方，是我的家。",
+        "py": "měi lì de dì fang shì wǒ de jiā"
+       }
+      ],
+      "meaning": "意思 — Blue sky, white clouds, green trees, clear water. This beautiful place is my home.",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "住",
+      "strokes": "7 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "亻 (人字旁)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "住在 (zhù zài) · 住房 (zhùfáng)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我住在墨尔本。",
+        "en": "I live in Melbourne."
+       }
+      ]
+     },
+     {
+      "char": "在",
+      "strokes": "6 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "在… · 现在 (xiànzài) · 在家 (zàijiā)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我家在公园旁边。",
+        "en": "My home is next to the park."
+       }
+      ]
+     },
+     {
+      "char": "里",
+      "strokes": "7 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "这里 (zhèlǐ) · 那里 (nàlǐ) · 里面 (lǐmiàn)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "这里有很多公园。",
+        "en": "There are many parks here."
+       }
+      ]
+     },
+     {
+      "char": "常",
+      "strokes": "11 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "巾",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "常常 (chángcháng) · 经常 (jīngcháng) · 平常 (píngcháng)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "周末我们常常去海边。",
+        "en": "On weekends we often go to the beach."
+       }
+      ]
+     },
+     {
+      "char": "园",
+      "strokes": "7 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "囗 (国字框)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "公园 (gōngyuán) · 花园 (huāyuán) · 幼儿园 (yòu’éryuán)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我家附近有一个大公园。",
+        "en": "There’s a big park near my home."
+       }
+      ]
+     },
+     {
+      "char": "海",
+      "strokes": "10 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "氵 (三点水)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "海边 (hǎibiān) · 大海 (dàhǎi) · 海水 (hǎishuǐ)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "夏天我们常常去海边。",
+        "en": "In summer we often go to the seaside."
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (6) · Characters",
+    "recognise": [
+     "澳",
+     "洲",
+     "城",
+     "市",
+     "树",
+     "花"
+    ],
+    "vocab": [
+     {
+      "zh": "城市",
+      "py": "chéngshì",
+      "en": "city"
+     },
+     {
+      "zh": "墨尔本",
+      "py": "Mò’ěrběn",
+      "en": "Melbourne"
+     },
+     {
+      "zh": "房子",
+      "py": "fángzi",
+      "en": "house"
+     },
+     {
+      "zh": "公园",
+      "py": "gōngyuán",
+      "en": "park"
+     },
+     {
+      "zh": "花园",
+      "py": "huāyuán",
+      "en": "garden"
+     },
+     {
+      "zh": "海边",
+      "py": "hǎibiān",
+      "en": "seaside"
+     },
+     {
+      "zh": "住",
+      "py": "zhù",
+      "en": "live"
+     },
+     {
+      "zh": "这里",
+      "py": "zhèlǐ",
+      "en": "here"
+     },
+     {
+      "zh": "常常",
+      "py": "chángcháng",
+      "en": "often"
+     },
+     {
+      "zh": "附近",
+      "py": "fùjìn",
+      "en": "nearby"
+     },
+     {
+      "zh": "安静",
+      "py": "ānjìng",
+      "en": "quiet"
+     },
+     {
+      "zh": "袋鼠",
+      "py": "dàishǔ",
+      "en": "kangaroo"
+     },
+     {
+      "zh": "考拉",
+      "py": "kǎolā",
+      "en": "koala"
+     },
+     {
+      "zh": "风景",
+      "py": "fēngjǐng",
+      "en": "scenery"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "我住在…",
+      "py": "wǒ zhù zài",
+      "en": "I live in / at …"
+     },
+     {
+      "zh": "这里有…",
+      "py": "zhè lǐ yǒu",
+      "en": "here there is / are …"
+     },
+     {
+      "zh": "我们常常…",
+      "py": "wǒ men cháng cháng",
+      "en": "we often …"
+     }
+    ],
+    "text": {
+     "kind": "dialogue",
+     "titleZh": "课文 — 对话",
+     "titleEn": "Text · Dialogue · ~100 字",
+     "lead": "",
+     "turns": [
+      {
+       "who": "小明",
+       "say": "安娜，你住在哪里？",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "我住在墨尔本东边。这里有很多公园和树。",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "你们家有花园吗？",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "有。房子前面有一个小花园，妈妈在里面种花。",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "周末你们常常做什么？",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "我们常常去海边，有时候去公园看袋鼠。",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "真好！墨尔本是一个很美的城市。",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "对，虽然有时候天气会变，可是我很喜欢这里。",
+       "py": ""
+      }
+     ]
+    },
+    "culture": {
+     "zh": "澳大利亚有很多特别的动物——袋鼠、考拉、鸭嘴兽 (yāzuǐshòu)。很多华人家庭住在澳大利亚，过着中西结合的生活。墨尔本常常被评为“世界最宜居城市 (yíjū chéngshì)”之一！",
+     "en": "Australia has special animals — kangaroos, koalas, platypuses. Many Chinese families live here. Melbourne is often rated one of the world’s most livable cities!"
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，圈一圈 Listen & circle. 老师说安娜住的地方，圈出你听到的。",
+      "en": "Circle the places you hear."
+     },
+     {
+      "optional": false,
+      "text": "连一连 Match. Match each place to its meaning.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "问答 Ask & Answer. 你住在哪个城市？家附近有什么？周末常常做什么？（用“我住在…”“这里有…”“常常”）",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "写一写 Write. 用“这里有…”写两句。再填：我住在。这里有和。我们常常。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional描述 Describe. 描述一个你去过的澳大利亚的地方（两三句）。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional部首找一找 Find radicals. 圈出带“囗(国字框)”的字：",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 介绍我的城市",
+     "titleEn": "Activity · Introduce My City",
+     "steps": [],
+     "frame": ""
+    },
+    "speak": {
+     "label": "说一说 · Speak",
+     "frame": "我住在＿＿，这是一个＿＿的城市。这里有＿＿、＿＿和＿＿。周末我们常常＿＿。我觉得住在这里很＿＿。"
+    },
+    "reflect": [
+     "说我住在哪里",
+     "说我家/城市有什么",
+     "用“常常”说活动",
+     "写 住·在·里·常·园·海"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "念自然韵律给家人听。"
+       ],
+       [
+        "2",
+        "用中文说说你家附近有什么。"
+       ],
+       [
+        "3",
+        "教家人说“我住在…”。"
+       ],
+       [
+        "4",
+        "画你家附近的简单地图。"
+       ],
+       [
+        "5",
+        "写 住·在·里·常·园·海 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：住·在·里·常·园·海 各三遍。",
+        "念自然韵律。"
+       ],
+       [
+        "2",
+        "抄写：城市·公园·海边·花园 各三遍。默写：住·在·里。",
+        "说你家附近有什么。"
+       ],
+       [
+        "3",
+        "抄写：我住在墨尔本。这里有公园和海边。两遍。默写：常·园·海。",
+        "教家人说“我住在…”。"
+       ],
+       [
+        "4",
+        "写一段话介绍你住的地方（4-5句）。默写全单元6字。",
+        "录一段中文介绍你的城市。"
+       ],
+       [
+        "5",
+        "修改短文。",
+        "各找两个带氵和囗的字。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "城",
+      "py": "chéng",
+      "strokes": "9",
+      "radical": "土",
+      "words": "城市 · 长城"
+     },
+     {
+      "char": "市",
+      "py": "shì",
+      "strokes": "5",
+      "radical": "巾",
+      "words": "城市 · 市场"
+     },
+     {
+      "char": "树",
+      "py": "shù",
+      "strokes": "9",
+      "radical": "木",
+      "words": "大树 · 树林"
+     },
+     {
+      "char": "花",
+      "py": "huā",
+      "strokes": "7",
+      "radical": "艹",
+      "words": "花园 · 花朵"
+     }
+    ],
+    "furtherCharsTitle": "字",
+    "radical": {
+     "titleZh": "部首角",
+     "titleEn": "Radical Corner",
+     "intro": "氵(three drops) = water: 海·河·洗。 木(tree) = wood/plants: 树·校·林。 艹(grass top) = plants: 花·菜·草。",
+     "family": []
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read",
+     "paragraphs": [
+      "我住在墨尔本，这是一个很美的城市。这里有很多公园和大树，还有长长的海边。我家附近有一个小花园，妈妈在里面种花。周末我们常常去海边玩，有时候去公园看袋鼠和考拉。虽然有时候天气会变，可是我很喜欢住在这里。"
+     ],
+     "footnotes": ""
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写一段话介绍你住的地方（5-7句）。用上 住在、这里有、常常、附近。",
+     "en": "Write"
+    }
+   }
+  },
+  {
+   "n": 6,
+   "id": "u6",
+   "theme": {
+    "zh": "购物",
+    "en": "Shopping & Money"
+   },
+   "objective": {
+    "zh": "问价钱，买东西，说贵还是便宜。",
+    "en": "Ask prices, buy things, and say if something is expensive or cheap."
+   },
+   "core": {
+    "review": [
+     "读一读: 住·在·里·常·园·海",
+     "部首: 贝字旁 = 钱！",
+     "说一说: 你去过市场买东西吗？买了什么？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《悯农》",
+      "titleEn": "Recite · Pity the Farmer · B1 revisit · 李绅 (Táng)",
+      "poem": "《悯农》",
+      "poemPinyin": "mǐn nóng",
+      "lines": [
+       {
+        "zh": "锄禾日当午，汗滴禾下土。",
+        "py": "chú hé rì dāng wǔ hàn dī hé xià tǔ"
+       },
+       {
+        "zh": "谁知盘中餐，粒粒皆辛苦。",
+        "py": "shuí zhī pán zhōng cān lì lì jiē xīn kǔ"
+       }
+      ],
+      "meaning": "Revisiting from Band 1. Why should we value food and money?",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "买",
+      "strokes": "6 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "买东西 (mǎi dōngxi) · 买菜 (mǎi cài)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我想买三个苹果。",
+        "en": "I want to buy three apples."
+       }
+      ]
+     },
+     {
+      "char": "卖",
+      "strokes": "8 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "卖东西 (mài dōngxi) · 买卖 (mǎimài)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "这个商店卖水果。",
+        "en": "This shop sells fruit."
+       }
+      ]
+     },
+     {
+      "char": "钱",
+      "strokes": "10 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "钅 (金字旁)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "多少钱 (duōshao qián) · 钱包 (qiánbāo)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "这个苹果多少钱？",
+        "en": "How much is this apple?"
+       }
+      ]
+     },
+     {
+      "char": "元",
+      "strokes": "4 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "一元 (yì yuán) · 元旦 (Yuándàn)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "这个苹果两元。",
+        "en": "This apple is two yuan."
+       }
+      ]
+     },
+     {
+      "char": "块",
+      "strokes": "7 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "土",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "一块钱 (yí kuài qián) · 冰块 (bīngkuài)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "一共六块。",
+        "en": "Six dollars altogether."
+       }
+      ]
+     },
+     {
+      "char": "贵",
+      "strokes": "9 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "贝 (money!)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "太贵了 (tài guì le) · 珍贵 (zhēnguì)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "这个太贵了，便宜一点吧。",
+        "en": "Too expensive — cheaper please!"
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (6) · Characters",
+    "recognise": [
+     "商",
+     "店",
+     "便",
+     "宜",
+     "件"
+    ],
+    "vocab": [
+     {
+      "zh": "商店",
+      "py": "shāngdiàn",
+      "en": "shop"
+     },
+     {
+      "zh": "市场",
+      "py": "shìchǎng",
+      "en": "market"
+     },
+     {
+      "zh": "买",
+      "py": "mǎi",
+      "en": "buy"
+     },
+     {
+      "zh": "卖",
+      "py": "mài",
+      "en": "sell"
+     },
+     {
+      "zh": "多少钱",
+      "py": "duōshao qián",
+      "en": "how much"
+     },
+     {
+      "zh": "钱",
+      "py": "qián",
+      "en": "money"
+     },
+     {
+      "zh": "块",
+      "py": "kuài",
+      "en": "dollar"
+     },
+     {
+      "zh": "元",
+      "py": "yuán",
+      "en": "yuan"
+     },
+     {
+      "zh": "贵",
+      "py": "guì",
+      "en": "expensive"
+     },
+     {
+      "zh": "便宜",
+      "py": "piányi",
+      "en": "cheap"
+     },
+     {
+      "zh": "太…了",
+      "py": "tài…le",
+      "en": "too…"
+     },
+     {
+      "zh": "一共",
+      "py": "yígòng",
+      "en": "altogether"
+     },
+     {
+      "zh": "新鲜",
+      "py": "xīnxiān",
+      "en": "fresh"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "多少钱？",
+      "py": "duō shao qián",
+      "en": "how much is it?"
+     },
+     {
+      "zh": "我想买…",
+      "py": "wǒ xiǎng mǎi",
+      "en": "I'd like to buy …"
+     },
+     {
+      "zh": "…块/元",
+      "py": "kuài yuán",
+      "en": "… kuài / yuan (money)"
+     },
+     {
+      "zh": "太贵了/便宜",
+      "py": "tài guì le pián yi",
+      "en": "too expensive / cheap"
+     }
+    ],
+    "text": {
+     "kind": "dialogue",
+     "titleZh": "课文 — 对话",
+     "titleEn": "Text · Dialogue · ~90 字",
+     "lead": "",
+     "turns": [
+      {
+       "who": "安娜",
+       "say": "你好，这个苹果多少钱？",
+       "py": ""
+      },
+      {
+       "who": "店员",
+       "say": "一个两块钱。",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "我想买三个，一共多少钱？",
+       "py": ""
+      },
+      {
+       "who": "店员",
+       "say": "一共六块。",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "有点贵。便宜一点，可以吗？",
+       "py": ""
+      },
+      {
+       "who": "店员",
+       "say": "好吧，五块钱。",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "谢谢！这些苹果很新鲜，太好了！",
+       "py": ""
+      }
+     ]
+    },
+    "culture": {
+     "zh": "在中国，现在很多人用手机付钱（微信支付 wēixìn zhīfù、支付宝 zhīfùbǎo），几乎不用现金 (xiànjīn)。古时候中国人用贝壳 (bèiké) 当钱，所以和钱有关的字很多带“贝”——买、卖、贵、购！",
+     "en": "In China many people now pay by phone, rarely using cash. In ancient times people used shells as money — so money-related characters often contain 贝 (shell): 买, 卖, 贵, 购!"
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，写价钱 Listen & write the price. 老师说价钱，写下来：苹果块，香蕉块，一共块。",
+      "en": "Listen and write each price, then the total."
+     },
+     {
+      "optional": false,
+      "text": "连一连 Match. Match each word to its meaning.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "看价格，算一算 Read prices & calculate. 香蕉三块一斤，苹果两块一个——哪个贵？三个苹果（一个两块）＋两斤香蕉（一斤三块）＝一共多少钱？",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "角色扮演 Role-play. 在“小商店”买三样东西：问“多少钱？”，用“我想买…”，说“太贵了/便宜一点吧”。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional部首找一找 Find the radical. 圈出带“贝”的字：",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional用“太…了” Use 太…了. 太贵了！太便宜了！再说两句。",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 班级小商店",
+     "titleEn": "Activity · Class Shop",
+     "steps": [],
+     "frame": ""
+    },
+    "speak": {
+     "label": "说一说 · Speak",
+     "frame": "在市场：这个多少钱？＿＿块。有点贵。便宜一点吧！好的，一共＿＿块。谢谢！"
+    },
+    "reflect": [
+     "问“多少钱”",
+     "说“…块/元”",
+     "说“太贵了/便宜”",
+     "写 买·卖·钱·元·块·贵",
+     "找到贝字旁"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "背诵《悯农》。"
+       ],
+       [
+        "2",
+        "看家里三样东西，猜中文价。"
+       ],
+       [
+        "3",
+        "教家人说“这个多少钱？”"
+       ],
+       [
+        "4",
+        "画一个小商店，标价。"
+       ],
+       [
+        "5",
+        "写 买·卖·钱·元·块·贵 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：买·卖·钱·元·块·贵 各三遍。",
+        "背诵《悯农》。"
+       ],
+       [
+        "2",
+        "抄写：多少钱·一块钱·太贵了 各三遍。默写：买·卖·钱。",
+        "看家里东西猜中文价。"
+       ],
+       [
+        "3",
+        "抄写：这个苹果多少钱？两块钱。两遍。默写：元·块·贵。",
+        "教家人说“这个多少钱？”"
+       ],
+       [
+        "4",
+        "写一段购物经历（4-5句）。默写全单元6字。",
+        "录一段中文购物对话。"
+       ],
+       [
+        "5",
+        "修改短文。",
+        "找三个带贝字旁的字。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "商",
+      "py": "shāng",
+      "strokes": "11",
+      "radical": "丶",
+      "words": "商店 · 商人"
+     },
+     {
+      "char": "店",
+      "py": "diàn",
+      "strokes": "8",
+      "radical": "广",
+      "words": "商店 · 书店"
+     },
+     {
+      "char": "便",
+      "py": "pián",
+      "strokes": "9",
+      "radical": "亻",
+      "words": "便宜"
+     },
+     {
+      "char": "宜",
+      "py": "yí",
+      "strokes": "8",
+      "radical": "宀",
+      "words": "便宜 · 合宜"
+     }
+    ],
+    "furtherCharsTitle": "字",
+    "radical": {
+     "titleZh": "部首角",
+     "titleEn": "Radical Corner",
+     "intro": "In ancient China, shells (贝) were money — so money words carry 贝: 买·卖·贵·购·贝·财. When you see 贝, think money!",
+     "family": [
+      {
+       "zh": "买",
+       "py": "mǎi",
+       "en": "buy"
+      },
+      {
+       "zh": "卖",
+       "py": "mài",
+       "en": "sell"
+      },
+      {
+       "zh": "贵",
+       "py": "guì",
+       "en": "pricey"
+      },
+      {
+       "zh": "购",
+       "py": "gòu",
+       "en": "purchase"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read",
+     "paragraphs": [
+      "星期六，妈妈带我去市场买水果。市场里东西很多，也很新鲜。我问：“苹果多少钱？”阿姨说：“一个两块。”我想买三个，一共六块。我说：“有点贵，便宜一点吧！”阿姨笑着说：“好吧，五块。”我们还买了香蕉和青菜。买完东西，我们高高兴兴地回家了。"
+     ],
+     "footnotes": ""
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写一段购物经历（4-6句）。用上 多少钱、我想买、太贵了、一共。",
+     "en": "Write"
+    }
+   }
+  },
+  {
+   "n": 7,
+   "id": "u7",
+   "theme": {
+    "zh": "中秋与端午",
+    "en": "Mid-Autumn & Dragon Boat"
+   },
+   "objective": {
+    "zh": "介绍中秋节和端午节，说人们做什么、吃什么。",
+    "en": "Describe two festivals, what people do and eat."
+   },
+   "core": {
+    "review": [
+     "读一读: 买·卖·钱·元·块·贵 + 月·节·年",
+     "说一说: 你知道哪些中国节日？中秋节做什么？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《静夜思》",
+      "titleEn": "Recite · Quiet Night Thoughts · 李白 (Táng)",
+      "poem": "《静夜思》",
+      "poemPinyin": "jìng yè sī",
+      "lines": [
+       {
+        "zh": "床前明月光，疑是地上霜。",
+        "py": "chuáng qián míng yuè guāng yí shì dì shàng shuāng"
+       },
+       {
+        "zh": "举头望明月，低头思故乡。",
+        "py": "jǔ tóu wàng míng yuè dī tóu sī gù xiāng"
+       }
+      ],
+      "meaning": "意思 — Moonlight before my bed — could be frost on the ground. I look up at the bright moon, then lower my head — thinking of home.",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "月",
+      "strokes": "4 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "月",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "月亮 (yuèliang) · 月饼 (yuèbǐng) · 一月 (yí yuè)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "中秋节的月亮又大又圆。",
+        "en": "The Mid-Autumn moon is big and round."
+       }
+      ]
+     },
+     {
+      "char": "饼",
+      "strokes": "9 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "饣 (食旁)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "月饼 (yuèbǐng) · 饼干 (bǐnggān)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我喜欢吃月饼。",
+        "en": "I like eating mooncakes."
+       }
+      ]
+     },
+     {
+      "char": "端",
+      "strokes": "14 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "立",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "端午节 (Duānwǔjié) · 端正 (duānzhèng)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "端午节在农历五月五日。",
+        "en": "Dragon Boat Festival is on the 5th of the 5th lunar month."
+       }
+      ]
+     },
+     {
+      "char": "午",
+      "strokes": "4 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "十",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "端午 (Duānwǔ) · 中午 (zhōngwǔ) · 下午 (xiàwǔ)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "端午节我们吃粽子。",
+        "en": "At Dragon Boat Festival we eat zongzi."
+       }
+      ]
+     },
+     {
+      "char": "粽",
+      "strokes": "14 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "米",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "粽子 (zòngzi) · 肉粽 (ròuzòng)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "端午节的时候，人们吃粽子。",
+        "en": "At Dragon Boat Festival, people eat zongzi."
+       }
+      ]
+     },
+     {
+      "char": "节",
+      "strokes": "5 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "艹",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "节日 (jiérì) · 春节 (Chūnjié) · 中秋节 (Zhōngqiūjié)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "春节和中秋节都是中国的传统节日。",
+        "en": "Spring Festival and Mid-Autumn are both traditional festivals."
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (6) · Characters",
+    "recognise": [
+     "中",
+     "秋",
+     "龙",
+     "舟",
+     "团",
+     "圆"
+    ],
+    "vocab": [
+     {
+      "zh": "中秋节",
+      "py": "Zhōngqiūjié",
+      "en": "Mid-Autumn Festival"
+     },
+     {
+      "zh": "端午节",
+      "py": "Duānwǔjié",
+      "en": "Dragon Boat Festival"
+     },
+     {
+      "zh": "月饼",
+      "py": "yuèbǐng",
+      "en": "mooncake"
+     },
+     {
+      "zh": "粽子",
+      "py": "zòngzi",
+      "en": "zongzi"
+     },
+     {
+      "zh": "月亮",
+      "py": "yuèliang",
+      "en": "moon"
+     },
+     {
+      "zh": "赛龙舟",
+      "py": "sài lóngzhōu",
+      "en": "dragon-boat race"
+     },
+     {
+      "zh": "赏月",
+      "py": "shǎngyuè",
+      "en": "moon-gazing"
+     },
+     {
+      "zh": "团圆",
+      "py": "tuányuán",
+      "en": "reunion"
+     },
+     {
+      "zh": "的时候",
+      "py": "de shíhou",
+      "en": "when"
+     },
+     {
+      "zh": "一起",
+      "py": "yìqǐ",
+      "en": "together"
+     },
+     {
+      "zh": "庆祝",
+      "py": "qìngzhù",
+      "en": "celebrate"
+     },
+     {
+      "zh": "传统",
+      "py": "chuántǒng",
+      "en": "tradition"
+     },
+     {
+      "zh": "热闹",
+      "py": "rènao",
+      "en": "lively"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "…的时候人们…",
+      "py": "de shí hou rén men",
+      "en": "at … time, people …"
+     },
+     {
+      "zh": "吃月饼/粽子",
+      "py": "chī yuè bǐng zòng zi",
+      "en": "eat mooncakes / zongzi"
+     },
+     {
+      "zh": "一起…",
+      "py": "yì qǐ",
+      "en": "together …"
+     },
+     {
+      "zh": "团圆",
+      "py": "tuán yuán",
+      "en": "a family reunion"
+     }
+    ],
+    "text": {
+     "kind": "dialogue",
+     "titleZh": "课文 — 对话",
+     "titleEn": "Text · Dialogue · ~100 字",
+     "lead": "",
+     "turns": [
+      {
+       "who": "安娜",
+       "say": "小明，中秋节人们做什么？",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "中秋节的时候，全家人一起吃月饼、赏月。",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "端午节呢？",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "端午节人们吃粽子，还有赛龙舟，很热闹。",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "为什么中秋节吃月饼？",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "因为月饼是圆的，代表团圆。一家人在一起，很幸福。",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "这两个节日我都想参加！",
+       "py": ""
+      }
+     ]
+    },
+    "culture": {
+     "zh": "中秋节看月亮、吃月饼——因为圆圆的月饼像圆圆的月亮，象征一家人团圆 (tuányuán)。端午节吃粽子、赛龙舟——为了纪念古代诗人屈原 (Qū Yuán)。在澳大利亚，华人家庭也会一起过这些节日！",
+     "en": "At Mid-Autumn, round mooncakes echo the round moon — a symbol of family reunion. Dragon Boat Festival has zongzi and boat races, remembering the ancient poet Qu Yuan. Chinese families in Australia celebrate too!"
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，分一分 Listen & sort. 老师念节日的活动，是中秋节的画 ○，是端午节的画 △。",
+      "en": "Mark each ○ Mid-Autumn or △ Dragon-Boat as you hear it."
+     },
+     {
+      "optional": false,
+      "text": "连一连 Match (activity → festival). 把活动连到节日。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "用“…的时候”造句 Make sentences. 中秋节的时候，。端午节的时候，。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "填空 Fill in. 月饼是的，代表。粽子是端午节吃的，很。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional部首找一找 Find radicals. 圈出带“饣(食旁)”的字：",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional画一画 Draw. 画一个月饼或粽子，写两句话。",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 节日小导游",
+     "titleEn": "Activity · Festival Guide",
+     "steps": [],
+     "frame": ""
+    },
+    "speak": {
+     "label": "说一说 · Speak",
+     "frame": "＿＿节的时候，人们一起＿＿。人们吃＿＿。这个节日很＿＿（热闹/团圆/有意思）。"
+    },
+    "reflect": [
+     "说出两个节日和食物",
+     "用“…的时候”描述",
+     "说“团圆”的意思",
+     "写 月·饼·端·午·粽·节"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "背诵《静夜思》。"
+       ],
+       [
+        "2",
+        "说两个节日给家人听。"
+       ],
+       [
+        "3",
+        "教家人说“中秋节快乐”。"
+       ],
+       [
+        "4",
+        "画一个节日场景，写两句。"
+       ],
+       [
+        "5",
+        "写 月·饼·端·午·粽·节 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：月·饼·端·午·粽·节 各三遍。",
+        "背诵《静夜思》。"
+       ],
+       [
+        "2",
+        "抄写：中秋节·端午节·月饼·粽子 各三遍。默写：月·饼·端。",
+        "说两个节日给家人听。"
+       ],
+       [
+        "3",
+        "抄写：中秋节的时候，全家人一起吃月饼。两遍。默写：午·粽·节。",
+        "教家人说“中秋节快乐”。"
+       ],
+       [
+        "4",
+        "写一段话介绍你最喜欢的节日（4-5句）。默写全单元6字。",
+        "录一段中文介绍节日。"
+       ],
+       [
+        "5",
+        "修改短文。",
+        "找三个带囗的字。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "中",
+      "py": "zhōng",
+      "strokes": "4",
+      "radical": "丨",
+      "words": "中秋 · 中国"
+     },
+     {
+      "char": "秋",
+      "py": "qiū",
+      "strokes": "9",
+      "radical": "禾",
+      "words": "中秋 · 秋天"
+     },
+     {
+      "char": "团",
+      "py": "tuán",
+      "strokes": "6",
+      "radical": "囗",
+      "words": "团圆 · 团结"
+     },
+     {
+      "char": "圆",
+      "py": "yuán",
+      "strokes": "10",
+      "radical": "囗",
+      "words": "圆形 · 团圆"
+     }
+    ],
+    "furtherCharsTitle": "字",
+    "radical": {
+     "titleZh": "部首角",
+     "titleEn": "Radical Corner",
+     "intro": "A box around a character often means \"enclosed\" or \"round\": 团·圆·国·园·因. The full box wraps the meaning inside!",
+     "family": [
+      {
+       "zh": "团",
+       "py": "tuán",
+       "en": "reunion"
+      },
+      {
+       "zh": "圆",
+       "py": "yuán",
+       "en": "round"
+      },
+      {
+       "zh": "国",
+       "py": "guó",
+       "en": "country"
+      },
+      {
+       "zh": "园",
+       "py": "yuán",
+       "en": "garden"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read",
+     "paragraphs": [
+      "我最喜欢中秋节。中秋节的时候，全家人一起吃月饼、赏月。圆圆的月饼像圆圆的月亮，代表团圆。今年中秋，奶奶做了很多月饼，我们坐在花园里，一边吃月饼一边看月亮。爸爸还给我们讲嫦娥的故事。我觉得能和家人在一起，真幸福！"
+     ],
+     "footnotes": ""
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写一段话介绍你最喜欢的节日（5-7句）。用上 …的时候、一起、吃、团圆。",
+     "en": "Write"
+    }
+   }
+  },
+  {
+   "n": 8,
+   "id": "u8",
+   "theme": {
+    "zh": "我的朋友",
+    "en": "My Friends"
+   },
+   "objective": {
+    "zh": "描述朋友的样子和性格。",
+    "en": "Describe a friend’s appearance and personality."
+   },
+   "core": {
+    "review": [
+     "读一读: 月·饼·端·午·粽·节 + 人·大·小·高",
+     "部首: 忄(心旁) → 快·慢 · 女字旁 → 好·姐·妈",
+     "说一说: 你的好朋友是谁？他/她怎么样？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《找朋友》",
+      "titleEn": "Recite · Friendship Rhyme",
+      "poem": "《找朋友》",
+      "poemPinyin": "",
+      "lines": [
+       {
+        "zh": "找呀找呀找朋友，找到一个好朋友。",
+        "py": "zhǎo ya zhǎo ya zhǎo péng you zhǎo dào yí ge hǎo péng you"
+       },
+       {
+        "zh": "敬个礼呀握握手，你是我的好朋友。",
+        "py": "jìng ge lǐ ya wò wò shǒu nǐ shì wǒ de hǎo péng you"
+       }
+      ],
+      "meaning": "意思 — Looking for a friend — found a good friend! Salute and shake hands — you are my good friend.",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "朋",
+      "strokes": "8 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "月",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "朋友 (péngyou) · 好朋友 (hǎo péngyou)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "小明是我的好朋友。",
+        "en": "Mingming is my good friend."
+       }
+      ]
+     },
+     {
+      "char": "友",
+      "strokes": "4 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "朋友 (péngyou) · 友好 (yǒuhǎo) · 友谊 (yǒuyì)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我们很友好。",
+        "en": "We are very friendly."
+       }
+      ]
+     },
+     {
+      "char": "高",
+      "strokes": "10 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "很高 (hěn gāo) · 高兴 (gāoxìng) · 高中 (gāozhōng)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "他个子很高。",
+        "en": "He is very tall."
+       }
+      ]
+     },
+     {
+      "char": "矮",
+      "strokes": "13 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "矢",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "很矮 (hěn ǎi) · 矮小 (ǎixiǎo)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我不高也不矮。",
+        "en": "I’m neither tall nor short."
+       }
+      ]
+     },
+     {
+      "char": "很",
+      "strokes": "9 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "彳",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "很高 (hěn gāo) · 很好 (hěn hǎo) · 很忙 (hěn máng)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "她很高兴。",
+        "en": "She is very happy."
+       }
+      ]
+     },
+     {
+      "char": "和",
+      "strokes": "8 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "禾",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "我和你 (wǒ hé nǐ) · 和平 (hépíng) · 和好 (héhǎo)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我和小明是好朋友。",
+        "en": "Mingming and I are good friends."
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (6) · Characters",
+    "recognise": [
+     "漂",
+     "亮",
+     "聪",
+     "明",
+     "长",
+     "短"
+    ],
+    "vocab": [
+     {
+      "zh": "朋友",
+      "py": "péngyou",
+      "en": "friend"
+     },
+     {
+      "zh": "高",
+      "py": "gāo",
+      "en": "tall"
+     },
+     {
+      "zh": "矮",
+      "py": "ǎi",
+      "en": "short"
+     },
+     {
+      "zh": "胖",
+      "py": "pàng",
+      "en": "chubby"
+     },
+     {
+      "zh": "瘦",
+      "py": "shòu",
+      "en": "thin"
+     },
+     {
+      "zh": "头发",
+      "py": "tóufa",
+      "en": "hair"
+     },
+     {
+      "zh": "眼睛",
+      "py": "yǎnjing",
+      "en": "eyes"
+     },
+     {
+      "zh": "聪明",
+      "py": "cōngming",
+      "en": "clever"
+     },
+     {
+      "zh": "友好",
+      "py": "yǒuhǎo",
+      "en": "friendly"
+     },
+     {
+      "zh": "有意思",
+      "py": "yǒuyìsi",
+      "en": "interesting"
+     },
+     {
+      "zh": "漂亮",
+      "py": "piàoliang",
+      "en": "pretty"
+     },
+     {
+      "zh": "和",
+      "py": "hé",
+      "en": "and, with"
+     },
+     {
+      "zh": "一起",
+      "py": "yìqǐ",
+      "en": "together"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "他/她很…",
+      "py": "tā tā hěn",
+      "en": "he / she is very …"
+     },
+     {
+      "zh": "…和…",
+      "py": "hé",
+      "en": "… and …"
+     },
+     {
+      "zh": "我的朋友叫…",
+      "py": "wǒ de péng you jiào",
+      "en": "my friend is called …"
+     }
+    ],
+    "text": {
+     "kind": "dialogue",
+     "titleZh": "课文 — 对话",
+     "titleEn": "Text · Dialogue · ~90 字",
+     "lead": "",
+     "turns": [
+      {
+       "who": "安娜",
+       "say": "你的好朋友是谁？",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "我的好朋友叫大卫。",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "他是什么样子的？",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "他个子很高，头发短短的，眼睛大大的。",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "他怎么样？性格呢？",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "他很聪明，也很友好。我们常常一起踢足球。",
+       "py": ""
+      },
+      {
+       "who": "安娜",
+       "say": "有这样一个好朋友真好！",
+       "py": ""
+      },
+      {
+       "who": "小明",
+       "say": "是的，和他在一起很有意思。",
+       "py": ""
+      }
+     ]
+    },
+    "culture": {
+     "zh": "中国人常说“在家靠父母，出门靠朋友”——意思是朋友很重要。在中国文化中，友谊 (yǒuyì) 是人生最珍贵 (zhēnguì) 的东西之一。好朋友就像家人一样。",
+     "en": "A Chinese saying goes: \"At home rely on family; away from home rely on friends.\" Friendship is treasured — a good friend is like family."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，圈一圈 Listen & circle. 老师描述一个人，圈出对的词：高／矮，长头发／短头发，聪明／友好。",
+      "en": "Listen to the description and circle the right word in each pair."
+     },
+     {
+      "optional": false,
+      "text": "反义词配对 Match the opposites. 把词连到反义词。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "填空 Describe. 我的朋友叫。他个子很，头发的。他很，也很。我和常常一起。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "部首找一找 Find the radical. 圈出带“月”的字：",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional猜猜是谁 Guess who. 描述一个同学（不说名字），别人猜。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional画一画 Draw. 画你的好朋友，写两个句子。",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 猜猜他是谁",
+     "titleEn": "Activity · Guess Who",
+     "steps": [],
+     "frame": ""
+    },
+    "speak": {
+     "label": "说一说 · Speak",
+     "frame": "我的好朋友叫＿＿。他/她个子＿＿，头发＿＿。他/她很＿＿（性格）。我们常常一起＿＿。我觉得他/她是一个很好的朋友。"
+    },
+    "reflect": [
+     "描述一个人的样子",
+     "描述一个人的性格",
+     "用“和”说一起做的事",
+     "写 朋·友·高·矮·很·和"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "念《找朋友》给家人听。"
+       ],
+       [
+        "2",
+        "用中文描述一个家人。"
+       ],
+       [
+        "3",
+        "教家人说“我的好朋友是…”。"
+       ],
+       [
+        "4",
+        "画你的好朋友，写两句话。"
+       ],
+       [
+        "5",
+        "写 朋·友·高·矮·很·和 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：朋·友·高·矮·很·和 各三遍。",
+        "念《找朋友》。"
+       ],
+       [
+        "2",
+        "抄写：朋友·高兴·友好 各三遍。默写：朋·友·高。",
+        "描述一个家人。"
+       ],
+       [
+        "3",
+        "抄写：他个子很高，头发短短的。两遍。默写：矮·很·和。",
+        "教家人说“我的好朋友是…”。"
+       ],
+       [
+        "4",
+        "写一段话介绍你的好朋友（4-5句）。默写全单元6字。",
+        "录一段中文介绍朋友。"
+       ],
+       [
+        "5",
+        "修改短文。",
+        "找三个带忄的字。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "漂",
+      "py": "piào",
+      "strokes": "14",
+      "radical": "氵",
+      "words": "漂亮"
+     },
+     {
+      "char": "亮",
+      "py": "liàng",
+      "strokes": "9",
+      "radical": "亠",
+      "words": "漂亮 · 月亮"
+     },
+     {
+      "char": "聪",
+      "py": "cōng",
+      "strokes": "15",
+      "radical": "耳",
+      "words": "聪明"
+     },
+     {
+      "char": "明",
+      "py": "míng",
+      "strokes": "8",
+      "radical": "日",
+      "words": "聪明 · 明天"
+     }
+    ],
+    "furtherCharsTitle": "字",
+    "radical": {
+     "titleZh": "部首角",
+     "titleEn": "Radical Corner",
+     "intro": "Feelings live in the heart. The upright heart radical 忄 appears in mood words: 快·慢·怕·忙·惯. When you see 忄, think feelings!",
+     "family": [
+      {
+       "zh": "快",
+       "py": "kuài",
+       "en": "happy/fast"
+      },
+      {
+       "zh": "怕",
+       "py": "pà",
+       "en": "afraid"
+      },
+      {
+       "zh": "忙",
+       "py": "máng",
+       "en": "busy"
+      },
+      {
+       "zh": "慢",
+       "py": "màn",
+       "en": "slow"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read",
+     "paragraphs": [
+      "我有一个好朋友，她叫小美。小美个子不高也不矮，头发长长的，眼睛大大的，笑起来很漂亮。她很聪明，也很友好，常常帮助别人。周末我们常常一起画画、踢足球。和小美在一起，我觉得很开心。她是我最好的朋友。"
+     ],
+     "footnotes": ""
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写一段话介绍你的好朋友（5-7句）。用上 个子、头发、很、聪明、一起。",
+     "en": "Write"
+    }
+   }
+  }
+ ],
+ "endMatter": {
+  "review": {
+   "titleZh": "综合复习",
+   "titleEn": "Review Through Play",
+   "lead": "",
+   "blocks": [
+    {
+     "titleZh": "字卡快闪",
+     "titleEn": "Flash Card Round",
+     "body": "认读全部 48 个 Core 学写字和主要认读字。分组比赛：看谁认得又快又准！"
+    },
+    {
+     "titleZh": "部首挑战",
+     "titleEn": "Radical Challenge",
+     "body": "日字旁 · 讠(言字旁) · 雨字头 · ⻊(足字旁) · 扌(提手旁) · 氵(三点水) · 贝字旁 · 饣(食旁) · 囗(国字框) · 忄(竖心旁)"
+    },
+    {
+     "titleZh": "口语挑战",
+     "titleEn": "Speaking Challenge",
+     "body": "介绍我的一天说我的学校和喜欢的课说天气和季节说喜欢的运动介绍我住的地方模拟购物介绍一个节日描述一个朋友"
+    },
+    {
+     "titleZh": "写字挑战",
+     "titleEn": "Writing Challenge",
+     "body": "听写 12 个字。用 5 个字造句子。"
+    }
+   ]
+  },
+  "appendix": {
+   "titleZh": "学写字 48",
+   "titleEn": "Band 2 — characters you can write",
+   "rows": [
+    [
+     "U1",
+     "日·早·上·时·了·晚",
+     "日字旁"
+    ],
+    [
+     "U2",
+     "学·校·课·文·因·为",
+     "讠·子·囗"
+    ],
+    [
+     "U3",
+     "天·气·春·夏·冬·雨",
+     "雨字头"
+    ],
+    [
+     "U4",
+     "运·动·打·踢·跑·游",
+     "⻊·扌·氵"
+    ],
+    [
+     "U5",
+     "住·在·里·常·园·海",
+     "氵·囗"
+    ],
+    [
+     "U6",
+     "买·卖·钱·元·块·贵",
+     "贝字旁"
+    ],
+    [
+     "U7",
+     "月·饼·端·午·粽·节",
+     "饣·米"
+    ],
+    [
+     "U8",
+     "朋·友·高·矮·很·和",
+     "忄·月"
+    ]
+   ]
+  }
+ }
+}

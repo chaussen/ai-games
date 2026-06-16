@@ -1,0 +1,4207 @@
+{
+ "band": "B3",
+ "name": "Intermediate",
+ "cn": "中级",
+ "subtitle": "Band 3 · Intermediate",
+ "years": "Year 5 – 6",
+ "level": "Aligned to and exceeding VCAA Levels 5 & 6F–10 Sequence v2.0",
+ "frontMatter": {
+  "dearStudent": {
+   "titleZh": "欢迎来到 Band 3",
+   "titleEn": "Welcome to the intermediate book",
+   "lead": "In this book, you will discuss your community, food and health, travel, China and Australia, stories and legends, technology, the environment, and festivals in depth. The conversations are getting real — you'll give directions, compare countries, retell legends, and share opinions.",
+   "leadEn": ""
+  },
+  "conventions": [
+   {
+    "zh": "拼音只标难词 — pinyin on difficult words only. Most text is now in characters; pinyin appears in brackets only as a lookup, never above the main text.",
+    "en": ""
+   },
+   {
+    "zh": "中文指令 — instructions are in Chinese. Activity lines are written in Chinese, with English support where you need it.",
+    "en": ""
+   },
+   {
+    "zh": "你的作业 — which homework do you do? There are two kinds: 听说作业 (listening & speaking — read aloud, discuss, write a little) and 读写作业 (reading & writing — speak, and also read and write more, with longer compositions).",
+    "en": ""
+   },
+   {
+    "zh": "复习 — every unit opens with review. Characters and words from earlier bands keep coming back so nothing is forgotten.",
+    "en": ""
+   },
+   {
+    "zh": "生字 — seven new characters each unit. About 56 across the book, each with stroke order, its radical, common compounds, and an example sentence.",
+    "en": ""
+   },
+   {
+    "zh": "课文 — every unit has a longer text to read. A short story, a description or an opinion piece — writing that matches what you can actually say and think.",
+    "en": ""
+   },
+   {
+    "zh": "诵读 — every unit has a classical poem. Poems have full pinyin above each line; some return from earlier bands, now read for deeper appreciation.",
+    "en": ""
+   }
+  ]
+ },
+ "units": [
+  {
+   "n": 1,
+   "id": "u1",
+   "theme": {
+    "zh": "我的社区",
+    "en": "My Community"
+   },
+   "objective": {
+    "zh": "说出社区里的地方，用方位词说位置，给出简单路线。",
+    "en": "Name places in my community, describe where they are, and give simple directions."
+   },
+   "core": {
+    "review": [
+     "读一读: 人·口·大·家·门·书·看·写·学·校",
+     "部首回顾: 辶(走之底) → 近·远·这·过 · 饣(食旁) → 馆·饭",
+     "说一说: 你家附近有什么？你的学校在哪里？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《登鹳雀楼》 王之涣",
+      "titleEn": "Recite · On the Stork Tower · (唐)",
+      "poem": "《登鹳雀楼》",
+      "poemPinyin": "dēng guàn què lóu",
+      "lines": [
+       {
+        "zh": "白日依山尽，黄河入海流。",
+        "py": "bái rì yī shān jìn Huáng Hé rù hǎi liú"
+       },
+       {
+        "zh": "欲穷千里目，更上一层楼。",
+        "py": "yù qióng qiān lǐ mù gèng shàng yì céng lóu"
+       }
+      ],
+      "meaning": "意思 — The white sun sets behind the mountains; the Yellow River flows into the sea. To see a thousand miles further — climb one more floor.",
+      "note": "注释: 欲(yù)=wish to · 穷(qióng)=see fully · 更(gèng)=further。"
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "区",
+      "strokes": "4 笔 strokes",
+      "breakdown": "①横 ②撇 ③点 ④竖折",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "匚 — the \"box\" radical, for containers and regions.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "社区 (shèqū) · 地区 (dìqū) · 小区 (xiǎoqū)",
+        "en": "community · region · compound"
+       },
+       {
+        "term": "句子",
+        "zh": "我住在这个小区。",
+        "en": "I live in this neighbourhood."
+       }
+      ]
+     },
+     {
+      "char": "近",
+      "strokes": "7 笔 strokes",
+      "breakdown": "①撇 ②撇 ③横 ④竖 ⑤点 ⑥横折折撇 ⑦捺",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "辶 (走之底) — the \"walking\" radical, for movement and distance.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "附近 (fùjìn) · 最近 (zuìjìn)",
+        "en": "nearby · recently"
+       },
+       {
+        "term": "句子",
+        "zh": "超市离我家很近。",
+        "en": "The supermarket is very near my home."
+       }
+      ]
+     },
+     {
+      "char": "远",
+      "strokes": "7 笔 strokes",
+      "breakdown": "辶 + 元 反义 ↔ 近",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "辶 (走之底) — same radical as 近!",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "远方 (yuǎnfāng) · 永远 (yǒngyuǎn)",
+        "en": "far away · forever"
+       },
+       {
+        "term": "句子",
+        "zh": "医院离这儿不远。",
+        "en": "The hospital is not far from here."
+       }
+      ]
+     },
+     {
+      "char": "店",
+      "strokes": "8 笔 strokes",
+      "breakdown": "①点 ②横 ③撇 ④竖 ⑤横折 ⑥横 ⑦竖 ⑧横",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "广 — the \"wide building\" radical.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "商店 (shāngdiàn) · 饭店 (fàndiàn) · 书店 (shūdiàn)",
+        "en": ""
+       },
+       {
+        "term": "句子",
+        "zh": "我家楼下有一个小商店。",
+        "en": "There's a small shop below my apartment."
+       }
+      ]
+     },
+     {
+      "char": "银",
+      "strokes": "11 笔 strokes",
+      "breakdown": "钅 (金字旁) + 艮 (gèn)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "钅 (金字旁) — the metal radical! Money & metal words use it.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "银行 (yínháng) · 银色 (yínsè)",
+        "en": "bank · silver"
+       },
+       {
+        "term": "句子",
+        "zh": "银行在邮局对面。",
+        "en": "The bank is opposite the post office."
+       }
+      ]
+     },
+     {
+      "char": "行",
+      "strokes": "6 笔 strokes",
+      "breakdown": "彳 (双人旁) + 亍",
+      "facts": [
+       {
+        "term": "看一看",
+        "zh": "One character, two readings: háng (a row) and xíng (to walk).",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "银行 (yínháng) · 步行 (bùxíng) · 自行车 (zìxíngchē)",
+        "en": "bank · walk"
+       },
+       {
+        "term": "句子",
+        "zh": "我步行去学校。",
+        "en": "I walk to school."
+       }
+      ]
+     },
+     {
+      "char": "馆",
+      "strokes": "11 笔 strokes",
+      "breakdown": "饣 (食字旁) + 官 (guān)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "饣 (食字旁) — often a place where you eat or gather!",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "图书馆 (túshūguǎn) · 餐馆 (cānguǎn) · 体育馆 (tǐyùguǎn)",
+        "en": "library"
+       },
+       {
+        "term": "句子",
+        "zh": "放学后我常常去图书馆。",
+        "en": "After school I often go to the library."
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (7) · Characters · stroke order & radicals",
+    "recognise": [
+     "社",
+     "邻",
+     "超",
+     "市",
+     "园",
+     "院",
+     "站",
+     "局",
+     "拐"
+    ],
+    "vocab": [
+     {
+      "zh": "社区",
+      "py": "shèqū",
+      "en": "community"
+     },
+     {
+      "zh": "邻居",
+      "py": "línjū",
+      "en": "neighbour"
+     },
+     {
+      "zh": "超市",
+      "py": "chāoshì",
+      "en": "supermarket"
+     },
+     {
+      "zh": "图书馆",
+      "py": "túshūguǎn",
+      "en": "library"
+     },
+     {
+      "zh": "医院",
+      "py": "yīyuàn",
+      "en": "hospital"
+     },
+     {
+      "zh": "餐馆",
+      "py": "cānguǎn",
+      "en": "restaurant"
+     },
+     {
+      "zh": "银行",
+      "py": "yínháng",
+      "en": "bank"
+     },
+     {
+      "zh": "公园",
+      "py": "gōngyuán",
+      "en": "park"
+     },
+     {
+      "zh": "邮局",
+      "py": "yóujú",
+      "en": "post office"
+     },
+     {
+      "zh": "车站",
+      "py": "chēzhàn",
+      "en": "(bus) stop"
+     },
+     {
+      "zh": "附近",
+      "py": "fùjìn",
+      "en": "nearby"
+     },
+     {
+      "zh": "旁边",
+      "py": "pángbiān",
+      "en": "beside"
+     },
+     {
+      "zh": "对面",
+      "py": "duìmiàn",
+      "en": "opposite"
+     },
+     {
+      "zh": "离…远/近",
+      "py": "lí…yuǎn/jìn",
+      "en": "far/near from…"
+     },
+     {
+      "zh": "往前走",
+      "py": "wǎng qián zǒu",
+      "en": "walk straight ahead"
+     },
+     {
+      "zh": "拐弯",
+      "py": "guǎiwān",
+      "en": "turn (a corner)"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "…在…旁边/对面",
+      "py": "zài páng biān duì miàn",
+      "en": "…is next to / opposite…"
+     },
+     {
+      "zh": "离…远/近",
+      "py": "lí yuǎn jìn",
+      "en": "far / near from…"
+     },
+     {
+      "zh": "往前走…就到了",
+      "py": "wǎng qián zǒu jiù dào le",
+      "en": "walk ahead and you’re there"
+     }
+    ],
+    "text": {
+     "kind": "reading",
+     "titleZh": "课文 — 阅读",
+     "titleEn": "Text · Reading · ~130 字",
+     "readingTitle": "我的社区",
+     "paragraphs": [
+      "我家住在墨尔本东边的一个小区。小区附近有不少地方，生活很方便。超市就在小区门口，我家楼下还有一个面包店，早上走两分钟就能买到新鲜面包。",
+      "往前走三四分钟，有一个小公园。很多邻居晚饭后在那里散步，孩子们也在那儿玩。图书馆离我家稍微远一点，走路差不多十分钟，可是我很喜欢去那里看书。银行和邮局都在同一条街上，银行在邮局对面，中间隔一条小马路。我觉得住在这里挺好的——购物、散步、看书，都不远。"
+     ],
+     "footnotes": "难词注释 footnotes 稍微 (shāowēi) = a little · 隔 (gé) = separated by · 墨尔本 (Mò'ěrběn) = Melbourne"
+    },
+    "culture": {
+     "zh": "在中国，很多人住在\"小区\"里。一个小区里有好几栋楼，还有商店、小广场，甚至幼儿园。晚上，大妈们常常在广场上跳\"广场舞\"——这是中国社区特有的一道风景。在澳大利亚，人们大多住在独立 (dúlì) 的房子（house）里，社区更加安静。",
+     "en": "In China, many people live in 小区 (residential compounds) with shops, squares, even kindergartens. In the evenings, \"square dancing\" (广场舞) is a common sight. In Australia, most people live in separate houses and neighbourhoods are quieter."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，圈一圈 · Listen & circle. 老师说安娜的社区，圈出你听到的地方。",
+      "en": "Circle the places you hear."
+     },
+     {
+      "optional": false,
+      "text": "连一连 · Match. Link each place to its meaning.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "根据课文回答 · Answer from the text《我的社区》. ① 银行在邮局的哪一边？（在邮局＿＿） ② 图书馆离\"我\"家远吗？走路要几分钟？",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "用\"离…远/近\"造句 · Make sentences. 学校离我家＿＿。邮局离银行＿＿。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional画社区地图 · Draw a map. 画你家附近的地图，标出三个地方，写三句话介绍位置。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional部首找一找 · Find the radical. 圈出带\"辶(走之底)\"的字：jìn近yuǎn远zhè这diàn店guò过",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 社区导游",
+     "titleEn": "Activity · Community Guide",
+     "steps": [
+      "画或描述你家附近的简单地图。",
+      "跟同学说：",
+      "给同学当一次\"社区导游\"。"
+     ],
+     "frame": "我家住在＿＿。超市在我家＿＿。往前走＿＿分钟，有一个＿＿。＿＿在＿＿对面。我觉得住在这里很＿＿。"
+    },
+    "speak": {
+     "label": "说一说 · 我的社区 · Speak",
+     "frame": "我住在＿＿。我家附近有＿＿、＿＿和＿＿。＿＿离我家很近，＿＿有点远。从我家往前走＿＿就到了＿＿。"
+    },
+    "reflect": [
+     "说出六个社区地方",
+     "用\"在…旁边/对面\"描述位置",
+     "用\"离…远/近\"说距离",
+     "给出简单路线",
+     "写 区·近·远·店·银·行·馆",
+     "认出辶(走之底)"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "背诵《登鹳雀楼》。"
+       ],
+       [
+        "2",
+        "朗读课文《我的社区》给家人听。"
+       ],
+       [
+        "3",
+        "画一张社区地图，标五个地方（写中文）。"
+       ],
+       [
+        "4",
+        "跟家人说说你家附近有什么。"
+       ],
+       [
+        "5",
+        "写 区·近·远·店·银·行·馆 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：区·近·远·店·银·行·馆 各三遍。",
+        "背诵《登鹳雀楼》。"
+       ],
+       [
+        "2",
+        "抄写生词：社区·附近·旁边·对面·银行 各三遍。默写：区·近·远。",
+        "朗读课文给家人听。"
+       ],
+       [
+        "3",
+        "从课文找三个方位句，抄一遍。默写：店·银·行·馆。",
+        "口头介绍你家附近（用方位词）。"
+       ],
+       [
+        "4",
+        "写一段话介绍你的社区（80字）。默写全单元 7 字。",
+        "跟家人讨论\"住在这里怎么样\"。"
+       ],
+       [
+        "5",
+        "修改短文。",
+        "找三个带 辶 的字，各组一个词。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "社",
+      "py": "shè",
+      "strokes": "7",
+      "radical": "礻",
+      "words": "社区 (shèqū) · 社会 (shèhuì)"
+     },
+     {
+      "char": "邻",
+      "py": "lín",
+      "strokes": "7",
+      "radical": "阝",
+      "words": "邻居 (línjū) · 邻近 (línjìn)"
+     },
+     {
+      "char": "拐",
+      "py": "guǎi",
+      "strokes": "8",
+      "radical": "扌",
+      "words": "拐弯 (guǎiwān) · 拐角 (guǎijiǎo)"
+     },
+     {
+      "char": "站",
+      "py": "zhàn",
+      "strokes": "10",
+      "radical": "立",
+      "words": "车站 (chēzhàn) · 站立 (zhànlì)"
+     }
+    ],
+    "furtherCharsTitle": "字 — 社·邻·拐·站",
+    "radical": {
+     "titleZh": "部首角 — 辶 走之底",
+     "titleEn": "Radical Corner",
+     "intro": "辶 来自\"走\"——和\"走路、移动、距离\"有关的字，常常带走之底：",
+     "family": [
+      {
+       "zh": "近",
+       "py": "jìn",
+       "en": "near"
+      },
+      {
+       "zh": "远",
+       "py": "yuǎn",
+       "en": "far"
+      },
+      {
+       "zh": "这",
+       "py": "zhè",
+       "en": "this"
+      },
+      {
+       "zh": "进",
+       "py": "jìn",
+       "en": "enter"
+      },
+      {
+       "zh": "过",
+       "py": "guò",
+       "en": "cross"
+      },
+      {
+       "zh": "道",
+       "py": "dào",
+       "en": "road"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read · 小明的社区 · ~150 字",
+     "paragraphs": [
+      "小明住在墨尔本的一个小区里。他家附近有很多方便的地方。小区门口就有一个超市，超市旁边是一家小餐馆，常常能闻到饭菜的香味。往前走不到五分钟，就到了图书馆。图书馆对面是一个小公园，周末很多人在里面跑步、带孩子玩。邮局和银行在另一条街上，走路大约十分钟。小明最喜欢的地方是图书馆——虽然不大，可是又安静又舒服，他可以待一个下午。"
+     ],
+     "footnotes": "注释 香味 (xiāngwèi) = fragrant smell · 待 (dāi) = to stay"
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写一段话介绍你的社区（6–8句）。用上 在…旁边/对面、离…远/近、往前走…就到了、我最喜欢…因为…。",
+     "en": "Write · Write 6–8 sentences about your community, using the location structures."
+    }
+   }
+  },
+  {
+   "n": 2,
+   "id": "u2",
+   "theme": {
+    "zh": "饮食与健康",
+    "en": "Food & Health"
+   },
+   "objective": {
+    "zh": "点菜或说什么食物健康，并给出理由。",
+    "en": "Order food and say what is healthy, with a reason."
+   },
+   "core": {
+    "review": [
+     "读一读: 区·近·远·店·银·行·馆 + 水·口·人",
+     "说一说: 用\"我家附近有……\"复习地点词。你今天吃了什么？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《悯农》 李绅",
+      "titleEn": "Recite · Pity the Farmer · (唐 · revisit)",
+      "poem": "《悯农》",
+      "poemPinyin": "mǐn nóng",
+      "lines": [
+       {
+        "zh": "锄禾日当午，汗滴禾下土。",
+        "py": "chú hé rì dāng wǔ hàn dī hé xià tǔ"
+       },
+       {
+        "zh": "谁知盘中餐，粒粒皆辛苦。",
+        "py": "shéi zhī pán zhōng cān lì lì jiē xīn kǔ"
+       }
+      ],
+      "meaning": "意思 — Hoeing grain under the noon sun, sweat drips to the soil. Who knows that every grain in the bowl came from such hard work?",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "健",
+      "strokes": "10 笔 strokes",
+      "breakdown": "亻 (人) + 建",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "亻 (单人旁) — about people and their state.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "健康 (jiànkāng) · 健身 (jiànshēn)",
+        "en": "healthy · work out"
+       },
+       {
+        "term": "句子",
+        "zh": "多运动，身体才健康。",
+        "en": "Exercise more to be healthy."
+       }
+      ]
+     },
+     {
+      "char": "康",
+      "strokes": "11 笔 strokes",
+      "breakdown": "广 + 隶 (lì)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "广 (广字头) — the \"wide building\" radical.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "健康 (jiànkāng) · 小康 (xiǎokāng)",
+        "en": "health · comfortable life"
+       },
+       {
+        "term": "句子",
+        "zh": "祝你身体健康！",
+        "en": "Wishing you good health!"
+       }
+      ]
+     },
+     {
+      "char": "营",
+      "strokes": "11 笔 strokes",
+      "breakdown": "艹 + 吕 (lǚ)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "艹 (草字头) — often about plants and food.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "营养 (yíngyǎng) · 营业 (yíngyè)",
+        "en": "nutrition · open for business"
+       },
+       {
+        "term": "句子",
+        "zh": "蔬菜很有营养。",
+        "en": "Vegetables are very nutritious."
+       }
+      ]
+     },
+     {
+      "char": "养",
+      "strokes": "9 笔 strokes",
+      "breakdown": "羊(声) + 食底",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "营养 (yíngyǎng) · 养成 (yǎngchéng)",
+        "en": "nutrition · to form (a habit)"
+       },
+       {
+        "term": "句子",
+        "zh": "我们要养成好习惯。",
+        "en": "We should form good habits."
+       }
+      ]
+     },
+     {
+      "char": "蔬",
+      "strokes": "15 笔 strokes",
+      "breakdown": "艹 + 疏(声)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "艹 (草字头) — it's a plant, of course!",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "蔬菜 (shūcài)",
+        "en": "vegetables"
+       },
+       {
+        "term": "句子",
+        "zh": "多吃蔬菜对身体好。",
+        "en": "Eating more vegetables is good for you."
+       }
+      ]
+     },
+     {
+      "char": "菜",
+      "strokes": "11 笔 strokes",
+      "breakdown": "艹 + 采",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "艹 (草字头).",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "蔬菜 (shūcài) · 青菜 (qīngcài) · 点菜 (diǎncài)",
+        "en": "greens · order food"
+       },
+       {
+        "term": "句子",
+        "zh": "这个菜很好吃。",
+        "en": "This dish is delicious."
+       }
+      ]
+     },
+     {
+      "char": "鲜",
+      "strokes": "14 笔 strokes",
+      "breakdown": "会意 · 鱼 + 羊",
+      "facts": [
+       {
+        "term": "想一想",
+        "zh": "鱼 (fish) + 羊 (sheep) — two of the freshest, tastiest foods = fresh!",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "新鲜 (xīnxiān) · 海鲜 (hǎixiān)",
+        "en": "fresh · seafood"
+       },
+       {
+        "term": "句子",
+        "zh": "早上的面包很新鲜。",
+        "en": "The morning bread is very fresh."
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (7) · Characters",
+    "recognise": [
+     "餐",
+     "味",
+     "甜",
+     "咸",
+     "油",
+     "粥"
+    ],
+    "vocab": [
+     {
+      "zh": "米饭",
+      "py": "mǐfàn",
+      "en": "rice"
+     },
+     {
+      "zh": "面条",
+      "py": "miàntiáo",
+      "en": "noodles"
+     },
+     {
+      "zh": "蔬菜",
+      "py": "shūcài",
+      "en": "vegetables"
+     },
+     {
+      "zh": "水果",
+      "py": "shuǐguǒ",
+      "en": "fruit"
+     },
+     {
+      "zh": "鸡蛋",
+      "py": "jīdàn",
+      "en": "egg"
+     },
+     {
+      "zh": "牛奶",
+      "py": "niúnǎi",
+      "en": "milk"
+     },
+     {
+      "zh": "鱼",
+      "py": "yú",
+      "en": "fish"
+     },
+     {
+      "zh": "肉",
+      "py": "ròu",
+      "en": "meat"
+     },
+     {
+      "zh": "早餐",
+      "py": "zǎocān",
+      "en": "breakfast"
+     },
+     {
+      "zh": "午餐 / 晚餐",
+      "py": "wǔcān / wǎncān",
+      "en": "lunch / dinner"
+     },
+     {
+      "zh": "健康",
+      "py": "jiànkāng",
+      "en": "healthy"
+     },
+     {
+      "zh": "营养",
+      "py": "yíngyǎng",
+      "en": "nutrition"
+     },
+     {
+      "zh": "新鲜",
+      "py": "xīnxiān",
+      "en": "fresh"
+     },
+     {
+      "zh": "对身体好",
+      "py": "duì shēntǐ hǎo",
+      "en": "good for the body"
+     },
+     {
+      "zh": "味道",
+      "py": "wèidao",
+      "en": "taste, flavour"
+     },
+     {
+      "zh": "多 / 少",
+      "py": "duō / shǎo",
+      "en": "more / less"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "我想/要…",
+      "py": "wǒ xiǎng yào",
+      "en": "I’d like / I want…"
+     },
+     {
+      "zh": "对身体好",
+      "py": "duì shēn tǐ hǎo",
+      "en": "is good for your health"
+     },
+     {
+      "zh": "因为…所以…",
+      "py": "yīn wèi suǒ yǐ",
+      "en": "because…, so…"
+     }
+    ],
+    "text": {
+     "kind": "reading",
+     "titleZh": "课文 — 阅读",
+     "titleEn": "Text · Reading · ~110 字",
+     "readingTitle": "小红的一天三餐",
+     "paragraphs": [
+      "小红很注意健康。早餐她吃鸡蛋、喝牛奶，因为这些很有营养。午餐她在学校吃米饭和蔬菜。妈妈说，晚餐要少吃一点，所以晚上她只吃一点鱼和青菜。小红不太喜欢吃甜的，因为吃太多糖对身体不好。她常说：\"多吃蔬菜水果，少吃糖，身体才会健康。\""
+     ],
+     "footnotes": "注释 注意 (zhùyì) = pay attention to · 糖 (táng) = sugar · 才 (cái) = only then"
+    },
+    "culture": {
+     "zh": "中国人的早餐常有粥、包子和豆浆 (dòujiāng)；西方人的早餐常有麦片 (màipiàn) 和面包。各国的早餐不一样，但都讲营养。中国还有\"光盘行动\"，提倡吃光盘子里的饭，不浪费食物。",
+     "en": "Chinese breakfasts often feature congee, baozi and soy milk; Western ones, cereal and bread. China's \"Clear Plate\" campaign encourages finishing your food and not wasting it."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，圈一圈 · Listen & circle. 老师说小明今天吃了什么，圈出你听到的。",
+      "en": "Circle the foods you hear."
+     },
+     {
+      "optional": false,
+      "text": "连一连 · Match. Link each food to its meaning.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "分类 · Sort. 把词分进 主食 / 蔬果 / 饮料 三类。词语银行：米饭 · 蔬菜 · 牛奶 · 水果 · 面条 · 茶",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "填空 · Fill in. 水果对身体＿＿；我应该多吃＿＿，少吃＿＿。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional用\"因为…所以…\"造句 · Reason. 关于健康饮食：因为，所以。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional部首找一找 · Find the radical. 圈出带\"艹(草字头)\"的字：cài菜chá茶fàn饭yíng营shū蔬ròu肉",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 健康不健康",
+     "titleEn": "Activity · Healthy or Not",
+     "steps": [
+      "老师给出食物卡，把它们分成 对身体好 / 不太好 两组。",
+      "说出理由：",
+      "设计一份健康的午餐。"
+     ],
+     "frame": "＿＿对身体好，因为＿＿。我们应该多吃＿＿，少吃＿＿。"
+    },
+    "speak": {
+     "label": "说一说 · 我的健康早餐 · Speak",
+     "frame": "我的早餐有＿＿和＿＿。我想喝＿＿。我多吃＿＿，少吃＿＿，因为＿＿对身体好。"
+    },
+    "reflect": [
+     "说出八种食物",
+     "说什么食物健康",
+     "用\"因为…所以…\"给理由",
+     "用\"多/少\"说饮食习惯",
+     "写 健·康·营·养·蔬·菜·鲜",
+     "认出艹(草字头)"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "句型练习\"我多吃___，少吃___，因为___对身体好\"，念《悯农》。"
+       ],
+       [
+        "2",
+        "读一读词语（米饭·蔬菜·水果·健康·营养·新鲜）。"
+       ],
+       [
+        "3",
+        "写下你昨天吃的三餐（用中文关键词）。"
+       ],
+       [
+        "4",
+        "用\"因为…所以…\"说一句健康饮食的话。"
+       ],
+       [
+        "5",
+        "写 健·康·营·养·蔬·菜·鲜 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：健·康·营·养·蔬·菜·鲜 各三遍。",
+        "念《悯农》。"
+       ],
+       [
+        "2",
+        "抄写生词：健康·营养·蔬菜·新鲜·味道 各三遍。默写：健·康·营。",
+        "读一读词语。"
+       ],
+       [
+        "3",
+        "从课文找两个\"因为…所以…\"句，抄一遍。默写：养·蔬·菜·鲜。",
+        "用\"因为…所以…\"说健康饮食。"
+       ],
+       [
+        "4",
+        "写一段话介绍你的一日三餐和健康习惯（80字）。默写全单元 7 字。",
+        "跟家人说一句\"___对身体好\"，并说理由。"
+       ],
+       [
+        "5",
+        "修改短文。",
+        "找三个带 艹 的字，各组一个词。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "饭",
+      "py": "fàn",
+      "strokes": "7",
+      "radical": "饣",
+      "words": "米饭 (mǐfàn) · 早饭 (zǎofàn)"
+     },
+     {
+      "char": "茶",
+      "py": "chá",
+      "strokes": "9",
+      "radical": "艹",
+      "words": "喝茶 (hē chá) · 茶叶 (cháyè)"
+     },
+     {
+      "char": "喝",
+      "py": "hē",
+      "strokes": "12",
+      "radical": "口",
+      "words": "喝水 (hē shuǐ) · 喝茶 (hē chá)"
+     },
+     {
+      "char": "苹",
+      "py": "píng",
+      "strokes": "8",
+      "radical": "艹",
+      "words": "苹果 (píngguǒ)"
+     }
+    ],
+    "furtherCharsTitle": "字 — 饭·茶·喝·苹",
+    "radical": {
+     "titleZh": "部首角 — 艹 草字头",
+     "titleEn": "Radical Corner",
+     "intro": "草字头来自\"草\"。和植物、蔬菜、花草有关的字，常常戴一顶\"草帽\" (dài yì dǐng cǎomào)：",
+     "family": [
+      {
+       "zh": "菜",
+       "py": "cài",
+       "en": "vegetable"
+      },
+      {
+       "zh": "茶",
+       "py": "chá",
+       "en": "tea"
+      },
+      {
+       "zh": "苹",
+       "py": "píng",
+       "en": "apple"
+      },
+      {
+       "zh": "营",
+       "py": "yíng",
+       "en": "nourish"
+      },
+      {
+       "zh": "蔬",
+       "py": "shū",
+       "en": "vegetable"
+      },
+      {
+       "zh": "花",
+       "py": "huā",
+       "en": "flower"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read · ~120 字",
+     "paragraphs": [
+      "什么是健康的饮食？医生说，最重要的是\"均衡\"——也就是各种食物都吃一点，不挑食。我们要多吃蔬菜和水果，因为它们有很多营养；也要吃一点肉、鱼和鸡蛋，因为身体需要它们长高、长力气。可是甜的东西要少吃，因为吃太多糖，不但对牙齿不好，也容易长胖。除了吃，喝也很重要——多喝水，少喝甜饮料。记住：没有不好的食物，只有不好的吃法。"
+     ],
+     "footnotes": "难词注释 footnotes 均衡 (jūnhéng) = balanced · 挑食 (tiāoshí) = picky eating · 牙齿 (yáchǐ) = teeth · 长胖 (zhǎngpàng) = put on weight"
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写一段话介绍你的一日三餐和你的健康习惯（6–8句）。用上 因为…所以…、对身体好、多/少、比。",
+     "en": "Write · Write 6–8 sentences about your three meals and healthy habits."
+    }
+   }
+  },
+  {
+   "n": 3,
+   "id": "u3",
+   "theme": {
+    "zh": "旅行",
+    "en": "Travel & Transport"
+   },
+   "objective": {
+    "zh": "描述一次旅行，并按顺序说出过程。",
+    "en": "Describe a trip and sequence a journey from start to finish."
+   },
+   "core": {
+    "review": [
+     "读一读: 健·康·营·养·蔬·菜·鲜 + 车·人·口",
+     "说一说: 用\"先…然后…\"说你早上做的事。你去过哪里旅行？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《早发白帝城》 李白",
+      "titleEn": "Recite · Leaving Baidi at Dawn · (唐)",
+      "poem": "《早发白帝城》",
+      "poemPinyin": "zǎo fā bái dì chéng",
+      "lines": [
+       {
+        "zh": "朝辞白帝彩云间，千里江陵一日还。",
+        "py": "zhāo cí Bái Dì cǎi yún jiān qiān lǐ Jiāng Líng yí rì huán"
+       },
+       {
+        "zh": "两岸猿声啼不住，轻舟已过万重山。",
+        "py": "liǎng àn yuán shēng tí bú zhù qīng zhōu yǐ guò wàn chóng shān"
+       }
+      ],
+      "meaning": "意思 — At dawn I leave Baidi amid coloured clouds; a thousand li to Jiangling — home in a single day. Monkeys call without ceasing from both banks; my light boat has already passed ten thousand mountains.",
+      "note": "注释: 朝(zhāo)=dawn · 辞(cí)=leave · 啼(tí)=cry, call · 轻舟(qīngzhōu)=light boat。"
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "旅",
+      "strokes": "10 笔 strokes",
+      "breakdown": "方 + 㫃",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "方 (方字旁).",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "旅行 (lǚxíng) · 旅游 (lǚyóu)",
+        "en": "travel · tour"
+       },
+       {
+        "term": "句子",
+        "zh": "暑假我去旅行。",
+        "en": "I travel in the summer holidays."
+       }
+      ]
+     },
+     {
+      "char": "行",
+      "strokes": "6 笔 strokes",
+      "breakdown": "彳 (双人旁) + 亍",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "彳 (双人旁) — the \"step\" radical, all about moving forward.",
+        "en": ""
+       },
+       {
+        "term": "看一看",
+        "zh": "Two readings: xíng (to go, to travel) and háng (a row, a firm — as in 银行).",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "旅行 (lǚxíng) · 步行 (bùxíng) · 自行车 (zìxíngchē)",
+        "en": "travel · on foot"
+       },
+       {
+        "term": "句子",
+        "zh": "我们步行去火车站。",
+        "en": "We walk to the train station."
+       }
+      ]
+     },
+     {
+      "char": "坐",
+      "strokes": "7 笔 strokes",
+      "breakdown": "会意 · 二人坐于土",
+      "facts": [
+       {
+        "term": "想一想",
+        "zh": "Two people (人人) sitting on the ground (土) — to sit, and so \"to take\" a seat on a vehicle.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "坐车 (zuòchē) · 坐下 (zuòxià)",
+        "en": "ride · sit down"
+       },
+       {
+        "term": "句子",
+        "zh": "我坐火车去悉尼 (Xīní)。",
+        "en": "I take the train to Sydney."
+       }
+      ]
+     },
+     {
+      "char": "骑",
+      "strokes": "11 笔 strokes",
+      "breakdown": "形声 · 马 + 奇(声)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "马 (马字旁) — you ride a horse, a bike, anything you sit astride.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "骑车 (qíchē) · 骑马 (qímǎ)",
+        "en": "cycle · ride a horse"
+       },
+       {
+        "term": "句子",
+        "zh": "我骑自行车上学。",
+        "en": "I ride my bike to school."
+       }
+      ]
+     },
+     {
+      "char": "船",
+      "strokes": "11 笔 strokes",
+      "breakdown": "舟 (舟字旁) + 㕣",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "舟 (舟字旁) — 舟 means \"boat\"; it's in many water-craft words.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "坐船 (zuòchuán) · 轮船 (lúnchuán)",
+        "en": "go by boat · ship"
+       },
+       {
+        "term": "句子",
+        "zh": "我们坐船看海豚 (hǎitún)。",
+        "en": "We took a boat to see dolphins."
+       }
+      ]
+     },
+     {
+      "char": "机",
+      "strokes": "6 笔 strokes",
+      "breakdown": "形声 · 木 + 几(声)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "木 (木字旁) — early machines were made of wood.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "飞机 (fēijī) · 机场 (jīchǎng) · 手机 (shǒujī)",
+        "en": "plane · airport"
+       },
+       {
+        "term": "句子",
+        "zh": "我坐飞机去了悉尼 (Xīní)。",
+        "en": "I flew to Sydney."
+       }
+      ]
+     },
+     {
+      "char": "票",
+      "strokes": "11 笔 strokes",
+      "breakdown": "覀 + 示",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "车票 (chēpiào) · 机票 (jīpiào) · 门票 (ménpiào)",
+        "en": "ticket · plane ticket"
+       },
+       {
+        "term": "句子",
+        "zh": "我买了两张火车票。",
+        "en": "I bought two train tickets."
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (7) · Characters",
+    "recognise": [
+     "飞",
+     "火",
+     "公",
+     "出",
+     "发",
+     "到",
+     "玩"
+    ],
+    "vocab": [
+     {
+      "zh": "火车",
+      "py": "huǒchē",
+      "en": "train"
+     },
+     {
+      "zh": "汽车",
+      "py": "qìchē",
+      "en": "car"
+     },
+     {
+      "zh": "飞机",
+      "py": "fēijī",
+      "en": "plane"
+     },
+     {
+      "zh": "公共汽车",
+      "py": "gōnggòng qìchē",
+      "en": "bus"
+     },
+     {
+      "zh": "自行车",
+      "py": "zìxíngchē",
+      "en": "bicycle"
+     },
+     {
+      "zh": "地铁",
+      "py": "dìtiě",
+      "en": "subway"
+     },
+     {
+      "zh": "机场",
+      "py": "jīchǎng",
+      "en": "airport"
+     },
+     {
+      "zh": "旅行",
+      "py": "lǚxíng",
+      "en": "travel"
+     },
+     {
+      "zh": "假期",
+      "py": "jiàqī",
+      "en": "holiday"
+     },
+     {
+      "zh": "坐 / 骑 / 开",
+      "py": "zuò / qí / kāi",
+      "en": "take / ride / drive"
+     },
+     {
+      "zh": "出发",
+      "py": "chūfā",
+      "en": "to set off"
+     },
+     {
+      "zh": "到",
+      "py": "dào",
+      "en": "to arrive"
+     },
+     {
+      "zh": "风景",
+      "py": "fēngjǐng",
+      "en": "scenery"
+     },
+     {
+      "zh": "行李",
+      "py": "xíngli",
+      "en": "luggage"
+     },
+     {
+      "zh": "海边",
+      "py": "hǎibiān",
+      "en": "seaside"
+     },
+     {
+      "zh": "难忘",
+      "py": "nánwàng",
+      "en": "memorable"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "坐/骑/开",
+      "py": "zuò qí kāi",
+      "en": "go by / ride / drive"
+     },
+     {
+      "zh": "先…然后…再…",
+      "py": "xiān rán hòu zài",
+      "en": "first…, then…, after that…"
+     },
+     {
+      "zh": "多长时间",
+      "py": "duō cháng shí jiān",
+      "en": "how long does it take?"
+     }
+    ],
+    "text": {
+     "kind": "reading",
+     "titleZh": "课文 — 阅读",
+     "titleEn": "Text · Reading · ~110 字",
+     "readingTitle": "我的暑假旅行",
+     "paragraphs": [
+      "去年暑假，我和家人去了昆士兰。我们先坐飞机到布里斯班，然后开车去黄金海岸。我们在海边玩了一个星期。我每天都去游泳，还坐船看了海豚。",
+      "有一天，我们去了热带雨林，看到很多没见过的动物和植物。雨林里又湿又凉，可是空气特别新鲜。这是我最难忘的假期，我希望明年还能去。"
+     ],
+     "footnotes": "注释 海豚 (hǎitún) = dolphin · 热带雨林 (rèdài yǔlín) = rainforest · 难忘 (nánwàng) = memorable · 昆士兰 (Kūnshìlán) = Queensland · 布里斯班 (Bùlǐsībān) = Brisbane · 黄金海岸 (Huángjīn Hǎi'àn) = Gold Coast"
+    },
+    "culture": {
+     "zh": "在中国，很多人坐\"高铁\"旅行，又快又方便。高铁的速度可以超过每小时 300 公里！在澳大利亚，城市之间很远，人们常常开车或坐飞机。两种方式各有各的好处。",
+     "en": "In China, the high-speed rail (高铁) is fast and convenient, topping 300 km/h. In Australia, cities are far apart, so people often drive or fly. Each has its advantages."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听与做 · Listen & act. 听到交通工具就做动作（坐／骑／开），或圈出听到的。",
+      "en": "Mime or circle each vehicle you hear."
+     },
+     {
+      "optional": false,
+      "text": "连一连 · Match. Link each vehicle to its meaning.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "排序成行程 · Number the journey. 把下面的句子按顺序排好，写 1–5：",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "填空 · Fill in. 我们在海边玩了五＿＿（量词/时间）。我先＿＿，然后＿＿。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional用\"先…然后…再…\"造句 · Sequence. 描述一次出门的过程。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional部首找一找 · Find the radical. 圈出带\"舟字旁\"的字：chuán船háng航jī机qì汽",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 旅行计划",
+     "titleEn": "Activity · Plan a Trip",
+     "steps": [
+      "两人一组，计划一次旅行：去哪里？怎么去？玩几天？",
+      "用\"先…然后…再…\"排出交通和地点：",
+      "向全班介绍你们的旅行计划。"
+     ],
+     "frame": "我们想去＿＿。我们先坐＿＿到＿＿，然后＿＿，再＿＿。我们要玩＿＿天。"
+    },
+    "speak": {
+     "label": "说一说 · 我的旅行 · Speak",
+     "frame": "我去了＿＿。我先＿＿，然后＿＿，再＿＿。我们玩了＿＿。＿＿的风景太美了，很难忘。"
+    },
+    "reflect": [
+     "说出六种交通工具",
+     "用\"坐/骑/开\"说怎么去",
+     "用\"先…然后…再…\"按顺序说",
+     "用\"了\"说做过的事",
+     "写 旅·行·坐·骑·船·机·票",
+     "认出舟字旁"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "句型练习\"我去了___，我先___然后___\"，念旅行韵律。"
+       ],
+       [
+        "2",
+        "读一读词语（火车·飞机·旅行·出发·风景·难忘）。"
+       ],
+       [
+        "3",
+        "写三句你的旅行（去过哪里、怎么去的）。"
+       ],
+       [
+        "4",
+        "用\"先…然后…再…\"说一次出门的过程。"
+       ],
+       [
+        "5",
+        "写 旅·行·坐·骑·船·机·票 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：旅·行·坐·骑·船·机·票 各三遍。",
+        "念旅行韵律。"
+       ],
+       [
+        "2",
+        "抄写生词：旅行·飞机·出发·风景·难忘 各三遍。默写：旅·行·坐。",
+        "读一读词语。"
+       ],
+       [
+        "3",
+        "从课文找三个表示顺序的词，抄一遍。默写：骑·船·机·票。",
+        "用\"先…然后…再…\"说出门过程。"
+       ],
+       [
+        "4",
+        "写一段话介绍一次旅行（80字）。默写全单元 7 字。",
+        "把一次旅行讲给家人听。"
+       ],
+       [
+        "5",
+        "修改短文。",
+        "找三个带 辶 或 舟 的字，各组一个词。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "飞",
+      "py": "fēi",
+      "strokes": "3",
+      "radical": "乙",
+      "words": "飞机 (fēijī) · 飞行 (fēixíng)"
+     },
+     {
+      "char": "路",
+      "py": "lù",
+      "strokes": "13",
+      "radical": "⻊",
+      "words": "走路 (zǒulù) · 马路 (mǎlù)"
+     },
+     {
+      "char": "游",
+      "py": "yóu",
+      "strokes": "12",
+      "radical": "氵",
+      "words": "旅游 (lǚyóu) · 游泳 (yóuyǒng)"
+     },
+     {
+      "char": "公",
+      "py": "gōng",
+      "strokes": "4",
+      "radical": "八",
+      "words": "公共 (gōnggòng) · 公园 (gōngyuán)"
+     }
+    ],
+    "furtherCharsTitle": "字 — 飞·路·游·公",
+    "radical": {
+     "titleZh": "部首角 — 舟字旁 & ⻊足字旁",
+     "titleEn": "Radical Corner",
+     "intro": "舟 (boat) → 船·航；⻊ (足, foot) → 路·跑·跳；辶 (walk) → 远·过·这。看部首就能猜到字和\"走、动\"有关！",
+     "family": [
+      {
+       "zh": "船",
+       "py": "chuán",
+       "en": "boat (舟)"
+      },
+      {
+       "zh": "航",
+       "py": "háng",
+       "en": "sail (舟)"
+      },
+      {
+       "zh": "路",
+       "py": "lù",
+       "en": "road (⻊)"
+      },
+      {
+       "zh": "跑",
+       "py": "pǎo",
+       "en": "run (⻊)"
+      },
+      {
+       "zh": "跳",
+       "py": "tiào",
+       "en": "jump (⻊)"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read · ~120 字",
+     "paragraphs": [
+      "旅行的方式有很多种，各有各的好处。坐飞机最快，几个小时就能飞到很远的地方，可是要提前到机场。坐火车比较舒服，可以一边看风景，一边休息。骑自行车最慢，也最累，可是你能闻到路边的花香，看到平时看不到的小风景。开车很自由，想去哪里就去哪里，想停下来就停下来。其实，旅行最重要的不是怎么去，而是和谁一起去、看到了什么、记住了什么。"
+     ],
+     "footnotes": ""
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写一段话介绍一次真的或想象的旅行（6–8句）。用上 先…然后…再…、坐/骑/开、了、难忘。",
+     "en": "Write · Write 6–8 sentences about a real or imagined trip."
+    }
+   }
+  },
+  {
+   "n": 4,
+   "id": "u4",
+   "theme": {
+    "zh": "中国与澳大利亚",
+    "en": "Two Countries"
+   },
+   "objective": {
+    "zh": "比较中国和澳大利亚的日常生活。",
+    "en": "Compare daily life in China and Australia."
+   },
+   "core": {
+    "review": [
+     "读一读: 旅·行·坐·骑·船·机·票 + 大·国·文",
+     "说一说: 用交通词复习\"我坐…去…\"。你去过中国吗？那里跟这里一样吗？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《回乡偶书》 贺知章",
+      "titleEn": "Recite · Coming Home · (唐 · 节选)",
+      "poem": "《回乡偶书》",
+      "poemPinyin": "huí xiāng ǒu shū",
+      "lines": [
+       {
+        "zh": "少小离家老大回，",
+        "py": "shào xiǎo lí jiā lǎo dà huí"
+       },
+       {
+        "zh": "乡音无改鬓毛衰。",
+        "py": "xiāng yīn wú gǎi bìn máo cuī"
+       }
+      ],
+      "meaning": "意思 — I left home young and return old; my home accent hasn't changed, though the hair at my temples has thinned.",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "比",
+      "strokes": "4 笔 strokes",
+      "breakdown": "象形 · 二人并列",
+      "facts": [
+       {
+        "term": "想一想",
+        "zh": "Two people standing side by side — to compare. 语法: A 比 B 大 = A is bigger than B.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "比较 (bǐjiào) · 比赛 (bǐsài)",
+        "en": "compare · match"
+       },
+       {
+        "term": "句子",
+        "zh": "中国比澳大利亚大。",
+        "en": "China is bigger than Australia."
+       }
+      ]
+     },
+     {
+      "char": "较",
+      "strokes": "10 笔 strokes",
+      "breakdown": "形声 · 车 + 交(声)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "车 (车字旁).",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "比较 (bǐjiào) · 较好 (jiào hǎo)",
+        "en": "compare; quite · rather good"
+       },
+       {
+        "term": "句子",
+        "zh": "澳大利亚的城市比较安静。",
+        "en": "Australian cities are relatively quiet."
+       }
+      ]
+     },
+     {
+      "char": "更",
+      "strokes": "7 笔 strokes",
+      "breakdown": "一 + 日 + 乂",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "更好 (gèng hǎo) · 更多 (gèng duō)",
+        "en": "even better · even more"
+       },
+       {
+        "term": "句子",
+        "zh": "澳大利亚的天空更蓝。",
+        "en": "Australia's sky is even bluer."
+       }
+      ]
+     },
+     {
+      "char": "虽",
+      "strokes": "9 笔 strokes",
+      "breakdown": "口 + 虫",
+      "facts": [
+       {
+        "term": "语法",
+        "zh": "虽然…但是… = although… (still)… — always comes in a pair.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "虽然 (suīrán)",
+        "en": "although"
+       },
+       {
+        "term": "句子",
+        "zh": "虽然天气冷，但是风景很美。",
+        "en": "Although it's cold, the view is lovely."
+       }
+      ]
+     },
+     {
+      "char": "然",
+      "strokes": "12 笔 strokes",
+      "breakdown": "部首 灬 (火)",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "虽然 (suīrán) · 然后 (ránhòu) · 当然 (dāngrán)",
+        "en": "then · of course"
+       },
+       {
+        "term": "句子",
+        "zh": "虽然不一样，但是各有各的好。",
+        "en": "Though different, each has its own merits."
+       }
+      ]
+     },
+     {
+      "char": "但",
+      "strokes": "7 笔 strokes",
+      "breakdown": "形声 · 亻 + 旦",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "亻 (单人旁).",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "但是 (dànshì) · 不但 (búdàn)",
+        "en": "but · not only"
+       },
+       {
+        "term": "句子",
+        "zh": "中国很热闹，但是这里很安静。",
+        "en": "China is lively, but here is quiet."
+       }
+      ]
+     },
+     {
+      "char": "化",
+      "strokes": "4 笔 strokes",
+      "breakdown": "会意 · 亻 + 匕（人变化）",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "文化 (wénhuà) · 变化 (biànhuà)",
+        "en": "culture · change"
+       },
+       {
+        "term": "句子",
+        "zh": "两国的文化不一样。",
+        "en": "The two countries' cultures differ."
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (7) · Characters",
+    "recognise": [
+     "澳",
+     "洲",
+     "季",
+     "节",
+     "假",
+     "暑",
+     "寒"
+    ],
+    "vocab": [
+     {
+      "zh": "中国",
+      "py": "Zhōngguó",
+      "en": "China"
+     },
+     {
+      "zh": "澳大利亚",
+      "py": "Àodàlìyà",
+      "en": "Australia"
+     },
+     {
+      "zh": "城市",
+      "py": "chéngshì",
+      "en": "city"
+     },
+     {
+      "zh": "文化",
+      "py": "wénhuà",
+      "en": "culture"
+     },
+     {
+      "zh": "习惯",
+      "py": "xíguàn",
+      "en": "custom, habit"
+     },
+     {
+      "zh": "人口",
+      "py": "rénkǒu",
+      "en": "population"
+     },
+     {
+      "zh": "天气",
+      "py": "tiānqì",
+      "en": "weather"
+     },
+     {
+      "zh": "季节",
+      "py": "jìjié",
+      "en": "season"
+     },
+     {
+      "zh": "语言",
+      "py": "yǔyán",
+      "en": "language"
+     },
+     {
+      "zh": "热 / 冷",
+      "py": "rè / lěng",
+      "en": "hot / cold"
+     },
+     {
+      "zh": "比",
+      "py": "bǐ",
+      "en": "compared to"
+     },
+     {
+      "zh": "更",
+      "py": "gèng",
+      "en": "more, even more"
+     },
+     {
+      "zh": "跟…一样",
+      "py": "gēn…yíyàng",
+      "en": "the same as…"
+     },
+     {
+      "zh": "不一样",
+      "py": "bù yíyàng",
+      "en": "different"
+     },
+     {
+      "zh": "热闹 / 安静",
+      "py": "rènao / ānjìng",
+      "en": "lively / quiet"
+     },
+     {
+      "zh": "各有各的",
+      "py": "gèyǒu gède",
+      "en": "each has its own"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "比…更…",
+      "py": "bǐ gèng",
+      "en": "even more … than…"
+     },
+     {
+      "zh": "跟…一样/不一样",
+      "py": "gēn yí yàng bù yí yàng",
+      "en": "the same as / different from…"
+     },
+     {
+      "zh": "虽然…但是…",
+      "py": "suī rán dàn shì",
+      "en": "although…, …"
+     }
+    ],
+    "text": {
+     "kind": "reading",
+     "titleZh": "课文 — 阅读",
+     "titleEn": "Text · Reading · ~125 字",
+     "readingTitle": "两个家",
+     "paragraphs": [
+      "我出生在中国，现在住在澳大利亚。这两个地方很不一样。中国的冬天很冷，会下雪；澳大利亚的冬天没有那么冷。中国的城市比澳大利亚的城市热闹，可是澳大利亚的天空更蓝，空气更新鲜。",
+      "虽然两个地方不一样，但是我都很喜欢，因为它们都是我的家。每次回中国，我都很开心；可是回到澳大利亚，我也觉得很温暖。两个家，给了我两份幸福。"
+     ],
+     "footnotes": "注释 出生 (chūshēng) = be born · 那么 (nàme) = that much · 温暖 (wēnnuǎn) = warm"
+    },
+    "culture": {
+     "zh": "中国和澳大利亚的季节正好相反：中国过年是冬天，人们穿棉袄、吃火锅 (huǒguō)；澳大利亚的圣诞节却是夏天，人们穿短袖、去海边烧烤 (shāokǎo)。因为一个在北半球，一个在南半球。两国虽然季节不一样，但都有丰富的文化。",
+     "en": "China and Australia have opposite seasons: Chinese New Year is in winter (padded coats, hot pot), while an Australian Christmas is in summer (T-shirts, beach BBQs) — one in the northern hemisphere, one in the southern."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，判断对错 · Listen & tick √/✗. 老师说比较句，对的画√，不对的画✗。",
+      "en": "Tick true, cross false."
+     },
+     {
+      "optional": false,
+      "text": "连一连 · Match. Link each word to its meaning.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "造句 · Compare. 用\"A 比 B 更…\"和\"跟…一样/不一样\"各写一句（人口／天气／城市）。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "填空 · Fill in. 中国的人口比澳大利亚＿＿（多/少）。澳大利亚的天空＿＿蓝（更/比）。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional用\"虽然…但是…\"造句 · Concede. 写一句关于两个地方的话。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional对比表 · Comparison table. 做一个中国 vs 澳大利亚的表格（天气/城市/季节），再口头汇报。",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 比一比",
+     "titleEn": "Activity · Compare!",
+     "steps": [
+      "用比较卡，两人轮流比较中国和澳大利亚（或你去过的两个地方）。",
+      "说出至少三个比较：",
+      "说说你更喜欢哪里，为什么。"
+     ],
+     "frame": "中国的＿＿比澳大利亚的＿＿（更…）。两个地方的＿＿跟＿＿（一样/不一样）。虽然＿＿，但是＿＿。"
+    },
+    "speak": {
+     "label": "说一说 · 两个国家 · Speak",
+     "frame": "中国的＿＿比澳大利亚的＿＿（更…）。两个地方的＿＿跟＿＿（一样/不一样）。虽然不一样，但是各有各的好。"
+    },
+    "reflect": [
+     "说出两国生活的不同",
+     "用\"比…更…\"做比较",
+     "用\"跟…一样/不一样\"",
+     "用\"虽然…但是…\"",
+     "写 比·较·更·虽·然·但·化"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "句型练习\"中国的___比澳大利亚的___…\"，念《回乡偶书》。"
+       ],
+       [
+        "2",
+        "读一读词语（城市·文化·习惯·季节·一样·比）。"
+       ],
+       [
+        "3",
+        "写两句中澳比较（用\"比\"或\"跟…一样\"）。"
+       ],
+       [
+        "4",
+        "朗读课文，用\"虽然…但是…\"说一句。"
+       ],
+       [
+        "5",
+        "写 比·较·更·虽·然·但·化 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：比·较·更·虽·然·但·化 各三遍。",
+        "念《回乡偶书》。"
+       ],
+       [
+        "2",
+        "抄写生词：城市·文化·习惯·季节·热闹 各三遍。默写：比·较·更。",
+        "读一读词语。"
+       ],
+       [
+        "3",
+        "从课文找两个比较句，抄一遍。默写：虽·然·但·化。",
+        "用\"虽然…但是…\"说一句。"
+       ],
+       [
+        "4",
+        "列对比表后写成一段文字（80字）。默写全单元 7 字。",
+        "跟家人比较两个地方（天气/城市/季节）。"
+       ],
+       [
+        "5",
+        "修改短文。",
+        "找三个带 亻 的字，各组一个词。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "城",
+      "py": "chéng",
+      "strokes": "9",
+      "radical": "土",
+      "words": "城市 (chéngshì) · 长城 (Chángchéng)"
+     },
+     {
+      "char": "习",
+      "py": "xí",
+      "strokes": "3",
+      "radical": "乙",
+      "words": "习惯 (xíguàn) · 学习 (xuéxí)"
+     },
+     {
+      "char": "惯",
+      "py": "guàn",
+      "strokes": "11",
+      "radical": "忄",
+      "words": "习惯 (xíguàn) · 惯例 (guànlì)"
+     },
+     {
+      "char": "季",
+      "py": "jì",
+      "strokes": "8",
+      "radical": "禾",
+      "words": "季节 (jìjié) · 四季 (sìjì)"
+     }
+    ],
+    "furtherCharsTitle": "字 — 城·习·惯·季",
+    "radical": {
+     "titleZh": "部首角 — 忄竖心旁",
+     "titleEn": "Radical Corner",
+     "intro": "忄是\"心\"做部首时的样子。和心情、感觉、习惯有关的字，常常带竖心旁：",
+     "family": [
+      {
+       "zh": "惯",
+       "py": "guàn",
+       "en": "be used to"
+      },
+      {
+       "zh": "快",
+       "py": "kuài",
+       "en": "happy/fast"
+      },
+      {
+       "zh": "慢",
+       "py": "màn",
+       "en": "slow"
+      },
+      {
+       "zh": "怕",
+       "py": "pà",
+       "en": "afraid"
+      },
+      {
+       "zh": "忙",
+       "py": "máng",
+       "en": "busy"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read · ~120 字",
+     "paragraphs": [
+      "很多人觉得中国和澳大利亚很不一样，其实它们也有很多相同的地方。两个国家都很大，都有美丽的自然风景，人们也都希望生活得更好。不一样的是习惯：中国人见面常常问\"你吃了吗？\"，澳大利亚人见面常说\"How are you?\"。中国的城市又大又热闹，澳大利亚的城市比较安静。我觉得，了解两种文化，就像有了两双眼睛——能看到别人看不到的东西。不同，不是问题，而是礼物。"
+     ],
+     "footnotes": ""
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "比较中国和澳大利亚，或你去过的两个地方（6–8句）。用上 比、跟…一样/不一样、虽然…但是…、更。",
+     "en": "Write · Compare two places in 6–8 sentences."
+    }
+   }
+  },
+  {
+   "n": 5,
+   "id": "u5",
+   "theme": {
+    "zh": "故事与传说",
+    "en": "Stories & Legends"
+   },
+   "objective": {
+    "zh": "按顺序复述一个短故事或传说。",
+    "en": "Retell a short story or legend in sequence."
+   },
+   "core": {
+    "review": [
+     "读一读: 比·较·更·虽·然·但·化 + 月·王",
+     "说一说: 用比较句复习\"中国/澳大利亚…不一样\"。你知道哪些故事？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《静夜思》 李白",
+      "titleEn": "Recite · Quiet Night Thoughts · (唐 · revisit)",
+      "poem": "《静夜思》",
+      "poemPinyin": "jìng yè sī",
+      "lines": [
+       {
+        "zh": "床前明月光，疑是地上霜。",
+        "py": "chuáng qián míng yuè guāng yí shì dì shàng shuāng"
+       },
+       {
+        "zh": "举头望明月，低头思故乡。",
+        "py": "jǔ tóu wàng míng yuè dī tóu sī gù xiāng"
+       }
+      ],
+      "meaning": "意思 — Moonlight before my bed, like frost on the ground. I raise my head to the moon, lower it, and miss my home.",
+      "note": "连接: 嫦娥奔月的传说——月亮是思念的象征。The moon links this poem to the legend of Chang'e."
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "故",
+      "strokes": "9 笔 strokes",
+      "breakdown": "形声 · 古(声) + 攵",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "攵 (反文旁).",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "故事 (gùshi) · 故乡 (gùxiāng)",
+        "en": "story · hometown"
+       },
+       {
+        "term": "句子",
+        "zh": "奶奶给我讲了一个故事。",
+        "en": "Grandma told me a story."
+       }
+      ]
+     },
+     {
+      "char": "传",
+      "strokes": "6 笔 strokes",
+      "breakdown": "形声 · 亻 + 专 (zhuān·声)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "亻 (单人旁) — passed from person to person.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "传说 (chuánshuō) · 传统 (chuántǒng)",
+        "en": "legend · tradition"
+       },
+       {
+        "term": "句子",
+        "zh": "这个故事代代相传。",
+        "en": "This story is passed down the generations."
+       }
+      ]
+     },
+     {
+      "char": "说",
+      "strokes": "9 笔 strokes",
+      "breakdown": "形声 · 讠 + 兑 (duì·声)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "讠 (言字旁) — all about speaking.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "说话 (shuōhuà) · 传说 (chuánshuō) · 听说 (tīngshuō)",
+        "en": "I heard"
+       },
+       {
+        "term": "句子",
+        "zh": "你听说过这个传说吗？",
+        "en": "Have you heard this legend?"
+       }
+      ]
+     },
+     {
+      "char": "闻",
+      "strokes": "9 笔 strokes",
+      "breakdown": "会意 · 门 + 耳",
+      "facts": [
+       {
+        "term": "想一想",
+        "zh": "An ear (耳) at the door (门) — to hear, and so news that travels.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "听闻 (tīngwén) · 闻名 (wénmíng) · 新闻 (xīnwén)",
+        "en": "famous"
+       },
+       {
+        "term": "句子",
+        "zh": "这个传说很有名，闻名世界。",
+        "en": "This legend is world-famous."
+       }
+      ]
+     },
+     {
+      "char": "龙",
+      "strokes": "5 笔 strokes",
+      "breakdown": "象形 · 龙的样子",
+      "facts": [
+       {
+        "term": "文化",
+        "zh": "龙 in Chinese culture is a symbol of luck and power — Chinese call themselves \"龙的传人\".",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "龙年 (lóngnián) · 恐龙 (kǒnglóng)",
+        "en": "Year of the Dragon · dinosaur"
+       },
+       {
+        "term": "句子",
+        "zh": "龙是吉祥 (jíxiáng) 的象征。",
+        "en": "The dragon symbolises good fortune."
+       }
+      ]
+     },
+     {
+      "char": "王",
+      "strokes": "4 笔 strokes",
+      "breakdown": "会意 · 贯 (guàn) 通天地人",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "国王 (guówáng) · 王子 (wángzǐ)",
+        "en": "king · prince"
+       },
+       {
+        "term": "句子",
+        "zh": "从前有一个国王。",
+        "en": "Once upon a time there was a king."
+       }
+      ]
+     },
+     {
+      "char": "后",
+      "strokes": "6 笔 strokes",
+      "breakdown": "①撇 ②撇 ③横 ④竖 ⑤横折 ⑥横",
+      "facts": [
+       {
+        "term": "叙事词",
+        "zh": "The story-telling word: 后来 (hòulái) — what happens next.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "后来 (hòulái) · 以后 (yǐhòu) · 最后 (zuìhòu)",
+        "en": "afterwards · later · finally"
+       },
+       {
+        "term": "句子",
+        "zh": "后来，羿成了英雄。",
+        "en": "Afterwards, Yi became a hero."
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (7) · Characters",
+    "recognise": [
+     "嫦",
+     "娥",
+     "羿",
+     "盘",
+     "古",
+     "孙",
+     "悟",
+     "空"
+    ],
+    "vocab": [
+     {
+      "zh": "故事",
+      "py": "gùshi",
+      "en": "story"
+     },
+     {
+      "zh": "传说",
+      "py": "chuánshuō",
+      "en": "legend"
+     },
+     {
+      "zh": "龙",
+      "py": "lóng",
+      "en": "dragon"
+     },
+     {
+      "zh": "月亮",
+      "py": "yuèliang",
+      "en": "the moon"
+     },
+     {
+      "zh": "国王",
+      "py": "guówáng",
+      "en": "king"
+     },
+     {
+      "zh": "公主",
+      "py": "gōngzhǔ",
+      "en": "princess"
+     },
+     {
+      "zh": "怪物",
+      "py": "guàiwù",
+      "en": "monster"
+     },
+     {
+      "zh": "发现",
+      "py": "fāxiàn",
+      "en": "to discover"
+     },
+     {
+      "zh": "从前",
+      "py": "cóngqián",
+      "en": "once upon a time"
+     },
+     {
+      "zh": "后来",
+      "py": "hòulái",
+      "en": "later"
+     },
+     {
+      "zh": "最后",
+      "py": "zuìhòu",
+      "en": "finally"
+     },
+     {
+      "zh": "聪明",
+      "py": "cōngming",
+      "en": "clever"
+     },
+     {
+      "zh": "听说",
+      "py": "tīngshuō",
+      "en": "I heard that"
+     },
+     {
+      "zh": "害怕",
+      "py": "hàipà",
+      "en": "afraid"
+     },
+     {
+      "zh": "勇敢",
+      "py": "yǒnggǎn",
+      "en": "brave"
+     },
+     {
+      "zh": "一…就…",
+      "py": "yī…jiù…",
+      "en": "as soon as…"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "从前…后来…最后…",
+      "py": "cóng qián hòu lái zuì hòu",
+      "en": "once…, later…, finally…"
+     },
+     {
+      "zh": "一…就…",
+      "py": "yī jiù",
+      "en": "as soon as…, …"
+     },
+     {
+      "zh": "听说",
+      "py": "tīng shuō",
+      "en": "I heard that…"
+     }
+    ],
+    "text": {
+     "kind": "reading",
+     "titleZh": "课文 — 阅读",
+     "titleEn": "Text · Reading · ~110 字",
+     "readingTitle": "年的故事",
+     "paragraphs": [
+      "从前，有一个怪物，叫\"年\"。每年冬天，年就来村子里吃东西，大家都很害怕。后来，一位勇敢的老人发现，年怕红色和大的声音。",
+      "所以，人们一看见年来，就放鞭炮、贴红纸、穿红衣服。年被吓跑了，再也不敢来了。从那以后，每年过年，人们都放鞭炮、贴春联，热热闹闹地庆祝。这就是过年的故事。"
+     ],
+     "footnotes": "注释 村子 (cūnzi) = village · 放鞭炮 (fàng biānpào) = set off firecrackers · 吓跑 (xiàpǎo) = scare away"
+    },
+    "culture": {
+     "zh": "中国有很多有名的传说，比如嫦娥奔月 (Cháng'é bēnyuè)、牛郎织女 (Niúláng Zhīnǚ)、十二生肖。这些故事代代相传，是中国文化的一部分。在澳大利亚，原住民 (yuánzhùmín) 也有丰富的传说故事，比如关于\"彩虹蛇\"的传说。每个民族 (mínzú) 都用故事记住自己的过去。",
+     "en": "China has famous legends like Chang'e flying to the moon and the Twelve Zodiac Animals. Aboriginal Australians too have rich Dreaming stories, like the Rainbow Serpent. Every culture remembers its past through stories."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，圈一圈 · Listen & circle. 老师讲《年的故事》，圈出你听到的词。",
+      "en": "Circle the words you hear."
+     },
+     {
+      "optional": false,
+      "text": "连一连 · Match. Link each word to its meaning.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "排序 · Order the story. 把《年的故事》的三句话按 从前 / 后来 / 最后 排好，写 1–3：",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "填空 · Fill in. 她一吃仙(xiān)药(yào)，＿＿飞到了月亮上。年一听见鞭炮，＿＿吓(xià)跑了。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional用\"听说\"造句 · Use 听说. 用\"听说\"写一句话。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional部首找一找 · Find the radical. 圈出带\"言字旁(讠)\"的字：shuō说huà话wén闻yǔ语",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 故事接龙",
+     "titleEn": "Activity · Story Chain",
+     "steps": [
+      "全班围成一圈，每人加一句，把故事讲下去。",
+      "用顺序词连接：",
+      "把全班一起编的故事写下来。"
+     ],
+     "frame": "从前有一个＿＿。后来＿＿。然后＿＿。最后＿＿。"
+    },
+    "speak": {
+     "label": "说一说 · 讲一个故事 · Speak",
+     "frame": "从前有＿＿。后来＿＿。最后＿＿。这个故事告诉我们＿＿。"
+    },
+    "reflect": [
+     "按顺序复述一个故事",
+     "用\"从前、后来、最后\"讲故事",
+     "用\"一…就…\"",
+     "用\"听说\"转述",
+     "写 故·传·说·闻·龙·王·后",
+     "认出言字旁(讠)"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "句型练习\"从前有___，后来___，最后___\"，念《静夜思》。"
+       ],
+       [
+        "2",
+        "读一读词语（故事·传说·从前·后来·最后·聪明）。"
+       ],
+       [
+        "3",
+        "写一个故事的名字和一句话。"
+       ],
+       [
+        "4",
+        "用\"一…就…\"说一句。"
+       ],
+       [
+        "5",
+        "给家人讲一个你知道的故事（从前…后来…最后…）。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：故·传·说·闻·龙·王·后 各三遍。",
+        "念《静夜思》。"
+       ],
+       [
+        "2",
+        "抄写生词：故事·传说·从前·后来·最后 各三遍。默写：故·传·说。",
+        "读一读词语。"
+       ],
+       [
+        "3",
+        "把口头故事写成一段（80字）。默写：闻·龙·王·后。",
+        "用\"一…就…\"说一句。"
+       ],
+       [
+        "4",
+        "写一个短故事（从前…后来…最后…）。默写全单元 7 字。",
+        "把故事讲给家人听。"
+       ],
+       [
+        "5",
+        "修改短故事，准备讲给全班听。",
+        "找三个带 讠 的字，各组一个词。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "听",
+      "py": "tīng",
+      "strokes": "7",
+      "radical": "口",
+      "words": "听说 (tīngshuō) · 好听 (hǎotīng)"
+     },
+     {
+      "char": "想",
+      "py": "xiǎng",
+      "strokes": "13",
+      "radical": "心",
+      "words": "想念 (xiǎngniàn) · 想法 (xiǎngfǎ)"
+     },
+     {
+      "char": "怕",
+      "py": "pà",
+      "strokes": "8",
+      "radical": "忄",
+      "words": "害怕 (hàipà) · 可怕 (kěpà)"
+     },
+     {
+      "char": "神",
+      "py": "shén",
+      "strokes": "9",
+      "radical": "礻",
+      "words": "神话 (shénhuà) · 精神 (jīngshén)"
+     }
+    ],
+    "furtherCharsTitle": "字 — 听·想·怕·神",
+    "radical": {
+     "titleZh": "部首角 — 讠 言字旁 & 心/忄",
+     "titleEn": "Radical Corner",
+     "intro": "讲故事既要\"说\"，也要写人物的\"心情\"。讠(言)→说·话·语；心/忄→想·怕·快。",
+     "family": [
+      {
+       "zh": "说",
+       "py": "shuō",
+       "en": "say (讠)"
+      },
+      {
+       "zh": "话",
+       "py": "huà",
+       "en": "talk (讠)"
+      },
+      {
+       "zh": "语",
+       "py": "yǔ",
+       "en": "language (讠)"
+      },
+      {
+       "zh": "想",
+       "py": "xiǎng",
+       "en": "think (心)"
+      },
+      {
+       "zh": "怕",
+       "py": "pà",
+       "en": "fear (忄)"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read · 嫦娥奔月 · ~120 字",
+     "paragraphs": [
+      "从前，天上有十个太阳，晒得地上又热又干。有一个勇敢的人，叫后羿，他一口气射下了九个太阳，救了大家。后来，他得到了一包仙药，交给妻子嫦娥保管。有一天，一个坏人想抢仙药，嫦娥为了不让他得到，就把仙药吃了下去。她一吃仙药，就慢慢飞了起来，最后飞到了月亮上。从那以后，每年中秋节，人们都看着月亮，想念美丽的嫦娥。"
+     ],
+     "footnotes": "难词注释 footnotes 后羿 (Hòu Yì) = the archer Hou Yi · 嫦娥 (Cháng'é) = Chang'e · 射 (shè) = shoot · 仙药 (xiānyào) = elixir · 妻子 (qīzi) = wife · 抢 (qiǎng) = snatch · 晒 (shài) = bask in the sun"
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写一个短故事或传说（6–8句）。用上 从前、后来、一…就…、最后。可以写你知道的中国传说，也可以自己编一个。",
+     "en": "Write · Write a 6–8 sentence story or legend using the sequence structures."
+    }
+   }
+  },
+  {
+   "n": 6,
+   "id": "u6",
+   "theme": {
+    "zh": "科技与生活",
+    "en": "Tech in Daily Life"
+   },
+   "objective": {
+    "zh": "说科技怎么帮助我们，并发表简单的看法。",
+    "en": "Say how technology helps us, and give a simple opinion."
+   },
+   "core": {
+    "review": [
+     "读一读: 故·传·说·闻·龙·王·后 + 用·电",
+     "说一说: 用\"从前…后来…\"复习故事顺序。你每天用手机做什么？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 现代韵律",
+      "titleEn": "Recite · A Modern-Life Rhyme",
+      "poem": "",
+      "poemPinyin": "",
+      "lines": [
+       {
+        "zh": "手机电脑真方便，联系世界看得远；",
+        "py": "shǒu jī diàn nǎo zhēn fāng biàn lián xì shì jiè kàn de yuǎn"
+       },
+       {
+        "zh": "可是眼睛要休息，做时间的小主人。",
+        "py": "kě shì yǎn jing yào xiū xi zuò shí jiān de xiǎo zhǔ rén"
+       }
+      ],
+      "meaning": "意思 — Phones and computers are so handy, connecting us to a wider world; but your eyes need rest — be the little master of your own time.",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "科",
+      "strokes": "9 笔 strokes",
+      "breakdown": "禾 + 斗",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "禾 (禾木旁).",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "科技 (kējì) · 科学 (kēxué)",
+        "en": "technology · science"
+       },
+       {
+        "term": "句子",
+        "zh": "科技让生活更方便。",
+        "en": "Technology makes life more convenient."
+       }
+      ]
+     },
+     {
+      "char": "技",
+      "strokes": "7 笔 strokes",
+      "breakdown": "形声 · 扌 + 支(声)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "扌 (提手旁) — a skill is something done by hand.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "科技 (kējì) · 技术 (jìshù)",
+        "en": "technology · technique"
+       },
+       {
+        "term": "句子",
+        "zh": "这是一种新技术。",
+        "en": "This is a new technology."
+       }
+      ]
+     },
+     {
+      "char": "网",
+      "strokes": "6 笔 strokes",
+      "breakdown": "象形 · 一张网的样子",
+      "facts": [
+       {
+        "term": "想一想",
+        "zh": "The shape is a net! Today it means the internet too.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "上网 (shàngwǎng) · 网络 (wǎngluò)",
+        "en": "go online · the internet"
+       },
+       {
+        "term": "句子",
+        "zh": "我用电脑上网。",
+        "en": "I go online on the computer."
+       }
+      ]
+     },
+     {
+      "char": "脑",
+      "strokes": "10 笔 strokes",
+      "breakdown": "月(肉) + 㐫",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "月 (肉月旁) — body-part radical; the brain is part of the body.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "电脑 (diànnǎo) · 大脑 (dànǎo)",
+        "en": "computer · brain"
+       },
+       {
+        "term": "句子",
+        "zh": "我用电脑写作业。",
+        "en": "I do homework on the computer."
+       }
+      ]
+     },
+     {
+      "char": "视",
+      "strokes": "8 笔 strokes",
+      "breakdown": "形声 · 礻 + 见",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "见 (看) — to do with seeing.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "电视 (diànshì) · 视频 (shìpín)",
+        "en": "TV · video"
+       },
+       {
+        "term": "句子",
+        "zh": "晚上我们一起看电视。",
+        "en": "We watch TV together at night."
+       }
+      ]
+     },
+     {
+      "char": "息",
+      "strokes": "10 笔 strokes",
+      "breakdown": "会意 · 自 + 心",
+      "facts": [
+       {
+        "term": "想一想",
+        "zh": "自 (nose) + 心 (heart) — breathing, and so to rest.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "信息 (xìnxī) · 休息 (xiūxi)",
+        "en": "information · rest"
+       },
+       {
+        "term": "句子",
+        "zh": "我上网找信息。",
+        "en": "I look for information online."
+       }
+      ]
+     },
+     {
+      "char": "便",
+      "strokes": "9 笔 strokes",
+      "breakdown": "会意 · 亻 + 更",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "亻 (单人旁) — making things easier for people.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "方便 (fāngbiàn) · 便宜 (piányi)",
+        "en": "convenient · cheap"
+       },
+       {
+        "term": "句子",
+        "zh": "手机让联系家人很方便。",
+        "en": "Phones make contacting family easy."
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (7) · Characters",
+    "recognise": [
+     "手",
+     "软",
+     "件",
+     "游",
+     "戏",
+     "搜",
+     "聊"
+    ],
+    "vocab": [
+     {
+      "zh": "电脑",
+      "py": "diànnǎo",
+      "en": "computer"
+     },
+     {
+      "zh": "手机",
+      "py": "shǒujī",
+      "en": "mobile phone"
+     },
+     {
+      "zh": "电视",
+      "py": "diànshì",
+      "en": "TV"
+     },
+     {
+      "zh": "网络",
+      "py": "wǎngluò",
+      "en": "the internet"
+     },
+     {
+      "zh": "上网",
+      "py": "shàngwǎng",
+      "en": "go online"
+     },
+     {
+      "zh": "视频",
+      "py": "shìpín",
+      "en": "video"
+     },
+     {
+      "zh": "游戏",
+      "py": "yóuxì",
+      "en": "game"
+     },
+     {
+      "zh": "软件",
+      "py": "ruǎnjiàn",
+      "en": "app, software"
+     },
+     {
+      "zh": "信息",
+      "py": "xìnxī",
+      "en": "information"
+     },
+     {
+      "zh": "方便",
+      "py": "fāngbiàn",
+      "en": "convenient"
+     },
+     {
+      "zh": "联系",
+      "py": "liánxì",
+      "en": "to contact"
+     },
+     {
+      "zh": "休息",
+      "py": "xiūxi",
+      "en": "to rest"
+     },
+     {
+      "zh": "好处 / 坏处",
+      "py": "hǎochù / huàichù",
+      "en": "benefit / drawback"
+     },
+     {
+      "zh": "又…又…",
+      "py": "yòu…yòu…",
+      "en": "both… and…"
+     },
+     {
+      "zh": "觉得",
+      "py": "juéde",
+      "en": "to think, feel"
+     },
+     {
+      "zh": "应该",
+      "py": "yīnggāi",
+      "en": "should"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "会/能/可以",
+      "py": "huì néng kě yǐ",
+      "en": "can / be able to / may"
+     },
+     {
+      "zh": "用…来…",
+      "py": "yòng lái",
+      "en": "use … to…"
+     },
+     {
+      "zh": "又…又…",
+      "py": "yòu yòu",
+      "en": "both … and…"
+     },
+     {
+      "zh": "我觉得",
+      "py": "wǒ jué de",
+      "en": "I think / I feel…"
+     }
+    ],
+    "text": {
+     "kind": "reading",
+     "titleZh": "课文 — 阅读",
+     "titleEn": "Text · Reading · ~120 字",
+     "readingTitle": "奶奶学手机",
+     "paragraphs": [
+      "我的奶奶以前不会用智能手机。后来我教她用手机来看视频、跟我们视频聊天。现在她又会上网，又会发照片，还会在网上买东西。她觉得手机很方便，可以看见远方的家人。",
+      "可是我也提醒她，不要用太久，要注意休息眼睛。我觉得，科技能让我们的生活更好，但是我们要做手机的主人，不要被手机控制。"
+     ],
+     "footnotes": "注释 智能 (zhìnéng) = smart · 提醒 (tíxǐng) = remind · 控制 (kòngzhì) = control"
+    },
+    "culture": {
+     "zh": "在中国，很多人用\"微信\"聊天、付钱、看新闻。微信不但可以发消息，还可以打车、点外卖、预约医生，非常方便！可是我们也要注意休息眼睛，不能用太久。",
+     "en": "In China, WeChat is used to chat, pay, read news, hail taxis, order food and book doctors — incredibly convenient. But remember to rest your eyes and not overuse it."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，圈一圈 · Listen & circle. 老师说一段话，圈出你听到的科技词。",
+      "en": "Circle the tech words you hear."
+     },
+     {
+      "optional": false,
+      "text": "连一连 · Match. Link each word to its meaning.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "用\"用…来…\"造句 · Use 用…来… 写两句（手机/电脑）：我用＿＿来＿＿。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "填空 + 用\"又…又…\" · Fill in & describe. 玩太久对＿＿不好；我们应该多＿＿。手机又＿＿又＿＿。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional分类 · Sort. 把下面分进 好处 / 坏处：方便联系 · 影响睡觉 · 找信息快 · 玩太久 · 看见远方家人。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional用\"我觉得\"发表看法 · Opinion. 关于科技，我觉得。",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 科技好不好",
+     "titleEn": "Activity · Tech: Good or Bad?",
+     "steps": [
+      "用观点卡，轮流发表看法。",
+      "说出好处和坏处：",
+      "说一条\"健康用手机\"的建议。"
+     ],
+     "frame": "我觉得＿＿又＿＿又＿＿。它的好处是＿＿，坏处是＿＿。我们应该＿＿。"
+    },
+    "speak": {
+     "label": "说一说 · 我和科技 · Speak",
+     "frame": "我常常用＿＿来＿＿。我觉得它又＿＿又＿＿。可是我们应该＿＿。"
+    },
+    "reflect": [
+     "说科技怎么帮助我",
+     "用\"用…来…\"\"又…又…\"",
+     "用\"我觉得\"发表看法",
+     "写 科·技·网·脑·视·息·便",
+     "认出见字旁"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "句型练习\"我常常用___来___，我觉得它又___又___\"，念现代韵律。"
+       ],
+       [
+        "2",
+        "读一读词语（电脑·手机·网络·方便·信息·休息）。"
+       ],
+       [
+        "3",
+        "写下你每天用手机的三个用途（中文）。"
+       ],
+       [
+        "4",
+        "用\"用…来…\"和\"又…又…\"各说一句。"
+       ],
+       [
+        "5",
+        "写 科·技·网·脑·视·息·便 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：科·技·网·脑·视·息·便 各三遍。",
+        "念现代韵律。"
+       ],
+       [
+        "2",
+        "抄写生词：科技·网络·电脑·信息·方便 各三遍。默写：科·技·网。",
+        "读一读词语。"
+       ],
+       [
+        "3",
+        "写两句\"用…来…\"和\"又…又…\"。默写：脑·视·息·便。",
+        "口头发表一个科技看法。"
+       ],
+       [
+        "4",
+        "写一段话谈科技与生活（80字）。默写全单元 7 字。",
+        "跟家人说一条\"健康用手机\"的建议。"
+       ],
+       [
+        "5",
+        "修改短文。",
+        "找三个带 见 或 月(肉) 的字，各组一个词。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "电",
+      "py": "diàn",
+      "strokes": "5",
+      "radical": "日/电",
+      "words": "电脑 (diànnǎo) · 电话 (diànhuà)"
+     },
+     {
+      "char": "软",
+      "py": "ruǎn",
+      "strokes": "8",
+      "radical": "车",
+      "words": "软件 (ruǎnjiàn) · 软 (ruǎn)"
+     },
+     {
+      "char": "件",
+      "py": "jiàn",
+      "strokes": "6",
+      "radical": "亻",
+      "words": "软件 (ruǎnjiàn) · 一件 (yí jiàn)"
+     },
+     {
+      "char": "觉",
+      "py": "jué",
+      "strokes": "9",
+      "radical": "见",
+      "words": "觉得 (juéde) · 感觉 (gǎnjué)"
+     }
+    ],
+    "furtherCharsTitle": "字 — 电·软·件·觉",
+    "radical": {
+     "titleZh": "部首角 — 见字旁",
+     "titleEn": "Radical Corner",
+     "intro": "\"见\"是\"看见\"。带\"见\"的字，常常和看、观察、感觉有关：",
+     "family": [
+      {
+       "zh": "视",
+       "py": "shì",
+       "en": "view"
+      },
+      {
+       "zh": "觉",
+       "py": "jué",
+       "en": "sense/feel"
+      },
+      {
+       "zh": "观",
+       "py": "guān",
+       "en": "observe"
+      },
+      {
+       "zh": "现",
+       "py": "xiàn",
+       "en": "appear"
+      },
+      {
+       "zh": "览",
+       "py": "lǎn",
+       "en": "browse"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read · ~120 字",
+     "paragraphs": [
+      "几十年前，人们想联系远方的家人，要写信，一封信常常要走半个月。今天，我们用手机，几秒钟就能看见对方的脸、听见对方的声音。科技让世界变小了，也让生活变方便了。可是，方便也有它的\"坏处\"：有的人一有空就看手机，连吃饭、走路都不放下。我觉得，科技是好东西，可是怎么用，要靠我们自己。做手机的主人，别做手机的\"奴隶\"。"
+     ],
+     "footnotes": "难词注释 footnotes 封 (fēng) = measure word for letters · 奴隶 (núlì) = slave"
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写一段话谈科技怎么帮助你、有什么要注意的（6–8句）。用上 用…来…、又…又…、我觉得、应该。",
+     "en": "Write · Write 6–8 sentences on how tech helps you and what to watch out for."
+    }
+   }
+  },
+  {
+   "n": 7,
+   "id": "u7",
+   "theme": {
+    "zh": "保护环境",
+    "en": "Protect the Environment"
+   },
+   "objective": {
+    "zh": "说说怎么保护环境，用“应该/不要”提建议，用“如果…就…”说条件和结果。",
+    "en": "Suggest ways to protect the environment, give advice with 应该/不要, and use 如果…就… for cause and effect."
+   },
+   "core": {
+    "review": [
+     "读一读: 环·境·保·护·树·净·垃 + 水·天·地·花·草·山·河·海",
+     "部首回顾: 土(土字旁) → 地·垃·境·场 · 木(木字旁) → 树·林·校·机",
+     "说一说: 你看到过哪些环境问题？你做过什么来保护环境？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《江雪》 柳宗元",
+      "titleEn": "Recite · River Snow · (唐)",
+      "poem": "《江雪》",
+      "poemPinyin": "jiāng xuě",
+      "lines": [
+       {
+        "zh": "千山鸟飞绝，万径人踪灭。",
+        "py": "qiān shān niǎo fēi jué wàn jìng rén zōng miè"
+       },
+       {
+        "zh": "孤舟蓑笠翁，独钓寒江雪。",
+        "py": "gū zhōu suō lì wēng dú diào hán jiāng xuě"
+       }
+      ],
+      "meaning": "意思 — A thousand hills — no bird in flight; ten thousand paths — no human trace. A lone boat, a straw-cloaked old man, fishing alone in the cold river snow.",
+      "note": "注释: 绝(jué)=gone · 径(jìng)=path · 踪(zōng)=trace · 翁(wēng)=old man。"
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "环",
+      "strokes": "8 笔 strokes",
+      "breakdown": "①横 ②横 ③竖 ④提 ⑤横 ⑥撇 ⑦竖 ⑧点",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "王 (王字旁) — like a jade ring circling the Earth.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "环境 (huánjìng) · 环保 (huánbǎo)",
+        "en": "environment · eco-friendly"
+       },
+       {
+        "term": "句子",
+        "zh": "保护环境是每个人的责任。",
+        "en": "Protecting the environment is everyone’s job."
+       }
+      ]
+     },
+     {
+      "char": "境",
+      "strokes": "14 笔 strokes",
+      "breakdown": "形声 · 土 + 竟(声)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "土 (土字旁) — the environment is the land around you.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "环境 (huánjìng) · 边境 (biānjìng) · 梦境 (mèngjìng)",
+        "en": "border"
+       },
+       {
+        "term": "句子",
+        "zh": "这里的环境很干净、很美丽。",
+        "en": "The environment here is clean and beautiful."
+       }
+      ]
+     },
+     {
+      "char": "保",
+      "strokes": "9 笔 strokes",
+      "breakdown": "①撇 ②竖 ③竖 ④横折 ⑤横 ⑥横 ⑦竖 ⑧撇 ⑨捺",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "亻 (单人旁) — a person standing guard.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "保护 (bǎohù) · 保证 (bǎozhèng) · 保安 (bǎo’ān)",
+        "en": "guarantee"
+       },
+       {
+        "term": "句子",
+        "zh": "我们应该保护小动物。",
+        "en": "We should protect small animals."
+       }
+      ]
+     },
+     {
+      "char": "护",
+      "strokes": "7 笔 strokes",
+      "breakdown": "①横 ②竖钩 ③提 ④点 ⑤横折 ⑥横 ⑦撇",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "扌 (提手旁) — you protect with your hands.",
+        "en": ""
+       },
+       {
+        "term": "词语连接",
+        "zh": "保护 — 两个字都是“protect”，合在一起最有力!",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "保护 (bǎohù) · 爱护 (àihù) · 护士 (hùshi)",
+        "en": "cherish · nurse"
+       },
+       {
+        "term": "句子",
+        "zh": "大家都要爱护花草树木。",
+        "en": "Everyone should care for the plants and trees."
+       }
+      ]
+     },
+     {
+      "char": "树",
+      "strokes": "9 笔 strokes",
+      "breakdown": "形声 · 木 + 对",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "木 (木字旁) — wood & tree words.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "树木 (shùmù) · 树林 (shùlín) · 植树 (zhíshù)",
+        "en": "woods · plant trees"
+       },
+       {
+        "term": "句子",
+        "zh": "种树对环境有好处。",
+        "en": "Planting trees benefits the environment."
+       }
+      ]
+     },
+     {
+      "char": "净",
+      "strokes": "8 笔 strokes",
+      "breakdown": "①点 ②提 ③撇 ④横撇 ⑤横折 ⑥横 ⑦横 ⑧竖钩",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "冫 (两点水) — clean like clear, cold water.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "干净 (gānjìng) · 净化 (jìnghuà) · 洁净 (jiéjìng)",
+        "en": "clean · purify"
+       },
+       {
+        "term": "句子",
+        "zh": "请把教室打扫干净。",
+        "en": "Please sweep the classroom clean."
+       }
+      ]
+     },
+     {
+      "char": "垃",
+      "strokes": "8 笔 strokes",
+      "breakdown": "①横 ②竖 ③提 ④点 ⑤横 ⑥点 ⑦撇 ⑧横",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "土 (土字旁) — rubbish on the ground.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "垃圾 (lājī) · 垃圾桶 (lājītǒng) · 垃圾分类 (fēnlèi)",
+        "en": "rubbish · bin"
+       },
+       {
+        "term": "句子",
+        "zh": "请不要乱扔垃圾。",
+        "en": "Please don’t litter."
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (7) · Characters",
+    "recognise": [
+     "污",
+     "染",
+     "圾",
+     "浪",
+     "费",
+     "节",
+     "约",
+     "地",
+     "球"
+    ],
+    "vocab": [
+     {
+      "zh": "环境",
+      "py": "huánjìng",
+      "en": "environment"
+     },
+     {
+      "zh": "保护",
+      "py": "bǎohù",
+      "en": "protect"
+     },
+     {
+      "zh": "污染",
+      "py": "wūrǎn",
+      "en": "pollution"
+     },
+     {
+      "zh": "垃圾",
+      "py": "lājī",
+      "en": "rubbish"
+     },
+     {
+      "zh": "浪费",
+      "py": "làngfèi",
+      "en": "to waste"
+     },
+     {
+      "zh": "节约",
+      "py": "jiéyuē",
+      "en": "to save, conserve"
+     },
+     {
+      "zh": "地球",
+      "py": "dìqiú",
+      "en": "the Earth"
+     },
+     {
+      "zh": "干净",
+      "py": "gānjìng",
+      "en": "clean"
+     },
+     {
+      "zh": "树木",
+      "py": "shùmù",
+      "en": "trees"
+     },
+     {
+      "zh": "塑料",
+      "py": "sùliào",
+      "en": "plastic"
+     },
+     {
+      "zh": "回收",
+      "py": "huíshōu",
+      "en": "to recycle"
+     },
+     {
+      "zh": "减少",
+      "py": "jiǎnshǎo",
+      "en": "to reduce"
+     },
+     {
+      "zh": "分类",
+      "py": "fēnlèi",
+      "en": "to sort"
+     },
+     {
+      "zh": "应该",
+      "py": "yīnggāi",
+      "en": "should"
+     },
+     {
+      "zh": "不要",
+      "py": "búyào",
+      "en": "don’t"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "应该 / 不要",
+      "py": "yīng gāi bú yào",
+      "en": "should / don’t…"
+     },
+     {
+      "zh": "如果…就…",
+      "py": "rú guǒ jiù",
+      "en": "if…, then…"
+     },
+     {
+      "zh": "少 + 动词",
+      "py": "shǎo dòng cí",
+      "en": "do something less (less + verb)"
+     }
+    ],
+    "text": {
+     "kind": "reading",
+     "titleZh": "课文 — 阅读",
+     "titleEn": "Text · Reading · ~150 字",
+     "readingTitle": "保护环境，从我做起",
+     "paragraphs": [
+      "同学们：我们只有一个地球。可是现在，地球的环境越来越差了——空气污染、水污染、垃圾越来越多。如果我们不开始保护环境，将来会有很多问题。",
+      "那么，我们小学生可以做什么呢？第一，减少使用塑料，去超市带自己的购物袋。第二，节约用水，刷牙时关掉水龙头。第三，做好垃圾分类，把可以回收的瓶子和纸分开放。第四，少坐汽车、多走路或骑自行车，这样空气会更干净。如果大家都来保护环境，地球就会更美丽、更干净。从今天开始，让我们一起行动吧！"
+     ],
+     "footnotes": "难词注释 footnotes 越来越 (yuèláiyuè) = more and more · 将来 (jiānglái) = the future · 水龙头 (shuǐlóngtóu) = tap · 购物袋 (gòuwùdài) = shopping bag · 行动 (xíngdòng) = take action"
+    },
+    "culture": {
+     "zh": "在中国，每年三月十二日是“植树节”。这一天，从小学生到老人都会出来种树。这个节日是为了纪念孙中山先生，他一生都很重视植树造林。几十年来，中国的森林 (sēnlín) 越来越多，这是一代代人坚持种树的结果。在澳大利亚，也有“清洁澳大利亚日”（Clean Up Australia Day），人们一起捡垃圾、清理海滩 (hǎitān) 和公园。两个国家都在努力——因为地球是我们共同的家。",
+     "en": "China’s Tree-Planting Day (Mar 12) honours Sun Yat-sen; people of all ages plant trees. Australia has Clean Up Australia Day. Both nations work to protect our shared home."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，判断 √/✗ · Listen & judge. 老师说一件事，对环境好的画√，不好的画✗。",
+      "en": "Tick what helps the environment, cross what harms it."
+     },
+     {
+      "optional": false,
+      "text": "连一连 · Match. Link each word to its meaning.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "选词填空 · Choose and fill. 我们＿＿保护环境（应该/不要）。＿＿你想保护地球，＿＿从身边做起（如果…就…）。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "\"如果…就…\"造句 · Make sentences. 如果每个人种一棵树，＿＿。如果＿＿，空气就会更干净。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional环保承诺卡 · Pledge card. 做一张\"环保承诺卡\"，写三件你答应做的事（用\"我答应…\"）。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional部首找一找 · Find the radical. 圈出带\"土(土字旁)\"的字：lā垃jìng境dì地kuài块jìng净",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 环保小演讲",
+     "titleEn": "Activity · Eco Speech",
+     "steps": [
+      "准备一段一分钟的演讲，主题：保护环境，从我做起。",
+      "用下面的句子开头：",
+      "给同学做一次演讲，请他们评一评。"
+     ],
+     "frame": "大家好！现在，地球的环境＿＿。比如＿＿和＿＿。我们可以做三件事：第一，＿＿；第二，＿＿；第三，＿＿。如果大家都来保护环境，＿＿。谢谢大家！"
+    },
+    "speak": {
+     "label": "说一说 · 我家的环保 · Speak",
+     "frame": "我家有三种环保习惯：第一，我们用＿＿来＿＿；第二，我们少用＿＿；第三，我们把＿＿分类回收。我觉得保护环境很重要，因为＿＿。"
+    },
+    "reflect": [
+     "说出五种环境问题",
+     "用“应该/不要”提出环保建议",
+     "用“如果…就…”说条件和结果",
+     "用“少+动词”说减少什么",
+     "写 环·境·保·护·树·净·垃",
+     "认出土(土字旁)和冫(两点水)"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "背诵《江雪》。"
+       ],
+       [
+        "2",
+        "朗读课文《保护环境，从我做起》给家人听。"
+       ],
+       [
+        "3",
+        "在家里找到三种可以回收的东西（写中文名称）。"
+       ],
+       [
+        "4",
+        "跟家人说三个节约用水的方法。"
+       ],
+       [
+        "5",
+        "写 环·境·保·护·树·净·垃 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：环·境·保·护·树·净·垃 各三遍。",
+        "背诵《江雪》。"
+       ],
+       [
+        "2",
+        "抄写生词：环境·保护·污染·干净·节约 各三遍。默写：环·境·保。",
+        "朗读课文给家人听。"
+       ],
+       [
+        "3",
+        "从课文找三个“如果…就…”或“应该”的句子，抄一遍。默写：护·树·净·垃。",
+        "跟家人说说：我们家怎么保护环境？"
+       ],
+       [
+        "4",
+        "写一段“环保小演讲”（80字）。默写全单元 7 字。",
+        "跟家人讨论“为什么垃圾分类很重要”。"
+       ],
+       [
+        "5",
+        "修改演讲。",
+        "找三个带 土 或 木 的字，各组一个词。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "污",
+      "py": "wū",
+      "strokes": "6",
+      "radical": "氵",
+      "words": "污染 (wūrǎn) · 污水 (wūshuǐ)"
+     },
+     {
+      "char": "费",
+      "py": "fèi",
+      "strokes": "9",
+      "radical": "贝",
+      "words": "浪费 (làngfèi) · 免费 (miǎnfèi)"
+     },
+     {
+      "char": "约",
+      "py": "yuē",
+      "strokes": "6",
+      "radical": "纟",
+      "words": "节约 (jiéyuē) · 大约 (dàyuē)"
+     },
+     {
+      "char": "球",
+      "py": "qiú",
+      "strokes": "11",
+      "radical": "王",
+      "words": "地球 (dìqiú) · 足球 (zúqiú)"
+     }
+    ],
+    "furtherCharsTitle": "字 — 污·费·约·球",
+    "radical": {
+     "titleZh": "部首角 — 氵 三点水",
+     "titleEn": "Radical Corner",
+     "intro": "氵 来自“水”——和水、液体、流动有关的字，常常带三点水：",
+     "family": [
+      {
+       "zh": "海",
+       "py": "hǎi",
+       "en": "sea"
+      },
+      {
+       "zh": "河",
+       "py": "hé",
+       "en": "river"
+      },
+      {
+       "zh": "污",
+       "py": "wū",
+       "en": "dirty"
+      },
+      {
+       "zh": "洗",
+       "py": "xǐ",
+       "en": "wash"
+      },
+      {
+       "zh": "浪",
+       "py": "làng",
+       "en": "wave"
+      },
+      {
+       "zh": "活",
+       "py": "huó",
+       "en": "live"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read · 环保小卫士 · ~150 字",
+     "paragraphs": [
+      "杰克是学校“环保小卫士”社团的成员。每个星期五下午，他和同学们一起在校园里捡垃圾、给花浇水、检查回收箱有没有放对。上个月，杰克在全校大会上做了一次演讲。他说：“我们学校每天用掉几百个塑料瓶。如果每个人带自己的水杯，一年就可以减少上万只塑料瓶！”校长听了以后，马上给每个学生发了一个水杯。从那天起，学校食堂也不再用一次性饭盒了。杰克说：“不要以为你太小，什么都不能改变。如果你开始行动，改变就可以从一个人开始。”"
+     ],
+     "footnotes": "注释 卫士 (wèishì) = guardian · 浇水 (jiāoshuǐ) = water plants · 上万 (shàngwàn) = tens of thousands · 一次性 (yīcìxìng) = disposable · 杰克 (Jiékè) = Jack"
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "用“应该/不要”“如果…就…”“少+动词”写一段话（6–8句），倡议大家保护环境。可以写节约用水、减少塑料、垃圾分类等。",
+     "en": "Write · Write 6–8 sentences urging others to protect the environment."
+    }
+   }
+  },
+  {
+   "n": 8,
+   "id": "u8",
+   "theme": {
+    "zh": "节日文化",
+    "en": "Festivals in Depth"
+   },
+   "objective": {
+    "zh": "深入比较中国和澳大利亚的节日，说说节日的意义。",
+    "en": "Compare Chinese and Australian festivals in depth and explain what they mean."
+   },
+   "core": {
+    "review": [
+     "读一读: 除·夕·团·饺·联·拜·俗 + 春·节·福·乐·年·月·饼·秋",
+     "部首回顾: 礻 → 福·礼·祝·神 · 饣 → 饺·饭·馆·饼",
+     "说一说: 你最喜欢的节日是什么？为什么？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《元日》 王安石",
+      "titleEn": "Recite · New Year's Day · (宋)",
+      "poem": "《元日》",
+      "poemPinyin": "yuán rì",
+      "lines": [
+       {
+        "zh": "爆竹声中一岁除，春风送暖入屠苏。",
+        "py": "bào zhú shēng zhōng yí suì chú chūn fēng sòng nuǎn rù tú sū"
+       },
+       {
+        "zh": "千门万户曈曈日，总把新桃换旧符。",
+        "py": "qiān mén wàn hù tóng tóng rì zǒng bǎ xīn táo huàn jiù fú"
+       }
+      ],
+      "meaning": "意思 — Amid crackling firecrackers, a year passes; the spring wind brings warmth and the Tusu wine. On a thousand doors the bright sun shines — everywhere people put up new peach-wood charms.",
+      "note": "注释: 爆竹(bàozhú)=firecracker · 屠苏(túsū)=New Year’s wine · 曈曈(tóngtóng)=bright · 桃符(táofú)=peach-wood charm。"
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "除",
+      "strokes": "9 笔 strokes",
+      "breakdown": "形声 · 阝 + 余 (yú)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "阝 (左耳旁) — often about places & boundaries.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "除夕 (chúxī) · 除了…以外 (chúle…yǐwài) · 去除 (qùchú)",
+        "en": "New Year’s Eve"
+       },
+       {
+        "term": "句子",
+        "zh": "除夕晚上，全家一起吃年夜饭。",
+        "en": "On New Year’s Eve the whole family eats the reunion dinner."
+       }
+      ]
+     },
+     {
+      "char": "夕",
+      "strokes": "3 笔 strokes",
+      "breakdown": "①撇 ②横折 ③点",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "夕 — itself; a sliver of evening sun.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "除夕 (chúxī) · 前夕 (qiánxī) · 夕阳 (xīyáng)",
+        "en": "eve · sunset"
+       },
+       {
+        "term": "句子",
+        "zh": "除夕是一年最后一天。",
+        "en": "New Year’s Eve is the last day of the year."
+       }
+      ]
+     },
+     {
+      "char": "团",
+      "strokes": "6 笔 strokes",
+      "breakdown": "①竖 ②横折 ③横 ④竖钩 ⑤撇 ⑥横",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "囗 (国字框) — same family as 国·园·圆·图!",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "团圆 (tuányuán) · 团结 (tuánjié) · 团队 (tuánduì)",
+        "en": "reunion · unite"
+       },
+       {
+        "term": "句子",
+        "zh": "春节是家人团圆的日子。",
+        "en": "Spring Festival is a day for family reunion."
+       }
+      ]
+     },
+     {
+      "char": "饺",
+      "strokes": "9 笔 strokes",
+      "breakdown": "形声 · 饣 + 交(声)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "饣 (食字旁) — the food radical.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "饺子 (jiǎozi) · 水饺 (shuǐjiǎo) · 蒸饺 (zhēngjiǎo)",
+        "en": "dumpling"
+       },
+       {
+        "term": "句子",
+        "zh": "春节全家人一起包饺子。",
+        "en": "At Spring Festival the family makes dumplings together."
+       }
+      ]
+     },
+     {
+      "char": "联",
+      "strokes": "12 笔 strokes",
+      "breakdown": "形声 · 耳 + 关",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "耳 (耳字旁) — connecting and joining.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "春联 (chūnlián) · 联系 (liánxì) · 联合 (liánhé)",
+        "en": "Spring couplet · contact"
+       },
+       {
+        "term": "句子",
+        "zh": "春节前我们在门上贴春联。",
+        "en": "Before Spring Festival we paste couplets on the door."
+       }
+      ]
+     },
+     {
+      "char": "拜",
+      "strokes": "9 笔 strokes",
+      "breakdown": "①撇 ②横 ③横 ④撇 ⑤横 ⑥横 ⑦竖 ⑧横折 ⑨竖",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "手 (手字旁) — paying respect with the hands.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "拜年 (bàinián) · 拜拜 (bàibai) · 崇拜 (chóngbài)",
+        "en": "New Year greeting"
+       },
+       {
+        "term": "句子",
+        "zh": "大年初一我们去爷爷奶奶家拜年。",
+        "en": "On New Year’s Day we visit grandparents to greet them."
+       }
+      ]
+     },
+     {
+      "char": "俗",
+      "strokes": "9 笔 strokes",
+      "breakdown": "形声 · 亻 + 谷 (gǔ·声)",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "亻 (单人旁) — customs are what people do.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "习俗 (xísú) · 俗话 (súhuà) · 风俗 (fēngsú)",
+        "en": "custom · saying"
+       },
+       {
+        "term": "句子",
+        "zh": "春节有很多有意思的习俗。",
+        "en": "Spring Festival has many interesting customs."
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 (7) · Characters",
+    "recognise": [
+     "鞭",
+     "炮",
+     "庙",
+     "会",
+     "元",
+     "宵",
+     "灯"
+    ],
+    "vocab": [
+     {
+      "zh": "除夕",
+      "py": "chúxī",
+      "en": "New Year’s Eve"
+     },
+     {
+      "zh": "春节",
+      "py": "Chūnjié",
+      "en": "Spring Festival"
+     },
+     {
+      "zh": "团圆",
+      "py": "tuányuán",
+      "en": "reunion"
+     },
+     {
+      "zh": "饺子",
+      "py": "jiǎozi",
+      "en": "dumpling"
+     },
+     {
+      "zh": "春联",
+      "py": "chūnlián",
+      "en": "Spring couplet"
+     },
+     {
+      "zh": "拜年",
+      "py": "bàinián",
+      "en": "New Year greeting"
+     },
+     {
+      "zh": "习俗",
+      "py": "xísú",
+      "en": "custom, tradition"
+     },
+     {
+      "zh": "红包",
+      "py": "hóngbāo",
+      "en": "red envelope"
+     },
+     {
+      "zh": "鞭炮",
+      "py": "biānpào",
+      "en": "firecracker"
+     },
+     {
+      "zh": "庙会",
+      "py": "miàohuì",
+      "en": "temple fair"
+     },
+     {
+      "zh": "元宵节",
+      "py": "Yuánxiāojié",
+      "en": "Lantern Festival"
+     },
+     {
+      "zh": "赏灯",
+      "py": "shǎng dēng",
+      "en": "admire lanterns"
+     },
+     {
+      "zh": "…跟…不一样",
+      "py": "…gēn…bù yíyàng",
+      "en": "…is different from…"
+     },
+     {
+      "zh": "对…来说",
+      "py": "duì…lái shuō",
+      "en": "for / to…"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "…跟…不一样",
+      "py": "gēn bù yí yàng",
+      "en": "… is different from…"
+     },
+     {
+      "zh": "最重要的是…",
+      "py": "zuì zhòng yào de shì",
+      "en": "the most important thing is…"
+     },
+     {
+      "zh": "对…来说",
+      "py": "duì lái shuō",
+      "en": "for / to (someone)…"
+     }
+    ],
+    "text": {
+     "kind": "reading",
+     "titleZh": "课文 — 阅读",
+     "titleEn": "Text · Reading · ~150 字",
+     "readingTitle": "不一样的春节",
+     "paragraphs": [
+      "在澳大利亚过春节，跟在中国的感觉很不一样。我记得小时候在中国过年——除夕晚上，家家户户都贴春联、放鞭炮。大年初一，我们穿上新衣服，去亲戚家拜年。长辈给红包，大家坐在一起吃饺子和年糕。街上还有庙会——舞龙舞狮，热闹极了。",
+      "现在我们在墨尔本过年。虽然唐人街也很热闹，有游行、有舞狮，可是感觉不太一样。一是人少了——在澳大利亚，春节不是公共假日，爸爸妈妈还是要上班。二是天气——这里春节正好是夏天，跟中国的冬天完全相反。不过有一点从来没变：不管在哪里，春节最重要的意思就是一家人在一起。"
+     ],
+     "footnotes": "难词注释 footnotes 年糕 (niángāo) = New Year rice cake · 唐人街 (tángrénjiē) = Chinatown · 游行 (yóuxíng) = parade · 完全 (wánquán) = completely"
+    },
+    "culture": {
+     "zh": "不只春节——中国还有很多重要节日，每个都有独特 (dútè) 的习俗：元宵节（正月十五）看花灯、猜灯谜、吃元宵；清明节（四月）扫墓 (sǎomù)、纪念祖先，也踏青春游；端午节（五月初五）赛龙舟、吃粽子，纪念诗人屈原；中秋节（八月十五）赏月、吃月饼，一家团圆；重阳节（九月初九）登高，表达对老人的尊敬。中国的节日大多跟季节、农事和家庭联系在一起；澳大利亚的圣诞节、复活节更偏向宗教 (zōngjiào) 背景。两种文化，各美其美。",
+     "en": "Beyond Spring Festival: Lantern, Qingming, Dragon Boat, Mid-Autumn and Double Ninth festivals each have their own customs. Chinese festivals link to seasons, farming and family; Australian ones lean religious. Each has its own beauty."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听一听，分一分 · Listen & sort. 老师念节日活动，写出是哪个节日（春节/中秋节/端午节/元宵节）。",
+      "en": "Write which festival each activity belongs to."
+     },
+     {
+      "optional": false,
+      "text": "选词填空 · Choose and fill. 词语银行：团圆 · 拜年 · 习俗 · 跟…不一样 ① 大年初一我们去给奶奶＿＿。② 端午节吃粽子的＿＿已经有几千(qiān)年了。③ 澳大利亚的春节＿＿中国的＿＿。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "节日配对 · Festival matching. 把节日和习俗连起来：春节 · 中秋节 · 端午节 · 元宵节 ／ 吃月饼 · 拜年 · 看花灯 · 赛龙舟。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "用\"…跟…不一样\"写句子 · Compare. ① 中国过年＿＿澳大利亚过年＿＿。② 中秋节＿＿圣诞节＿＿。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional设计节日海报 · Festival poster. 选一个中国节日，画一张海报，写上节日的名字、时间和三个习俗。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional部首找一找 · Find the radical. 圈出带\"囗(国字框)\"的字：tuán团yuán圆guó国yuán园tú图bài拜",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 节日小导游",
+     "titleEn": "Activity · Festival Guide",
+     "steps": [
+      "你是小导游，给澳大利亚的同学介绍一个中国节日。",
+      "说出节日的名字、时间、三个习俗，以及最重要的意义：",
+      "请同学猜猜你介绍的是哪个节日。"
+     ],
+     "frame": "我想给大家介绍＿＿节。这个节日是＿＿的时候过的。它的习俗有＿＿、＿＿和＿＿。对我来说，这个节日最重要的意思是＿＿。"
+    },
+    "speak": {
+     "label": "说一说 · 两国节日 · Speak",
+     "frame": "在中国，＿＿节是＿＿的节日。人们会＿＿、＿＿和＿＿。在澳大利亚，我们庆祝＿＿节。两个节日＿＿，但是我觉得＿＿更有意思，因为＿＿。"
+    },
+    "reflect": [
+     "说出中国四个重要节日和习俗",
+     "比较中国和澳大利亚的节日",
+     "用“…跟…不一样”说节日差异",
+     "解释一个节日的文化意义",
+     "写 除·夕·团·饺·联·拜·俗",
+     "认出囗(国字框)和礻(示字旁)"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "背诵《元日》。"
+       ],
+       [
+        "2",
+        "朗读课文《不一样的春节》给家人听。"
+       ],
+       [
+        "3",
+        "画一张节日对比图（中国春节 vs 澳大利亚圣诞节），标三种活动。"
+       ],
+       [
+        "4",
+        "跟家人讨论：我们家最重要的节日是什么？为什么？"
+       ],
+       [
+        "5",
+        "写 除·夕·团·饺·联·拜·俗 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：除·夕·团·饺·联·拜·俗 各三遍。",
+        "背诵《元日》。"
+       ],
+       [
+        "2",
+        "抄写生词：除夕·团圆·饺子·春联·拜年·习俗 各三遍。默写：除·夕·团。",
+        "朗读课文给家人听。"
+       ],
+       [
+        "3",
+        "从课文找三个“…跟…不一样”句，抄一遍。默写：饺·联·拜·俗。",
+        "口头比较中国和澳大利亚的春节。"
+       ],
+       [
+        "4",
+        "写一段话比较两个节日（80字，用 …跟…不一样、最重要的是）。默写全单元 7 字。",
+        "跟家人讨论“过节最重要的东西是什么”。"
+       ],
+       [
+        "5",
+        "修改短文。",
+        "找三个带 囗 的字，各组一个词。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "鞭",
+      "py": "biān",
+      "strokes": "18",
+      "radical": "革",
+      "words": "鞭炮 (biānpào) · 鞭子 (biānzi)"
+     },
+     {
+      "char": "炮",
+      "py": "pào",
+      "strokes": "9",
+      "radical": "火",
+      "words": "鞭炮 (biānpào) · 大炮 (dàpào)"
+     },
+     {
+      "char": "庙",
+      "py": "miào",
+      "strokes": "8",
+      "radical": "广",
+      "words": "庙会 (miàohuì) · 寺庙 (sìmiào)"
+     },
+     {
+      "char": "灯",
+      "py": "dēng",
+      "strokes": "6",
+      "radical": "火",
+      "words": "花灯 (huādēng) · 灯笼 (dēnglóng)"
+     }
+    ],
+    "furtherCharsTitle": "字 — 鞭·炮·庙·灯",
+    "radical": {
+     "titleZh": "部首角 — 礻 示字旁",
+     "titleEn": "Radical Corner",
+     "intro": "礻 是“示”的左旁——和祭祀 (jìsì)、祝福、尊敬有关的字，常常带示字旁：",
+     "family": [
+      {
+       "zh": "福",
+       "py": "fú",
+       "en": "fortune"
+      },
+      {
+       "zh": "礼",
+       "py": "lǐ",
+       "en": "gift"
+      },
+      {
+       "zh": "祝",
+       "py": "zhù",
+       "en": "wish"
+      },
+      {
+       "zh": "神",
+       "py": "shén",
+       "en": "spirit"
+      },
+      {
+       "zh": "祖",
+       "py": "zǔ",
+       "en": "ancestor"
+      },
+      {
+       "zh": "社",
+       "py": "shè",
+       "en": "society"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read · 节日跟季节 · ~150 字",
+     "paragraphs": [
+      "中国节日跟季节有很深的联系。春节在冬天结束、春天开始的时候，说的是“新”——新的开始、新的希望。清明节在春天，是纪念祖先的日子，也是春游的时候。端午节在初夏，传说跟诗人屈原有关，人们赛龙舟、吃粽子。中秋节在秋天，月亮最圆最亮的时候——吃月饼、赏月，一家团圆。元宵节是春节的最后一天，看花灯特别美丽。在澳大利亚，最重要的节日是圣诞节和复活节。和中国的春节一样——不管原来的意思是什么，最后最重要的都是“一家人在一起”。"
+     ],
+     "footnotes": "注释 联系 (liánxì) = connection · 屈原 (Qū Yuán) = an ancient poet · 复活节 (Fùhuójié) = Easter"
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "学校要办“多元文化节”(Multicultural Festival)，你负责介绍一个中国节日。用 6–8 句话写出：节日的名字、时间、三个习俗、最重要的意义。用上 对…来说、跟…不一样、最重要的是、因为…。",
+     "en": "Write · Write 6–8 sentences introducing a Chinese festival for your school’s Multicultural Festival."
+    }
+   }
+  }
+ ],
+ "endMatter": {
+  "review": {
+   "titleZh": "综合复习",
+   "titleEn": "Review Through Play",
+   "lead": "用一两个周末完成，覆盖全册八个单元。听说作业同学全做核心部分；读写作业同学另加标注的部分。",
+   "blocks": [
+    {
+     "titleZh": "词语分类",
+     "titleEn": "Sort the Vocabulary",
+     "body": "把全册词语分类：地点 / 食物 / 交通 / 比较 / 故事 / 科技 / 环境 / 节日。每类至少写五个词。"
+    },
+    {
+     "titleZh": "字卡快闪",
+     "titleEn": "Flash Card Round",
+     "body": "认读全部 56 个 Core 学写字和主要认读字。分组比赛，看谁认得又快又准！"
+    },
+    {
+     "titleZh": "部首挑战",
+     "titleEn": "Radical Challenge",
+     "body": "辶(走之底) · 饣(食字旁) · 氵(三点水) · 讠(言字旁) · 忄/心 · 木 · 囗(国字框) · 艹(草字头) · 见"
+    },
+    {
+     "titleZh": "句型",
+     "titleEn": "Structures",
+     "body": "用下列句型各造一句：在…旁边 · 因为…所以… · 先…然后… · 比…更… · 从前…后来… · 用…来… · 如果…就… · …的时候"
+    },
+    {
+     "titleZh": "口语挑战",
+     "titleEn": "Speaking Challenge",
+     "body": "介绍我的社区我的健康饮食一次旅行比较中国和澳大利亚讲一个故事或传说科技怎么帮助我怎么保护环境我喜欢的节日"
+    },
+    {
+     "titleZh": "写作挑战 读写作业 Reading & writing",
+     "titleEn": "Writing Challenge",
+     "body": "写一篇 60–80 字的短文《我的生活》，至少用上四个单元的内容和四个本册句型。"
+    }
+   ]
+  },
+  "appendix": {
+   "titleZh": "学写字 56",
+   "titleEn": "Band 3 — characters you can write",
+   "rows": [
+    [
+     "U1",
+     "区·近·远·店·银·行·馆",
+     "辶 · 钅 · 饣 · 广"
+    ],
+    [
+     "U2",
+     "健·康·营·养·蔬·菜·鲜",
+     "亻 · 广 · 艹 · 鱼"
+    ],
+    [
+     "U3",
+     "旅·行·坐·骑·船·机·票",
+     "方 · 彳 · 马 · 舟 · 木"
+    ],
+    [
+     "U4",
+     "比·较·更·虽·然·但·化",
+     "车 · 虫 · 灬 · 亻"
+    ],
+    [
+     "U5",
+     "故·传·说·闻·龙·王·后",
+     "攵 · 亻 · 讠 · 门 · 王"
+    ],
+    [
+     "U6",
+     "科·技·网·脑·视·息·便",
+     "禾 · 扌 · 月(肉) · 见 · 亻"
+    ],
+    [
+     "U7",
+     "环·境·保·护·树·净·垃",
+     "王(玉) · 土 · 亻 · 扌 · 木 · 氵"
+    ],
+    [
+     "U8",
+     "除·夕·团·饺·联·拜·俗",
+     "阝 · 囗 · 饣 · 耳 · 亻"
+    ]
+   ]
+  }
+ }
+}

@@ -1,0 +1,771 @@
+{
+ "meta": {
+  "title": "Casey Chinese Series — Content Library",
+  "version": "1.0",
+  "updated": "2026-06-13",
+  "note": "Design-time content master. Style-free extraction of every Chinese knowledge element (themes, objectives, poems/诵读, vocabulary, must-know patterns, write/recognise characters, reading texts & dialogues, culture corners, exercises, activities, speaking frames, take-home homework, further-study) from the four stable textbooks. The Character Ledger lives separately in character-library.json; this file covers everything else.",
+  "source": "Parsed from Band 1–4 HTML (the stable books) — single source of truth for the Teacher Guide.",
+  "files": {
+   "B1": "assets/data/content-b1.json",
+   "B2": "assets/data/content-b2.json",
+   "B3": "assets/data/content-b3.json",
+   "B4": "assets/data/content-b4.json"
+  },
+  "sectionsPerUnit": [
+   "theme",
+   "objective",
+   "review",
+   "recite (诵读/诗歌)",
+   "writeChars (学写字)",
+   "recognise (认一认)",
+   "vocab (词语)",
+   "mustKnow (★ patterns)",
+   "text (课文 — reading/dialogue)",
+   "culture (文化角)",
+   "exercises (练习)",
+   "activity (活动)",
+   "speak (说一说)",
+   "reflect (我会了吗)",
+   "takehome (带回家 — 听说作业/读写作业)",
+   "further: furtherChars · radical (部首角) · read (读一读) · write (写一写)"
+  ]
+ },
+ "bands": {
+  "B1": {
+   "name": "Foundation",
+   "cn": "启蒙",
+   "subtitle": "Band 1 · Foundation",
+   "years": "Prep – Year 2",
+   "level": "Aligned to and exceeding VCAA Foundation–Level 2F–10 Sequence v2.0",
+   "file": "assets/data/content-b1.json",
+   "totals": {
+    "units": 8,
+    "vocab": 102,
+    "writeChars": 40,
+    "furtherChars": 16
+   },
+   "units": [
+    {
+     "n": 1,
+     "theme": {
+      "zh": "你好！",
+      "en": "Hello!"
+     },
+     "objective": {
+      "zh": "打招呼，说出自己的名字，说再见和谢谢。",
+      "en": "Greet someone, say my name, say goodbye and thank you."
+     },
+     "counts": {
+      "vocab": 14,
+      "write": 5,
+      "further": 2,
+      "recognise": 6,
+      "poems": 2,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 2,
+     "theme": {
+      "zh": "我的家",
+      "en": "My Family"
+     },
+     "objective": {
+      "zh": "说出家里人的称呼，说我家有几口人。",
+      "en": "Name my family members and say how many people are in my family."
+     },
+     "counts": {
+      "vocab": 15,
+      "write": 5,
+      "further": 2,
+      "recognise": 7,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 3,
+     "theme": {
+      "zh": "数字与颜色",
+      "en": "Numbers & Colours"
+     },
+     "objective": {
+      "zh": "数一到十，说出常见颜色，说我喜欢什么颜色。",
+      "en": "Count 1–10, name colours, and say which colour I like."
+     },
+     "counts": {
+      "vocab": 11,
+      "write": 5,
+      "further": 2,
+      "recognise": 10,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 4,
+     "theme": {
+      "zh": "我的身体",
+      "en": "My Body"
+     },
+     "objective": {
+      "zh": "说出身体部位，听指令做动作。",
+      "en": "Name body parts and follow action commands."
+     },
+     "counts": {
+      "vocab": 13,
+      "write": 5,
+      "further": 2,
+      "recognise": 6,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 5,
+     "theme": {
+      "zh": "动物朋友",
+      "en": "Animal Friends"
+     },
+     "objective": {
+      "zh": "说出常见动物，说它们会做什么，说我喜欢的动物。",
+      "en": "Name common animals, say what they can do, and say which ones I like."
+     },
+     "counts": {
+      "vocab": 14,
+      "write": 5,
+      "further": 2,
+      "recognise": 7,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 6,
+     "theme": {
+      "zh": "好吃的",
+      "en": "Yummy Food"
+     },
+     "objective": {
+      "zh": "说出食物，说我喜欢吃什么、喝什么，说好吃。",
+      "en": "Name foods, say what I like to eat and drink, and say something is yummy."
+     },
+     "counts": {
+      "vocab": 13,
+      "write": 5,
+      "further": 2,
+      "recognise": 6,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 7,
+     "theme": {
+      "zh": "我的教室",
+      "en": "My Classroom"
+     },
+     "objective": {
+      "zh": "说出教室里的东西，听指令做事情。",
+      "en": "Name classroom objects and follow instructions."
+     },
+     "counts": {
+      "vocab": 11,
+      "write": 5,
+      "further": 2,
+      "recognise": 6,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 8,
+     "theme": {
+      "zh": "春节",
+      "en": "Spring Festival"
+     },
+     "objective": {
+      "zh": "说春节祝福语，说出春节的习俗。",
+      "en": "Say Spring Festival greetings and name traditions."
+     },
+     "counts": {
+      "vocab": 11,
+      "write": 5,
+      "further": 2,
+      "recognise": 6,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    }
+   ]
+  },
+  "B2": {
+   "name": "Elementary",
+   "cn": "初级",
+   "subtitle": "Band 2 · Elementary",
+   "years": "Year 3 – 4",
+   "level": "Aligned to and exceeding VCAA Levels 3 & 4F–10 Sequence v2.0",
+   "file": "assets/data/content-b2.json",
+   "totals": {
+    "units": 8,
+    "vocab": 108,
+    "writeChars": 48,
+    "furtherChars": 31
+   },
+   "units": [
+    {
+     "n": 1,
+     "theme": {
+      "zh": "我的一天",
+      "en": "My Day"
+     },
+     "objective": {
+      "zh": "说出我一天的活动和时间，用“了”说做过的事。",
+      "en": "Describe my daily routine with times, and use 了 for completed actions."
+     },
+     "counts": {
+      "vocab": 15,
+      "write": 6,
+      "further": 4,
+      "recognise": 8,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 2,
+     "theme": {
+      "zh": "我的学校",
+      "en": "My School"
+     },
+     "objective": {
+      "zh": "说学校的科目和我喜欢什么，用“因为”给理由。",
+      "en": "Talk about school subjects and give reasons with 因为."
+     },
+     "counts": {
+      "vocab": 14,
+      "write": 6,
+      "further": 3,
+      "recognise": 8,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 3,
+     "theme": {
+      "zh": "天气与季节",
+      "en": "Weather & Seasons"
+     },
+     "objective": {
+      "zh": "描述天气和季节，说我喜欢哪个季节和为什么。",
+      "en": "Describe weather and seasons, and say which I like and why."
+     },
+     "counts": {
+      "vocab": 14,
+      "write": 6,
+      "further": 4,
+      "recognise": 6,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 4,
+     "theme": {
+      "zh": "活动与运动",
+      "en": "Hobbies & Sport"
+     },
+     "objective": {
+      "zh": "说我喜欢做什么运动，我会做什么。",
+      "en": "Say what sports and hobbies I like and what I can do."
+     },
+     "counts": {
+      "vocab": 12,
+      "write": 6,
+      "further": 4,
+      "recognise": 6,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 5,
+     "theme": {
+      "zh": "在澳大利亚",
+      "en": "Life in Australia"
+     },
+     "objective": {
+      "zh": "说我住在哪里、这里有什么、我们常常做什么。",
+      "en": "Say where I live, what’s here, and what we often do."
+     },
+     "counts": {
+      "vocab": 14,
+      "write": 6,
+      "further": 4,
+      "recognise": 6,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 6,
+     "theme": {
+      "zh": "购物",
+      "en": "Shopping & Money"
+     },
+     "objective": {
+      "zh": "问价钱，买东西，说贵还是便宜。",
+      "en": "Ask prices, buy things, and say if something is expensive or cheap."
+     },
+     "counts": {
+      "vocab": 13,
+      "write": 6,
+      "further": 4,
+      "recognise": 5,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 7,
+     "theme": {
+      "zh": "中秋与端午",
+      "en": "Mid-Autumn & Dragon Boat"
+     },
+     "objective": {
+      "zh": "介绍中秋节和端午节，说人们做什么、吃什么。",
+      "en": "Describe two festivals, what people do and eat."
+     },
+     "counts": {
+      "vocab": 13,
+      "write": 6,
+      "further": 4,
+      "recognise": 6,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 8,
+     "theme": {
+      "zh": "我的朋友",
+      "en": "My Friends"
+     },
+     "objective": {
+      "zh": "描述朋友的样子和性格。",
+      "en": "Describe a friend’s appearance and personality."
+     },
+     "counts": {
+      "vocab": 13,
+      "write": 6,
+      "further": 4,
+      "recognise": 6,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    }
+   ]
+  },
+  "B3": {
+   "name": "Intermediate",
+   "cn": "中级",
+   "subtitle": "Band 3 · Intermediate",
+   "years": "Year 5 – 6",
+   "level": "Aligned to and exceeding VCAA Levels 5 & 6F–10 Sequence v2.0",
+   "file": "assets/data/content-b3.json",
+   "totals": {
+    "units": 8,
+    "vocab": 125,
+    "writeChars": 56,
+    "furtherChars": 32
+   },
+   "units": [
+    {
+     "n": 1,
+     "theme": {
+      "zh": "我的社区",
+      "en": "My Community"
+     },
+     "objective": {
+      "zh": "说出社区里的地方，用方位词说位置，给出简单路线。",
+      "en": "Name places in my community, describe where they are, and give simple directions."
+     },
+     "counts": {
+      "vocab": 16,
+      "write": 7,
+      "further": 4,
+      "recognise": 9,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 2,
+     "theme": {
+      "zh": "饮食与健康",
+      "en": "Food & Health"
+     },
+     "objective": {
+      "zh": "点菜或说什么食物健康，并给出理由。",
+      "en": "Order food and say what is healthy, with a reason."
+     },
+     "counts": {
+      "vocab": 16,
+      "write": 7,
+      "further": 4,
+      "recognise": 6,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 3,
+     "theme": {
+      "zh": "旅行",
+      "en": "Travel & Transport"
+     },
+     "objective": {
+      "zh": "描述一次旅行，并按顺序说出过程。",
+      "en": "Describe a trip and sequence a journey from start to finish."
+     },
+     "counts": {
+      "vocab": 16,
+      "write": 7,
+      "further": 4,
+      "recognise": 7,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 4,
+     "theme": {
+      "zh": "中国与澳大利亚",
+      "en": "Two Countries"
+     },
+     "objective": {
+      "zh": "比较中国和澳大利亚的日常生活。",
+      "en": "Compare daily life in China and Australia."
+     },
+     "counts": {
+      "vocab": 16,
+      "write": 7,
+      "further": 4,
+      "recognise": 7,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 5,
+     "theme": {
+      "zh": "故事与传说",
+      "en": "Stories & Legends"
+     },
+     "objective": {
+      "zh": "按顺序复述一个短故事或传说。",
+      "en": "Retell a short story or legend in sequence."
+     },
+     "counts": {
+      "vocab": 16,
+      "write": 7,
+      "further": 4,
+      "recognise": 8,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 6,
+     "theme": {
+      "zh": "科技与生活",
+      "en": "Tech in Daily Life"
+     },
+     "objective": {
+      "zh": "说科技怎么帮助我们，并发表简单的看法。",
+      "en": "Say how technology helps us, and give a simple opinion."
+     },
+     "counts": {
+      "vocab": 16,
+      "write": 7,
+      "further": 4,
+      "recognise": 7,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 7,
+     "theme": {
+      "zh": "保护环境",
+      "en": "Protect the Environment"
+     },
+     "objective": {
+      "zh": "说说怎么保护环境，用“应该/不要”提建议，用“如果…就…”说条件和结果。",
+      "en": "Suggest ways to protect the environment, give advice with 应该/不要, and use 如果…就… for cause and effect."
+     },
+     "counts": {
+      "vocab": 15,
+      "write": 7,
+      "further": 4,
+      "recognise": 9,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 8,
+     "theme": {
+      "zh": "节日文化",
+      "en": "Festivals in Depth"
+     },
+     "objective": {
+      "zh": "深入比较中国和澳大利亚的节日，说说节日的意义。",
+      "en": "Compare Chinese and Australian festivals in depth and explain what they mean."
+     },
+     "counts": {
+      "vocab": 14,
+      "write": 7,
+      "further": 4,
+      "recognise": 7,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    }
+   ]
+  },
+  "B4": {
+   "name": "Senior",
+   "cn": "高级",
+   "subtitle": "Band 4 · Senior",
+   "years": "Year 7 – 10",
+   "level": "Aligned to VCAA Levels 7–10 · F–10 Sequence v2.0读写作业 (dúxiě zuòyè) includes VCE-style preparation",
+   "file": "assets/data/content-b4.json",
+   "totals": {
+    "units": 8,
+    "vocab": 116,
+    "writeChars": 48,
+    "furtherChars": 32
+   },
+   "units": [
+    {
+     "n": 1,
+     "theme": {
+      "zh": "我的未来",
+      "en": "My Future"
+     },
+     "objective": {
+      "zh": "谈谈我将来的计划和愿望，并说出理由。",
+      "en": "Talk about my future plans and aspirations, and give reasons."
+     },
+     "counts": {
+      "vocab": 15,
+      "write": 6,
+      "further": 4,
+      "recognise": 7,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 2,
+     "theme": {
+      "zh": "媒体与流行文化",
+      "en": "Media & Pop Culture"
+     },
+     "objective": {
+      "zh": "讨论媒体，从两方面发表看法。",
+      "en": "Discuss the media and give a balanced opinion."
+     },
+     "counts": {
+      "vocab": 14,
+      "write": 6,
+      "further": 4,
+      "recognise": 4,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 3,
+     "theme": {
+      "zh": "社会议题",
+      "en": "Social Issues"
+     },
+     "objective": {
+      "zh": "对社会议题陈述并支持看法，用\"被\"字句。",
+      "en": "State and support a view on a social issue, using the 被 passive."
+     },
+     "counts": {
+      "vocab": 16,
+      "write": 6,
+      "further": 4,
+      "recognise": 6,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 4,
+     "theme": {
+      "zh": "历史与文化",
+      "en": "History & Culture"
+     },
+     "objective": {
+      "zh": "讲述一个历史或文化故事，用\"把\"和\"被\"字句。",
+      "en": "Recount a historical or cultural story, using the 把 and 被 constructions."
+     },
+     "counts": {
+      "vocab": 14,
+      "write": 6,
+      "further": 4,
+      "recognise": 7,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 5,
+     "theme": {
+      "zh": "学习与工作",
+      "en": "Study & Work"
+     },
+     "objective": {
+      "zh": "谈学习、工作和目标，用\"只要…就…\"。",
+      "en": "Discuss study, work and goals, using \"as long as… then…\"."
+     },
+     "counts": {
+      "vocab": 15,
+      "write": 6,
+      "further": 4,
+      "recognise": 6,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 6,
+     "theme": {
+      "zh": "跨文化身份",
+      "en": "Intercultural Identity"
+     },
+     "objective": {
+      "zh": "反思我的跨文化身份，用\"既是…又是…\"\"对我来说…\"。",
+      "en": "Reflect on my bicultural identity, using \"both… and…\" and \"for me…\"."
+     },
+     "counts": {
+      "vocab": 14,
+      "write": 6,
+      "further": 4,
+      "recognise": 7,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 7,
+     "theme": {
+      "zh": "文学与艺术",
+      "en": "Literature & Art"
+     },
+     "objective": {
+      "zh": "读懂并回应一首古诗，说出它表达了什么感情。",
+      "en": "Read and respond to a classical poem, naming the feeling it expresses."
+     },
+     "counts": {
+      "vocab": 14,
+      "write": 6,
+      "further": 4,
+      "recognise": 6,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    },
+    {
+     "n": 8,
+     "theme": {
+      "zh": "演讲与表达",
+      "en": "Presentation & Speaking"
+     },
+     "objective": {
+      "zh": "做一个有结构的短演讲，用\"首先…其次…最后…\"\"总之…\"。",
+      "en": "Give a structured short speech, using \"first… next… finally…\" and \"in summary…\"."
+     },
+     "counts": {
+      "vocab": 14,
+      "write": 6,
+      "further": 4,
+      "recognise": 5,
+      "poems": 1,
+      "exercises": 6,
+      "hasReading": true,
+      "hasFurtherReading": true
+     }
+    }
+   ]
+  }
+ }
+}

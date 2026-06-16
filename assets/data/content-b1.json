@@ -1,0 +1,3840 @@
+{
+ "band": "B1",
+ "name": "Foundation",
+ "cn": "启蒙",
+ "subtitle": "Band 1 · Foundation",
+ "years": "Prep – Year 2",
+ "level": "Aligned to and exceeding VCAA Foundation–Level 2F–10 Sequence v2.0",
+ "frontMatter": {
+  "dearStudent": {
+   "titleZh": "你好！",
+   "titleEn": "Welcome to your Chinese book",
+   "lead": "In this book, you will learn to say hello, count to ten, name animals, colours, foods, and lots more. You will meet Chinese characters — each one has a story — and learn to read, trace, and write them.",
+   "leadEn": ""
+  },
+  "conventions": [
+   {
+    "zh": "拼音 — read it out loud. Every character has its pinyin printed right on top. If you can't read a character yet, look at the pinyin and say it.",
+    "en": ""
+   },
+   {
+    "zh": "先说后写 — say it first, then write. Try saying each new word out loud before you write it. You'll learn to write 5 characters in every unit — trace them first, then write on your own — and you'll meet many more just to recognise.",
+    "en": ""
+   },
+   {
+    "zh": "唱一唱、念一念 — sing and chant. Each unit has a song or short poem with pinyin above every line. Say it loud, clap the rhythm, and have fun.",
+    "en": ""
+   },
+   {
+    "zh": "你的作业 — which homework do you do? There are two kinds: 听说作业 (listening & speaking homework — listen and speak lots, write a little) and 读写作业 (reading & writing homework — speak, and also read and write more).",
+    "en": ""
+   },
+   {
+    "zh": "带回家 — take it home, if you like. Each unit ends with a short 5-day plan you can do on your own at home. It's optional, and no one at home needs to know Chinese.",
+    "en": ""
+   },
+   {
+    "zh": "部首 — spot the little parts. When you learn a character, look for its parts hiding in other characters — like 口 (mouth) inside 吃 and 喝. Spotting them helps you read new words.",
+    "en": ""
+   }
+  ]
+ },
+ "units": [
+  {
+   "n": 1,
+   "id": "u1",
+   "theme": {
+    "zh": "你好！",
+    "en": "Hello!"
+   },
+   "objective": {
+    "zh": "打招呼，说出自己的名字，说再见和谢谢。",
+    "en": "Greet someone, say my name, say goodbye and thank you."
+   },
+   "core": {
+    "review": [
+     "第一单元，没有要复习的内容。我们开始吧！",
+     "Unit 1 — nothing to review yet. Let us begin!"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《问好歌》",
+      "titleEn": "Recite · Greeting Chant",
+      "poem": "《问好歌》",
+      "poemPinyin": "wèn hǎo gē",
+      "lines": [
+       {
+        "zh": "你好你好，点点头；",
+        "py": "nǐ hǎo nǐ hǎo diǎn diǎn tóu"
+       },
+       {
+        "zh": "再见再见，挥挥手。",
+        "py": "zài jiàn zài jiàn huī huī shǒu"
+       }
+      ],
+      "meaning": "意思 yìsi (meaning) — Hello hello, nod your head; goodbye goodbye, wave your hand.",
+      "note": ""
+     },
+     {
+      "titleZh": "儿歌",
+      "titleEn": "Chant",
+      "poem": "",
+      "poemPinyin": "",
+      "lines": [
+       {
+        "zh": "你好你好，你好吗？",
+        "py": "nǐ hǎo nǐ hǎo nǐ hǎo ma"
+       },
+       {
+        "zh": "我很好，谢谢你！",
+        "py": "wǒ hěn hǎo xiè xie nǐ"
+       }
+      ],
+      "meaning": "拍手唱。 Clap and chant. Ask and answer with a partner.",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "口",
+      "strokes": "3 笔bǐ strokes",
+      "breakdown": "①竖 ②横折 ③横",
+      "facts": [
+       {
+        "term": "看一看",
+        "zh": "\"口\" looks like an open mouth.",
+        "en": ""
+       },
+       {
+        "term": "部首",
+        "zh": "口 is a radical — it appears in 吃 · 喝 · 叫.",
+        "en": "eat · drink · call"
+       },
+       {
+        "term": "组词",
+        "zh": "人口",
+        "en": "population"
+       },
+       {
+        "term": "句子",
+        "zh": "我家有三口人。",
+        "en": "There are three people in my family."
+       }
+      ]
+     },
+     {
+      "char": "大",
+      "strokes": "3 笔bǐ strokes",
+      "breakdown": "①横 ②撇 ③捺",
+      "facts": [
+       {
+        "term": "看一看",
+        "zh": "\"大\" looks like a person stretching arms wide — big!",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "大人 · 大家",
+        "en": "adult · everyone"
+       },
+       {
+        "term": "句子",
+        "zh": "这是一只大狗。",
+        "en": "This is a big dog."
+       }
+      ]
+     },
+     {
+      "char": "人",
+      "strokes": "2 笔bǐ strokes",
+      "breakdown": "①撇 ②捺",
+      "facts": [
+       {
+        "term": "看一看",
+        "zh": "\"人\" looks like a person walking.",
+        "en": ""
+       },
+       {
+        "term": "部首",
+        "zh": "人 becomes 亻 on the left — in 你, 他.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "人口",
+        "en": "population — uses 口kǒu from above!"
+       },
+       {
+        "term": "句子",
+        "zh": "我是中国人。",
+        "en": "I am Chinese."
+       }
+      ]
+     },
+     {
+      "char": "你",
+      "strokes": "7 笔bǐ strokes",
+      "breakdown": "①撇 ②竖 ③撇 ④横钩 ⑤竖钩 ⑥撇 ⑦撇",
+      "facts": [
+       {
+        "term": "看一看",
+        "zh": "Left 亻 = person, right side gives the sound. 你 = \"you, the person I am talking to.\"",
+        "en": ""
+       },
+       {
+        "term": "部首",
+        "zh": "亻 (人字旁) = the person radical.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "你好",
+        "en": "hello"
+       },
+       {
+        "term": "句子",
+        "zh": "你好！我叫明明。",
+        "en": "Hello! I am Mingming."
+       }
+      ]
+     },
+     {
+      "char": "好",
+      "strokes": "6 笔bǐ strokes",
+      "breakdown": "①撇点 ②撇 ③横 ④横钩 ⑤竖钩 ⑥横",
+      "facts": [
+       {
+        "term": "看一看",
+        "zh": "Left 女 = woman, right 子 = child. A woman with her child = good!",
+        "en": ""
+       },
+       {
+        "term": "部首",
+        "zh": "女 radical (in 妈, 姐).",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "你好 · 好吃",
+        "en": "yummy"
+       },
+       {
+        "term": "句子",
+        "zh": "你好！",
+        "en": "Hello!"
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 · Characters · Learn to write",
+    "recognise": [
+     "我",
+     "再",
+     "见",
+     "谢",
+     "叫",
+     "名字"
+    ],
+    "vocab": [
+     {
+      "zh": "你好",
+      "py": "nǐ hǎo",
+      "en": "hello"
+     },
+     {
+      "zh": "我",
+      "py": "wǒ",
+      "en": "I, me"
+     },
+     {
+      "zh": "你",
+      "py": "nǐ",
+      "en": "you"
+     },
+     {
+      "zh": "叫",
+      "py": "jiào",
+      "en": "be called"
+     },
+     {
+      "zh": "什么",
+      "py": "shénme",
+      "en": "what"
+     },
+     {
+      "zh": "名字",
+      "py": "míngzi",
+      "en": "name"
+     },
+     {
+      "zh": "再见",
+      "py": "zàijiàn",
+      "en": "goodbye"
+     },
+     {
+      "zh": "谢谢",
+      "py": "xièxie",
+      "en": "thank you"
+     },
+     {
+      "zh": "老师",
+      "py": "lǎoshī",
+      "en": "teacher"
+     },
+     {
+      "zh": "同学",
+      "py": "tóngxué",
+      "en": "classmate"
+     },
+     {
+      "zh": "朋友",
+      "py": "péngyou",
+      "en": "friend"
+     },
+     {
+      "zh": "你好吗",
+      "py": "nǐ hǎo ma",
+      "en": "how are you?"
+     },
+     {
+      "zh": "我很好",
+      "py": "wǒ hěn hǎo",
+      "en": "I am fine"
+     },
+     {
+      "zh": "请",
+      "py": "qǐng",
+      "en": "please"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "你好",
+      "py": "nǐ hǎo",
+      "en": "hello"
+     },
+     {
+      "zh": "我叫…",
+      "py": "wǒ jiào",
+      "en": "my name is…"
+     },
+     {
+      "zh": "再见",
+      "py": "zài jiàn",
+      "en": "goodbye"
+     },
+     {
+      "zh": "谢谢",
+      "py": "xiè xie",
+      "en": "thank you"
+     }
+    ],
+    "text": {
+     "kind": "dialogue",
+     "titleZh": "课文 — 对话",
+     "titleEn": "Text · Dialogue",
+     "lead": "安娜和明明在打招呼。",
+     "turns": [
+      {
+       "who": "安娜",
+       "say": "你好！",
+       "py": "nǐ hǎo"
+      },
+      {
+       "who": "明明",
+       "say": "你好！",
+       "py": "nǐ hǎo"
+      },
+      {
+       "who": "安娜",
+       "say": "你叫什么名字？",
+       "py": "nǐ jiào shén me míng zi"
+      },
+      {
+       "who": "明明",
+       "say": "我叫明明。你呢？",
+       "py": "wǒ jiào Míng ming nǐ ne"
+      },
+      {
+       "who": "安娜",
+       "say": "我叫安娜。",
+       "py": "wǒ jiào Àn nà"
+      },
+      {
+       "who": "明明",
+       "say": "安娜，你好！",
+       "py": "Àn nà nǐ hǎo"
+      },
+      {
+       "who": "安娜",
+       "say": "明明，你好！再见！",
+       "py": "Míng ming nǐ hǎo zài jiàn"
+      },
+      {
+       "who": "明明",
+       "say": "再见！",
+       "py": "zài jiàn"
+      }
+     ]
+    },
+    "culture": {
+     "zh": "在中国，人们见面常常说\"你好\"。有时候还点点头，不握手。对老师和长辈说\"您好\"更礼貌。",
+     "en": "In China, people say 你nǐ好hǎo when meeting. Sometimes they nod rather than shake hands. For teachers and elders, 您nín好hǎo is more respectful."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听与做 · Listen & Do. 听到\"你好\"就点点头；听到\"再见\"就挥挥手。",
+      "en": "Nod for 你好. Wave for 再见."
+     },
+     {
+      "optional": false,
+      "text": "连一连 · Match. Draw a line from each word to its meaning.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "填空 · Fill in.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "找一找 · Find.",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional说一说 · Speak. 问三个同学：你叫什么名字？把名字记下来（用英文写也可以）。",
+      "en": "Ask three classmates; jot their names — English is fine."
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional再写写 · Write again. 把 口·大·人·你·好 各写两遍。",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 交朋友",
+     "titleEn": "Activity · Make a Friend",
+     "steps": [
+      "站起来，找一个同学。",
+      "跟他/她说：",
+      "听同学回答。",
+      "说：，你好！再见！",
+      "再找两个同学。"
+     ],
+     "frame": "你好！我叫。你叫什么名字？"
+    },
+    "speak": {
+     "label": "说一说 · 对全班说 · Speak to the class",
+     "frame": "大家好！我叫。你们好！再见！"
+    },
+    "reflect": [
+     "说\"你好\"和\"再见\"",
+     "说出自己的名字",
+     "问别人的名字",
+     "说\"谢谢\"",
+     "认读和写 口·大·人·你·好"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "大声说三遍：你好！我叫＿＿。再见！"
+       ],
+       [
+        "2",
+        "念《问好歌》给家人听，带动作。"
+       ],
+       [
+        "3",
+        "教一个家人说\"你好\"、\"再见\"、\"谢谢\"。"
+       ],
+       [
+        "4",
+        "用手机录一段中文：你好！我叫＿＿。再见！谢谢！"
+       ],
+       [
+        "5",
+        "描一描：口·大·人·你·好 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：口·大·人·你·好 各三遍。",
+        "跟三个家人说\"你好！我叫＿＿\"。"
+       ],
+       [
+        "2",
+        "抄写：你好！再见！谢谢！各三遍。默写：口·大。",
+        "念《问好歌》给家人听，带动作。"
+       ],
+       [
+        "3",
+        "抄写：你好！我叫＿＿＿。三遍。默写：人·你·好。",
+        "教一个家人说\"你好\"\"再见\"\"谢谢\"。"
+       ],
+       [
+        "4",
+        "抄写：我·再 各三遍。你好！我叫＿＿。再见！抄两遍。默写：口·大·人·你·好。",
+        "录一段 30 秒中文自我介绍。"
+       ],
+       [
+        "5",
+        "写一段话：你好！我叫＿＿。再见！默写：我·再·你·好。",
+        "在\"吃、喝、叫、吹\"里圈出\"口\"字旁。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "我",
+      "strokes": "7 笔bǐ strokes",
+      "breakdown": "①撇 ②横 ③竖钩 ④提 ⑤斜钩 ⑥撇 ⑦点",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "我们 · 我的",
+        "en": "we, us · my, mine"
+       }
+      ]
+     },
+     {
+      "char": "再",
+      "strokes": "6 笔bǐ strokes",
+      "breakdown": "①横 ②竖 ③横折钩 ④竖 ⑤横 ⑥横",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "再见",
+        "en": "goodbye"
+       }
+      ]
+     }
+    ],
+    "radical": {
+     "titleZh": "部首角",
+     "titleEn": "Radical Corner",
+     "intro": "口 is a radical! Words about the mouth often have 口 on the left:",
+     "family": [
+      {
+       "zh": "吃",
+       "py": "chī",
+       "en": "eat"
+      },
+      {
+       "zh": "喝",
+       "py": "hē",
+       "en": "drink"
+      },
+      {
+       "zh": "叫",
+       "py": "jiào",
+       "en": "call"
+      },
+      {
+       "zh": "吹",
+       "py": "chuī",
+       "en": "blow"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read",
+     "paragraphs": [
+      "你好！我叫小明。你叫什么名字？",
+      "我叫小华。小明，你好！",
+      "小华，你好！再见！",
+      "再见！谢谢！"
+     ],
+     "footnotes": ""
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写三句话：",
+     "en": "Write"
+    }
+   }
+  },
+  {
+   "n": 2,
+   "id": "u2",
+   "theme": {
+    "zh": "我的家",
+    "en": "My Family"
+   },
+   "objective": {
+    "zh": "说出家里人的称呼，说我家有几口人。",
+    "en": "Name my family members and say how many people are in my family."
+   },
+   "core": {
+    "review": [
+     "读一读: 口·大·人·你·好",
+     "说一说: 你好！我叫＿＿＿。再见！",
+     "找一找: 在“你好”“再见”“我叫”里找出“口”字。"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《我的家》",
+      "titleEn": "Recite · My Family Chant",
+      "poem": "《我的家》",
+      "poemPinyin": "wǒ de jiā",
+      "lines": [
+       {
+        "zh": "爸爸高，妈妈好，",
+        "py": "bà ba gāo mā ma hǎo"
+       },
+       {
+        "zh": "哥哥姐姐对我笑。",
+        "py": "gē ge jiě jie duì wǒ xiào"
+       },
+       {
+        "zh": "一家人，乐陶陶。",
+        "py": "yì jiā rén lè táo táo"
+       }
+      ],
+      "meaning": "意思 yìsi (meaning) — Dad is tall, Mum is kind, big brother and sister smile at me. The whole family, so happy.",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "女",
+      "strokes": "3 笔bǐ strokes",
+      "breakdown": "①撇点 ②撇 ③横",
+      "facts": [
+       {
+        "term": "看一看",
+        "zh": "\"女\" looks like a woman sitting with crossed arms.",
+        "en": ""
+       },
+       {
+        "term": "部首",
+        "zh": "女字旁 — in female family words: 妈·姐·奶·好 (from Unit 1!)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "女儿 · 女生",
+        "en": "daughter · girl"
+       }
+      ]
+     },
+     {
+      "char": "子",
+      "strokes": "3 笔bǐ strokes",
+      "breakdown": "①横钩 ②竖钩 ③横",
+      "facts": [
+       {
+        "term": "复习",
+        "zh": "好 = 女 + 子. A woman with her child = good!",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "子女 · 儿子",
+        "en": "sons and daughters · son"
+       }
+      ]
+     },
+     {
+      "char": "妈",
+      "strokes": "6 笔bǐ strokes",
+      "breakdown": "①撇点 ②撇 ③横 ④横折 ⑤竖折折钩 ⑥横",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "女字旁 — same as 好!",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "妈妈 · 爸妈",
+        "en": "parents"
+       }
+      ]
+     },
+     {
+      "char": "爸",
+      "strokes": "8 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "爸爸 · 老爸",
+        "en": "dad (informal)"
+       }
+      ]
+     },
+     {
+      "char": "家",
+      "strokes": "10 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "看一看",
+        "zh": "Top 宀 = roof. Under the roof lives a 豕 (pig). A roof over living things = home!",
+        "en": ""
+       },
+       {
+        "term": "部首",
+        "zh": "宀 (宝盖头 bǎo gài tóu) = roof radical! Also in 安, 字.",
+        "en": "peace · character"
+       },
+       {
+        "term": "组词",
+        "zh": "家人 · 大家",
+        "en": "everyone — 大dà from Unit 1!"
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 · Characters · Learn to write",
+    "recognise": [
+     "哥",
+     "姐",
+     "弟",
+     "妹",
+     "爷",
+     "奶",
+     "爱"
+    ],
+    "vocab": [
+     {
+      "zh": "爸爸",
+      "py": "bàba",
+      "en": "dad"
+     },
+     {
+      "zh": "妈妈",
+      "py": "māma",
+      "en": "mum"
+     },
+     {
+      "zh": "哥哥",
+      "py": "gēge",
+      "en": "older brother"
+     },
+     {
+      "zh": "姐姐",
+      "py": "jiějie",
+      "en": "older sister"
+     },
+     {
+      "zh": "弟弟",
+      "py": "dìdi",
+      "en": "younger brother"
+     },
+     {
+      "zh": "妹妹",
+      "py": "mèimei",
+      "en": "younger sister"
+     },
+     {
+      "zh": "爷爷",
+      "py": "yéye",
+      "en": "grandpa"
+     },
+     {
+      "zh": "奶奶",
+      "py": "nǎinai",
+      "en": "grandma"
+     },
+     {
+      "zh": "家",
+      "py": "jiā",
+      "en": "family, home"
+     },
+     {
+      "zh": "这是",
+      "py": "zhè shì",
+      "en": "this is"
+     },
+     {
+      "zh": "我的",
+      "py": "wǒ de",
+      "en": "my"
+     },
+     {
+      "zh": "爱",
+      "py": "ài",
+      "en": "love"
+     },
+     {
+      "zh": "口",
+      "py": "kǒu",
+      "en": "measure word for family members (三口人 = a family of three)"
+     },
+     {
+      "zh": "有",
+      "py": "yǒu",
+      "en": "have"
+     },
+     {
+      "zh": "人",
+      "py": "rén",
+      "en": "person"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "这是我的…",
+      "py": "zhè shì wǒ de",
+      "en": "this is my…"
+     },
+     {
+      "zh": "我爱…",
+      "py": "wǒ ài",
+      "en": "I love…"
+     },
+     {
+      "zh": "我家有…口人",
+      "py": "wǒ jiā yǒu kǒu rén",
+      "en": "there are … people in my family"
+     }
+    ],
+    "text": {
+     "kind": "dialogue",
+     "titleZh": "课文 — 对话",
+     "titleEn": "Text · Dialogue",
+     "lead": "明明给安娜看他的全家福。",
+     "turns": [
+      {
+       "who": "安娜",
+       "say": "明明，这是谁？",
+       "py": "Míng ming zhè shì shuí"
+      },
+      {
+       "who": "明明",
+       "say": "这是我的爸爸。",
+       "py": "zhè shì wǒ de bà ba"
+      },
+      {
+       "who": "安娜",
+       "say": "这是你妈妈吗？",
+       "py": "zhè shì nǐ mā ma ma"
+      },
+      {
+       "who": "明明",
+       "say": "是的，这是我的妈妈。",
+       "py": "shì de zhè shì wǒ de mā ma"
+      },
+      {
+       "who": "安娜",
+       "say": "你家有几口人？",
+       "py": "nǐ jiā yǒu jǐ kǒu rén"
+      },
+      {
+       "who": "明明",
+       "say": "我家有五口人。爸爸、妈妈、哥哥、妹妹和我。",
+       "py": "wǒ jiā yǒu wǔ kǒu rén bà ba mā ma gē ge mèi mei hé wǒ"
+      },
+      {
+       "who": "安娜",
+       "say": "你爱你的家人吗？",
+       "py": "nǐ ài nǐ de jiā rén ma"
+      },
+      {
+       "who": "明明",
+       "say": "我爱我的家人！",
+       "py": "wǒ ài wǒ de jiā rén"
+      }
+     ]
+    },
+    "culture": {
+     "zh": "在中国，孩子叫长辈要用称呼，不能直接叫名字。叫“爸爸”“妈妈”“爷爷”“奶奶”是尊重。",
+     "en": "In China, children use titles for elders — never first names. It shows respect. Close family friends are called 阿姨 (āyí, auntie) and 叔叔 (shūshu, uncle)."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听与指 Listen & Point. 看一张全家福照片或图片（老师的图卡也可以），听到称呼就指：爸爸！妈妈！哥哥！姐姐！弟弟！妹妹！爷爷！奶奶！",
+      "en": "Point to each person on a family photo or picture card as you hear them."
+     },
+     {
+      "optional": false,
+      "text": "连一连 Match. Draw a line from each word to its meaning.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "问答 Ask & Answer. 你家有几口人？我家有口人。有谁？有＿＿、＿＿、＿＿和我。",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "找部首 Find the radical. 圈出有“女”字旁的字：",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional画一画 Draw. 画你的全家福，在每个人旁边写称呼，再说：\"这是我的。我爱我的。\"",
+      "en": "Draw your family, label everyone, then say the sentences."
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional复习字 Review characters. 把第一单元和第二单元的学写字各写一遍：口·大·人·你·好·女·子·妈·爸·家。",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 介绍我的家人 jièshào wǒ de jiārén",
+     "titleEn": "Activity",
+     "steps": [
+      "带或画一张全家福。",
+      "跟同桌说，指着每个人：",
+      "至少说三个人。"
+     ],
+     "frame": "这是我的。这是我的。"
+    },
+    "speak": {
+     "label": "说一说 · Speak",
+     "frame": "这是我的全家福。这是爸爸，这是妈妈，这是……。我家有口人。我爱我的家！"
+    },
+    "reflect": [
+     "说出爸爸、妈妈、哥哥、姐姐、弟弟、妹妹",
+     "说“这是我的爸爸/妈妈”",
+     "说我家有几口人",
+     "认读和写 女·子·妈·爸·家",
+     "找到“女”字旁"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "指着家人说“这是我的爸爸”“这是我的妈妈”。"
+       ],
+       [
+        "2",
+        "念《我的家》给家人听，带动作。"
+       ],
+       [
+        "3",
+        "教家人说“爸爸”“妈妈”“哥哥”“姐姐”。"
+       ],
+       [
+        "4",
+        "用手机录：这是我的爸爸，这是我的妈妈，我爱我的家！"
+       ],
+       [
+        "5",
+        "描一描：女·子·妈·爸·家 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：女·子·妈·爸·家 各三遍。",
+        "指着家人说“这是我的爸爸”“这是我的妈妈”。"
+       ],
+       [
+        "2",
+        "抄写：爸爸·妈妈·哥哥·姐姐 各三遍。默写：女·子。",
+        "念《我的家》给家人听，带动作。"
+       ],
+       [
+        "3",
+        "抄写：这是我的爸爸。这是我的妈妈。各两遍。默写：妈·爸·家。",
+        "教一个家人说四个称呼。"
+       ],
+       [
+        "4",
+        "画全家福，给三个人写称呼。抄写：我爱我的家。三遍。默写：女·子·妈·爸·家。",
+        "录一段中文介绍你的家人。"
+       ],
+       [
+        "5",
+        "写一段话：我家有＿口人。有＿＿、＿＿和我。我爱我的家。默写：爸·妈·哥·姐。",
+        "在“妈、姐、奶、好”里圈出“女”字旁。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "哥",
+      "py": "gē",
+      "strokes": "10",
+      "radical": "一yī",
+      "words": "哥gē哥ge · 大dà哥gē"
+     },
+     {
+      "char": "姐",
+      "py": "jiě",
+      "strokes": "8",
+      "radical": "女nǚ",
+      "words": "姐jiě姐jie女nǚ字zì旁páng! 姐jiě = 女nǚ + 且qiě"
+     }
+    ],
+    "furtherCharsTitle": "字 — 哥 · 姐",
+    "radical": {
+     "titleZh": "部首角",
+     "titleEn": "Radical Corner",
+     "intro": "女·妈·姐·奶·好 — all have 女! Can you find 女 in each one?",
+     "family": [
+      {
+       "zh": "女",
+       "py": "nǚ",
+       "en": "woman"
+      },
+      {
+       "zh": "妈",
+       "py": "mā",
+       "en": "mum"
+      },
+      {
+       "zh": "姐",
+       "py": "jiě",
+       "en": "sister"
+      },
+      {
+       "zh": "奶",
+       "py": "nǎi",
+       "en": "grandma"
+      },
+      {
+       "zh": "好",
+       "py": "hǎo",
+       "en": "good"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read",
+     "paragraphs": [
+      "这是我的家。我家有四口人：爸爸、妈妈、姐姐和我。",
+      "我爱我的爸爸。我爱我的妈妈。我爱我的家。"
+     ],
+     "footnotes": ""
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写三句话：",
+     "en": "Write"
+    }
+   }
+  },
+  {
+   "n": 3,
+   "id": "u3",
+   "theme": {
+    "zh": "数字与颜色",
+    "en": "Numbers & Colours"
+   },
+   "objective": {
+    "zh": "数一到十，说出常见颜色，说我喜欢什么颜色。",
+    "en": "Count 1–10, name colours, and say which colour I like."
+   },
+   "core": {
+    "review": [
+     "读一读: 女·子·妈·爸·家·口·大·人",
+     "数一数: 你家有几口人？用中文数。"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《山村咏怀》",
+      "titleEn": "Recite · A Mountain Village · 邵Shào雍Yōng (Sòng)",
+      "poem": "《山村咏怀》",
+      "poemPinyin": "shān cūn yǒng huái",
+      "lines": [
+       {
+        "zh": "一去二三里，烟村四五家。",
+        "py": "yí qù èr sān lǐ yān cūn sì wǔ jiā"
+       },
+       {
+        "zh": "亭台六七座，八九十枝花。",
+        "py": "tíng tái liù qī zuò bā jiǔ shí zhī huā"
+       }
+      ],
+      "meaning": "意思 yìsi (meaning) — A two-three mile walk, four-five homes in the mist. Six-seven pavilions, eight-nine-ten flowering branches.",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "一",
+      "strokes": "1 笔bǐ strokes",
+      "breakdown": "①横",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "一个",
+        "en": "one (of something)"
+       }
+      ]
+     },
+     {
+      "char": "二",
+      "strokes": "2 笔bǐ strokes",
+      "breakdown": "①横 ②横",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "二月",
+        "en": "February"
+       }
+      ]
+     },
+     {
+      "char": "三",
+      "strokes": "3 笔bǐ strokes",
+      "breakdown": "①横 ②横 ③横",
+      "facts": [
+       {
+        "term": "看一看",
+        "zh": "One line, two lines, three lines — numbers you can see!",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "三月 · 三个",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "四",
+      "strokes": "5 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "四月",
+        "en": "April"
+       }
+      ]
+     },
+     {
+      "char": "五",
+      "strokes": "4 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "五月",
+        "en": "May"
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 · Characters · Learn to write",
+    "recognise": [
+     "六",
+     "七",
+     "八",
+     "九",
+     "十",
+     "红",
+     "黄",
+     "蓝",
+     "绿",
+     "喜欢"
+    ],
+    "vocab": [
+     {
+      "zh": "一～十",
+      "py": "yī～shí",
+      "en": "1–10"
+     },
+     {
+      "zh": "红色",
+      "py": "hóngsè",
+      "en": "red"
+     },
+     {
+      "zh": "黄色",
+      "py": "huángsè",
+      "en": "yellow"
+     },
+     {
+      "zh": "蓝色",
+      "py": "lánsè",
+      "en": "blue"
+     },
+     {
+      "zh": "绿色",
+      "py": "lǜsè",
+      "en": "green"
+     },
+     {
+      "zh": "白色",
+      "py": "báisè",
+      "en": "white"
+     },
+     {
+      "zh": "黑色",
+      "py": "hēisè",
+      "en": "black"
+     },
+     {
+      "zh": "喜欢",
+      "py": "xǐhuan",
+      "en": "like"
+     },
+     {
+      "zh": "颜色",
+      "py": "yánsè",
+      "en": "colour"
+     },
+     {
+      "zh": "几个",
+      "py": "jǐ ge",
+      "en": "how many"
+     },
+     {
+      "zh": "漂亮",
+      "py": "piàoliang",
+      "en": "pretty"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "一到十",
+      "py": "yī dào shí",
+      "en": "one to ten"
+     },
+     {
+      "zh": "红色/蓝色/绿色",
+      "py": "hóng sè lán sè lǜ sè",
+      "en": "red / blue / green"
+     },
+     {
+      "zh": "我喜欢…色",
+      "py": "wǒ xǐ huan sè",
+      "en": "I like the colour…"
+     }
+    ],
+    "text": {
+     "kind": "dialogue",
+     "titleZh": "课文 — 对话",
+     "titleEn": "Text · Dialogue",
+     "lead": "",
+     "turns": [
+      {
+       "who": "安娜",
+       "say": "明明，你喜欢什么颜色？",
+       "py": "Míng ming nǐ xǐ huan shén me yán sè"
+      },
+      {
+       "who": "明明",
+       "say": "我喜欢红色和蓝色。你呢？",
+       "py": "wǒ xǐ huan hóng sè hé lán sè nǐ ne"
+      },
+      {
+       "who": "安娜",
+       "say": "我喜欢绿色。你看，这朵花是绿色的。",
+       "py": "wǒ xǐ huan lǜ sè nǐ kàn zhè duǒ huā shì lǜ sè de"
+      },
+      {
+       "who": "明明",
+       "say": "真漂亮！你有几支蜡笔？",
+       "py": "zhēn piào liang nǐ yǒu jǐ zhī là bǐ"
+      },
+      {
+       "who": "安娜",
+       "say": "一、二、三……我有八支。",
+       "py": "yī èr sān wǒ yǒu bā zhī"
+      },
+      {
+       "who": "明明",
+       "say": "我只有五支。",
+       "py": "wǒ zhǐ yǒu wǔ zhī"
+      }
+     ]
+    },
+    "culture": {
+     "zh": "在中国，红色代表幸运和快乐。过年的时候到处都是红色的——红灯笼、红对联、红衣服！结婚也穿红色。",
+     "en": "In China, red means luck and happiness. During New Year, red is everywhere. Weddings use red too!"
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听与圈 Listen & Circle. 老师或同学念数字，圈出你听到的：",
+      "en": "Circle the numbers you hear."
+     },
+     {
+      "optional": false,
+      "text": "连一连 Match. Match the number to its value.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "涂一涂 Colour. 读词，把圆圈涂上对应的颜色：",
+      "en": "Read each colour word; colour its circle."
+     },
+     {
+      "optional": false,
+      "text": "找数字 Find the numbers. 在《山村咏怀》里圈出所有数字（一到十）。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional问答 Ask & Answer. 你喜欢什么颜色？我喜欢色。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional数一数 Count. 用中文数：●●●●●●●几个？▲▲▲几个？教室里有几个门？",
+      "en": "Count the dots, the triangles, the classroom doors — in Chinese."
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 颜色找一找 yánsè zhǎo yì zhǎo",
+     "titleEn": "Activity · Colour Hunt",
+     "steps": [
+      "听同学说一种颜色（如 红色！）。",
+      "在教室里找到那个颜色的东西，用手碰它。",
+      "轮流说颜色。"
+     ],
+     "frame": ""
+    },
+    "speak": {
+     "label": "说一说 · Speak",
+     "frame": "一、二、三……十。这是红色。这是蓝色。我喜欢绿色。"
+    },
+    "reflect": [
+     "数一到十",
+     "说出五种颜色",
+     "说“我喜欢…色”",
+     "认读和写 一·二·三·四·五"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "从一数到十给家人听。"
+       ],
+       [
+        "2",
+        "念《山村咏怀》伸出手指数。"
+       ],
+       [
+        "3",
+        "在家里找三样红色、三样蓝色的东西，说中文。"
+       ],
+       [
+        "4",
+        "教家人说“红色”“蓝色”“绿色”。"
+       ],
+       [
+        "5",
+        "描一描：一·二·三·四·五 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：一·二·三·四·五 各三遍。",
+        "从一数到十给家人听。"
+       ],
+       [
+        "2",
+        "抄写：红色·蓝色·绿色 各三遍。默写：一·二·三。",
+        "念《山村咏怀》伸出手指数。"
+       ],
+       [
+        "3",
+        "抄写：我喜欢红色。我喜欢蓝色。各两遍。默写：四·五。",
+        "在家里找东西说颜色，说五个。"
+       ],
+       [
+        "4",
+        "抄写：六·八 各三遍。默写：一·二·三·四·五。",
+        "教家人说“红色、蓝色、绿色、黄色、白色”。"
+       ],
+       [
+        "5",
+        "写一段话：我喜欢＿＿色。因为很漂亮。默写：六·八。",
+        "在“红、绿”里找出共同的部首（纟）。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "六",
+      "py": "liù",
+      "strokes": "4",
+      "radical": "八bā",
+      "words": "六liù个ge"
+     },
+     {
+      "char": "八",
+      "py": "bā",
+      "strokes": "2",
+      "radical": "八bā",
+      "words": "八bā个ge"
+     }
+    ],
+    "furtherCharsTitle": "字",
+    "radical": {
+     "titleZh": "部首角",
+     "titleEn": "Radical Corner",
+     "intro": "红{}red · 绿{}green — both have 纟! In ancient times silk was dyed, so the silk radical appears in colour words.",
+     "family": [
+      {
+       "zh": "红",
+       "py": "hóng",
+       "en": "red"
+      },
+      {
+       "zh": "绿",
+       "py": "lǜ",
+       "en": "green"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read",
+     "paragraphs": [
+      "一、二、三——红、黄、蓝。",
+      "四、五、六——绿、白、黑。",
+      "七、八、九、十——彩虹颜色真漂亮！"
+     ],
+     "footnotes": ""
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写数字 一到十 各一遍。用“我喜欢＿＿色”写三句话。",
+     "en": "Write"
+    }
+   }
+  },
+  {
+   "n": 4,
+   "id": "u4",
+   "theme": {
+    "zh": "我的身体",
+    "en": "My Body"
+   },
+   "objective": {
+    "zh": "说出身体部位，听指令做动作。",
+    "en": "Name body parts and follow action commands."
+   },
+   "core": {
+    "review": [
+     "读一读: 一·二·三·四·五·口·大·人",
+     "数一数: 你有几只眼睛？几个鼻子？几张嘴巴？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《头儿肩膀膝盖脚》",
+      "titleEn": "Recite · Head, Shoulders, Knees & Toes",
+      "poem": "《头儿肩膀膝盖脚》",
+      "poemPinyin": "tóu r jiān bǎng xī gài jiǎo",
+      "lines": [
+       {
+        "zh": "头儿肩膀膝盖脚，膝盖脚，膝盖脚，",
+        "py": "tóu r jiān bǎng xī gài jiǎo xī gài jiǎo xī gài jiǎo"
+       },
+       {
+        "zh": "头儿肩膀膝盖脚，眼耳鼻和口。",
+        "py": "tóu r jiān bǎng xī gài jiǎo yǎn ěr bí hé kǒu"
+       }
+      ],
+      "meaning": "意思 yìsi (meaning) — Head, shoulders, knees and toes — eyes, ears, nose and mouth.",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "目",
+      "strokes": "5 笔bǐ strokes",
+      "breakdown": "①竖 ②横折 ③横 ④横 ⑤横",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "目字旁 → 看·眼",
+        "en": "look · eye"
+       },
+       {
+        "term": "组词",
+        "zh": "目光 · 目前",
+        "en": "currently"
+       }
+      ]
+     },
+     {
+      "char": "手",
+      "strokes": "4 笔bǐ strokes",
+      "breakdown": "①撇 ②横 ③横 ④竖钩",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "扌(提手旁 tí shǒu páng) = hand radical! 打·拍·指",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "小手 · 拍手",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "头",
+      "strokes": "5 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "头发 · 点头",
+        "en": "hair · nod"
+       }
+      ]
+     },
+     {
+      "char": "耳",
+      "strokes": "6 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "耳朵 · 木耳",
+        "en": "wood-ear mushroom"
+       }
+      ]
+     },
+     {
+      "char": "小",
+      "strokes": "3 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "复习",
+        "zh": "大 ↔ 小 — opposites!",
+        "en": "big, Unit 1 · small"
+       },
+       {
+        "term": "组词",
+        "zh": "大小 · 小孩",
+        "en": "size · child"
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 · Characters · Learn to write",
+    "recognise": [
+     "鼻",
+     "脚",
+     "指",
+     "坐",
+     "摸",
+     "拍"
+    ],
+    "vocab": [
+     {
+      "zh": "头",
+      "py": "tóu",
+      "en": "head"
+     },
+     {
+      "zh": "眼睛",
+      "py": "yǎnjing",
+      "en": "eye"
+     },
+     {
+      "zh": "耳朵",
+      "py": "ěrduo",
+      "en": "ear"
+     },
+     {
+      "zh": "鼻子",
+      "py": "bízi",
+      "en": "nose"
+     },
+     {
+      "zh": "嘴巴",
+      "py": "zuǐba",
+      "en": "mouth"
+     },
+     {
+      "zh": "手",
+      "py": "shǒu",
+      "en": "hand"
+     },
+     {
+      "zh": "脚",
+      "py": "jiǎo",
+      "en": "foot"
+     },
+     {
+      "zh": "肩膀",
+      "py": "jiānbǎng",
+      "en": "shoulder"
+     },
+     {
+      "zh": "摸",
+      "py": "mō",
+      "en": "touch"
+     },
+     {
+      "zh": "拍",
+      "py": "pāi",
+      "en": "clap"
+     },
+     {
+      "zh": "指",
+      "py": "zhǐ",
+      "en": "point"
+     },
+     {
+      "zh": "大",
+      "py": "dà",
+      "en": "big"
+     },
+     {
+      "zh": "小",
+      "py": "xiǎo",
+      "en": "small"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "这是我的…",
+      "py": "zhè shì wǒ de",
+      "en": "this is my…"
+     },
+     {
+      "zh": "摸/拍/指…",
+      "py": "mō pāi zhǐ",
+      "en": "touch / clap / point to…"
+     },
+     {
+      "zh": "大/小",
+      "py": "dà xiǎo",
+      "en": "big / small"
+     }
+    ],
+    "text": {
+     "kind": "dialogue",
+     "titleZh": "课文 — 指令游戏",
+     "titleEn": "Text · Command Game",
+     "lead": "跟明明做动作。",
+     "turns": [
+      {
+       "who": "明明说",
+       "say": "摸你的头！",
+       "py": "mō nǐ de tóu"
+      },
+      {
+       "who": "明明说",
+       "say": "拍你的手！",
+       "py": "pāi nǐ de shǒu"
+      },
+      {
+       "who": "明明说",
+       "say": "指你的鼻子！",
+       "py": "zhǐ nǐ de bí zi"
+      },
+      {
+       "who": "明明说",
+       "say": "摸你的耳朵！",
+       "py": "mō nǐ de ěr duo"
+      },
+      {
+       "who": "明明说",
+       "say": "闭上眼睛！",
+       "py": "bì shàng yǎn jing"
+      },
+      {
+       "who": "明明说",
+       "say": "睁开眼睛！",
+       "py": "zhēng kāi yǎn jing"
+      }
+     ]
+    },
+    "culture": {
+     "zh": "在中国，用一个手指指人不太礼貌。用整只手来指方向更好。",
+     "en": "In China, pointing at people with one finger is impolite. Use your whole hand instead."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听与做 Listen & Do. 听指令：摸摸头！拍拍手！指指鼻子！闭上眼睛！睁开眼睛！",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "连一连 Match. Match each character to its meaning.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "问答 Ask & Answer. 你有几个鼻子？我有一个鼻子。你有几个耳朵？我有两个耳朵。你有几个手指？我有十个手指！",
+      "en": "Counting \"two of something\" uses 两, not 二."
+     },
+     {
+      "optional": false,
+      "text": "找部首 Find radicals. 圈出有“扌”的字：",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional说一说 Speak. 指身体部位说名字，说六个。再说说哪个大、哪个小：\"头大，耳朵小。\"",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional部首分类 Sort radicals. 口字旁的字 / 女字旁的字 / 扌(手旁)的字 — 从学过的字里找。",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 明明说 Míngming shuō",
+     "titleEn": "Activity · Simon Says",
+     "steps": [],
+     "frame": ""
+    },
+    "speak": {
+     "label": "说一说 · Speak",
+     "frame": "这是我的头。这是我的眼睛。这是我的手。这是大，这是小。"
+    },
+    "reflect": [
+     "说五个身体部位",
+     "听指令做动作",
+     "说“大”和“小”",
+     "认读和写 目·手·头·耳·小",
+     "找到提手旁 扌"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "唱《头儿肩膀膝盖脚》给家人听，带动作。"
+       ],
+       [
+        "2",
+        "指身体部位说中文名字。说五个。"
+       ],
+       [
+        "3",
+        "教家人说“头”“眼睛”“鼻子”“耳朵”“嘴巴”。"
+       ],
+       [
+        "4",
+        "跟家人玩“摸头、拍手”——你说指令！"
+       ],
+       [
+        "5",
+        "描一描：目·手·头·耳·小 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：目·手·头·耳·小 各三遍。",
+        "唱《头儿肩膀膝盖脚》带动作。"
+       ],
+       [
+        "2",
+        "抄写：大头·小手·大眼 各三遍。默写：目·手。",
+        "指身体部位说中文，说五个。"
+       ],
+       [
+        "3",
+        "抄写：这是我的头。这是我的手。各两遍。默写：头·耳·小。",
+        "教家人说五个身体部位。"
+       ],
+       [
+        "4",
+        "画一个人，标三个身体部位（写中文）。默写：目·手·头·耳·小。",
+        "跟家人玩“明明说”——你说指令！"
+       ],
+       [
+        "5",
+        "写一段话：我有一个大头。我有两只小手。默写：大·小·目。",
+        "在“打、拍、指、摸”里圈出“扌”。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "鼻",
+      "py": "bí",
+      "strokes": "14",
+      "radical": "鼻bí",
+      "words": "鼻bí子zi"
+     },
+     {
+      "char": "脚",
+      "py": "jiǎo",
+      "strokes": "11",
+      "radical": "月yuè",
+      "words": "脚jiǎo月yuè字zì旁páng → 腿tuǐ·胖pàng, body parts!"
+     }
+    ],
+    "furtherCharsTitle": "字",
+    "radical": {
+     "titleZh": "部首角",
+     "titleEn": "Radical Corner",
+     "intro": "扌 = hand actions: 打·拍·指·摸。月 = body parts: 脚·腿·胖·脑。",
+     "family": []
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read",
+     "paragraphs": [
+      "我有一个大头，两只小耳朵，两只大眼睛，一个小鼻子。",
+      "我有两只手，两只能跑步的脚。"
+     ],
+     "footnotes": ""
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "照样子写一段介绍自己身体的话，用上“大”和“小”。",
+     "en": "Write"
+    }
+   }
+  },
+  {
+   "n": 5,
+   "id": "u5",
+   "theme": {
+    "zh": "动物朋友",
+    "en": "Animal Friends"
+   },
+   "objective": {
+    "zh": "说出常见动物，说它们会做什么，说我喜欢的动物。",
+    "en": "Name common animals, say what they can do, and say which ones I like."
+   },
+   "core": {
+    "review": [
+     "读一读: 目·手·头·耳·小·口·大·人",
+     "动一动: 听指令：摸头！拍手！指耳朵！",
+     "部首复习: 口字旁 的字？女字旁？扌？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《咏鹅》",
+      "titleEn": "Recite · Ode to the Goose · 骆Luò宾Bīn王wáng (Táng)",
+      "poem": "《咏鹅》",
+      "poemPinyin": "yǒng é",
+      "lines": [
+       {
+        "zh": "鹅，鹅，鹅，曲项向天歌。",
+        "py": "é é é qū xiàng xiàng tiān gē"
+       },
+       {
+        "zh": "白毛浮绿水，红掌拨清波。",
+        "py": "bái máo fú lǜ shuǐ hóng zhǎng bō qīng bō"
+       }
+      ],
+      "meaning": "意思 yìsi (meaning) — Goose, goose, goose — curving neck, singing to the sky. White feathers float on green water, red feet paddle the clear waves.",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "马",
+      "strokes": "3 笔bǐ strokes",
+      "breakdown": "①横折 ②竖折折钩 ③横",
+      "facts": [
+       {
+        "term": "复习",
+        "zh": "妈 = 女 + 马 (Unit 2). Same 马 on the right!",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "马上 · 小马",
+        "en": "immediately · pony"
+       }
+      ]
+     },
+     {
+      "char": "鱼",
+      "strokes": "8 笔bǐ strokes",
+      "breakdown": "①撇 ②横撇 ③竖 ④横折 ⑤横 ⑥竖 ⑦横 ⑧横",
+      "facts": [
+       {
+        "term": "看一看",
+        "zh": "⺈ = fish head, 田 = body, 一 = tail!",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "小鱼 · 金鱼",
+        "en": "goldfish"
+       }
+      ]
+     },
+     {
+      "char": "鸟",
+      "strokes": "5 笔bǐ strokes",
+      "breakdown": "①撇 ②横折钩 ③点 ④竖折折钩 ⑤横",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "小鸟 · 鸟叫",
+        "en": "bird call"
+       }
+      ]
+     },
+     {
+      "char": "虫",
+      "strokes": "6 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "虫字旁! Many small creatures: 蛇·蝴蝶",
+        "en": "snake · butterfly"
+       },
+       {
+        "term": "组词",
+        "zh": "虫子 · 毛毛虫",
+        "en": "caterpillar"
+       }
+      ]
+     },
+     {
+      "char": "飞",
+      "strokes": "3 笔bǐ strokes",
+      "breakdown": "①横折斜钩 ②撇 ③点",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "飞机 · 飞鸟",
+        "en": "aeroplane · flying bird"
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 · Characters · Learn to write",
+    "recognise": [
+     "猫",
+     "狗",
+     "牛",
+     "羊",
+     "跑",
+     "跳",
+     "会"
+    ],
+    "vocab": [
+     {
+      "zh": "猫",
+      "py": "māo",
+      "en": "cat"
+     },
+     {
+      "zh": "狗",
+      "py": "gǒu",
+      "en": "dog"
+     },
+     {
+      "zh": "马",
+      "py": "mǎ",
+      "en": "horse"
+     },
+     {
+      "zh": "鸟",
+      "py": "niǎo",
+      "en": "bird"
+     },
+     {
+      "zh": "鱼",
+      "py": "yú",
+      "en": "fish"
+     },
+     {
+      "zh": "虫",
+      "py": "chóng",
+      "en": "insect"
+     },
+     {
+      "zh": "牛",
+      "py": "niú",
+      "en": "cow"
+     },
+     {
+      "zh": "羊",
+      "py": "yáng",
+      "en": "sheep"
+     },
+     {
+      "zh": "动物",
+      "py": "dòngwù",
+      "en": "animal"
+     },
+     {
+      "zh": "飞",
+      "py": "fēi",
+      "en": "fly"
+     },
+     {
+      "zh": "跑",
+      "py": "pǎo",
+      "en": "run"
+     },
+     {
+      "zh": "跳",
+      "py": "tiào",
+      "en": "jump"
+     },
+     {
+      "zh": "游",
+      "py": "yóu",
+      "en": "swim"
+     },
+     {
+      "zh": "会",
+      "py": "huì",
+      "en": "can (ability)"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "这是…",
+      "py": "zhè shì",
+      "en": "this is a…"
+     },
+     {
+      "zh": "我喜欢…",
+      "py": "wǒ xǐ huan",
+      "en": "I like…"
+     },
+     {
+      "zh": "…会飞/跑/跳",
+      "py": "huì fēi pǎo tiào",
+      "en": "it can fly / run / jump"
+     }
+    ],
+    "text": {
+     "kind": "dialogue",
+     "titleZh": "课文 — 对话",
+     "titleEn": "Text · Dialogue",
+     "lead": "",
+     "turns": [
+      {
+       "who": "安娜",
+       "say": "看！那是什么？",
+       "py": "kàn nà shì shén me"
+      },
+      {
+       "who": "明明",
+       "say": "那是一匹马。马会跑。",
+       "py": "nà shì yì pǐ mǎ mǎ huì pǎo"
+      },
+      {
+       "who": "安娜",
+       "say": "我喜欢猫。猫很小，很可爱。",
+       "py": "wǒ xǐ huan māo māo hěn xiǎo hěn kě ài"
+      },
+      {
+       "who": "明明",
+       "say": "我喜欢狗。狗会跑，也会跳。",
+       "py": "wǒ xǐ huan gǒu gǒu huì pǎo yě huì tiào"
+      },
+      {
+       "who": "安娜",
+       "say": "你看那只鸟！鸟会飞。",
+       "py": "nǐ kàn nà zhī niǎo niǎo huì fēi"
+      },
+      {
+       "who": "明明",
+       "say": "对！鱼不会飞，鱼在水里游。",
+       "py": "duì yú bú huì fēi yú zài shuǐ lǐ yóu"
+      }
+     ]
+    },
+    "culture": {
+     "zh": "中国的十二生肖有十二种动物：鼠、牛、虎、兔、龙、蛇、马、羊、猴、鸡、狗、猪。你是哪一年出生的？你属什么？",
+     "en": "The Chinese zodiac has 12 animals. What year were you born — which animal are you?"
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听与做 Listen & Act. 听到\"鸟\"拍拍翅膀，听到\"马\"跑一跑，听到\"鱼\"游一游。",
+      "en": "Hear the animal, do its move."
+     },
+     {
+      "optional": false,
+      "text": "连一连 Match. Match each animal to its meaning.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "分类 Sort. 把词放进格子：会飞的/会跑的/会游的。",
+      "en": "Sort each word into its box: can fly / can run / can swim."
+     },
+     {
+      "optional": false,
+      "text": "问答 Ask & Answer. 你喜欢什么动物？我喜欢。它会什么？它会。",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional猜一猜 Guess. 读一读，把答案写出来： ① 它会游，不会跑。它是。 ② 它会飞，也会跳。它是。 再自己编一个：它会，它很。",
+      "en": "Solve the two riddles, then make up your own for a classmate."
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional写句子 Write. 用“我会＿＿”写两个句子。",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 猜动物 cāi dòngwù",
+     "titleEn": "Activity · Animal Guessing",
+     "steps": [],
+     "frame": ""
+    },
+    "speak": {
+     "label": "说一说 · Speak",
+     "frame": "我喜欢三种动物。我喜欢＿＿，它会＿＿。我喜欢＿＿，它会＿＿。我还喜欢＿＿。"
+    },
+    "reflect": [
+     "说出六种动物",
+     "说“…会飞/跑/跳/游”",
+     "说“我喜欢…”",
+     "认读和写 马·鱼·鸟·虫·飞",
+     "找到虫字旁"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "念《咏鹅》带动作。"
+       ],
+       [
+        "2",
+        "说出五种动物的中文名字。"
+       ],
+       [
+        "3",
+        "教家人说“猫”“狗”“马”“鸟”“鱼”。"
+       ],
+       [
+        "4",
+        "用手机录：我喜欢＿＿，它会＿＿。"
+       ],
+       [
+        "5",
+        "描一描：马·鱼·鸟·虫·飞 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：马·鱼·鸟·虫·飞 各三遍。",
+        "念《咏鹅》带动作。"
+       ],
+       [
+        "2",
+        "抄写：小猫·小狗·小鱼 各三遍。默写：马·鱼。",
+        "说出五种动物的中文名字。"
+       ],
+       [
+        "3",
+        "抄写：我喜欢猫。猫会跳。各两遍。默写：鸟·虫·飞。",
+        "教家人说五个动物名字。"
+       ],
+       [
+        "4",
+        "画你最喜欢的动物，写两句中文。默写：马·鱼·鸟·虫·飞。",
+        "录一段中文：我喜欢＿＿，它会＿＿。"
+       ],
+       [
+        "5",
+        "写一段话：我喜欢＿＿。它会＿＿。默写：猫·狗·牛。",
+        "在“猫、狗”里找出共同的部首（犭）。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "猫",
+      "py": "māo",
+      "strokes": "11",
+      "radical": "犭",
+      "words": "小xiǎo猫māo"
+     },
+     {
+      "char": "狗",
+      "py": "gǒu",
+      "strokes": "8",
+      "radical": "犭",
+      "words": "小xiǎo狗gǒu"
+     }
+    ],
+    "furtherCharsTitle": "字",
+    "radical": {
+     "titleZh": "部首角",
+     "titleEn": "Radical Corner",
+     "intro": "猫(māo)·狗(gǒu)·猪(zhū)·狼(láng) all have 犭 on the left!",
+     "family": [
+      {
+       "zh": "猫",
+       "py": "māo",
+       "en": "cat"
+      },
+      {
+       "zh": "狗",
+       "py": "gǒu",
+       "en": "dog"
+      },
+      {
+       "zh": "猪",
+       "py": "zhū",
+       "en": "pig"
+      },
+      {
+       "zh": "狼",
+       "py": "láng",
+       "en": "wolf"
+      }
+     ]
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read",
+     "paragraphs": [
+      "我家有一只小猫和一只小狗。",
+      "小猫会跳，小狗会跑。",
+      "我喜欢和小猫小狗一起玩。"
+     ],
+     "footnotes": ""
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写一段话介绍你最喜欢的动物（3-4句）。用上“有”“会”“喜欢”。",
+     "en": "Write"
+    }
+   }
+  },
+  {
+   "n": 6,
+   "id": "u6",
+   "theme": {
+    "zh": "好吃的",
+    "en": "Yummy Food"
+   },
+   "objective": {
+    "zh": "说出食物，说我喜欢吃什么、喝什么，说好吃。",
+    "en": "Name foods, say what I like to eat and drink, and say something is yummy."
+   },
+   "core": {
+    "review": [
+     "读一读: 马·鱼·鸟·虫·飞·口·大·小",
+     "说一说: 我喜欢＿＿（动物）。它会＿＿。",
+     "部首复习: 虫字旁 的字？口字旁？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《悯农》",
+      "titleEn": "Recite · Pity the Farmer · 李Lǐ绅Shēn (Táng)",
+      "poem": "《悯农》",
+      "poemPinyin": "mǐn nóng",
+      "lines": [
+       {
+        "zh": "锄禾日当午，汗滴禾下土。",
+        "py": "chú hé rì dāng wǔ hàn dī hé xià tǔ"
+       },
+       {
+        "zh": "谁知盘中餐，粒粒皆辛苦。",
+        "py": "shuí zhī pán zhōng cān lì lì jiē xīn kǔ"
+       }
+      ],
+      "meaning": "意思 yìsi (meaning) — Hoeing crops under the midday sun, sweat drips to the soil. Who knows that every grain of rice comes from hard work?",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "米",
+      "strokes": "6 笔bǐ strokes",
+      "breakdown": "①点 ②撇 ③横 ④竖 ⑤撇 ⑥捺",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "米饭 · 玉米",
+        "en": "cooked rice · corn"
+       }
+      ]
+     },
+     {
+      "char": "水",
+      "strokes": "4 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "氵(三点水 sān diǎn shuǐ) = water radical! 河·海·洗",
+        "en": "river · sea · wash"
+       },
+       {
+        "term": "组词",
+        "zh": "水果 · 喝水",
+        "en": "fruit"
+       }
+      ]
+     },
+     {
+      "char": "果",
+      "strokes": "8 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "水果 · 苹果",
+        "en": "apple"
+       }
+      ]
+     },
+     {
+      "char": "吃",
+      "strokes": "6 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "口字旁 (kǒu zì páng)!",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "吃饭 · 好吃",
+        "en": "yummy"
+       }
+      ]
+     },
+     {
+      "char": "喝",
+      "strokes": "12 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "口字旁 (kǒu zì páng)!",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "喝水 · 喝牛奶",
+        "en": ""
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 · Characters · Learn to write",
+    "recognise": [
+     "菜",
+     "肉",
+     "蛋",
+     "饭",
+     "面",
+     "奶"
+    ],
+    "vocab": [
+     {
+      "zh": "米饭",
+      "py": "mǐfàn",
+      "en": "rice"
+     },
+     {
+      "zh": "面条",
+      "py": "miàntiáo",
+      "en": "noodles"
+     },
+     {
+      "zh": "水果",
+      "py": "shuǐguǒ",
+      "en": "fruit"
+     },
+     {
+      "zh": "蔬菜",
+      "py": "shūcài",
+      "en": "vegetables"
+     },
+     {
+      "zh": "肉",
+      "py": "ròu",
+      "en": "meat"
+     },
+     {
+      "zh": "鸡蛋",
+      "py": "jīdàn",
+      "en": "egg"
+     },
+     {
+      "zh": "牛奶",
+      "py": "niúnǎi",
+      "en": "milk"
+     },
+     {
+      "zh": "水",
+      "py": "shuǐ",
+      "en": "water"
+     },
+     {
+      "zh": "吃",
+      "py": "chī",
+      "en": "eat"
+     },
+     {
+      "zh": "喝",
+      "py": "hē",
+      "en": "drink"
+     },
+     {
+      "zh": "好吃",
+      "py": "hǎochī",
+      "en": "yummy"
+     },
+     {
+      "zh": "我要",
+      "py": "wǒ yào",
+      "en": "I want"
+     },
+     {
+      "zh": "早餐",
+      "py": "zǎocān",
+      "en": "breakfast"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "我喜欢吃…",
+      "py": "wǒ xǐ huan chī",
+      "en": "I like to eat…"
+     },
+     {
+      "zh": "好喝",
+      "py": "hǎo hē",
+      "en": "tasty to drink"
+     },
+     {
+      "zh": "我要…",
+      "py": "wǒ yào",
+      "en": "I want…"
+     }
+    ],
+    "text": {
+     "kind": "dialogue",
+     "titleZh": "课文 — 对话",
+     "titleEn": "Text · Dialogue",
+     "lead": "",
+     "turns": [
+      {
+       "who": "安娜",
+       "say": "明明，你早餐吃什么？",
+       "py": "Míng ming nǐ zǎo cān chī shén me"
+      },
+      {
+       "who": "明明",
+       "say": "我吃米饭、鸡蛋，喝牛奶。你呢？",
+       "py": "wǒ chī mǐ fàn jī dàn hē niú nǎi nǐ ne"
+      },
+      {
+       "who": "安娜",
+       "say": "我吃面条。面条很好吃！",
+       "py": "wǒ chī miàn tiáo miàn tiáo hěn hǎo chī"
+      },
+      {
+       "who": "明明",
+       "say": "你吃蔬菜吗？",
+       "py": "nǐ chī shū cài ma"
+      },
+      {
+       "who": "安娜",
+       "say": "吃，我喜欢吃蔬菜，也喜欢吃水果。",
+       "py": "chī wǒ xǐ huan chī shū cài yě xǐ huan chī shuǐ guǒ"
+      }
+     ]
+    },
+    "culture": {
+     "zh": "中国人吃饭用筷子，不用刀叉。吃米饭、吃面条、夹菜，都用筷子！吃饭时大家分享菜，不是各人一盘。",
+     "en": "Chinese people eat with chopsticks, not knife and fork — for rice, noodles, picking up dishes. Everyone shares the dishes rather than having a separate plate."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听与圈 Listen & Circle. 听到哪个词就圈哪个：",
+      "en": "Circle the word you hear."
+     },
+     {
+      "optional": false,
+      "text": "分类 Sort. 把词放进格子：吃的/喝的。",
+      "en": "Sort into things to eat / things to drink."
+     },
+     {
+      "optional": false,
+      "text": "连一连 Match. Match each food to its meaning.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "找部首 Find radicals. 圈出带“口字旁”的字：chī吃hē喝shuǐ水guǒ果jiào叫mǐ米圈出带“氵”的字：hé河hǎi海xǐ洗jiào叫guǒ果",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional点菜 Order food. 和同学扮演：我要＿＿和＿＿。谢谢！",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional画一画 Draw. 画你的早餐，写出两个食物的名字，再说：\"我早餐吃，喝。\"",
+      "en": "Draw your breakfast, label two foods, then say the sentence."
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 健康餐盘 jiànkāng cānpán",
+     "titleEn": "Activity · Healthy Plate",
+     "steps": [],
+     "frame": ""
+    },
+    "speak": {
+     "label": "说一说 · Speak",
+     "frame": "我的早餐：我吃＿＿和＿＿。我喝＿＿。很好吃！"
+    },
+    "reflect": [
+     "说出五种食物和饮品",
+     "说“我喜欢吃…”和“我喜欢喝…”",
+     "说“好吃”",
+     "认读和写 米·水·果·吃·喝",
+     "找到口字旁 和 三点水"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "念《悯农》给家人听。"
+       ],
+       [
+        "2",
+        "吃早餐时说食物的中文名。"
+       ],
+       [
+        "3",
+        "教家人说“米饭”“面条”“水果”“蔬菜”。"
+       ],
+       [
+        "4",
+        "用手机录：我早餐吃＿＿，喝＿＿。"
+       ],
+       [
+        "5",
+        "描一描：米·水·果·吃·喝 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：米·水·果·吃·喝 各三遍。",
+        "念《悯农》给家人听。"
+       ],
+       [
+        "2",
+        "抄写：米饭·水果·蔬菜 各三遍。默写：米·水。",
+        "吃早餐时说食物中文名。"
+       ],
+       [
+        "3",
+        "抄写：我喜欢吃水果。我喝牛奶。各两遍。默写：果·吃·喝。",
+        "教家人说四个食物词。"
+       ],
+       [
+        "4",
+        "画早餐，写三个中文名。默写：米·水·果·吃·喝。",
+        "录一段中文说你的早餐。"
+       ],
+       [
+        "5",
+        "写一段话：我早餐吃＿＿。我喝＿＿。很好吃！默写：菜·肉。",
+        "在“吃、喝、叫”里圈出“口”字旁。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "菜",
+      "py": "cài",
+      "strokes": "11",
+      "radical": "艹",
+      "words": "蔬shū菜cài草cǎo字zì头tóu"
+     },
+     {
+      "char": "肉",
+      "py": "ròu",
+      "strokes": "6",
+      "radical": "肉ròu",
+      "words": "牛niú肉ròu"
+     }
+    ],
+    "furtherCharsTitle": "字",
+    "radical": {
+     "titleZh": "部首角",
+     "titleEn": "Radical Corner",
+     "intro": "氵 = water: 水(shuǐ)·河(hé)·海(hǎi)·洗(xǐ)。口 = mouth: 吃(chī)·喝(hē)·叫(jiào)·吹(chuī)。",
+     "family": []
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read",
+     "paragraphs": [
+      "我早餐吃鸡蛋、牛奶和水果。",
+      "午餐我在学校吃，有时候吃米饭和蔬菜。"
+     ],
+     "footnotes": ""
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写三个句子介绍你一天吃的东西。用上“早餐”“午餐”。",
+     "en": "Write"
+    }
+   }
+  },
+  {
+   "n": 7,
+   "id": "u7",
+   "theme": {
+    "zh": "我的教室",
+    "en": "My Classroom"
+   },
+   "objective": {
+    "zh": "说出教室里的东西，听指令做事情。",
+    "en": "Name classroom objects and follow instructions."
+   },
+   "core": {
+    "review": [
+     "读一读: 米·水·果·吃·喝·口·手·目",
+     "部首复习: 口字旁？女字旁？三点水？提手旁？",
+     "说一说: 你早餐吃了什么？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《上课歌》",
+      "titleEn": "Recite · Classroom Rhyme",
+      "poem": "《上课歌》",
+      "poemPinyin": "shàng kè gē",
+      "lines": [
+       {
+        "zh": "上课铃声响，快快进课堂。",
+        "py": "shàng kè líng shēng xiǎng kuài kuài jìn kè táng"
+       },
+       {
+        "zh": "书本摆整齐，等着老师把课上。",
+        "py": "shū běn bǎi zhěng qí děng zhe lǎo shī bǎ kè shàng"
+       }
+      ],
+      "meaning": "意思 yìsi (meaning) — The class bell rings — quickly to the classroom. Books ready, waiting for the teacher to begin.",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "门",
+      "strokes": "3 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "门字框 (mén zì kuàng)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "门口 · 大门",
+        "en": "doorway · main gate"
+       }
+      ]
+     },
+     {
+      "char": "书",
+      "strokes": "4 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "看书 · 书包",
+        "en": "read · schoolbag"
+       }
+      ]
+     },
+     {
+      "char": "笔",
+      "strokes": "10 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "⺮ (竹字头 zhú zì tóu) — pens were once bamboo brushes!",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "铅笔 · 毛笔",
+        "en": "pencil · brush pen"
+       }
+      ]
+     },
+     {
+      "char": "看",
+      "strokes": "9 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "目 (eye)",
+        "en": ""
+       },
+       {
+        "term": "复习",
+        "zh": "看 = 手 + 目! A hand over the eye to look far.",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "看书 · 看见",
+        "en": "see"
+       }
+      ]
+     },
+     {
+      "char": "写",
+      "strokes": "5 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "写字 · 写书",
+        "en": ""
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 · Characters · Learn to write",
+    "recognise": [
+     "纸",
+     "桌",
+     "椅",
+     "包",
+     "听",
+     "坐"
+    ],
+    "vocab": [
+     {
+      "zh": "书",
+      "py": "shū",
+      "en": "book"
+     },
+     {
+      "zh": "笔",
+      "py": "bǐ",
+      "en": "pen"
+     },
+     {
+      "zh": "纸",
+      "py": "zhǐ",
+      "en": "paper"
+     },
+     {
+      "zh": "桌子",
+      "py": "zhuōzi",
+      "en": "desk"
+     },
+     {
+      "zh": "椅子",
+      "py": "yǐzi",
+      "en": "chair"
+     },
+     {
+      "zh": "门",
+      "py": "mén",
+      "en": "door"
+     },
+     {
+      "zh": "书包",
+      "py": "shūbāo",
+      "en": "schoolbag"
+     },
+     {
+      "zh": "看",
+      "py": "kàn",
+      "en": "look, read"
+     },
+     {
+      "zh": "写",
+      "py": "xiě",
+      "en": "write"
+     },
+     {
+      "zh": "听",
+      "py": "tīng",
+      "en": "listen"
+     },
+     {
+      "zh": "请给我",
+      "py": "qǐng gěi wǒ",
+      "en": "please give me"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "这是…",
+      "py": "zhè shì",
+      "en": "this is a…"
+     },
+     {
+      "zh": "请给我…",
+      "py": "qǐng gěi wǒ",
+      "en": "please give me…"
+     },
+     {
+      "zh": "看/写/听",
+      "py": "kàn xiě tīng",
+      "en": "look / write / listen"
+     }
+    ],
+    "text": {
+     "kind": "dialogue",
+     "titleZh": "课文 — 对话",
+     "titleEn": "Text · Dialogue",
+     "lead": "",
+     "turns": [
+      {
+       "who": "老师",
+       "say": "同学们，请坐好。",
+       "py": "tóng xué men qǐng zuò hǎo"
+      },
+      {
+       "who": "明明",
+       "say": "老师，我的书在哪儿？",
+       "py": "lǎo shī wǒ de shū zài nǎ r"
+      },
+      {
+       "who": "老师",
+       "say": "你的书在桌子上。请看书。",
+       "py": "nǐ de shū zài zhuō zi shàng qǐng kàn shū"
+      },
+      {
+       "who": "安娜",
+       "say": "老师，请给我一支笔。",
+       "py": "lǎo shī qǐng gěi wǒ yì zhī bǐ"
+      },
+      {
+       "who": "老师",
+       "say": "好的，给你。请写字。",
+       "py": "hǎo de gěi nǐ qǐng xiě zì"
+      }
+     ]
+    },
+    "culture": {
+     "zh": "在中国的小学，上课前学生常站起来说“老师好”，老师回答“同学们好，请坐”。",
+     "en": "In Chinese primary schools, students stand and say 老lǎo师shī好hǎo before class; the teacher replies 同tóng学xué们men好hǎo，请qǐng坐zuò."
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听与做 Listen & Do. 听指令：请坐！请看书！请听！摸摸桌子！指指门！",
+      "en": "Sit, read, listen, touch the desk, point to the door — when you hear it."
+     },
+     {
+      "optional": false,
+      "text": "连一连 Match. Match each word to its meaning.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "问答 Ask & Answer. 跟同学借三样东西：请给我。—给你。—谢谢！",
+      "en": "Borrow three things from a classmate — just like in the dialogue."
+     },
+     {
+      "optional": false,
+      "text": "找一找 Find. ① “看”里面有哪两个学过的字？（手 ＋ 目）“笔”的部首是什么？（⺮ 竹字头）",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional画一画 Draw. 画你的教室，写出两样东西的名字。",
+      "en": "Draw your classroom; label two things."
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional再写写 Write again. 把 门·书·笔·看·写 各写两遍。",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 教室寻宝 jiàoshì xúnbǎo",
+     "titleEn": "Activity",
+     "steps": [],
+     "frame": ""
+    },
+    "speak": {
+     "label": "说一说 · Speak",
+     "frame": "这是我的教室。这是书，这是笔。请给我一张纸。谢谢！"
+    },
+    "reflect": [
+     "说出五样教室里的东西",
+     "说“请给我…”",
+     "认读和写 门·书·笔·看·写",
+     "找到“看”里面的手和目"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "念《上课歌》给家人听。"
+       ],
+       [
+        "2",
+        "在家里指五样东西试说中文。"
+       ],
+       [
+        "3",
+        "教家人说“书”“笔”“纸”“桌子”“椅子”。"
+       ],
+       [
+        "4",
+        "跟家人说“请坐”“请给我一杯水”。"
+       ],
+       [
+        "5",
+        "描一描：门·书·笔·看·写 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：门·书·笔·看·写 各三遍。",
+        "念《上课歌》给家人听。"
+       ],
+       [
+        "2",
+        "抄写：大门·看书·写字 各三遍。默写：门·书。",
+        "在家里指东西说中文。"
+       ],
+       [
+        "3",
+        "抄写：这是我的书。请给我一支笔。各两遍。默写：笔·看·写。",
+        "教家人说五个教室词。"
+       ],
+       [
+        "4",
+        "画书桌，标三个东西。默写：门·书·笔·看·写。",
+        "跟家人说“请坐”“请给我…”。"
+       ],
+       [
+        "5",
+        "写一段话：这是我的教室。有书、笔和纸。默写：纸·听。",
+        "部首复习：口·女·氵·扌·⺮·宀 各找一个字。"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "纸",
+      "py": "zhǐ",
+      "strokes": "7",
+      "radical": "纟",
+      "words": "纸zhǐsilk radical"
+     },
+     {
+      "char": "听",
+      "py": "tīng",
+      "strokes": "7",
+      "radical": "口kǒu",
+      "words": "听tīng口kǒu字zì旁páng"
+     }
+    ],
+    "furtherCharsTitle": "字",
+    "radical": {
+     "titleZh": "部首角",
+     "titleEn": "Radical Corner",
+     "intro": "Band 1 部首总复习 — the radicals you have met:",
+     "family": []
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read",
+     "paragraphs": [
+      "这是我的教室。教室里有桌子、椅子、黑板和书。",
+      "我的书在桌子上，笔也在桌子上。我喜欢看书和写字。"
+     ],
+     "footnotes": ""
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写一段话介绍你的教室（3-4句）。",
+     "en": "Write"
+    }
+   }
+  },
+  {
+   "n": 8,
+   "id": "u8",
+   "theme": {
+    "zh": "春节",
+    "en": "Spring Festival"
+   },
+   "objective": {
+    "zh": "说春节祝福语，说出春节的习俗。",
+    "en": "Say Spring Festival greetings and name traditions."
+   },
+   "core": {
+    "review": [
+     "读一读: 口·大·人·你·好·女·子·妈·爸·家·一·二·三·四·五·目·手·头·耳·小·马·鱼·鸟·虫·飞·米·水·果·吃·喝·门·书·笔·看·写",
+     "部首挑战: 看部首猜意思——口字旁？女字旁？三点水？提手旁？"
+    ],
+    "recite": [
+     {
+      "titleZh": "诵读 — 《新年好》",
+      "titleEn": "Recite · New Year Song",
+      "poem": "《新年好》",
+      "poemPinyin": "xīn nián hǎo",
+      "lines": [
+       {
+        "zh": "新年好呀，新年好呀，",
+        "py": "xīn nián hǎo ya xīn nián hǎo ya"
+       },
+       {
+        "zh": "祝贺大家新年好。",
+        "py": "zhù hè dà jiā xīn nián hǎo"
+       },
+       {
+        "zh": "我们唱歌，我们跳舞，",
+        "py": "wǒ men chàng gē wǒ men tiào wǔ"
+       },
+       {
+        "zh": "祝贺大家新年好。",
+        "py": "zhù hè dà jiā xīn nián hǎo"
+       }
+      ],
+      "meaning": "意思 yìsi (meaning) — Happy New Year! We sing, we dance — wishing everyone a happy new year.",
+      "note": ""
+     }
+    ],
+    "writeChars": [
+     {
+      "char": "火",
+      "strokes": "4 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "火 / 灬 (fire radical)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "大火 · 火车",
+        "en": "train"
+       }
+      ]
+     },
+     {
+      "char": "年",
+      "strokes": "6 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "新年 · 过年",
+        "en": "celebrate New Year"
+       }
+      ]
+     },
+     {
+      "char": "春",
+      "strokes": "9 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "日 (sun)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "春天 · 春节",
+        "en": ""
+       }
+      ]
+     },
+     {
+      "char": "福",
+      "strokes": "13 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "部首",
+        "zh": "礻 (shì zì páng)",
+        "en": ""
+       },
+       {
+        "term": "组词",
+        "zh": "福气 · 祝福",
+        "en": "blessing"
+       }
+      ]
+     },
+     {
+      "char": "乐",
+      "strokes": "5 笔bǐ strokes",
+      "breakdown": "",
+      "facts": [
+       {
+        "term": "组词",
+        "zh": "快乐 · 音乐",
+        "en": "music — yuè"
+       }
+      ]
+     }
+    ],
+    "writeCharsTitle": "字 — 学写字 · Characters · Learn to write",
+    "recognise": [
+     "灯",
+     "龙",
+     "饺",
+     "舞",
+     "快",
+     "红"
+    ],
+    "vocab": [
+     {
+      "zh": "春节",
+      "py": "Chūnjié",
+      "en": "Spring Festival"
+     },
+     {
+      "zh": "新年",
+      "py": "xīnnián",
+      "en": "new year"
+     },
+     {
+      "zh": "快乐",
+      "py": "kuàilè",
+      "en": "happy"
+     },
+     {
+      "zh": "恭喜",
+      "py": "gōngxǐ",
+      "en": "congratulations"
+     },
+     {
+      "zh": "红包",
+      "py": "hóngbāo",
+      "en": "red envelope"
+     },
+     {
+      "zh": "灯笼",
+      "py": "dēnglong",
+      "en": "lantern"
+     },
+     {
+      "zh": "烟火",
+      "py": "yānhuǒ",
+      "en": "fireworks"
+     },
+     {
+      "zh": "舞龙",
+      "py": "wǔ lóng",
+      "en": "dragon dance"
+     },
+     {
+      "zh": "饺子",
+      "py": "jiǎozi",
+      "en": "dumplings"
+     },
+     {
+      "zh": "一起",
+      "py": "yìqǐ",
+      "en": "together"
+     },
+     {
+      "zh": "新年好",
+      "py": "xīnnián hǎo",
+      "en": "Happy New Year"
+     }
+    ],
+    "mustKnow": [
+     {
+      "zh": "新年好",
+      "py": "xīn nián hǎo",
+      "en": "Happy New Year"
+     },
+     {
+      "zh": "恭喜恭喜",
+      "py": "gōng xǐ gōng xǐ",
+      "en": "best wishes / congratulations"
+     },
+     {
+      "zh": "红包",
+      "py": "hóng bāo",
+      "en": "red envelope"
+     }
+    ],
+    "text": {
+     "kind": "dialogue",
+     "titleZh": "课文 — 对话",
+     "titleEn": "Text · Dialogue",
+     "lead": "",
+     "turns": [
+      {
+       "who": "安娜",
+       "say": "明明，新年好！",
+       "py": "Míng ming xīn nián hǎo"
+      },
+      {
+       "who": "明明",
+       "say": "新年好！恭喜恭喜！",
+       "py": "xīn nián hǎo gōng xǐ gōng xǐ"
+      },
+      {
+       "who": "安娜",
+       "say": "这是给你的红包。",
+       "py": "zhè shì gěi nǐ de hóng bāo"
+      },
+      {
+       "who": "明明",
+       "say": "谢谢安娜！我们一起吃饺子吧。",
+       "py": "xiè xie Àn nà wǒ men yì qǐ chī jiǎo zi ba"
+      },
+      {
+       "who": "安娜",
+       "say": "好！吃完饺子去看舞龙！",
+       "py": "hǎo chī wán jiǎo zi qù kàn wǔ lóng"
+      },
+      {
+       "who": "明明",
+       "say": "春节真好！新年快乐！",
+       "py": "Chūn jié zhēn hǎo xīn nián kuài lè"
+      }
+     ]
+    },
+    "culture": {
+     "zh": "春节是中国最重要的节日。人们贴春联、挂灯笼、吃饺子、放烟火。长辈给小孩子红包——红色代表好运。你知道吗? 福字常常倒着贴！因为“倒”和“到”同音——“福倒了”=“福到了”！",
+     "en": "Spring Festival is China’s most important holiday — couplets, lanterns, dumplings, fireworks, and red envelopes from elders. Fun fact: 福fú is often hung upside-down, because 倒dào (upside-down) sounds like 到dào (arrived) — \"fortune has arrived!\""
+    },
+    "exercises": [
+     {
+      "optional": false,
+      "text": "听与拍 Listen & Clap. 听到春节的东西就拍手：红包！书！灯笼！猫！饺子！门！烟火！",
+      "en": "Clap only for Spring-Festival words."
+     },
+     {
+      "optional": false,
+      "text": "连一连 Match. Match each word to its meaning.",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "填空 Fill in. 新年！恭喜！新年乐！",
+      "en": ""
+     },
+     {
+      "optional": false,
+      "text": "部首复习 Radical review. 圈出有“火字旁”的字：dēng灯yān烟hóng红fú福",
+      "en": ""
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional画红包 Draw. 画一个红包，写上\"福\"字，再选一句祝福抄在旁边：新年快乐！／恭喜恭喜！",
+      "en": "Choose one greeting and copy it next to your drawing."
+     },
+     {
+      "optional": true,
+      "text": "可选 Optional全册部首总复习 Whole-book radicals. 每个部首写一个学过的字：口字旁女字旁三点水提手旁",
+      "en": ""
+     }
+    ],
+    "activity": {
+     "titleZh": "活动 — 春节派对 Chūnjié pàiduì",
+     "titleEn": "Activity",
+     "steps": [
+      "给全班拜年：新年好！恭喜恭喜！",
+      "给朋友“发红包”，说：这是给你的红包。新年快乐！",
+      "一起唱《新年好》。"
+     ],
+     "frame": ""
+    },
+    "speak": {
+     "label": "说一说 · Speak",
+     "frame": "春节的时候，有红包、灯笼、烟火和饺子。我们一起吃饭。新年快乐！"
+    },
+    "reflect": [
+     "说“新年好”和“恭喜恭喜”",
+     "说出四个春节的东西或活动",
+     "认读和写 火·年·春·福·乐",
+     "说出五个以上学过的部首"
+    ],
+    "takehome": [
+     {
+      "stream": "听说作业",
+      "streamEn": "Listening & speaking homework",
+      "rows": [
+       [
+        "1",
+        "唱《新年好》给家人听。"
+       ],
+       [
+        "2",
+        "教家人说“新年好”“恭喜恭喜”。"
+       ],
+       [
+        "3",
+        "对三个家人说“新年好，恭喜恭喜！”"
+       ],
+       [
+        "4",
+        "用手机录：新年好！恭喜恭喜！新年快乐！"
+       ],
+       [
+        "5",
+        "描一描：火·年·春·福·乐 各一遍。"
+       ]
+      ]
+     },
+     {
+      "stream": "读写作业",
+      "streamEn": "Reading & writing homework",
+      "rows": [
+       [
+        "1",
+        "抄写：火·年·春·福·乐 各三遍。",
+        "唱《新年好》给家人听。"
+       ],
+       [
+        "2",
+        "抄写：新年·春节·红包·灯笼 各三遍。默写：火·年。",
+        "教家人说“新年好”“恭喜恭喜”。"
+       ],
+       [
+        "3",
+        "抄写：新年快乐！恭喜恭喜！各三遍。默写：春·福·乐。",
+        "写一张新年贺卡给家人。"
+       ],
+       [
+        "4",
+        "写一段话：春节有红包、灯笼、烟火和饺子。默写：火·年·春·福·乐。",
+        "录一段新年祝福。"
+       ],
+       [
+        "5",
+        "画一张“部首地图”——把学过的部首和至少两个例子写出来。",
+        "部首分析：火/灬→热·灯·照 · 纟→红·绿"
+       ]
+      ]
+     }
+    ]
+   },
+   "further": {
+    "furtherChars": [
+     {
+      "char": "龙",
+      "py": "lóng",
+      "strokes": "5",
+      "radical": "龙lóng",
+      "words": "舞wǔ龙lóng · 恐kǒng龙lóngdinosaur"
+     },
+     {
+      "char": "红",
+      "py": "hóng",
+      "strokes": "6",
+      "radical": "纟",
+      "words": "红hóng色sèsilk radical — from Unit 3!"
+     }
+    ],
+    "furtherCharsTitle": "字",
+    "radical": {
+     "titleZh": "部首角",
+     "titleEn": "Radical Corner",
+     "intro": "Band 1 Complete Radical Map — every radical you have met:",
+     "family": []
+    },
+    "read": {
+     "titleZh": "读一读",
+     "titleEn": "Read",
+     "paragraphs": [
+      "春节到了，我们一起过年。大门上贴了春联，门口挂了红灯笼。",
+      "妈妈做了很多饺子，爸爸给我们发红包。我喜欢春节！"
+     ],
+     "footnotes": ""
+    },
+    "write": {
+     "titleZh": "写一写",
+     "titleEn": "Write",
+     "prompt": "写一段话介绍春节（4-5句）。用上 春节、红包、饺子、快乐。",
+     "en": "Write"
+    }
+   }
+  }
+ ],
+ "endMatter": {
+  "review": {
+   "titleZh": "综合复习",
+   "titleEn": "Review Through Play",
+   "lead": "",
+   "blocks": [
+    {
+     "titleZh": "字卡快闪",
+     "titleEn": "Flash Card Round",
+     "body": "认读全部 40 个学写字和主要认读字。分组比赛：看谁认得又快又准！"
+    },
+    {
+     "titleZh": "部首归类",
+     "titleEn": "Radical Sorting",
+     "body": "把学过的字按部首分类。你能找到多少个部首？每个部首至少一个例子。"
+    },
+    {
+     "titleZh": "口语挑战",
+     "titleEn": "Speaking Challenge",
+     "body": "介绍自己（名字、年龄、家庭）数一到十，说出三种颜色说出五种动物和它们会做什么说出你早餐吃什么、喝什么说出教室里的五样东西说春节祝福语"
+    },
+    {
+     "titleZh": "写字挑战",
+     "titleEn": "Writing Challenge",
+     "body": "听写 10 个字。自己选 5 个字写句子。"
+    }
+   ]
+  },
+  "appendix": {
+   "titleZh": "学写字 40",
+   "titleEn": "Band 1 — characters you can write",
+   "rows": [
+    [
+     "1",
+     "口kǒu",
+     "kǒu",
+     "mouth",
+     "3",
+     "口",
+     "1"
+    ],
+    [
+     "2",
+     "大dà",
+     "dà",
+     "big",
+     "3",
+     "大",
+     "1"
+    ],
+    [
+     "3",
+     "人rén",
+     "rén",
+     "person",
+     "2",
+     "人",
+     "1"
+    ],
+    [
+     "4",
+     "你nǐ",
+     "nǐ",
+     "you",
+     "7",
+     "亻",
+     "1"
+    ],
+    [
+     "5",
+     "好hǎo",
+     "hǎo",
+     "good",
+     "6",
+     "女",
+     "1"
+    ],
+    [
+     "6",
+     "女nǚ",
+     "nǚ",
+     "woman",
+     "3",
+     "女",
+     "2"
+    ],
+    [
+     "7",
+     "子zǐ",
+     "zǐ",
+     "child",
+     "3",
+     "子",
+     "2"
+    ],
+    [
+     "8",
+     "妈mā",
+     "mā",
+     "mum",
+     "6",
+     "女",
+     "2"
+    ],
+    [
+     "9",
+     "爸bà",
+     "bà",
+     "dad",
+     "8",
+     "父",
+     "2"
+    ],
+    [
+     "10",
+     "家jiā",
+     "jiā",
+     "family",
+     "10",
+     "宀",
+     "2"
+    ],
+    [
+     "11",
+     "一yī",
+     "yī",
+     "one",
+     "1",
+     "一",
+     "3"
+    ],
+    [
+     "12",
+     "二èr",
+     "èr",
+     "two",
+     "2",
+     "二",
+     "3"
+    ],
+    [
+     "13",
+     "三sān",
+     "sān",
+     "three",
+     "3",
+     "一",
+     "3"
+    ],
+    [
+     "14",
+     "四sì",
+     "sì",
+     "four",
+     "5",
+     "囗",
+     "3"
+    ],
+    [
+     "15",
+     "五wǔ",
+     "wǔ",
+     "five",
+     "4",
+     "二",
+     "3"
+    ],
+    [
+     "16",
+     "目mù",
+     "mù",
+     "eye",
+     "5",
+     "目",
+     "4"
+    ],
+    [
+     "17",
+     "手shǒu",
+     "shǒu",
+     "hand",
+     "4",
+     "手",
+     "4"
+    ],
+    [
+     "18",
+     "头tóu",
+     "tóu",
+     "head",
+     "5",
+     "大",
+     "4"
+    ],
+    [
+     "19",
+     "耳ěr",
+     "ěr",
+     "ear",
+     "6",
+     "耳",
+     "4"
+    ],
+    [
+     "20",
+     "小xiǎo",
+     "xiǎo",
+     "small",
+     "3",
+     "小",
+     "4"
+    ],
+    [
+     "21",
+     "马mǎ",
+     "mǎ",
+     "horse",
+     "3",
+     "马",
+     "5"
+    ],
+    [
+     "22",
+     "鱼yú",
+     "yú",
+     "fish",
+     "8",
+     "鱼",
+     "5"
+    ],
+    [
+     "23",
+     "鸟niǎo",
+     "niǎo",
+     "bird",
+     "5",
+     "鸟",
+     "5"
+    ],
+    [
+     "24",
+     "虫chóng",
+     "chóng",
+     "insect",
+     "6",
+     "虫",
+     "5"
+    ],
+    [
+     "25",
+     "飞fēi",
+     "fēi",
+     "fly",
+     "3",
+     "飞",
+     "5"
+    ],
+    [
+     "26",
+     "米mǐ",
+     "mǐ",
+     "rice",
+     "6",
+     "米",
+     "6"
+    ],
+    [
+     "27",
+     "水shuǐ",
+     "shuǐ",
+     "water",
+     "4",
+     "水",
+     "6"
+    ],
+    [
+     "28",
+     "果guǒ",
+     "guǒ",
+     "fruit",
+     "8",
+     "木",
+     "6"
+    ],
+    [
+     "29",
+     "吃chī",
+     "chī",
+     "eat",
+     "6",
+     "口",
+     "6"
+    ],
+    [
+     "30",
+     "喝hē",
+     "hē",
+     "drink",
+     "12",
+     "口",
+     "6"
+    ],
+    [
+     "31",
+     "门mén",
+     "mén",
+     "door",
+     "3",
+     "门",
+     "7"
+    ],
+    [
+     "32",
+     "书shū",
+     "shū",
+     "book",
+     "4",
+     "乛",
+     "7"
+    ],
+    [
+     "33",
+     "笔bǐ",
+     "bǐ",
+     "pen",
+     "10",
+     "⺮",
+     "7"
+    ],
+    [
+     "34",
+     "看kàn",
+     "kàn",
+     "look",
+     "9",
+     "目",
+     "7"
+    ],
+    [
+     "35",
+     "写xiě",
+     "xiě",
+     "write",
+     "5",
+     "冖",
+     "7"
+    ],
+    [
+     "36",
+     "火huǒ",
+     "huǒ",
+     "fire",
+     "4",
+     "火",
+     "8"
+    ],
+    [
+     "37",
+     "年nián",
+     "nián",
+     "year",
+     "6",
+     "干",
+     "8"
+    ],
+    [
+     "38",
+     "春chūn",
+     "chūn",
+     "spring",
+     "9",
+     "日",
+     "8"
+    ],
+    [
+     "39",
+     "福fú",
+     "fú",
+     "fortune",
+     "13",
+     "礻",
+     "8"
+    ],
+    [
+     "40",
+     "乐lè",
+     "lè",
+     "happy",
+     "5",
+     "丿",
+     "8"
+    ]
+   ]
+  }
+ }
+}
