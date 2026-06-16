@@ -499,6 +499,7 @@
     var timeBonus = Math.round(G.heat);
     G.score += timeBonus + stars * 40 + G.speedBonus;
     updateScoreUI();
+    updateProgressUI();
     renderRail();
     if (progress.settings.sound) speak(round.char);
     showRevealOverlay(round, stars, timeBonus);
@@ -980,6 +981,12 @@
     }).join('');
 
     var isNewBest = G.score >= (progress.best || 0);
+    var sp = scopeProgress();
+    var scopeDone = sp.total > 0 && sp.done >= sp.total;
+    var scopeLine = sp.hskMax
+      ? 'HSK 1–' + sp.hskMax + ' progress: <b>' + sp.done + ' / ' + sp.total + '</b> forged'
+      : 'Characters forged: <b>' + sp.done + '</b>';
+    var nextLabel = scopeDone ? '↻ Forge again (review)' : 'Forge next batch <span class="zh">继续</span> ›';
 
     ov.innerHTML =
       '<div class="rv-card finish-card">' +
@@ -987,11 +994,12 @@
         '<div class="fin-score">' + G.score + '<span>points</span></div>' +
         '<div class="fin-starline">' + starLine + '</div>' +
         '<div class="fin-strip">' + stripHTML + '</div>' +
-        '<p class="fin-note">Characters forged: <b>' + G.forged.length + '</b>. ' +
-          (isNewBest ? 'New best!' : 'Best: ' + (progress.best || 0)) + '</p>' +
+        '<p class="fin-note">' + scopeLine + '. ' +
+          (scopeDone ? 'You\'ve forged every character in scope — keep going to review.' :
+            (isNewBest ? 'New best!' : 'Best: ' + (progress.best || 0))) + '</p>' +
         '<div class="rv-actions">' +
-          '<button class="gbtn ghost" id="ov-again">↻ Forge again</button>' +
-          '<button class="gbtn solid" id="ov-done">Back to journey <span class="zh">继续</span></button>' +
+          '<button class="gbtn ghost" id="ov-done">Back to journey <span class="zh">继续</span></button>' +
+          '<button class="gbtn solid" id="ov-again">' + nextLabel + '</button>' +
         '</div>' +
       '</div>';
 
@@ -1093,6 +1101,7 @@
 
     G.stars = new Array(G.rounds.length).fill(0);
     renderRail();
+    updateProgressUI();
 
     // Start first round
     startPreview(G.rounds[0]);
