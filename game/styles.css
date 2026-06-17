@@ -288,7 +288,9 @@ body[data-bob="off"] .youare,body[data-bob="off"] .duebadge{animation:none;}
 .pv-glyph-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;
   padding:24px 40px;border-radius:24px;background:var(--paper);
   border:1px solid var(--rc-soft);box-shadow:0 20px 40px -20px rgba(38,32,30,.35);}
-.pv-glyph{font-size:clamp(80px,16vw,130px);color:var(--ink);line-height:1;}
+.pv-glyph{display:flex;align-items:center;justify-content:center;
+  width:clamp(110px,20vw,170px);height:clamp(110px,20vw,170px);}
+.pv-glyph .clue-fallback{font-size:clamp(80px,16vw,130px);color:var(--ink);line-height:1;}
 .pv-meta{display:flex;gap:12px;align-items:baseline;}
 .pv-py{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--rc);}
 .pv-en{font-size:15px;color:var(--ink-soft);font-weight:600;}
@@ -372,9 +374,19 @@ body[data-bob="off"] .youare,body[data-bob="off"] .duebadge{animation:none;}
 .peek-card{text-align:center;padding:28px 40px;border-radius:24px;background:var(--paper);
   border:2px solid var(--rc-soft);box-shadow:0 26px 50px -22px rgba(38,32,30,.5);animation:ovPop .35s cubic-bezier(.2,.8,.3,1.2);}
 .peek-eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:800;color:var(--rc);margin-bottom:10px;}
-.peek-glyph{font-size:clamp(96px,22vw,150px);line-height:1;color:var(--ink);}
+.peek-glyph{display:flex;align-items:center;justify-content:center;
+  width:clamp(120px,24vw,190px);height:clamp(120px,24vw,190px);margin:0 auto;}
+.peek-glyph .clue-fallback{font-size:clamp(96px,22vw,150px);line-height:1;color:var(--ink);}
 .peek-py{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--rc);margin-top:6px;}
 .peek-en{font-size:15px;color:var(--ink-soft);margin-top:4px;}
+
+/* ───────── CLUE (grid + stroke colours + order numbers, shared preview/peek) ───────── */
+.clue-svg{width:100%;height:100%;display:block;border-radius:14px;
+  background:linear-gradient(180deg,#fff,var(--rc-tint));border:1px solid var(--rc-soft);
+  box-shadow:0 14px 28px -16px rgba(38,32,30,.35);}
+.clue-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center;width:auto;height:auto;}
+.clue-cell{width:clamp(64px,16vw,100px);height:clamp(64px,16vw,100px);display:flex;align-items:center;justify-content:center;}
+.clue-cell .clue-fallback{font-size:clamp(48px,12vw,80px);}
 
 /* ───────── HOW-TO ───────── */
 .howto{text-align:center;font-size:13.5px;color:var(--ink-mute);font-weight:600;padding:4px 0;min-height:22px;}

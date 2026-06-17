@@ -20,6 +20,46 @@
   function strokePathColored(sd,i,col){ return '<g transform="translate(0,900) scale(1,-1)"><path d="'+sd.s[i]+'" fill="'+col+'"/></g>'; }
   function strokePieceSVG(sd,i,col){ return '<svg class="sp-svg" viewBox="0 0 1024 1024"><g transform="translate(0,900) scale(1,-1)"><path d="'+sd.s[i]+'" fill="'+col+'"/></g></svg>'; }
 
+  // ───────── character clue (grid + stroke colours + order numbers) ─────────
+  // The clue is what students study right before it disappears — it has to show
+  // the WRITING form (real stroke order, grid-anchored) they're about to build,
+  // not a printed-font glyph that can differ in shape from the stroke data.
+  // Reuses StrokeCell's number-relaxation layout (assets/stroke-cell.js) so the
+  // numbering matches the textbook pages exactly; adds the 田字格 grid forge
+  // already draws for the build canvas.
+  function clueDataFor(rd, ch){
+    if (rd.grain==='stroke' && ch===rd.char && rd.strokeData) return rd.strokeData;
+    var C=G.Content; return (C && C.hasStrokes(ch)) ? C.strokesOf(ch) : null;
+  }
+  function clueCellSVG(ch, sd){
+    if(!sd || !sd.s || !sd.s.length) return null;
+    var n=sd.s.length, cols=strokePalette(n);
+    var paths=sd.s.map(function(p,i){ return '<path d="'+p+'" fill="'+cols[i]+'"/>'; }).join('');
+    var nums='';
+    if (window.StrokeCell && sd.m && sd.m.length===n){
+      var pos=window.StrokeCell.layoutNumbers(sd.m);
+      nums=pos.map(function(p,i){
+        return '<text x="'+p[0].toFixed(0)+'" y="'+p[1].toFixed(0)+'" text-anchor="middle" dominant-baseline="central" '+
+          'font-size="92" font-weight="800" fill="'+cols[i]+'" stroke="#fffdf8" stroke-width="16" '+
+          'paint-order="stroke" stroke-linejoin="round">'+(i+1)+'</text>';
+      }).join('');
+    }
+    return '<svg class="clue-svg" viewBox="0 0 1024 1024" role="img" aria-label="'+esc(ch)+' stroke order">'+tianzi()+
+      '<g transform="translate(0,900) scale(1,-1)">'+paths+'</g><g class="clue-nums">'+nums+'</g></svg>';
+  }
+  function clueGlyphHTML(rd, wrapClass){
+    if (rd.grain==='use'){
+      var chars = rd.sequence || (rd.word ? rd.word.split('') : []);
+      var cells = chars.map(function(ch){
+        var svg=clueCellSVG(ch, clueDataFor(rd,ch));
+        return '<div class="clue-cell">'+(svg||('<span class="zh clue-fallback">'+esc(ch)+'</span>'))+'</div>';
+      }).join('');
+      return '<div class="'+wrapClass+' clue-row">'+cells+'</div>';
+    }
+    var svg=clueCellSVG(rd.char, clueDataFor(rd, rd.char));
+    return '<div class="'+wrapClass+'">'+(svg||('<span class="zh clue-fallback">'+esc(rd.char)+'</span>'))+'</div>';
+  }
+
   // ───────── stroke shape classification (feedback #5) ─────────
   // Coarse stroke type from its median, so genuinely identical strokes (e.g. the
   // three horizontals of 目) are interchangeable, but a horizontal can never
@@ -148,7 +188,6 @@
   function renderPreview(rd){
     var ms = RUN.settings.previewMs!=null ? RUN.settings.previewMs : 3000;
     $('#fg-head').innerHTML='';
-    var glyph = rd.grain==='use' ? rd.word : rd.char;
     var meta = rd.grain==='use'
       ? '<span class="pv-en">'+esc(rd.meaning||'a word to build')+'</span>'
       : '<span class="pv-py">'+esc(rd.pinyin||'')+'</span><span class="pv-en">'+esc(rd.meaning||'')+'</span>';
@@ -159,7 +198,7 @@
     $('#fg-arena').innerHTML=
       '<div class="preview-stage">'+
         '<div class="pv-round-badge">'+({parts:'偏旁部首 PART',wholes:'合字 WHOLE',use:'应用 USE'})[rd.band]+' · forge from memory</div>'+
-        '<div class="pv-glyph-wrap"><div class="pv-glyph zh">'+esc(glyph)+'</div><div class="pv-meta">'+meta+'</div></div>'+
+        '<div class="pv-glyph-wrap">'+clueGlyphHTML(rd,'pv-glyph')+'<div class="pv-meta">'+meta+'</div></div>'+
         '<div class="pv-cue">'+cueText+'</div>'+
         (ms>0?'<div class="pv-countdown" id="pv-cd"><svg class="pv-ring-svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="none" stroke="var(--rc-soft)" stroke-width="5"/><circle id="pv-arc" cx="32" cy="32" r="28" fill="none" stroke="var(--rc)" stroke-width="5" stroke-linecap="round" transform="rotate(-90 32 32)" stroke-dasharray="175.9" stroke-dashoffset="0"/></svg><span class="pv-cd-num" id="pv-num"></span></div>'+
           '<div class="pv-skip-hint">tap to start now ›</div>' : '')+
@@ -220,7 +259,7 @@
     var pk=document.createElement('div'); pk.className='peek-overlay';
     pk.innerHTML='<div class="peek-card">'+
       '<div class="peek-eyebrow">a peek · <span class="zh">再看一眼</span></div>'+
-      '<div class="peek-glyph zh">'+esc(glyph)+'</div>'+
+      clueGlyphHTML(rd,'peek-glyph')+
       (rd.pinyin && rd.grain!=='use' ? '<div class="peek-py zh">'+esc(rd.pinyin)+'</div>' : '')+
       (rd.meaning ? '<div class="peek-en">'+esc(rd.meaning)+'</div>' : '')+'</div>';
     $('#forge-screen').appendChild(pk);
