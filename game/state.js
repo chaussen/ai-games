@@ -103,6 +103,7 @@
       mastery:{}, sched:{},                 // sched[char] = { level, dueTs }
       owned:{}, seals:[], claims:[],
       current:'b1-u1',
+      catalogue:JSON.parse(JSON.stringify(STORE)),   // teacher-editable (spec §8.1)
       settings:{ previewMs:3000, cueLevel:'normal', difficulty:'normal', sound:true, preset:'standard' },
       config:JSON.parse(JSON.stringify(PRESETS.standard))
     };
@@ -129,6 +130,9 @@
   function load(){
     try{ var s=JSON.parse(localStorage.getItem(LS)); store = (s&&s.book) ? s : seeded(); }
     catch(e){ store = seeded(); }
+    // migrate older saves that predate teacher-editable fields
+    if(!store.catalogue) store.catalogue = JSON.parse(JSON.stringify(STORE));
+    if(!store.current)   store.current = 'b1-u1';
     rollWeek();
     return store;
   }
@@ -210,8 +214,26 @@
   }
 
   // ───────── store / claims ─────────
-  function storeItems(){ return STORE; }
+  function storeItems(){ return store.catalogue || STORE; }
   function canAfford(item){ return store.wen>=item.price; }
+  // teacher-editable catalogue (spec §8.1 / §8.2): add · edit price/tier/name · retire
+  function slugify(s){ return (String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'item'); }
+  function catalogueAdd(item){
+    var id=item.id||slugify(item.name)||('item'+now());
+    while(store.catalogue.some(function(i){return i.id===id;})) id+='-2';
+    var tier=item.tier||'everyday';
+    store.catalogue.push({ id:id, name:item.name||'New award', zh:item.zh||'', tier:tier,
+      price: tier==='prestige'?0:(+item.price||30), rankMin: tier==='prestige'?(+item.rankMin||4):undefined,
+      art:item.art||'🎁' });
+    save(); return id;
+  }
+  function catalogueUpdate(id, patch){
+    var it=store.catalogue.filter(function(i){return i.id===id;})[0]; if(!it) return;
+    for(var k in patch) it[k]=patch[k];
+    if(it.tier==='prestige'){ it.price=0; if(it.rankMin==null) it.rankMin=4; } else { delete it.rankMin; }
+    save();
+  }
+  function catalogueRetire(id){ store.catalogue=store.catalogue.filter(function(i){return i.id!==id;}); save(); }
   function redeem(item){
     if (item.tier==='prestige') return { ok:false, reason:'prestige' };
     if (store.wen<item.price) return { ok:false, reason:'funds' };
@@ -221,10 +243,14 @@
     return { ok:true };
   }
   function fulfillClaim(ts){ var c=store.claims.filter(function(x){return x.ts===ts;})[0]; if(c){ c.status='fulfilled'; save(); } }
+  function pendingClaims(){ return store.claims.filter(function(c){return c.status==='pending';}); }
 
   // ───────── teacher config ─────────
   function applyPreset(name){ if(PRESETS[name]){ store.config=JSON.parse(JSON.stringify(PRESETS[name])); store.settings.preset=name; save(); } }
   function setConfig(key, val){ store.config[key]=val; store.settings.preset='custom'; save(); }
+  function setDecay(idx, val){ store.config.decay[idx]=Math.max(1,val|0); store.settings.preset='custom'; save(); }
+  // class sync (spec §8.2): set which stage the class is on so "current" matches the lesson taught
+  function setCurrent(unitId){ store.current=unitId; save(); }
 
   // ───────── simulated class roster (teacher console) ─────────
   var ROSTER=[
@@ -245,8 +271,10 @@
     });
   }
   function grant(studentId, amount){
-    if (studentId==='you'){ addWen(amount, { capped:false }); }
-    else { var r=ROSTER.filter(function(x){return x.id===studentId;})[0]; if(r) r.wen+=amount; }
+    if (studentId==='all'){ ROSTER.forEach(function(r){ grant(r.id, amount); }); return ROSTER.length; }
+    if (studentId==='you'){ addWen(amount, { capped:false }); }       // grants bypass the weekly cap
+    else { var r=ROSTER.filter(function(x){return x.id===studentId;})[0]; if(r) r.wen=(r.wen||0)+amount; }
+    return 1;
   }
 
   G.State = {
@@ -257,7 +285,9 @@
     chapterCleared:chapterCleared, unitCleared:unitCleared, unitState:unitState,
     masteryOf:masteryOf, isCharDue:isCharDue, dueChars:dueChars, unitDue:unitDue,
     inkChar:inkChar, ownPart:ownPart, logSession:logSession,
-    storeItems:storeItems, canAfford:canAfford, redeem:redeem, fulfillClaim:fulfillClaim,
-    applyPreset:applyPreset, setConfig:setConfig, roster:roster, grant:grant
+    storeItems:storeItems, canAfford:canAfford, redeem:redeem, fulfillClaim:fulfillClaim, pendingClaims:pendingClaims,
+    catalogueAdd:catalogueAdd, catalogueUpdate:catalogueUpdate, catalogueRetire:catalogueRetire,
+    applyPreset:applyPreset, setConfig:setConfig, setDecay:setDecay, setCurrent:setCurrent,
+    roster:roster, grant:grant
   };
 })(window.GAME = window.GAME || {});
