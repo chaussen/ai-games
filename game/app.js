@@ -11,23 +11,34 @@
   var S, C;
 
   // ───────── settings for a forge run ─────────
-  function forgeSettings(){
+  // The cue policy is "Both": a progression baseline (which chapter the stage is
+  // in) nudged by the teacher difficulty dial. English is generous early and is
+  // kept OUT of the structure forge later; english→character only ever appears
+  // as its own Use exercise, never mixed in (overall guide, feedback #4).
+  function forgeSettings(unitId){
     var st=S.get(), diff=st.settings.difficulty||'normal';
     var pv = st.settings.previewMs!=null ? st.settings.previewMs : ({easy:5000,normal:3000,hard:1500,expert:0})[diff];
-    return { difficulty:diff, previewMs:pv, cueLevel:st.settings.cueLevel||'normal', sound:st.settings.sound!==false };
+    var chapterIdx=0;
+    if (unitId!=null){ var chs=S.chapters(); chapterIdx=Math.max(0, chs.indexOf(S.chapterOf(unitId))); }
+    var earlyChapter = chapterIdx<=1;                 // first two chapters = generous baseline
+    var structureEnglish = (diff==='expert') ? false : (earlyChapter || diff==='easy');
+    var usePrompt = (diff==='expert' || chapterIdx>=3) ? 'english' : 'pinyin';
+    return { difficulty:diff, previewMs:pv, cueLevel:st.settings.cueLevel||'normal', sound:st.settings.sound!==false,
+             level:chapterIdx, cuePolicy:{ structureEnglish:structureEnglish, usePrompt:usePrompt } };
   }
 
   // ───────── begin a stage (the 3-band arc → a forge run) ─────────
   function beginStage(u, isReview){
-    var st=S.get(), unit=C.unitById(u), arc=C.resolveStage(u, st.owned), settings=forgeSettings();
+    var st=S.get(), unit=C.unitById(u), arc=C.resolveStage(u, st.owned), settings=forgeSettings(u);
     var rounds=[];
     if (isReview){
-      unit.writeChars.filter(function(ch){return S.isCharDue(ch);}).forEach(function(ch){ rounds.push(C.buildRound({char:ch, band:'wholes'}, settings)); });
+      unit.writeChars.filter(function(ch){return S.isCharDue(ch);}).forEach(function(ch){ var w=DATA(arc,ch); rounds.push(C.buildRound({char:ch, band:'wholes', grain:w&&w.grain}, settings)); });
     } else {
-      arc.bands.parts.forEach(function(p){ if(!st.owned[p.char] && p.forgeable) rounds.push(C.buildRound({char:p.char, band:'parts'}, settings)); });
-      arc.bands.wholes.forEach(function(w){ rounds.push(C.buildRound({char:w.char, band:'wholes'}, settings)); });
+      arc.bands.parts.forEach(function(p){ if(!st.owned[p.char] && p.forgeable) rounds.push(C.buildRound({char:p.char, band:'parts', grain:p.grain, chunks:p.chunks}, settings)); });
+      arc.bands.wholes.forEach(function(w){ rounds.push(C.buildRound({char:w.char, band:'wholes', grain:w.grain}, settings)); });
       arc.bands.use.forEach(function(uu){ rounds.push(C.buildRound({band:'use', text:uu.text, en:uu.en}, settings)); });
     }
+    function DATA(arc,ch){ for(var i=0;i<arc.bands.wholes.length;i++) if(arc.bands.wholes[i].char===ch) return arc.bands.wholes[i]; return null; }
     if(!rounds.length){ toast('Nothing due to forge here.'); return; }
     G.Scroll.closeSheet();
     var alreadyDone = st.cleared[u]!=null;
@@ -94,7 +105,7 @@
 
   // ───────── review run launched from the hub ─────────
   function reviewRun(dueList){
-    var settings=forgeSettings(), rounds=dueList.map(function(ch){ return C.buildRound({char:ch, band:'wholes'}, settings); });
+    var settings=forgeSettings(), rounds=dueList.map(function(ch){ var c=C.charInfo(ch); return C.buildRound({char:ch, band:'wholes', grain:c&&c.grain}, settings); });
     G.Screens.close();
     G.Forge.run(rounds, { settings:settings, title:'复习 · Review', onCharForged:onForged, onDone:function(res){
       if(res.aborted){ G.Scroll.render(); return; }

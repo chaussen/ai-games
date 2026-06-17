@@ -18,11 +18,16 @@
       fetchJSON('assets/data/characters.json'),
       fetchJSON('assets/data/components.json'),
       fetchJSON('assets/data/stroke-data.json'),
-      fetchJSON('assets/data/playlists/b1-lessons.json'),
-      fetchJSON('assets/data/content-b1.json').catch(function(){ return null; })
+      fetchJSON('assets/data/playlists/all-lessons.json'),
+      fetchJSON('assets/data/content-b1.json').catch(function(){ return null; }),
+      fetchJSON('assets/data/content-b2.json').catch(function(){ return null; }),
+      fetchJSON('assets/data/content-b3.json').catch(function(){ return null; }),
+      fetchJSON('assets/data/content-b4.json').catch(function(){ return null; })
     ]).then(function(res){
       DATA.chars = res[0]; DATA.comps = res[1]; DATA.strokes = res[2];
-      DATA.units = res[3]; DATA.content = res[4];
+      DATA.units = res[3];
+      DATA.contentByBand = { B1:res[4], B2:res[5], B3:res[6], B4:res[7] };
+      DATA.content = res[4];                 // legacy ref (B1) — kept for back-compat
       ready = true;
       return DATA;
     });
@@ -62,6 +67,26 @@
   function unitAt(i){ return DATA.units[i]; }
   function unitById(id){ for(var i=0;i<DATA.units.length;i++) if(DATA.units[i].id===id) return DATA.units[i]; return null; }
 
+  // ───────── consistent grain naming (feedback #7) ─────────
+  // One vocabulary everywhere: atoms are forged by Stroke; everything assembled
+  // is "Build" (会意 meaning+meaning / 形声 meaning+sound); the word band is Use.
+  var GRAIN_LABEL = {
+    stroke:    { zh:'笔画', en:'Stroke' },
+    component: { zh:'会意', en:'Build · meaning + meaning' },
+    radical:   { zh:'形声', en:'Build · meaning + sound' },
+    use:       { zh:'应用', en:'Use' }
+  };
+  function grainLabel(g){ return GRAIN_LABEL[g] || GRAIN_LABEL.stroke; }
+
+  // When a character has no explicit IDS layout, fall back to a sensible region
+  // for the i-th of two components (left/right by default, top/bottom for ⿱).
+  function posFallback(layout, i){
+    if (layout==='⿱'||layout==='⿳') return i? (i>1?'bottom':'middle') : 'top';
+    if (layout==='⿴'||layout==='⿵'||layout==='⿶'||layout==='⿷'||
+        layout==='⿸'||layout==='⿹'||layout==='⿺'||layout==='⿻') return i?'inner':'outer';
+    return i? (i>1?'right':'middle') : 'left';
+  }
+
   // ───────── 3-band resolution ─────────
   // owned = set of components the student already owns (from state).
   function resolveStage(unitId, owned){
@@ -72,30 +97,11 @@
 
     // wholes = the unit's write characters (the syllabus targets)
     var wholes = unit.writeChars.filter(function(ch){ return DATA.chars[ch] && hasStrokes(ch); });
+    var isWhole={}; wholes.forEach(function(w){ isWhole[w]=true; });
 
-    // parts = the union of components referenced by the wholes, that are not
-    // themselves a whole in this stage. Each component is forged at stroke grain.
-    var partSet = {}; var partOrder = [];
-    wholes.forEach(function(w){
-      var c = DATA.chars[w]; if(!c) return;
-      (c.components||[]).forEach(function(comp){
-        var p = comp.char;
-        if (wholes.indexOf(p)>=0) return;            // it's a target this stage → not a "part"
-        if (!partSet[p]){ partSet[p]=true; partOrder.push({ char:p, role:comp.role }); }
-      });
-    });
-
-    var parts = partOrder.map(function(p){
-      var ch=p.char, status, kind, gloss;
-      if (owned[ch]) status='review';
-      else status='new';
-      if (later[ch]) kind='preview-atom';            // a real char taught later
-      else if (!isVocabSomewhere(ch)) kind='building-block';   // bound radical / phonetic
-      else kind='atom';
-      gloss = compInfo(ch).meaning || meaningOf(ch);
-      return { char:ch, status:status, kind:kind, gloss:gloss,
-               pinyin:pinyinOf(ch), grain:'stroke', forgeable:hasStrokes(ch) };
-    });
+    // parts = the scaffold beneath the wholes, expanded recursively into ordered
+    // layers (deepest stroke atoms first, then assembled intermediates).
+    var parts = scaffoldParts(wholes, isWhole, owned, later);
 
     // use band = a 词语 (word) + a 句子 (sentence) pulled from the lesson content
     var use = useBand(unit, idx);
@@ -105,21 +111,76 @@
 
     function wholeCp(ch){
       var c=DATA.chars[ch];
-      return { char:ch, grain:c.grain, pinyin:c.pinyin, meaning:c.meaning,
-               components:c.components||[], etym:c.etymologyType };
+      return { char:ch, grain:c.grain, layout:c.layout||null, pinyin:c.pinyin, meaning:c.meaning,
+               components:c.components||[], etym:c.etymologyType, tag:grainLabel(c.grain) };
     }
+  }
+
+  // Hybrid stop rule (feedback #6): a node is a stroke-forge atom when its data
+  // grain is 'stroke' OR it is small enough (≤5 strokes) to write directly;
+  // otherwise it is *assembled* from its own recursively-expanded components.
+  function partGrain(ch){
+    var c=DATA.chars[ch]; if(!c) return 'stroke';
+    if (c.grain==='stroke') return 'stroke';
+    if ((c.strokeCount||99)<=5) return 'stroke';
+    if (!(c.components && c.components.length>=2)) return 'stroke';
+    return c.grain;                                   // component | radical
+  }
+
+  function scaffoldParts(wholes, isWhole, owned, later){
+    var atoms=[], inters=[], seen={};
+    function makePart(ch, grain){
+      var c=DATA.chars[ch]; var sc=(c&&c.strokeCount)||0;
+      var kind = later[ch] ? 'preview-atom' : (!isVocabSomewhere(ch) ? 'building-block' : 'atom');
+      // A big *assembled-looking* atom is split into sequential stroke chunks, but
+      // a pictograph/indicative is one coherent image — never break it up just
+      // because it has many strokes (feedback #1: 豕). Keep it as a single forge.
+      var picto = c && (c.etymologyType==='pictographic' || c.etymologyType==='indicative');
+      var chunks = (grain==='stroke' && sc>6 && !picto) ? 2 : 1;
+      return { char:ch, grain:grain, kind:kind,
+               status: owned[ch] ? 'review' : 'new',
+               gloss: meaningOf(ch), pinyin: pinyinOf(ch),
+               layout: (c&&c.layout)||null, chunks: chunks,
+               tag: grainLabel(grain),
+               forgeable: grain==='stroke' ? hasStrokes(ch) : true };
+    }
+    function visit(ch){
+      if (seen[ch] || isWhole[ch]) return;            // a stage target is forged in the wholes band
+      var grain=partGrain(ch);
+      if (grain==='stroke'){ seen[ch]=true; atoms.push(makePart(ch,'stroke')); return; }
+      var c=DATA.chars[ch];
+      (c.components||[]).forEach(function(cp){ visit(cp.char); });   // children first
+      seen[ch]=true; inters.push(makePart(ch, grain));
+    }
+    wholes.forEach(function(w){
+      var c=DATA.chars[w]; if(!c) return;
+      (c.components||[]).forEach(function(cp){ visit(cp.char); });
+    });
+    return atoms.concat(inters);                       // atoms (deepest) → intermediates
   }
 
   function useBand(unit, idx){
     var out=[];
-    if (DATA.content && DATA.content.units && DATA.content.units[idx]){
-      var cu = DATA.content.units[idx];
+    // Look up the lesson content by band + unit number (the playlist now spans
+    // all four bands, so a global index into a single content file won't do).
+    var cb = DATA.contentByBand && DATA.contentByBand[unit.band];
+    var cu = (cb && cb.units) ? cb.units.filter(function(x){ return x.n===unit.unit; })[0] : null;
+    if (cu){
       var wc = (cu.core && cu.core.writeChars) || [];
       // gather a 组词 word and a 句子 sentence from the content facts
       var word=null, sent=null;
       wc.forEach(function(w){
         (w.facts||[]).forEach(function(f){
-          if (!word && f.term==='组词' && f.zh){ word={ zh:(f.zh.split('·')[0]||f.zh).trim(), en:(f.en||'').split('·')[0].trim() }; }
+          if (!word && f.term==='组词' && f.zh){
+            var zhs=f.zh.split('·').map(function(s){return s.trim();}).filter(Boolean);
+            var ens=(f.en||'').split('·').map(function(s){return s.trim();}).filter(Boolean);
+            // Trust the gloss only when it lines up 1:1 with the words. The source
+            // often lists two words and a single gloss for just one of them
+            // (大火·火车 → "train"), which would mislabel the word we pick — so
+            // when it doesn't align, build the word and cue from pinyin alone.
+            var en = (zhs.length===ens.length) ? (ens[0]||'') : '';
+            word={ zh: zhs[0]||f.zh.trim(), en: en };
+          }
           if (!sent && f.term==='句子' && f.zh){ sent={ zh:f.zh.trim(), en:(f.en||'').trim() }; }
         });
       });
@@ -149,43 +210,52 @@
     settings = settings || {};
     if (cp.band==='use') return buildUseRound(cp, settings);
     var c = DATA.chars[cp.char];
-    var grain = cp.band==='parts' ? 'stroke' : (c ? c.grain : 'stroke');
-    if (grain==='stroke' || !c) return buildStrokeRound(cp, settings);
+    // a scaffold item forges at its own grain; wholes forge at the char's grain.
+    var grain = cp.grain || (cp.band==='parts' ? 'stroke' : (c ? c.grain : 'stroke'));
+    if (grain==='stroke' || !c) return buildStrokeRound(cp, settings, grain);
     return buildPartsRound(cp, c, grain, settings);
   }
 
-  function buildStrokeRound(cp, settings){
+  function buildStrokeRound(cp, settings, grain){
     var ch=cp.char, info=DATA.chars[ch]||compInfo(ch), p=PAL.stroke;
+    var policy=settings.cuePolicy||{};
     return {
       grain:'stroke', char:ch, band:cp.band,
       pinyin:(info&&info.pinyin)||pinyinOf(ch), meaning:(info&&info.meaning)||meaningOf(ch),
       accent:p.accent, soft:p.soft, tint:p.tint, cat:p.cat, catEn:p.catEn,
+      label:grainLabel('stroke'),
       strokeData:strokesOf(ch),
-      ghost:(settings.difficulty==='easy'),          // §8: ghost only at easy
-      cue:{ meaning:false, pinyin:false }            // stroke cue = ghost + audio only
+      chunks: cp.chunks||1,                            // sequential stroke sub-steps for big atoms
+      ghost:(settings.difficulty==='easy'),            // §8: ghost only at easy
+      cue:{ meaning:(policy.structureEnglish!==false), pinyin:false, prompt:'recognise' }
     };
   }
 
   function buildPartsRound(cp, c, grain, settings){
     var p = PAL[grain];
+    var policy=settings.cuePolicy||{};
     var slots=[], pool=[], correctChars={};
+    correctChars[c.char]=true;   // never offer the target character itself as a decoy (e.g. 笑 in 笑's options)
     var decoN = settings.difficulty==='easy'?1 : settings.difficulty==='hard'?4 : settings.difficulty==='expert'?5 : 2;
+    var layout=c.layout||null;
 
     if (grain==='component'){
       (c.components||[]).forEach(function(comp,i){
-        slots.push({ type:'meaning', label:'义 meaning', want:comp.char });
-        pool.push({ ch:comp.char, role:'meaning', correct:true, slot:i, gloss:meaningOf(comp.char) });
+        var pos=comp.pos||posFallback(layout,i);
+        slots.push({ type:'meaning', pos:pos, label:'义', want:comp.char });
+        pool.push({ ch:comp.char, role:'meaning', correct:true, pos:pos, gloss:meaningOf(comp.char) });
         correctChars[comp.char]=true;
       });
       meaningDecoys(c, correctChars, decoN).forEach(function(d){ pool.push(d); });
-    } else { // radical (形声): one phonetic slot + semantic slot(s)
+    } else { // radical (形声): one phonetic part + semantic part(s)
       (c.components||[]).forEach(function(comp,i){
+        var pos=comp.pos||posFallback(layout,i);
         if (comp.role==='phonetic'){
-          slots.push({ type:'sound', label:'声 sound', want:comp.char });
-          pool.push({ ch:comp.char, role:'sound', correct:true, slot:i, py:comp.pinyin||pinyinOf(comp.char) });
+          slots.push({ type:'sound', pos:pos, label:'声', want:comp.char });
+          pool.push({ ch:comp.char, role:'sound', correct:true, pos:pos, py:comp.pinyin||pinyinOf(comp.char) });
         } else {
-          slots.push({ type:'meaning', label:'形 meaning', want:comp.char });
-          pool.push({ ch:comp.char, role:'meaning', correct:true, slot:i, gloss:meaningOf(comp.char) });
+          slots.push({ type:'meaning', pos:pos, label:'形', want:comp.char });
+          pool.push({ ch:comp.char, role:'meaning', correct:true, pos:pos, gloss:meaningOf(comp.char) });
         }
         correctChars[comp.char]=true;
       });
@@ -197,9 +267,24 @@
       grain:grain, char:cp.char, band:cp.band,
       pinyin:c.pinyin, meaning:c.meaning,
       accent:p.accent, soft:p.soft, tint:p.tint, cat:p.cat, catEn:p.catEn,
+      label:grainLabel(grain), layout:layout,
       slots:slots, pool:pool,
-      cue:{ meaning:true, pinyin:(grain==='radical') }   // §4.2 cue policy
+      cue:{ meaning:(policy.structureEnglish!==false), pinyin:(grain==='radical'), prompt:'recognise' }
     };
+  }
+
+  // A decoy must be an *individual* character/part, never a compound — offering a
+  // whole composite (e.g. 好, 妈) as a "part" is implausible and confusing.
+  function isIndividual(ch){
+    var c=DATA.chars[ch];
+    return !(c && c.components && c.components.length>=2);
+  }
+  // …and it should look like a real part: individual AND small. Skips complex
+  // single glyphs (蒙, 善) that no student would mistake for a radical/part.
+  function plausiblePart(ch){
+    if (!isIndividual(ch)) return false;
+    var c=DATA.chars[ch]; var sc=c?c.strokeCount:0;
+    return !sc || sc<=8;
   }
 
   // meaning-slot decoys: visually-similar + semantically-adjacent from graph hints
@@ -215,7 +300,7 @@
     shuffle(cands);
     for (var i=0;i<cands.length && pool.length<n;i++){
       var d=cands[i];
-      if (exclude[d]||seen[d]||!d) continue;
+      if (exclude[d]||seen[d]||!d||!plausiblePart(d)) continue;
       seen[d]=true;
       pool.push({ ch:d, role:'meaning', correct:false, gloss:meaningOf(d) });
     }
@@ -237,7 +322,7 @@
     shuffle(cands);
     var allowTone = (settings.difficulty==='hard'||settings.difficulty==='expert');
     for (var i=0;i<cands.length && pool.length<n;i++){
-      var d=cands[i]; if(exclude[d.ch]||seen[d.ch]) continue;
+      var d=cands[i]; if(exclude[d.ch]||seen[d.ch]||!plausiblePart(d.ch)) continue;
       var same = syllable(d.py)===tpy;
       if (same && !allowTone) continue;               // easy/normal: different syllable only
       seen[d.ch]=true;
@@ -266,26 +351,33 @@
   }
   function syllable(py){ return String(py||'').toLowerCase().replace(/[āáǎàa]/g,'a').replace(/[ēéěè]/g,'e').replace(/[īíǐì]/g,'i').replace(/[ōóǒò]/g,'o').replace(/[ūúǔù]/g,'u').replace(/[ǖǘǚǜü]/g,'v').replace(/[^a-z]/g,''); }
 
-  // ── USE round: assemble the word's characters in order ──
+  // ── USE round: assemble the word — no per-character boxes, count hidden by
+  //    extra decoy tiles (feedback #4). Prompt is pinyin→character (low level)
+  //    or english→character (high level).
   function buildUseRound(cp, settings){
     var p=PAL.use, text=cp.text||'', chars=text.split('');
-    var decoy = pickUseDecoy(chars);
+    var policy=settings.cuePolicy||{};
+    var prompt = policy.usePrompt || 'pinyin';
+    var py = chars.map(function(ch){ return pinyinOf(ch)||''; }).join(' ').trim();
+    // several decoys (≥2 and ≥ word length) so the tray never reveals the count
+    var decoys = pickUseDecoys(chars, Math.max(2, chars.length));
     var tiles = chars.map(function(ch,i){ return { ch:ch, idx:i, correct:true }; });
-    if (decoy) tiles.push({ ch:decoy, correct:false });
+    decoys.forEach(function(d){ tiles.push({ ch:d, correct:false }); });
     shuffle(tiles);
     return {
       grain:'use', char:text, band:'use', word:text, sequence:chars,
-      pinyin:'', meaning:cp.en||'',
+      pinyin: py, meaning:cp.en||'',
       accent:p.accent, soft:p.soft, tint:p.tint, cat:p.cat, catEn:p.catEn,
+      label:grainLabel('use'), prompt:prompt,
       tiles:tiles,
-      cue:{ meaning:true, pinyin:false }
+      cue:{ meaning:(prompt==='english'), pinyin:(prompt==='pinyin'), prompt:prompt }
     };
   }
-  function pickUseDecoy(chars){
-    var common=['的','是','我','你','不','人','口','大','小','子','女','日','月'];
-    shuffle(common);
-    for (var i=0;i<common.length;i++) if(chars.indexOf(common[i])<0) return common[i];
-    return null;
+  function pickUseDecoys(chars, n){
+    var common=['的','是','我','你','不','人','口','大','小','子','女','日','月','他','们','这','那','有','好','一'];
+    shuffle(common); var out=[];
+    for (var i=0;i<common.length && out.length<n;i++) if(chars.indexOf(common[i])<0 && out.indexOf(common[i])<0) out.push(common[i]);
+    return out;
   }
 
   G.Content = {
@@ -293,7 +385,7 @@
     units:units, unitAt:unitAt, unitById:unitById,
     charInfo:charInfo, compInfo:compInfo, hasStrokes:hasStrokes, strokesOf:strokesOf,
     meaningOf:meaningOf, pinyinOf:pinyinOf, isVocabSomewhere:isVocabSomewhere,
-    resolveStage:resolveStage, buildRound:buildRound, PAL:PAL,
+    resolveStage:resolveStage, buildRound:buildRound, PAL:PAL, grainLabel:grainLabel,
     raw:function(){ return DATA; }
   };
 })(window.GAME = window.GAME || {});

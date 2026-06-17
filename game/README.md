@@ -22,8 +22,14 @@ assets/data/playlists/*.json─┘               · buildRound()  → resolved f
                                               (文 wallet w/ weekly cap + anti-farm; XP→科举 rank),
                                               SRS ink-fade schedule, Parts Deck, seals, claims,
                                               teacher dials, simulated roster
-   forge.js   the Forge Run engine — PREVIEW→FORGE→REVEAL across stroke/component/radical/use
-              grains; heat·combo·cracks·stars; progressive hint ladder (§4.1–§4.2, §8)
+   forge.js   the Forge Run engine — one loop everywhere: PREVIEW (see it) → FORGE (it's gone,
+              rebuild it on a BLANK grid) → REVEAL. Stroke atoms: tap strokes, with shape-based
+              order leniency (shape-matched strokes interchangeable across the whole glyph;
+              the grid always fills in canonical writing order) + chunking for big atoms
+              (pictographs are never chunked). Component/radical: recall the structure first
+              (⿰/⿱/⿴…), then drag parts onto the revealed zones. Use: build the word on a
+              growing line, count hidden. heat·combo·cracks·stars;
+              progressive hint ladder (§4.1–§4.2, §8)
    scroll.js  the Scroll home + the 3-band Stage Sheet; header = rank/XP + 文 wallet + deck ring
               + 复习 badge + seals + streak
    screens.js 文 Store · Parts Deck · Review Hub · Teacher Console (slide-up panels)
@@ -34,10 +40,16 @@ assets/data/playlists/*.json─┘               · buildRound()  → resolved f
 ## What maps to the spec
 - **Two currencies** (§1, §6): completion pays flat **文** (capped ~80/wk, re-clears pay +1,
   only schedule-due reviews pay full → anti-farm); stars/mastery feed **XP→rank**, never spent.
-- **One book, chapters as the joint** (§2): Casey Band 1's 8 flat units, clustered 2-per-chapter
-  into the four seasonal 卷 so seals + rank ceremonies land on chapter boundaries.
-- **Parts-before-wholes** (§3): each stage decomposes into Parts (stroke-forge, owned ones shown
-  as review) → Wholes (component/radical forge, gated on owned parts) → Use (assemble the word).
+- **One book, chapters as the joint** (§2): all four bands' flat units (B1–B4, 32 units) clustered
+  2-per-chapter into seasonal 卷 so seals + rank ceremonies land on chapter boundaries. B1's four
+  chapters are hand-named; the rest are generated from the playlist (`state.js` `getChapters`), so
+  adding lessons needs only content + a rebuild — chapters/seals/ranks absorb them automatically.
+- **Parts-before-wholes** (§3): each stage's wholes are decomposed *pedagogically* — grain is
+  driven by etymology (pictographs like 口 目 米 水 stroke-forge; 会意 build by meaning; 形声 build
+  by meaning+sound), not raw IDS. The Parts band is a recursive scaffold (deepest stroke atoms →
+  assembled intermediates); a hard part with no clean named split is forged as chunked stroke
+  steps. Cue generosity follows a level = chapter baseline + teacher dial; english→character is
+  only ever its own Use exercise, never mixed into the structure forge.
 - **Graph-driven decoys** (§5.5): meaning-slot decoys from `hints.visuallySimilar` /
   `semanticallyAdjacent` + component siblings; sound-slot decoys from the phonetic pool
   (different syllable; tone-variants at hard/expert).
@@ -49,6 +61,7 @@ Scoring defaults live in `state.js` (`PRESETS` standard/generous/strict) and are
 at runtime. To regenerate the graph, see `../build-pipeline/build-characters.js`.
 
 ## Known gaps (v1)
-- A couple of Use-band English glosses are imperfect (source `组词` pairing in `content-b1.json`);
-  gameplay is unaffected (the round assembles the characters, the gloss is only a cue).
+- Use-band English glosses are shown only when the source `组词` gloss lines up 1:1 with its words
+  (`data.js` `useBand`); when it doesn't, the round falls back to a pinyin cue rather than risk a
+  mislabel. B1's glosses are curated; B2–B4 `组词` pairings have not all been audited.
 - Catalogue editor is read-only in the teacher console; roster peers are simulated (no backend).

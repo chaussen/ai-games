@@ -152,33 +152,56 @@ for (const [ch, d] of Object.entries(mmDict)) {
   if (dec && dec !== ch && !idsToChar[dec]) idsToChar[dec] = ch;
 }
 
-/** Return the direct (top-level) component characters of ch, or [] if atomic. */
-function directComponents(ch) {
+/**
+ * Decompose ch into its direct (top-level) named components plus the IDS
+ * operator that arranges them. Returns { op, comps } — op is the structural
+ * operator (e.g. ⿰ left-right, ⿱ top-bottom, ⿴ surround), comps the ordered
+ * component characters. Returns { op:null, comps:[] } when ch is atomic or its
+ * decomposition contains an operand we cannot name.
+ */
+function decompose(ch) {
   const d = mmDict[ch];
-  if (!d || !d.decomposition) return [];
-  let dec = d.decomposition;
-  // makemeahanzi marks unknown leaves with '？'; bail if present at top.
-  if (dec === ch) return [];
+  if (!d || !d.decomposition) return { op: null, comps: [] };
+  const dec = d.decomposition;
+  if (dec === ch) return { op: null, comps: [] };
   const chars = Array.from(dec);
-  if (chars.length <= 1) return [];
+  if (chars.length <= 1) return { op: null, comps: [] };
   const [root] = parseIDS(chars, 0);
-  if (!root.op) return [];
+  if (!root.op) return { op: null, comps: [] };
 
   const out = [];
   for (const child of root.children) {
     if (child.leaf) {
-      if (child.leaf === '？' || child.leaf === ch) return []; // unresolved/self → atomic
+      if (child.leaf === '？' || child.leaf === ch) return { op: null, comps: [] }; // unresolved/self → atomic
       out.push(child.leaf);
     } else {
-      const sub = nodeToIDS(child);
-      const named = idsToChar[sub];
+      const named = idsToChar[nodeToIDS(child)];
       if (named && named !== ch) out.push(named);
-      else return []; // composite operand we cannot name → treat whole char as atom
+      else return { op: null, comps: [] }; // composite operand we cannot name → treat whole char as atom
     }
   }
-  // de-dupe while preserving order
-  return out.filter((c, i) => out.indexOf(c) === i);
+  return { op: root.op, comps: out };
 }
+
+/** Return the direct (top-level) component characters of ch, or [] if atomic. */
+function directComponents(ch) {
+  const { comps } = decompose(ch);
+  // de-dupe while preserving order
+  return comps.filter((c, i) => comps.indexOf(c) === i);
+}
+
+// IDS operator → ordered region names, so a component can be dragged to the
+// right area of a blank grid (point #3: structure, not a fixed left/right formula).
+// NB: ⿻ (overlaid/intersecting) is deliberately absent — its parts share the
+// same space, so there is no clean spatial zone to drag a component into. Such
+// characters (e.g. 头) are forged whole as stroke atoms, not assembled.
+const POS_BY_OP = {
+  '⿰': ['left', 'right'],          '⿱': ['top', 'bottom'],
+  '⿲': ['left', 'middle', 'right'], '⿳': ['top', 'middle', 'bottom'],
+  '⿴': ['outer', 'inner'], '⿵': ['outer', 'inner'], '⿶': ['outer', 'inner'],
+  '⿷': ['outer', 'inner'], '⿸': ['outer', 'inner'], '⿹': ['outer', 'inner'],
+  '⿺': ['outer', 'inner'],
+};
 
 // ──────────────────────────────────────────────
 // 4. Role + grain classification
@@ -198,38 +221,71 @@ const BOUND_GLOSS = {
   '攵': 'tap (radical)', '冫': 'ice (radical)', '阝': 'mound/city (radical)', '⻊': 'foot (radical)',
 };
 
+/** Stroke count for ch (curriculum override, else from the stroke graphics). */
+function strokeCountOf(ch) {
+  const cur = curriculum[ch];
+  if (cur && cur.strokes) return cur.strokes;
+  const g = mmGraphics[ch];
+  return g && g.strokes ? g.strokes.length : 0;
+}
+
 /**
- * Decide components + roles + grain for a character.
- * Returns { components:[{char,role}], grain, etymologyType }
+ * Is `c` a component worth *assembling from* — i.e. a real, recognisable unit a
+ * student would name (a taught character, a standard bound radical, or a glyph
+ * with its own stroke data + gloss)? Shape-fragments like 冂 / 丷 fail this, so
+ * the characters built only from them collapse back to stroke-forge atoms.
+ */
+function recognizable(c) {
+  if (curriculum[c]) return true;
+  if (BOUND_GLOSS[c] !== undefined) return true;
+  const g = mmGraphics[c], d = mmDict[c];
+  return !!(g && g.strokes && d && d.definition);
+}
+
+/**
+ * Decide components + roles + grain + layout for a character (feedback #1, #7).
+ * Grain is driven by *pedagogy*, not raw IDS:
+ *   pictographic / indicative      → stroke  (base glyph; its IDS split is a
+ *                                             graphical coincidence, e.g. 口 目 米 水)
+ *   ≤4 strokes                     → stroke  (too simple to assemble, e.g. 三 二)
+ *   any direct component unnamed   → stroke  (kills 冂/丷-style fragments)
+ *   pictophonetic (形声)            → radical (meaning + sound)
+ *   ideographic / associative (会意) → component (meaning + meaning)
+ * Returns { components:[{char,role,pos}], grain, etymologyType, layout }.
  */
 function classify(ch) {
   const d = mmDict[ch] || {};
   const etym = d.etymology || {};
-  const comps = directComponents(ch);
+  const type = etym.type;
+  const atom = (et) => ({ components: [], grain: 'stroke', etymologyType: et || type || 'pictographic', layout: null });
 
-  if (comps.length < 2) {
-    return { components: [], grain: 'stroke', etymologyType: etym.type || 'pictographic' };
-  }
+  if (type === 'pictographic' || type === 'indicative') return atom(type);
+  const strokeCount = strokeCountOf(ch);
+  if (strokeCount && strokeCount <= 4) return atom();
+
+  const { op, comps } = decompose(ch);
+  if (comps.length < 2) return atom();
+  if (!comps.every(recognizable)) return atom();        // a shape-fragment operand → forge by strokes
+  if (!POS_BY_OP[op]) return atom();                    // op has no clean spatial zones (e.g. ⿻ overlay) → forge whole
 
   // Determine the phonetic component, if any.
   let phonetic = null;
-  if (etym.type === 'pictophonetic' && etym.phonetic) phonetic = etym.phonetic;
+  if (type === 'pictophonetic' && etym.phonetic) phonetic = etym.phonetic;
   if (PHONETIC_OVERRIDE[ch]) phonetic = PHONETIC_OVERRIDE[ch];
   if (phonetic && comps.indexOf(phonetic) < 0) phonetic = null; // must be a real direct component
 
-  const components = comps.map(c => ({
+  const posArr = POS_BY_OP[op] || [];
+  const components = comps.map((c, i) => ({
     char: c,
     role: (phonetic && c === phonetic) ? 'phonetic' : 'semantic',
+    pos: posArr[i] || (op === '⿱' ? (i ? 'bottom' : 'top') : i ? 'right' : 'left'),
   }));
 
   const hasPhonetic = components.some(c => c.role === 'phonetic');
   const hasSemantic = components.some(c => c.role === 'semantic');
-  let grain;
-  if (hasPhonetic && hasSemantic) grain = 'radical';     // 形声
-  else grain = 'component';                              // 会意 (all semantic)
-
-  const etymologyType = etym.type || (hasPhonetic ? 'pictophonetic' : 'ideographic');
-  return { components, grain, etymologyType };
+  const grain = (hasPhonetic && hasSemantic) ? 'radical' : 'component'; // 形声 vs 会意
+  const etymologyType = type || (hasPhonetic ? 'pictophonetic' : 'ideographic');
+  return { components, grain, etymologyType, layout: op };
 }
 
 // ──────────────────────────────────────────────
@@ -351,9 +407,10 @@ for (const [ch, cls] of Object.entries(nodes)) {
     strokeCount,
     grain: cls.grain,
     etymologyType: cls.etymologyType,
+    layout: cls.layout || null,
     components: cls.components.map(c => {
       const cg = glossFor(c.char);
-      return { char: c.char, role: c.role, pinyin: cg.py };
+      return { char: c.char, role: c.role, pos: c.pos || null, pinyin: cg.py };
     }),
     depth: depth[ch] || 0,
     frequencyRank: frequencyRank(ch),

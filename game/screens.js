@@ -88,7 +88,7 @@
   function buildsWith(comp){ var out=[]; var raw=C.raw().chars;
     for(var k in raw){ if((raw[k].components||[]).some(function(x){return x.char===comp;})){ out.push(k); if(out.length>=8) break; } } return out; }
   function renderDeck(){
-    var st=S.get(); setHead('<span class="zh">部件</span> Parts Deck', 'Owned components — they gate the wholes and seed the decoys');
+    var st=S.get(); setHead('<span class="zh">偏旁部首</span> Parts Deck', 'Owned components — they gate the wholes and seed the decoys');
     var all=bookComponents(); var owned=all.filter(function(c){return st.owned[c];});
     var html='<div class="deck-meta">'+
       '<div class="deck-stat"><b>'+owned.length+'</b><span>parts owned</span></div>'+

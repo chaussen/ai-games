@@ -216,7 +216,7 @@
        {
         "term": "组词",
         "zh": "你好 · 好吃",
-        "en": "yummy"
+        "en": "hello · tasty"
        },
        {
         "term": "句子",
@@ -663,7 +663,7 @@
        {
         "term": "组词",
         "zh": "妈妈 · 爸妈",
-        "en": "parents"
+        "en": "mom · parents"
        }
       ]
      },
@@ -675,7 +675,7 @@
        {
         "term": "组词",
         "zh": "爸爸 · 老爸",
-        "en": "dad (informal)"
+        "en": "dad · dad (informal)"
        }
       ]
      },
@@ -697,7 +697,7 @@
        {
         "term": "组词",
         "zh": "家人 · 大家",
-        "en": "everyone — 大dà from Unit 1!"
+        "en": "family · everyone (大dà from Unit 1!)"
        }
       ]
      }
@@ -1112,7 +1112,7 @@
        {
         "term": "组词",
         "zh": "三月 · 三个",
-        "en": ""
+        "en": "March · three (items)"
        }
       ]
      },
@@ -1485,7 +1485,7 @@
        {
         "term": "组词",
         "zh": "目光 · 目前",
-        "en": "currently"
+        "en": "gaze · currently"
        }
       ]
      },
@@ -1502,7 +1502,7 @@
        {
         "term": "组词",
         "zh": "小手 · 拍手",
-        "en": ""
+        "en": "little hand · to clap"
        }
       ]
      },
@@ -1526,7 +1526,7 @@
        {
         "term": "组词",
         "zh": "耳朵 · 木耳",
-        "en": "wood-ear mushroom"
+        "en": "ear · wood-ear mushroom"
        }
       ]
      },
@@ -1901,7 +1901,7 @@
        {
         "term": "组词",
         "zh": "小鱼 · 金鱼",
-        "en": "goldfish"
+        "en": "little fish · goldfish"
        }
       ]
      },
@@ -1913,7 +1913,7 @@
        {
         "term": "组词",
         "zh": "小鸟 · 鸟叫",
-        "en": "bird call"
+        "en": "little bird · bird call"
        }
       ]
      },
@@ -1930,7 +1930,7 @@
        {
         "term": "组词",
         "zh": "虫子 · 毛毛虫",
-        "en": "caterpillar"
+        "en": "bug · caterpillar"
        }
       ]
      },
@@ -2323,7 +2323,7 @@
        {
         "term": "组词",
         "zh": "水果 · 喝水",
-        "en": "fruit"
+        "en": "fruit · to drink water"
        }
       ]
      },
@@ -2335,7 +2335,7 @@
        {
         "term": "组词",
         "zh": "水果 · 苹果",
-        "en": "apple"
+        "en": "fruit · apple"
        }
       ]
      },
@@ -2352,7 +2352,7 @@
        {
         "term": "组词",
         "zh": "吃饭 · 好吃",
-        "en": "yummy"
+        "en": "to eat (a meal) · tasty"
        }
       ]
      },
@@ -2369,7 +2369,7 @@
        {
         "term": "组词",
         "zh": "喝水 · 喝牛奶",
-        "en": ""
+        "en": "to drink water · to drink milk"
        }
       ]
      }
@@ -2756,7 +2756,7 @@
        {
         "term": "组词",
         "zh": "看书 · 看见",
-        "en": "see"
+        "en": "to read (a book) · to see"
        }
       ]
      },
@@ -2768,7 +2768,7 @@
        {
         "term": "组词",
         "zh": "写字 · 写书",
-        "en": ""
+        "en": "to write characters · to write a book"
        }
       ]
      }
@@ -3100,7 +3100,7 @@
        {
         "term": "组词",
         "zh": "大火 · 火车",
-        "en": "train"
+        "en": "big fire · train"
        }
       ]
      },
@@ -3112,7 +3112,7 @@
        {
         "term": "组词",
         "zh": "新年 · 过年",
-        "en": "celebrate New Year"
+        "en": "New Year · to celebrate the New Year"
        }
       ]
      },
@@ -3129,7 +3129,7 @@
        {
         "term": "组词",
         "zh": "春天 · 春节",
-        "en": ""
+        "en": "spring · Spring Festival"
        }
       ]
      },
@@ -3146,7 +3146,7 @@
        {
         "term": "组词",
         "zh": "福气 · 祝福",
-        "en": "blessing"
+        "en": "good fortune · blessing"
        }
       ]
      },
@@ -3158,7 +3158,7 @@
        {
         "term": "组词",
         "zh": "快乐 · 音乐",
-        "en": "music — yuè"
+        "en": "happy · music (yuè)"
        }
       ]
      }

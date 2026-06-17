@@ -29,7 +29,12 @@
     var span=nx.min-rk.min, into=st.xp-rk.min, pct=span>0?Math.min(100,Math.round(into/span*100)):100;
     var TOTAL=totalChars(), mc=masteredChars(), mpct=TOTAL?Math.round(mc/TOTAL*100):0;
     var dueN=S.dueChars().length;
-    var seals=S.chapters().map(function(c){ var got=st.seals.indexOf(c.id)>=0;
+    // With many chapters the tray would overflow — show earned seals + the next
+    // target only (the full journey lives in the scroll + minimap).
+    var allCh=S.chapters(), firstUnearned=-1;
+    for(var si=0;si<allCh.length;si++){ if(st.seals.indexOf(allCh[si].id)<0){ firstUnearned=si; break; } }
+    var shownCh = firstUnearned<0 ? allCh : allCh.slice(0, firstUnearned+1);
+    var seals=shownCh.map(function(c){ var got=st.seals.indexOf(c.id)>=0;
       return '<span class="seal '+(got?'got':'')+'" title="'+esc(c.name)+'" style="--rc:'+c.rc+'"><span class="zh">'+c.season+'</span></span>'; }).join('');
     var streakDots=[0,1,2,3,4,5,6].map(function(d){ return '<i class="'+(d<Math.min(7,st.streak)?'on':'')+'"></i>'; }).join('');
     $('#jhead').innerHTML=
@@ -46,7 +51,7 @@
           '<div class="mastery"><svg viewBox="0 0 40 40" class="ring"><circle class="r-bg" cx="20" cy="20" r="16"/>'+
           '<circle class="r-fg" cx="20" cy="20" r="16" stroke-dasharray="'+(mpct/100*100.5).toFixed(1)+' 100.5"/></svg>'+
           '<div class="mtxt"><b>'+mc+'</b><span>/ '+TOTAL+'</span></div></div>'+
-          '<span class="chip-txt"><small>部件</small><small>deck</small></span></button>'+
+          '<span class="chip-txt"><small>偏旁部首</small><small>deck</small></span></button>'+
         (dueN?'<button class="chip reviewchip" id="chip-review" title="Review Hub"><span class="zh">复习</span><span class="chip-txt"><b>'+dueN+'</b><small>due</small></span></button>':'')+
       '</div>'+
       '<div class="hstats">'+
@@ -200,12 +205,12 @@
 
   function bandRail(arc, state){
     var bands=[
-      { key:'parts', no:1, zh:'部件', en:'Parts', sub:'radicals & sound-parts', items:arc.bands.parts.map(function(p){
+      { key:'parts', no:1, zh:'偏旁部首', en:'Parts', sub:'stroke atoms & sub-builds', items:arc.bands.parts.map(function(p){
           var sObj=S.get(); var owned=sObj.owned[p.char]; var stt = owned?(S.isCharDue(p.char)?'review':'owned'):'new';
-          return { ch:p.char, tag:(p.kind==='preview-atom'?'preview':p.kind==='building-block'?'block':'atom'), st:stt }; }) },
+          return { ch:p.char, tag:C.grainLabel(p.grain).zh, st:stt }; }) },
       { key:'wholes', no:2, zh:'合字', en:'Wholes', sub:'this stage’s characters', items:arc.bands.wholes.map(function(w){
           var sObj=S.get(); var done=sObj.cleared[arc.id]!=null; var stt= done?(S.isCharDue(w.char)?'review':'owned'):(state==='locked'?'locked':'new');
-          return { ch:w.char, tag:w.grain, st:stt }; }) },
+          return { ch:w.char, tag:C.grainLabel(w.grain).zh, st:stt }; }) },
       { key:'use', no:3, zh:'应用', en:'Use', sub:'word · sentence', items:arc.bands.use.map(function(uu){
           return { ch:uu.text, tag:uu.type, st:state==='locked'?'locked':'new', wide:true }; }) }
     ];

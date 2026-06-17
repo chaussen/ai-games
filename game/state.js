@@ -8,10 +8,11 @@
 (function (G) {
   "use strict";
 
-  // ───────── the book = Casey Band 1, grouped into 4 seal-bearing chapters ─────────
-  // Band 1 has flat units; the Chapter is the teacher-defined cluster (spec §2.1).
-  // We cluster 2 units per chapter so the 4 seasons / seals / rank ceremonies land.
-  var CHAPTERS = [
+  // ───────── the book = chapters, each a 2-unit seal-bearing cluster ─────────
+  // Band 1's four chapters are hand-named (spec §2.1). Everything beyond B1 is
+  // generated from the loaded playlist — 2 units per chapter, cycling the four
+  // seasonal palettes — so adding lessons needs no edits here (see getChapters).
+  var CHAPTERS_SEED = [
     { id:'c1', vol:'卷一', season:'春', name:'Spring · First Words',  sub:'春',
       rc:'#3E8E72', soft:'#BCDDD1', tint:'#E4F1EC', units:['b1-u1','b1-u2'] },
     { id:'c2', vol:'卷二', season:'夏', name:'Summer · Numbers & Body', sub:'夏',
@@ -21,6 +22,32 @@
     { id:'c4', vol:'卷四', season:'冬', name:'Winter · Class & Festival', sub:'冬',
       rc:'#7E4B86', soft:'#D8C4DB', tint:'#F1E8F2', units:['b1-u7','b1-u8'] }
   ];
+  var SEASON_CYCLE = [
+    { season:'春', sub:'春', name:'Spring', rc:'#3E8E72', soft:'#BCDDD1', tint:'#E4F1EC' },
+    { season:'夏', sub:'夏', name:'Summer', rc:'#2F7DA6', soft:'#BBD7E6', tint:'#E3EFF4' },
+    { season:'秋', sub:'秋', name:'Autumn', rc:'#C2603A', soft:'#F0C9B4', tint:'#FBEAE0' },
+    { season:'冬', sub:'冬', name:'Winter', rc:'#7E4B86', soft:'#D8C4DB', tint:'#F1E8F2' }
+  ];
+  var CN_NUM = ['一','二','三','四','五','六','七','八','九','十','十一','十二','十三','十四','十五','十六','十七','十八','十九','二十'];
+  var _chapters = null;
+  // Built once the playlist is loaded: keep the curated B1 chapters, then auto-
+  // cluster every remaining unit (2 per chapter) with a cycling season + volume.
+  function getChapters(){
+    if (_chapters) return _chapters;
+    var units = (G.Content && G.Content.units && G.Content.units()) || [];
+    if (!units.length) return CHAPTERS_SEED;                 // pre-load fallback
+    var out = CHAPTERS_SEED.slice();
+    var covered = {}; out.forEach(function(c){ c.units.forEach(function(u){ covered[u]=1; }); });
+    var rest = units.filter(function(u){ return !covered[u.id]; });
+    for (var i=0;i<rest.length;i+=2){
+      var grp = rest.slice(i,i+2), ci = out.length, s = SEASON_CYCLE[ci%4];
+      var theme = grp.map(function(u){ return (u.theme && u.theme.en) || u.id; }).filter(Boolean).join(' & ');
+      out.push({ id:'c'+(ci+1), vol:'卷'+(CN_NUM[ci]||(ci+1)), season:s.season, sub:s.sub,
+                 name:s.name+' · '+theme, rc:s.rc, soft:s.soft, tint:s.tint,
+                 units:grp.map(function(u){ return u.id; }) });
+    }
+    _chapters = out; return out;
+  }
 
   // ───────── 科举 rank ladder (XP thresholds) ─────────
   var RANKS = [
@@ -131,11 +158,11 @@
     var after=rankFor(store.xp); return { ranked: after.lv>before.lv, rank:after }; }
 
   // ───────── chapter / progression helpers ─────────
-  function chapters(){ return CHAPTERS; }
-  function chapterOf(unitId){ for(var i=0;i<CHAPTERS.length;i++) if(CHAPTERS[i].units.indexOf(unitId)>=0) return CHAPTERS[i]; return CHAPTERS[0]; }
-  function chapterById(id){ for(var i=0;i<CHAPTERS.length;i++) if(CHAPTERS[i].id===id) return CHAPTERS[i]; return null; }
-  function chapterUnlocked(id){ var i=indexOfChapter(id); return i===0 || store.seals.indexOf(CHAPTERS[i-1].id)>=0; }
-  function indexOfChapter(id){ for(var i=0;i<CHAPTERS.length;i++) if(CHAPTERS[i].id===id) return i; return 0; }
+  function chapters(){ return getChapters(); }
+  function chapterOf(unitId){ var ch=getChapters(); for(var i=0;i<ch.length;i++) if(ch[i].units.indexOf(unitId)>=0) return ch[i]; return ch[0]; }
+  function chapterById(id){ var ch=getChapters(); for(var i=0;i<ch.length;i++) if(ch[i].id===id) return ch[i]; return null; }
+  function chapterUnlocked(id){ var ch=getChapters(), i=indexOfChapter(id); return i===0 || store.seals.indexOf(ch[i-1].id)>=0; }
+  function indexOfChapter(id){ var ch=getChapters(); for(var i=0;i<ch.length;i++) if(ch[i].id===id) return i; return 0; }
   function chapterCleared(id){ var c=chapterById(id); return c.units.every(function(u){ return store.cleared[u]!=null; }); }
   function unitCleared(u){ return store.cleared[u]!=null; }
   function unitState(u){
