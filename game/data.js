@@ -159,6 +159,11 @@
     return atoms.concat(inters);                       // atoms (deepest) → intermediates
   }
 
+  // Strip an inline pinyin gloss the content tacks onto a word, e.g.
+  // "日子 (rìzi)" → "日子" (B2–B4 carry pinyin in parens; B1 doesn't). Keeps only
+  // the Han characters so the Use round builds clean, selectable tiles.
+  function cleanWord(s){ return String(s||'').replace(/[（(][^（）()]*[）)]/g,'').replace(/\s+/g,'').trim(); }
+
   function useBand(unit, idx){
     var out=[];
     // Look up the lesson content by band + unit number (the playlist now spans
@@ -167,25 +172,29 @@
     var cu = (cb && cb.units) ? cb.units.filter(function(x){ return x.n===unit.unit; })[0] : null;
     if (cu){
       var wc = (cu.core && cu.core.writeChars) || [];
-      // gather a 组词 word and a 句子 sentence from the content facts
+      // gather a 组词 word and an example sentence (句子 in B1–B3, 造句 in B4) from the facts
       var word=null, sent=null;
       wc.forEach(function(w){
         (w.facts||[]).forEach(function(f){
           if (!word && f.term==='组词' && f.zh){
-            var zhs=f.zh.split('·').map(function(s){return s.trim();}).filter(Boolean);
+            var zhs=f.zh.split('·').map(cleanWord).filter(Boolean);
             var ens=(f.en||'').split('·').map(function(s){return s.trim();}).filter(Boolean);
             // Trust the gloss only when it lines up 1:1 with the words. The source
             // often lists two words and a single gloss for just one of them
             // (大火·火车 → "train"), which would mislabel the word we pick — so
             // when it doesn't align, build the word and cue from pinyin alone.
             var en = (zhs.length===ens.length) ? (ens[0]||'') : '';
-            word={ zh: zhs[0]||f.zh.trim(), en: en };
+            word={ zh: zhs[0]||cleanWord(f.zh), en: en };
           }
-          if (!sent && f.term==='句子' && f.zh){ sent={ zh:f.zh.trim(), en:(f.en||'').trim() }; }
+          if (!sent && (f.term==='句子'||f.term==='造句') && f.zh){ sent={ zh:f.zh.trim(), en:(f.en||'').trim() }; }
         });
       });
       if (word) out.push({ type:'word', text:word.zh, en:word.en });
-      if (sent) out.push({ type:'sentence', text:sent.zh, en:sent.en });
+      // A sentence becomes a build-it round only when it's a playable length
+      // (2–10 characters). Longer sentences — common in B4 — would be a tedious
+      // tap-in-order slog against the heat timer, so that stage stays word-only.
+      if (sent){ var hl=(sent.zh.match(/[一-鿿]/g)||[]).length;
+        if (hl>=2 && hl<=10) out.push({ type:'sentence', text:sent.zh, en:sent.en }); }
     }
     if (!out.length){
       // fallback: a doubled-character word from the first whole + the theme
@@ -355,7 +364,9 @@
   //    extra decoy tiles (feedback #4). Prompt is pinyin→character (low level)
   //    or english→character (high level).
   function buildUseRound(cp, settings){
-    var p=PAL.use, text=cp.text||'', chars=text.split('');
+    var p=PAL.use, text=cp.text||'';
+    // tiles are Han characters only — punctuation/spaces never become tappable tiles
+    var chars=(text.match(/[一-鿿]/g))||text.split('');
     var policy=settings.cuePolicy||{};
     var prompt = policy.usePrompt || 'pinyin';
     var py = chars.map(function(ch){ return pinyinOf(ch)||''; }).join(' ').trim();
