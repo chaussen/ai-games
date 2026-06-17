@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Character Game — Wireframes</title>
+<template id="__bundler_thumbnail">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#2F7D5E"/><circle cx="50" cy="50" r="26" fill="none" stroke="#E8B85A" stroke-width="5"/><rect x="42" y="42" width="16" height="16" fill="#2F7D5E" stroke="#E8B85A" stroke-width="3"/><text x="50" y="34" font-size="15" fill="#fff" text-anchor="middle" font-family="serif">文</text></svg>
+</template>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --paper:#F3EFE7; --card:#FFFFFF; --ink:#2A2622; --ink2:#6E665C; --ink3:#A79E8E;
+  --line:#2A2622; --ph:#E8E2D6; --ph2:#DED7C8;
+  --grn:#2F7D5E; --grn-t:#E2EFE8; --amb:#C0822A; --amb-t:#F6ECD6; --gold:#E8B85A;
+  --hand:'Caveat',cursive; --ui:'Manrope',system-ui,sans-serif; --zh:'Noto Serif SC',serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--ui);
+  background-image:radial-gradient(circle at 1px 1px, rgba(42,38,34,.05) 1px, transparent 0);
+  background-size:26px 26px;-webkit-font-smoothing:antialiased;line-height:1.5;}
+.wrap{max-width:1280px;margin:0 auto;padding:0 clamp(18px,4vw,54px) 120px;}
+
+/* ── masthead ── */
+.mast{padding:64px 0 30px;border-bottom:3px solid var(--ink);margin-bottom:50px;display:flex;align-items:flex-end;gap:30px;flex-wrap:wrap;}
+.mast h1{font-family:var(--ui);font-weight:800;font-size:clamp(30px,4.6vw,52px);letter-spacing:-.02em;margin:0;line-height:1;}
+.mast .zh{font-family:var(--zh);}
+.mast p{font-family:var(--hand);font-size:25px;color:var(--grn);margin:0;}
+.mast .meta{margin-left:auto;font-size:12px;color:var(--ink2);text-align:right;line-height:1.7;font-weight:600;}
+.legend{display:flex;gap:22px;flex-wrap:wrap;margin:26px 0 0;font-family:var(--hand);font-size:19px;}
+.legend span{display:inline-flex;align-items:center;gap:8px;color:var(--ink2);}
+.swatch{width:26px;height:14px;border:2px solid var(--ink);border-radius:3px;}
+
+/* ── section scaffolding ── */
+section{margin:74px 0 0;}
+.sec-h{display:flex;align-items:flex-end;flex-wrap:wrap;gap:8px 16px;margin-bottom:8px;border-bottom:2px dashed var(--ink3);padding-bottom:10px;}
+.sec-n{margin-bottom:3px;}
+.sec-n{font-family:var(--ui);font-weight:800;font-size:14px;color:#fff;background:var(--ink);border-radius:7px;padding:5px 11px;letter-spacing:.04em;}
+.sec-h h2{font-size:clamp(20px,2.6vw,30px);font-weight:800;margin:0;letter-spacing:-.01em;}
+.sec-h h2 .zh{font-family:var(--zh);}
+.sec-sub{font-family:var(--hand);font-size:21px;color:var(--grn);margin:10px 0 26px;max-width:760px;}
+
+/* ── frames row ── */
+.row{display:flex;gap:38px;flex-wrap:wrap;align-items:flex-start;}
+.unit{display:flex;gap:18px;align-items:flex-start;}
+.fcap{font-family:var(--hand);font-size:20px;color:var(--ink2);margin-top:10px;text-align:center;}
+.fcap b{color:var(--ink);}
+
+/* ── phone frame ── */
+.phone{width:296px;flex:0 0 296px;height:600px;border:2.5px solid var(--ink);border-radius:30px;background:var(--card);
+  padding:13px 13px 16px;position:relative;box-shadow:7px 9px 0 rgba(42,38,34,.10);display:flex;flex-direction:column;}
+.phone::before{content:"";position:absolute;top:9px;left:50%;transform:translateX(-50%);width:74px;height:7px;border-radius:99px;background:var(--ph2);}
+.scr{flex:1;margin-top:16px;display:flex;flex-direction:column;min-height:0;overflow:hidden;}
+
+/* ── generic wire bits ── */
+.bar{height:9px;border-radius:99px;background:var(--ph);}
+.bar.d{background:var(--ph2);}
+.bar.ink{background:#cfc8b9;}
+.tt{font-size:11px;font-weight:700;color:var(--ink2);letter-spacing:.02em;}
+.tt.lg{font-size:14px;color:var(--ink);}
+.lbl{font-size:8.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--ink3);}
+.ph-box{background:var(--ph);border:1.5px dashed var(--ink3);border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:9px;color:var(--ink2);font-weight:700;text-align:center;background-image:repeating-linear-gradient(45deg,transparent,transparent 6px,rgba(42,38,34,.05) 6px,rgba(42,38,34,.05) 7px);}
+.pill{border:1.5px solid var(--ink);border-radius:99px;padding:4px 10px;font-size:9.5px;font-weight:700;display:inline-flex;align-items:center;gap:5px;background:#fff;}
+.pill.fill{background:var(--ink);color:#fff;}
+.pill.grn{background:var(--grn);color:#fff;border-color:var(--grn);}
+.pill.amb{background:var(--amb-t);border-color:var(--amb);color:var(--amb);}
+.btn{border:2px solid var(--ink);border-radius:11px;padding:11px;text-align:center;font-size:12px;font-weight:800;background:#fff;}
+.btn.solid{background:var(--grn);color:#fff;border-color:var(--grn);}
+.btn.amb{background:var(--amb);color:#fff;border-color:var(--amb);}
+.glyph{font-family:var(--zh);font-weight:600;color:var(--ink);line-height:1;}
+.seal{border:2px solid var(--ink);border-radius:13px;display:flex;align-items:center;justify-content:center;background:#fff;}
+.seal.done{background:var(--grn);border-color:var(--grn);color:#fff;}
+.seal.cur{border-color:var(--grn);border-width:3px;box-shadow:0 0 0 4px var(--grn-t);}
+.seal.lock{background:var(--ph);border-style:dashed;border-color:var(--ink3);color:var(--ink3);}
+.divi{height:1.5px;background:var(--ph2);margin:9px 0;}
+
+/* coin */
+.coin{flex:0 0 auto;}
+.coin .ring{fill:var(--gold);stroke:#9c6f24;stroke-width:2;}
+.coin .face{fill:none;stroke:#b98a2e;stroke-width:1.4;}
+.coin .hole{fill:var(--card);stroke:#9c6f24;stroke-width:2;}
+.coin .wn{font-family:var(--zh);font-weight:700;fill:#6b4a12;}
+
+/* annotation notes */
+.notes{flex:1;min-width:200px;max-width:340px;align-self:stretch;padding-top:6px;}
+.note{font-family:var(--hand);font-size:20px;color:var(--ink);line-height:1.32;margin:0 0 16px;padding-left:22px;position:relative;}
+.note::before{content:"↳";position:absolute;left:0;top:0;color:var(--grn);font-weight:700;font-family:var(--ui);font-size:15px;}
+.note.amb::before{color:var(--amb);}
+.note b{background:var(--grn-t);padding:0 4px;border-radius:4px;}
+.note.amb b{background:var(--amb-t);}
+.note .k{font-family:var(--ui);font-size:13px;font-weight:800;color:var(--ink2);}
+
+/* flow / diagram boxes */
+.flow{display:flex;align-items:center;gap:0;flex-wrap:wrap;}
+.fbox{border:2px solid var(--ink);border-radius:12px;background:#fff;padding:13px 15px;min-width:120px;box-shadow:4px 5px 0 rgba(42,38,34,.09);}
+.fbox .tt{margin-bottom:3px;}
+.fbox small{font-size:10px;color:var(--ink2);font-weight:600;}
+.arr{font-size:26px;color:var(--grn);font-family:var(--ui);font-weight:800;padding:0 12px;}
+.arr.dn{display:block;text-align:center;padding:6px 0;}
+
+/* tree */
+.tree{border:2px solid var(--ink);border-radius:14px;background:#fff;padding:22px 26px;box-shadow:5px 6px 0 rgba(42,38,34,.09);}
+.trow{display:flex;align-items:center;gap:14px;padding:7px 0;}
+.tnode{border:2px solid var(--ink);border-radius:9px;padding:7px 13px;font-weight:800;font-size:13px;background:#fff;white-space:nowrap;}
+.tnode .zh{font-family:var(--zh);}
+.tnode.s1{background:var(--ink);color:#fff;}
+.tnode.s2{background:var(--grn);color:#fff;border-color:var(--grn);}
+.tnode.s3{background:var(--amb-t);border-color:var(--amb);}
+.tdesc{font-family:var(--hand);font-size:20px;color:var(--ink2);}
+.tdesc b{color:var(--grn);background:var(--grn-t);padding:0 4px;border-radius:4px;}
+.indent{margin-left:34px;border-left:2px dashed var(--ink3);padding-left:20px;}
+
+/* cards grid */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:16px;}
+.card{border:2px solid var(--ink);border-radius:13px;background:#fff;padding:15px;box-shadow:4px 5px 0 rgba(42,38,34,.08);}
+.card h4{margin:0 0 6px;font-size:13px;font-weight:800;}
+.card p{margin:0;font-size:11.5px;color:var(--ink2);line-height:1.45;}
+.card .zh{font-family:var(--zh);}
+
+/* economy table */
+.etable{border:2px solid var(--ink);border-radius:14px;overflow:hidden;background:#fff;box-shadow:5px 6px 0 rgba(42,38,34,.09);width:100%;}
+.etable .er{display:grid;grid-template-columns:1.7fr .7fr 2.4fr;gap:0;border-bottom:1.5px solid var(--ph2);}
+.etable .er:last-child{border-bottom:none;}
+.etable .er.head{background:var(--ink);color:#fff;}
+.etable .er>div{padding:10px 14px;font-size:12px;display:flex;align-items:center;}
+.etable .er .amt{font-weight:800;color:var(--amb);justify-content:flex-end;font-family:var(--ui);}
+.etable .er.head .amt{color:#fff;}
+.etable .er .why{color:var(--ink2);font-size:11.5px;}
+.etable .er.floor{background:var(--grn-t);}
+.etable .er.cap{background:#f6e4e0;}
+.etable .er.farm{background:var(--amb-t);}
+
+/* callout band */
+.callout{border:2.5px solid var(--ink);border-left-width:9px;border-radius:12px;background:#fff;padding:16px 20px;margin:24px 0 0;
+  font-family:var(--hand);font-size:21px;color:var(--ink);box-shadow:4px 5px 0 rgba(42,38,34,.09);}
+.callout.grn{border-left-color:var(--grn);}
+.callout.amb{border-left-color:var(--amb);}
+.callout b{color:var(--grn);}
+.callout.amb b{color:var(--amb);}
+
+/* band rail (scaffold) */
+.band{border:2px solid var(--ink);border-radius:13px;background:#fff;padding:14px 16px;flex:1;min-width:210px;box-shadow:4px 5px 0 rgba(42,38,34,.08);}
+.band .bhd{font-weight:800;font-size:13px;margin-bottom:3px;}
+.band .bhd .zh{font-family:var(--zh);}
+.band .bsub{font-family:var(--hand);font-size:18px;color:var(--ink2);margin-bottom:11px;}
+.band.parts{border-top:6px solid var(--amb);}
+.band.wholes{border-top:6px solid var(--grn);}
+.band.use{border-top:6px solid var(--ink);}
+.chips{display:flex;flex-wrap:wrap;gap:7px;}
+.chip{border:1.5px solid var(--ink);border-radius:9px;padding:6px 8px;background:#fff;text-align:center;min-width:38px;}
+.chip .zh{font-size:20px;display:block;line-height:1;}
+.chip .t{font-size:8px;color:var(--ink2);font-weight:700;margin-top:3px;letter-spacing:.04em;}
+.chip.own{background:var(--grn-t);border-color:var(--grn);}
+.chip.new{background:var(--amb-t);border-color:var(--amb);}
+.chip.prev{background:#eef1f6;border-style:dashed;}
+
+@media (max-width:720px){ .unit{flex-direction:column;} .notes{max-width:none;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div>
+      <h1>The Character Game <span class="zh">炼字之旅</span></h1>
+      <p>Journey + Forge, fused — wireframes &amp; system maps</p>
+    </div>
+    <div class="meta">
+      Casey Chinese School · Character Studio<br/>
+      Lo-fi spec · v1.0 · 2026-06-17<br/>
+      Pair with <b>Character Game - Design Spec.md</b>
+    </div>
+    <div class="legend" style="flex-basis:100%">
+      <span><span class="swatch" style="background:var(--grn)"></span> system / learning</span>
+      <span><span class="swatch" style="background:var(--gold)"></span> 文 economy / reward</span>
+      <span><span class="swatch" style="background:var(--ph)"></span> placeholder content</span>
+      <span style="font-family:var(--hand);color:var(--grn)">↳ = design note</span>
+    </div>
+  </header>
+
+  <!-- ════════ 1 · SYSTEM MAP ════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-n">01</span><h2>The hierarchy — one structure, every book</h2></div>
+    <p class="sec-sub">The <b style="color:var(--ink)">Chapter (卷)</b> is the configurable joint: it absorbs how each book groups lessons, so 中文 (3 lessons/unit) and Band 1 (flat units) share one levelling + award cadence.</p>
+
+    <div class="tree">
+      <div class="trow"><span class="tnode s1">SERIES</span><span class="tdesc">中文 · or Casey Bands — the whole shelf</span></div>
+      <div class="indent">
+        <div class="trow"><span class="tnode s1">BOOK</span><span class="tdesc">the progress key · = the whole <b>handscroll</b></span></div>
+        <div class="indent">
+          <div class="trow"><span class="tnode s2">CHAPTER <span class="zh">卷</span></span><span class="tdesc">earns a <b>印 seal</b> + triggers a <b>rank check</b> · = a season panel</span></div>
+          <div class="indent">
+            <div class="trow"><span class="tnode s3">STAGE</span><span class="tdesc">one teaching session = one <b>Forge run</b> · stars + 文 + XP</span></div>
+            <div class="indent">
+              <div class="trow"><span class="tnode">CHECKPOINT</span><span class="tdesc">the micro-nodes: <b>Parts → Wholes → Use</b> (§3)</span></div>
+              <div class="trow"><span class="tnode">CHARACTER / PART</span><span class="tdesc">forged at a grain — vocab counts; parts collect in the Deck</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:26px;gap:24px">
+      <div class="card" style="flex:1;min-width:260px;border-top:6px solid var(--grn)">
+        <h4>中文 Book 1 &nbsp;<span class="tt">settled</span></h4>
+        <p><b class="zh">卷</b> Chapter = <b>the 3-lesson unit</b>. 12 lessons → 4 chapters → 4 seals. Matches today's four seasons exactly.</p>
+        <div class="flow" style="margin-top:11px">
+          <span class="fbox" style="min-width:0;padding:8px 11px"><span class="tt">L1·L2·L3</span><small>卷一 春印</small></span>
+          <span class="arr">→</span>
+          <span class="fbox" style="min-width:0;padding:8px 11px;background:var(--grn);color:#fff"><span class="tt" style="color:#fff">SEAL + RANK</span></span>
+        </div>
+      </div>
+      <div class="card" style="flex:1;min-width:260px;border-top:6px solid var(--amb)">
+        <h4>Band 1 (Casey) &nbsp;<span class="tt">to confirm</span></h4>
+        <p>Flat units, no 3-grouping. <b class="zh">卷</b> Chapter = a <b>teacher-defined cluster</b> — e.g. 2 units = 1 chapter, or 1 unit = 1 chapter. Same seal + rank fires.</p>
+        <div class="flow" style="margin-top:11px">
+          <span class="fbox" style="min-width:0;padding:8px 11px"><span class="tt">Unit A · Unit B</span><small>cluster → 卷</small></span>
+          <span class="arr" style="color:var(--amb)">→</span>
+          <span class="fbox" style="min-width:0;padding:8px 11px;background:var(--amb);color:#fff"><span class="tt" style="color:#fff">SEAL + RANK</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="callout grn">Reward cadence is decoupled from “lessons per unit”: <b>per-stage</b> pays stars + 文 + XP every session; <b>per-chapter</b> pays the seal + a 文 bonus + the XP that usually tips a rank-up. The chapter hides the structural difference from the scoring engine.</div>
+  </section>
+
+  <!-- ════════ 2 · NAVIGATION ════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-n">02</span><h2>Workflow &amp; page navigation</h2></div>
+    <p class="sec-sub">Everything returns to <b style="color:var(--ink)">The Scroll</b>. The header chips double as the nav into Store, Deck and Review.</p>
+
+    <div style="border:2px solid var(--ink);border-radius:16px;background:#fff;padding:26px;box-shadow:5px 6px 0 rgba(42,38,34,.09)">
+      <div class="flow" style="justify-content:center">
+        <span class="fbox"><span class="tt lg">LOCK</span><small>class code 2580</small></span>
+        <span class="arr">→</span>
+        <span class="fbox" style="border-width:3px;background:var(--grn-t)"><span class="tt lg">THE SCROLL</span><small>home · rank · XP · 文 · seals</small></span>
+      </div>
+      <div class="arr dn">↓ &nbsp;&nbsp;&nbsp; the four taps off the scroll &nbsp;&nbsp;&nbsp; ↓</div>
+      <div class="flow" style="justify-content:center;gap:18px;flex-wrap:wrap">
+        <span class="fbox"><span class="tt">tap a STAGE</span><small>→ Stage Sheet</small></span>
+        <span class="fbox"><span class="tt">tap 文 wallet</span><small>→ Store</small></span>
+        <span class="fbox"><span class="tt">tap mastery ring</span><small>→ Parts Deck</small></span>
+        <span class="fbox"><span class="tt">tap 复习 badge</span><small>→ Review Hub</small></span>
+      </div>
+      <div class="arr dn">↓</div>
+      <div class="flow" style="justify-content:center;gap:18px;flex-wrap:wrap">
+        <span class="fbox" style="border-color:var(--grn)"><span class="tt">STAGE SHEET</span><small>3-band preview → Begin</small></span>
+        <span class="arr">→</span>
+        <span class="fbox" style="border-color:var(--grn)"><span class="tt">FORGE RUN</span><small>PREVIEW→FORGE→REVEAL ×N</small></span>
+        <span class="arr">→</span>
+        <span class="fbox"><span class="tt">STAGE CLEAR</span><small>stars · +文 · +XP</small></span>
+      </div>
+      <div class="arr dn">↓ &nbsp;<span style="font-family:var(--hand);font-size:18px;color:var(--ink2)">if a chapter / threshold completes</span>&nbsp; ↓</div>
+      <div class="flow" style="justify-content:center;gap:18px">
+        <span class="fbox" style="background:var(--grn);color:#fff"><span class="tt" style="color:#fff">CHAPTER SEAL 印</span></span>
+        <span class="arr">→</span>
+        <span class="fbox" style="background:var(--amb);color:#fff"><span class="tt" style="color:#fff">RANK-UP 升级</span></span>
+        <span class="arr">→</span>
+        <span class="fbox" style="background:var(--grn-t)"><span class="tt">back to THE SCROLL</span></span>
+      </div>
+    </div>
+    <div class="callout amb">Separate gated door: <b>TEACHER CONSOLE</b> (teacher code) — scoring config · grant 文 / awards · roster &amp; claims. Not on the student path.</div>
+  </section>
+
+  <!-- ════════ 3 · THE SCROLL ════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-n">03</span><h2>The Scroll — home base</h2></div>
+    <p class="sec-sub">Existing screen, extended: a <b>文 wallet</b> chip joins the header, and header chips become navigation.</p>
+    <div class="unit">
+      <div class="phone"><div class="scr">
+        <!-- header -->
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="seal done" style="width:34px;height:34px;font-family:var(--zh);font-size:16px">卷</div>
+          <div style="flex:1">
+            <div class="tt lg"><span class="glyph">书生</span> · Scholar</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:5px">
+              <div style="flex:1;height:7px;border-radius:99px;background:var(--ph)"><div style="width:62%;height:100%;border-radius:99px;background:var(--gold)"></div></div>
+              <span class="tt" style="font-size:9px">245/300 XP</span>
+            </div>
+          </div>
+        </div>
+        <!-- wallet + stats -->
+        <div style="display:flex;align-items:center;gap:8px;margin-top:11px">
+          <div class="pill amb" style="font-size:11px;gap:6px">
+            <svg class="coin" viewBox="0 0 40 40" width="18" height="18"><circle class="ring" cx="20" cy="20" r="18"/><circle class="face" cx="20" cy="20" r="14.5"/><rect class="hole" x="14.5" y="14.5" width="11" height="11" rx="1.5"/><text class="wn" x="20" y="12.4" font-size="9" text-anchor="middle">文</text></svg>
+            64 文
+          </div>
+          <div class="pill" style="font-size:10px">⟳ 5-day</div>
+          <div class="pill grn" style="font-size:10px">复习 2</div>
+        </div>
+        <div class="divi"></div>
+        <!-- scroll path mock -->
+        <div class="lbl" style="margin-bottom:8px">卷二 · SUMMER WATERS — the path</div>
+        <div style="flex:1;position:relative;border:1.5px dashed var(--ink3);border-radius:11px;background:linear-gradient(180deg,#fff,var(--grn-t));overflow:hidden;padding:10px">
+          <div style="position:absolute;bottom:14px;right:12px;font-family:var(--zh);font-size:120px;color:var(--grn);opacity:.07;line-height:1">夏</div>
+          <!-- nodes -->
+          <div style="display:flex;align-items:center;gap:6px;margin-top:26px">
+            <div class="seal done" style="width:46px;height:46px;font-family:var(--zh);font-size:22px">日</div>
+            <span class="bar ink" style="width:18px;height:4px"></span>
+            <div class="seal cur" style="width:50px;height:50px;font-family:var(--zh);font-size:24px;color:var(--grn)">山</div>
+            <span class="bar" style="width:18px;height:4px"></span>
+            <div class="seal lock" style="width:44px;height:44px;font-size:16px">🔒</div>
+            <span class="bar" style="width:14px;height:4px"></span>
+            <div class="seal lock" style="width:40px;height:40px;font-size:18px;font-family:var(--zh)">关</div>
+          </div>
+          <div style="font-family:var(--hand);font-size:16px;color:var(--grn);margin-top:8px;margin-left:54px">你在这里 ▾</div>
+          <div style="position:absolute;bottom:10px;left:10px" class="tt">第5课 · 自然 Nature ★★☆</div>
+        </div>
+        <!-- minimap -->
+        <div style="height:30px;border:1.5px solid var(--ink);border-radius:8px;margin-top:10px;display:flex;overflow:hidden">
+          <div style="flex:1;background:var(--grn-t);border-right:1.5px solid var(--ph2)"></div>
+          <div style="flex:1;background:#fff;border-right:1.5px solid var(--ph2);position:relative"><span style="position:absolute;top:50%;left:40%;transform:translate(-50%,-50%);width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 0 2.5px var(--grn)"></span></div>
+          <div style="flex:1;background:var(--ph)"></div>
+          <div style="flex:1;background:var(--ph)"></div>
+        </div>
+      </div></div>
+      <div class="notes">
+        <p class="note amb"><span class="k">NEW · </span>The <b>文 wallet</b> chip lives next to XP. Tapping it opens the <b>Store</b>. Coins fly here on a stage clear.</p>
+        <p class="note">Header chips = navigation: <b>mastery ring → Parts Deck</b>, <b>复习 badge → Review Hub</b>.</p>
+        <p class="note">Two separate measures on show at once: <b>rank + XP</b> (status, top) and the <b>文 wallet</b> (spendable). They never convert.</p>
+        <p class="note">The path, seasons, “你在这里”, gates (关→印) and minimap are all <span class="k">already built</span> in scroll.js — unchanged.</p>
+        <p class="note amb">A <b>复习</b> badge surfaces faded-ink characters the spaced-review schedule has made due.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ 4 · STAGE SHEET ════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-n">04</span><h2>Stage Sheet — the 3-band arc <span class="zh">部件 → 合字 → 应用</span></h2></div>
+    <p class="sec-sub">Opening a stage reveals its checkpoints re-ordered <b>structurally</b>: parts before wholes before use. This is where the textbook’s <i>what</i> meets the graph’s <i>order</i>.</p>
+    <div class="unit">
+      <div class="phone"><div class="scr">
+        <div class="lbl">卷二 · SUMMER WATERS</div>
+        <div class="tt lg" style="margin:5px 0 2px">第5课 <span class="glyph">自然</span> · Nature</div>
+        <div class="tt" style="font-weight:600">13 characters · Stage 5 of 12</div>
+        <div class="divi"></div>
+        <!-- parts -->
+        <div class="band parts" style="margin-bottom:10px">
+          <div class="bhd"><span class="zh">部件</span> · Parts <span class="lbl" style="float:right;margin-top:3px">stroke-forge</span></div>
+          <div class="bsub">build / recall the pieces first</div>
+          <div class="chips">
+            <span class="chip own"><span class="glyph">水</span><span class="t">OWNED</span></span>
+            <span class="chip own"><span class="glyph">木</span><span class="t">OWNED</span></span>
+            <span class="chip new"><span class="glyph">石</span><span class="t">NEW</span></span>
+            <span class="chip new"><span class="glyph">田</span><span class="t">NEW</span></span>
+          </div>
+        </div>
+        <!-- wholes -->
+        <div class="band wholes" style="margin-bottom:10px">
+          <div class="bhd"><span class="zh">合字</span> · Characters <span class="lbl" style="float:right;margin-top:3px">radical / 会意</span></div>
+          <div class="bsub">now forgeable — parts are owned</div>
+          <div class="chips">
+            <span class="chip"><span class="glyph">山</span></span>
+            <span class="chip"><span class="glyph">禾</span></span>
+            <span class="chip"><span class="glyph">火</span></span>
+            <span class="chip"><span class="glyph">土</span></span>
+            <span class="chip"><span class="glyph">金</span></span>
+          </div>
+        </div>
+        <!-- use -->
+        <div class="band use" style="margin-bottom:10px">
+          <div class="bhd"><span class="zh">应用</span> · Use</div>
+          <div class="bsub">the theme — word · sentence</div>
+        </div>
+        <div class="pill amb" style="align-self:flex-start;margin-bottom:9px">+10 文 on completion · up to ★★★ · +XP</div>
+        <div class="btn solid">Begin lesson <span class="zh">开始</span> ›</div>
+      </div></div>
+      <div class="notes">
+        <p class="note"><span class="k">THE MERGE · </span>Unit gives the <b>what + why</b>; the graph gives the <b>order within</b>. Parts come first even when they aren’t “vocabulary”.</p>
+        <p class="note">Part states: <b>OWNED</b> (review, owned earlier) · <b>NEW</b> (just-in-time atom) · <span class="k">PREVIEW</span> (a char taught later, forged early).</p>
+        <p class="note amb"><span class="k">REWARD · </span>The strip promises <b>+10 文 on completion regardless of stars</b>. Stars feed XP, not the wallet.</p>
+        <p class="note">When a char is <b>due</b>, this CTA becomes “Refresh ink (+8 文)”; when done, “Practise again (+1 文)”.</p>
+        <p class="note">Parts forged here drop into the <b>Parts Deck</b> and never re-teach across the whole scroll.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ 5 · FORGE RUN ════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-n">05</span><h2>Forge Run — <span class="zh">炼字</span> the in-stage game</h2></div>
+    <p class="sec-sub">Each checkpoint is a round: <b>PREVIEW → FORGE → REVEAL</b>. Three grains by structure type. (Spec’d in The Forge SRS — wired in here.)</p>
+    <div class="row">
+      <!-- PREVIEW -->
+      <div class="unit" style="flex:0 0 auto">
+        <div class="phone" style="height:520px"><div class="scr">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span class="lbl">Round 3 / 9 · stroke</span><span class="pill" style="font-size:9px">⏱ 3s</span></div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+            <div class="lbl">memorise — then forge from memory</div>
+            <div class="glyph" style="font-size:120px">石</div>
+            <div class="tt lg">shí · stone</div>
+            <svg width="64" height="64" viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="none" stroke="var(--ph2)" stroke-width="3"/><circle cx="20" cy="20" r="17" fill="none" stroke="var(--grn)" stroke-width="3" stroke-dasharray="107" stroke-dashoffset="40" transform="rotate(-90 20 20)"/></svg>
+          </div>
+          <div class="btn">Tap — I’ve got it ⚡ <span class="tt" style="font-weight:700">speed bonus</span></div>
+        </div></div>
+        <div class="fcap"><b>PREVIEW</b><br/>full info, countdown</div>
+      </div>
+      <!-- FORGE -->
+      <div class="unit" style="flex:0 0 auto">
+        <div class="phone" style="height:520px"><div class="scr">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span class="lbl">FORGE — glyph hidden</span></div>
+          <div style="height:9px;border-radius:99px;background:var(--ph);margin-top:8px"><div style="width:55%;height:100%;border-radius:99px;background:#d8693f"></div></div>
+          <div class="tt" style="margin-top:3px">🔥 heat · combo ×3</div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center">
+            <div class="ph-box" style="width:170px;height:170px">tianzige grid<br/>tap strokes in order</div>
+            <div class="tt" style="margin-top:10px">cue: <b>stone</b> (no glyph, no numbers)</div>
+          </div>
+          <div class="flow" style="justify-content:center;gap:8px"><span class="chip"><span class="glyph">一</span></span><span class="chip"><span class="glyph">丿</span></span><span class="chip"><span class="glyph">口</span></span></div>
+        </div></div>
+        <div class="fcap"><b>FORGE</b><br/>recall, not recognition</div>
+      </div>
+      <!-- REVEAL -->
+      <div class="unit">
+        <div class="phone" style="height:520px"><div class="scr">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+            <div class="lbl">forged!</div>
+            <div style="font-size:30px;color:var(--gold)">★★★</div>
+            <div class="glyph" style="font-size:96px;color:var(--grn)">石</div>
+            <div class="tt lg">shí · stone</div>
+            <div class="pill amb">part added to your Deck</div>
+            <div class="tt" style="margin-top:4px">heat hot · 0 cracks · combo ×4</div>
+          </div>
+          <div class="btn solid">Next ›</div>
+        </div></div>
+        <div class="notes">
+          <p class="note">Three grains, by structure: <b class="k">stroke</b> (order on the grid) · <b class="zh">会意</b> components combine · <b class="zh">形声</b> meaning slot + sound slot.</p>
+          <p class="note">Glyph shows in <b>PREVIEW only</b>; hidden in FORGE. Hints are earned after cracks, never up front.</p>
+          <p class="note amb">A forged <b>part</b> enters the Deck; a forged <b>whole</b> inks onto the scroll + counts as vocabulary.</p>
+          <p class="note">Heat / combo / cracks / stars all already exist in <span class="k">forge-game.js</span>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ 6 · CEREMONIES ════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-n">06</span><h2>Milestones &amp; ceremonies</h2></div>
+    <p class="sec-sub">Small &amp; continuous keep a session lively; chapter + rank punctuate; the store is the payoff students chase.</p>
+    <div class="row">
+      <div class="unit" style="flex:0 0 auto"><div class="phone" style="height:430px"><div class="scr" style="align-items:center;justify-content:center;text-align:center;gap:9px">
+        <div class="lbl">stage clear</div><div style="font-size:30px;color:var(--gold)">★★★</div>
+        <div class="tt lg">第5课 cleared</div>
+        <div style="display:flex;gap:10px;margin-top:6px">
+          <span class="pill amb" style="font-size:13px"><svg class="coin" viewBox="0 0 40 40" width="16" height="16"><circle class="ring" cx="20" cy="20" r="18"/><rect class="hole" x="14.5" y="14.5" width="11" height="11" rx="1.5"/></svg>+10 文</span>
+          <span class="pill grn" style="font-size:13px">+130 XP</span>
+        </div>
+        <div class="tt" style="font-family:var(--hand);font-size:18px;color:var(--amb);margin-top:6px">coins fly to your wallet →</div>
+      </div></div><div class="fcap"><b>1 · Stage clear</b></div></div>
+
+      <div class="unit" style="flex:0 0 auto"><div class="phone" style="height:430px"><div class="scr" style="align-items:center;justify-content:center;text-align:center;gap:10px">
+        <div class="lbl">chapter sealed 得印</div>
+        <div class="seal done" style="width:96px;height:96px;font-family:var(--zh);font-size:48px;transform:rotate(-5deg)">夏</div>
+        <div class="tt lg"><span class="glyph">夏水</span> · Summer Waters</div>
+        <span class="pill amb" style="font-size:13px">+40 文 bonus</span>
+        <div class="tt">a new season unrolls →</div>
+      </div></div><div class="fcap"><b>2 · Chapter seal 印</b></div></div>
+
+      <div class="unit"><div class="phone" style="height:430px"><div class="scr" style="align-items:center;justify-content:center;text-align:center;gap:10px;background:linear-gradient(180deg,#fff,var(--amb-t));border-radius:18px">
+        <div class="lbl">rank up · 升级</div>
+        <div class="seal" style="width:96px;height:96px;background:var(--amb);border-color:var(--amb);color:#fff;font-family:var(--zh);font-size:46px">秀</div>
+        <div class="tt lg"><span class="glyph">秀才</span></div>
+        <div class="tt">you are now a Licentiate · level 4</div>
+      </div></div>
+      <div class="notes">
+        <p class="note amb"><span class="k">1 · </span>Reveal shows stars + the <b>文 coins flying into the wallet</b> + XP filling. ★ count ≠ 文 (flat) but does drive XP.</p>
+        <p class="note"><span class="k">2 · </span>All stages in a 卷 done → seal stamp + <b>+40 文</b> + scroll unrolls. <span class="k">exists</span></p>
+        <p class="note"><span class="k">3 · </span>XP crossing a 科举 threshold (usually at a seal) fires the rank ceremony. <span class="k">exists</span></p>
+        <p class="note">Also: part-forged toast, char-inked toast, streak banner, redeem-ticket.</p>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ════════ 7 · 文 STORE ════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-n">07</span><h2><span class="zh">文</span> Award store — two ladders, neither demoralising</h2></div>
+    <p class="sec-sub">A <b>teacher-editable catalogue</b> (usually stationery, but anything). Everyday + Treasure are bought with 文; Prestige is <b>earned by rank, never bought</b>.</p>
+    <div class="unit">
+      <div class="phone"><div class="scr">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="tt lg"><span class="zh">文</span> Store</span>
+          <span class="pill amb"><svg class="coin" viewBox="0 0 40 40" width="16" height="16"><circle class="ring" cx="20" cy="20" r="18"/><circle class="face" cx="20" cy="20" r="14.5"/><rect class="hole" x="14.5" y="14.5" width="11" height="11" rx="1.5"/></svg>64 文</span>
+        </div>
+        <div class="divi"></div>
+        <div class="lbl">everyday · ~30 文 · reachable week 1</div>
+        <div style="display:flex;gap:8px;margin:8px 0 12px">
+          <div class="card" style="flex:1;padding:10px;box-shadow:none"><div class="ph-box" style="height:46px;margin-bottom:6px">sticker</div><div class="tt" style="font-size:9px">Sticker</div><div class="pill amb" style="font-size:9px;margin-top:4px">30 文</div></div>
+          <div class="card" style="flex:1;padding:10px;box-shadow:none"><div class="ph-box" style="height:46px;margin-bottom:6px">stamp</div><div class="tt" style="font-size:9px">Ink stamp</div><div class="pill amb" style="font-size:9px;margin-top:4px">30 文</div></div>
+          <div class="card" style="flex:1;padding:10px;box-shadow:none"><div class="ph-box" style="height:46px;margin-bottom:6px">pencil</div><div class="tt" style="font-size:9px">Pencil</div><div class="pill amb" style="font-size:9px;margin-top:4px">35 文</div></div>
+        </div>
+        <div class="lbl">treasure · ~150 文</div>
+        <div style="display:flex;gap:8px;margin:8px 0 12px">
+          <div class="card" style="flex:1;padding:10px;box-shadow:none"><div class="ph-box" style="height:46px;margin-bottom:6px">certificate</div><div class="tt" style="font-size:9px">Certificate</div><div class="pill amb" style="font-size:9px;margin-top:4px">150 文</div></div>
+          <div class="card" style="flex:1;padding:10px;box-shadow:none"><div class="ph-box" style="height:46px;margin-bottom:6px">small toy</div><div class="tt" style="font-size:9px">Small toy</div><div class="pill" style="font-size:9px;margin-top:4px">160 文</div></div>
+        </div>
+        <div class="lbl">prestige · earned by rank, not 文</div>
+        <div class="card" style="margin-top:8px;padding:11px;background:var(--amb-t);box-shadow:none;border-color:var(--amb)"><div class="tt">🏅 <span class="zh">状元</span> honour board <span class="lbl" style="float:right">rank 8</span></div></div>
+      </div></div>
+      <div class="notes">
+        <p class="note amb"><span class="k">FAIRNESS · </span>Everyday tier ≈ 30 文 so <b>anyone diligent reaches an award in week 1</b> — keeps the bulk of the class motivated.</p>
+        <p class="note">Prestige is <b>gated by rank, not buyable</b>, so genuine achievement keeps its meaning and the store never goes pay-to-win.</p>
+        <p class="note">Redeem → coins animate out → a <b>claim ticket</b> the teacher honours in class &amp; marks fulfilled.</p>
+        <p class="note">Catalogue is <b>teacher-editable</b>: items, prices, tiers, optional photo. “Anything the teacher gives.”</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ 8 · DECK + REVIEW ════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-n">08</span><h2>Parts Deck &amp; Review Hub</h2></div>
+    <p class="sec-sub">The two inventories kept separate: a <b>collection of owned parts</b> (the gate + meta-game) and the <b>faded-ink review</b> queue (spaced repetition).</p>
+    <div class="row">
+      <div class="unit" style="flex:0 0 auto">
+        <div class="phone" style="height:540px"><div class="scr">
+          <span class="tt lg"><span class="zh">部件</span> Parts Deck</span>
+          <div class="tt" style="margin:3px 0 9px">28 parts owned · your building blocks</div>
+          <div class="chips" style="gap:8px">
+            <span class="chip own"><span class="glyph">女</span><span class="t">→妈姐妹好</span></span>
+            <span class="chip own"><span class="glyph">水</span><span class="t">→江河</span></span>
+            <span class="chip own"><span class="glyph">日</span><span class="t">→明时</span></span>
+            <span class="chip own"><span class="glyph">木</span><span class="t">→林森</span></span>
+            <span class="chip own"><span class="glyph">马</span><span class="t">→妈吗</span></span>
+            <span class="chip own"><span class="glyph">口</span><span class="t">→叫吃</span></span>
+            <span class="chip new"><span class="glyph">且</span><span class="t">NEW</span></span>
+            <span class="chip new"><span class="glyph">未</span><span class="t">NEW</span></span>
+          </div>
+          <div class="divi"></div>
+          <div class="lbl">tap a part → what it builds</div>
+          <div class="card" style="margin-top:8px;box-shadow:none"><div style="display:flex;gap:10px;align-items:center"><span class="glyph" style="font-size:38px">女</span><div><div class="tt lg">nǚ · woman</div><div class="tt">semantic part of 妈 姐 妹 好 …</div></div></div></div>
+        </div></div>
+        <div class="fcap"><b>Parts Deck</b> — counted apart from vocabulary</div>
+      </div>
+      <div class="unit">
+        <div class="phone" style="height:540px"><div class="scr">
+          <span class="tt lg"><span class="zh">复习</span> Review Hub</span>
+          <div class="tt" style="margin:3px 0 9px">the ink has faded — refresh to re-ink</div>
+          <div class="lbl">due today</div>
+          <div style="display:flex;gap:8px;margin:8px 0">
+            <span class="chip" style="opacity:.5"><span class="glyph">山</span><span class="t">★☆☆</span></span>
+            <span class="chip" style="opacity:.45"><span class="glyph">田</span><span class="t">★☆☆</span></span>
+            <span class="chip" style="opacity:.55"><span class="glyph">石</span><span class="t">★★☆</span></span>
+          </div>
+          <div class="lbl" style="margin-top:6px">coming up · 3d</div>
+          <div style="display:flex;gap:8px;margin:8px 0">
+            <span class="chip" style="opacity:.8"><span class="glyph">禾</span></span>
+            <span class="chip" style="opacity:.8"><span class="glyph">火</span></span>
+          </div>
+          <div class="pill amb" style="align-self:flex-start;margin:8px 0">due reviews pay +8 文 each</div>
+          <div style="flex:1"></div>
+          <div class="btn solid">Refresh ink <span class="zh">复习</span> ›</div>
+        </div></div>
+        <div class="notes">
+          <p class="note"><span class="k">DECK · </span>The collection meta-game AND the gate: <b>own the parts → unlock the wholes</b>. Shared across the whole book.</p>
+          <p class="note amb"><span class="k">ANTI-FARM · </span>Only <b>due</b> chars pay +8 文 — and the <b>schedule decides due-ness</b>, not the student. Re-grinding a cleared stage pays +1.</p>
+          <p class="note">Decay gaps ≈ 1 / 3 / 7 / 21 days (Leitner). Refresh restores mastery + re-inks the scroll.</p>
+          <p class="note">No decay of 文 or XP — only character <b>ink</b> fades. A nudge, never a penalty.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ 9 · SCORING ════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-n">09</span><h2>Backend scoring — the two currencies</h2></div>
+    <p class="sec-sub">Talent earns <b style="color:var(--ink)">rank</b>; effort earns <b style="color:var(--ink)">awards</b>. Defaults for a ~2–3 h/week + homework school — all teacher-tunable.</p>
+
+    <div class="row" style="gap:24px">
+      <div class="fbox" style="flex:1;min-width:240px;border-top:6px solid var(--amb);box-shadow:4px 5px 0 rgba(42,38,34,.09)">
+        <div class="tt lg"><span class="zh">文</span> — the wallet (spendable)</div>
+        <div class="tt" style="margin:3px 0 8px;font-weight:600">effort · floored · capped · un-farmable</div>
+      </div>
+      <div class="fbox" style="flex:1;min-width:240px;border-top:6px solid var(--grn);box-shadow:4px 5px 0 rgba(42,38,34,.09)">
+        <div class="tt lg"><span class="zh">经验</span> XP → <span class="zh">科举</span> rank (status)</div>
+        <div class="tt" style="margin:3px 0 8px;font-weight:600">performance · never spent · never decays</div>
+      </div>
+    </div>
+
+    <div class="etable" style="margin-top:18px">
+      <div class="er head"><div>文 source</div><div class="amt">文</div><div>rule</div></div>
+      <div class="er"><div>Complete a stage (first clear)</div><div class="amt">+10</div><div class="why">flat — ★ and ★★★ pay the same; stars feed XP</div></div>
+      <div class="er"><div>Chapter seal (all stages)</div><div class="amt">+40</div><div class="why">milestone bonus</div></div>
+      <div class="er"><div>Due review cleared (ink faded)</div><div class="amt">+8</div><div class="why">the SRS schedule decides what’s due</div></div>
+      <div class="er farm"><div>Non-due re-practice</div><div class="amt">+1</div><div class="why"><b>anti-farm valve</b> — token-starved on purpose</div></div>
+      <div class="er floor"><div>Weekly attendance floor</div><div class="amt">+20</div><div class="why"><b>the floor</b> — show up + ≥1 task; home counts</div></div>
+      <div class="er"><div>Streak / session</div><div class="amt">+5</div><div class="why">soft-capped ≈ +25 / week</div></div>
+      <div class="er"><div>Bonus quest (拓展 / help a peer)</div><div class="amt">+5–15</div><div class="why">optional · teacher-awardable</div></div>
+      <div class="er"><div>Welcome-back (clear dues after absence)</div><div class="amt">+10</div><div class="why">turns catch-up into a win</div></div>
+      <div class="er cap"><div>Weekly cap from practice</div><div class="amt">~80</div><div class="why"><b>the cap</b> — beyond it, extra work earns XP/mastery only</div></div>
+    </div>
+
+    <div class="row" style="margin-top:22px;gap:20px">
+      <div class="card" style="flex:1;min-width:240px">
+        <h4>XP → 科举 rank</h4>
+        <p>Stage clear <b>+10 XP/char</b>, plus stars <b>★+0 · ★★+5 · ★★★+15</b>; seal <b>+100</b> (usually tips the rank-up). Ladder: 学童→蒙生→书生→秀才→举人→贡士→进士→状元.</p>
+      </div>
+      <div class="card" style="flex:1;min-width:240px">
+        <h4>Mastery &amp; review</h4>
+        <p>Per char <b>0–3</b>; decays on a schedule → ink fades → <b>due</b>. Due chars resurface as review checkpoints; refreshing pays +8 文 &amp; restores mastery.</p>
+      </div>
+      <div class="card" style="flex:1;min-width:240px">
+        <h4>Owned parts</h4>
+        <p>Stroke-forging a component marks it <b>owned</b> (shared book-wide). Gates composites; counted in the <b>Deck</b>, not the vocabulary ring.</p>
+      </div>
+    </div>
+
+    <div class="callout grn" style="margin-top:24px">
+      Every worry → its lever: &nbsp; <b>weak</b> → 文 pays completion not stars · &nbsp; <b>unwilling</b> → low everyday tier + beat-your-own-best · &nbsp; <b>absent / home</b> → no decay, floor, welcome-back · &nbsp; <b>re-grinding</b> → re-practice +1, only due pays · &nbsp; <b>top students</b> → XP / rank / prestige.
+    </div>
+  </section>
+
+  <!-- ════════ 10 · SCAFFOLD ════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-n">10</span><h2>Character scaffold — parts before wholes <span class="zh">(the critical join)</span></h2></div>
+    <p class="sec-sub">The forging DAG, and the split most tools miss: <b>vocabulary characters</b> (textbook-counted) vs <b>building-block parts</b> (Deck-collected).</p>
+
+    <div class="tree" style="margin-bottom:24px">
+      <div class="flow" style="justify-content:space-between;flex-wrap:nowrap;overflow-x:auto;gap:6px">
+        <span class="fbox" style="background:var(--ph)"><span class="tt">strokes</span><small>tap in order</small></span>
+        <span class="arr">→</span>
+        <span class="fbox" style="background:var(--amb-t);border-color:var(--amb)"><span class="tt">atoms <span class="zh">口木日月女马</span></span><small>stroke-forged · Parts Deck</small></span>
+        <span class="arr">→</span>
+        <span class="fbox" style="background:var(--grn-t);border-color:var(--grn)"><span class="tt">composites <span class="zh">明妈林好</span></span><small>component / radical-forged · vocab</small></span>
+        <span class="arr">→</span>
+        <span class="fbox"><span class="tt">higher composites</span><small>built from owned parts</small></span>
+      </div>
+      <div class="tdesc" style="margin-top:14px;text-align:center">Rule: a character is forgeable <b>only once all its parts are owned</b> → “individual → complex” happens automatically, book-independently.</div>
+    </div>
+
+    <!-- worked example -->
+    <div class="callout" style="font-family:var(--ui);font-size:15px;border-left-color:var(--grn)">
+      <b style="color:var(--ink);font-size:17px">Worked example — 中文 Lesson 8 <span class="zh">家人</span> “My family” <span class="tt" style="font-weight:600">的有爸妈哥姐妹和爱</span></b><br/>
+      <span class="tt" style="font-weight:600;color:var(--ink2)">This unit is already a phonetic series around 女 — which the thematic book leaves implicit. The 3-band arc makes the pattern teachable.</span>
+    </div>
+    <div class="row" style="margin-top:16px;gap:16px">
+      <div class="band parts">
+        <div class="bhd"><span class="zh">部件</span> · Parts</div>
+        <div class="bsub">recall + new sound-parts</div>
+        <div class="chips">
+          <span class="chip own"><span class="glyph">女</span><span class="t">REVIEW</span></span>
+          <span class="chip prev"><span class="glyph">马</span><span class="t">PREVIEW</span></span>
+          <span class="chip new"><span class="glyph">且</span><span class="t">qiě</span></span>
+          <span class="chip new"><span class="glyph">未</span><span class="t">wèi</span></span>
+          <span class="chip own"><span class="glyph">子</span><span class="t">OWNED</span></span>
+          <span class="chip new"><span class="glyph">可</span><span class="t">kě</span></span>
+        </div>
+      </div>
+      <div class="arr" style="align-self:center">→</div>
+      <div class="band wholes">
+        <div class="bhd"><span class="zh">合字</span> · Wholes</div>
+        <div class="bsub">女 + a sound = a family word</div>
+        <div class="chips">
+          <span class="chip"><span class="glyph">妈</span><span class="t">女+马</span></span>
+          <span class="chip"><span class="glyph">姐</span><span class="t">女+且</span></span>
+          <span class="chip"><span class="glyph">妹</span><span class="t">女+未</span></span>
+          <span class="chip"><span class="glyph">好</span><span class="t">女+子</span></span>
+          <span class="chip"><span class="glyph">哥</span><span class="t">可+可</span></span>
+        </div>
+      </div>
+      <div class="arr" style="align-self:center">→</div>
+      <div class="band use">
+        <div class="bhd"><span class="zh">应用</span> · Use</div>
+        <div class="bsub">the textbook theme</div>
+        <div class="chips">
+          <span class="chip" style="min-width:0;padding:8px 10px"><span class="glyph" style="font-size:15px">爸爸妈妈</span></span>
+          <span class="chip" style="min-width:0;padding:8px 10px"><span class="glyph" style="font-size:15px">我爱我的家</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="callout amb" style="margin-top:18px">
+      <b>The honest-count split:</b> only the <b style="color:var(--grn)">wholes</b> count as vocabulary (mastery ring, the book’s number). The sound-parts <span class="zh">且 未 可</span> collect in the <b>Parts Deck</b>, glossed as “a part you’ll use, not a word to master.” <span class="zh">马</span> is taught later → <b>preview atom</b> now, <b>review + deepening</b> in its own unit.
+    </div>
+  </section>
+
+  <!-- ════════ 11 · COIN ════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-n">11</span><h2>The <span class="zh">文</span> coin — visual brief</h2></div>
+    <p class="sec-sub">An ancient <b>round cash-coin with a square hole</b> (天圆地方). Reads instantly as money; the legend is <b class="zh">文</b> — a coin <i>and</i> the word for “a character / writing.” Pure geometry, no illustration.</p>
+    <div class="row" style="align-items:center;gap:46px">
+      <div style="text-align:center">
+        <svg class="coin" viewBox="0 0 120 120" width="150" height="150">
+          <circle class="ring" cx="60" cy="60" r="56" stroke-width="4"/>
+          <circle class="face" cx="60" cy="60" r="46" stroke-width="2.5"/>
+          <rect class="hole" x="44" y="44" width="32" height="32" rx="4" stroke-width="4"/>
+          <text class="wn" x="60" y="36" font-size="30" text-anchor="middle">文</text>
+        </svg>
+        <div class="fcap"><b>owned</b> · full coin</div>
+      </div>
+      <div style="text-align:center">
+        <svg class="coin" viewBox="0 0 120 120" width="110" height="110">
+          <circle cx="60" cy="60" r="56" fill="none" stroke="var(--ink3)" stroke-width="4" stroke-dasharray="6 5"/>
+          <rect x="44" y="44" width="32" height="32" rx="4" fill="none" stroke="var(--ink3)" stroke-width="4"/>
+          <text x="60" y="36" font-size="30" text-anchor="middle" fill="var(--ink3)" font-family="var(--zh)" font-weight="700">文</text>
+        </svg>
+        <div class="fcap"><b>locked</b> · outline</div>
+      </div>
+      <div style="text-align:center">
+        <div style="position:relative;width:120px;height:120px;margin:0 auto">
+          <svg class="coin" viewBox="0 0 120 120" width="90" height="90" style="position:absolute;left:0;top:18px"><circle class="ring" cx="60" cy="60" r="56" stroke-width="4"/><rect class="hole" x="44" y="44" width="32" height="32" rx="4" stroke-width="4"/></svg>
+          <svg class="coin" viewBox="0 0 120 120" width="90" height="90" style="position:absolute;left:20px;top:6px"><circle class="ring" cx="60" cy="60" r="56" stroke-width="4"/><rect class="hole" x="44" y="44" width="32" height="32" rx="4" stroke-width="4"/></svg>
+          <svg class="coin" viewBox="0 0 120 120" width="90" height="90" style="position:absolute;left:38px;top:24px"><circle class="ring" cx="60" cy="60" r="56" stroke-width="4"/><rect class="hole" x="44" y="44" width="32" height="32" rx="4" stroke-width="4"/></svg>
+        </div>
+        <div class="fcap"><b>wallet</b> · a stack</div>
+      </div>
+      <div class="notes">
+        <p class="note amb">Glyph sits <b>above the hole</b> (as on real coins) so it stays legible down to the 18px header chip.</p>
+        <p class="note">Warm metal: gold rim <span class="k">#E8B85A</span>, darker face, square hole shows the paper through.</p>
+        <p class="note">Motion: on a stage clear, coins <b>fly from the reveal into the wallet</b> and the count ticks.</p>
+        <p class="note">Upgrade later: a seal-script <span class="zh">文</span>, or a fully illustrated coin.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ 12 · TEACHER ════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-n">12</span><h2>Teacher console — the dials &amp; the roster</h2></div>
+    <p class="sec-sub">A separate gated door. Every scoring default is a knob; the catalogue and grants live here; the roster tracks balances &amp; claims (covers home / offline work the app can’t see).</p>
+    <div class="row">
+      <div class="unit">
+        <div style="width:520px;max-width:100%;border:2.5px solid var(--ink);border-radius:16px;background:#fff;padding:20px;box-shadow:6px 7px 0 rgba(42,38,34,.1)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><span class="tt lg">Teacher console</span><span class="pill fill">中文 Book 1 · class 2580</span></div>
+          <div class="flow" style="gap:8px;margin-bottom:14px"><span class="pill fill">Scoring</span><span class="pill">Catalogue</span><span class="pill">Grant 文</span><span class="pill">Roster</span><span class="pill">Class sync</span></div>
+          <div class="lbl">scoring · preset</div>
+          <div class="flow" style="gap:8px;margin:7px 0 14px"><span class="pill">generous</span><span class="pill grn">standard</span><span class="pill">strict</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div class="card" style="box-shadow:none;padding:11px"><div class="lbl">stage completion</div><div class="tt lg" style="color:var(--amb)">10 文</div><div class="bar" style="margin-top:6px"><div style="width:35%;height:100%;background:var(--amb);border-radius:99px"></div></div></div>
+            <div class="card" style="box-shadow:none;padding:11px"><div class="lbl">attendance floor</div><div class="tt lg" style="color:var(--amb)">20 文</div><div class="bar" style="margin-top:6px"><div style="width:50%;height:100%;background:var(--amb);border-radius:99px"></div></div></div>
+            <div class="card" style="box-shadow:none;padding:11px"><div class="lbl">weekly cap</div><div class="tt lg" style="color:var(--amb)">80 文</div><div class="bar" style="margin-top:6px"><div style="width:65%;height:100%;background:var(--amb);border-radius:99px"></div></div></div>
+            <div class="card" style="box-shadow:none;padding:11px"><div class="lbl">decay gaps</div><div class="tt lg">1·3·7·21 d</div><div class="bar" style="margin-top:6px"><div style="width:45%;height:100%;background:var(--grn);border-radius:99px"></div></div></div>
+          </div>
+          <div class="divi"></div>
+          <div class="lbl">roster · balances &amp; claims</div>
+          <div style="margin-top:8px">
+            <div style="display:grid;grid-template-columns:1.4fr .8fr .6fr 1fr;gap:6px;font-size:11px;align-items:center;padding:6px 0;border-bottom:1.5px solid var(--ph2)"><b>Student</b><span class="lbl" style="margin:0">rank</span><span class="lbl" style="margin:0">文</span><span class="lbl" style="margin:0">claim</span></div>
+            <div style="display:grid;grid-template-columns:1.4fr .8fr .6fr 1fr;gap:6px;font-size:11px;align-items:center;padding:7px 0"><span>Mei</span><span class="zh">秀才</span><span style="color:var(--amb);font-weight:800">64</span><span class="pill amb" style="font-size:8px">sticker ⏳</span></div>
+            <div style="display:grid;grid-template-columns:1.4fr .8fr .6fr 1fr;gap:6px;font-size:11px;align-items:center;padding:7px 0"><span>Jun</span><span class="zh">书生</span><span style="color:var(--amb);font-weight:800">38</span><span class="tt" style="font-size:9px">—</span></div>
+            <div style="display:grid;grid-template-columns:1.4fr .8fr .6fr 1fr;gap:6px;font-size:11px;align-items:center;padding:7px 0"><span>Anna <span class="tt" style="font-size:8px">(absent)</span></span><span class="zh">蒙生</span><span style="color:var(--amb);font-weight:800">22</span><span class="pill grn" style="font-size:8px">+15 grant</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <p class="note amb">Every §6 default is a <b>dial</b> with <b>standard / generous / strict</b> presets — the teacher knows the class.</p>
+        <p class="note"><b>Grant 文</b> covers home &amp; offline work the app can’t see (the absent Anna gets +15).</p>
+        <p class="note">Roster shows rank · 文 balance · streak · due count · <b>pending claims</b> to honour &amp; mark fulfilled.</p>
+        <p class="note"><b>Class sync</b>: set the current chapter/stage so “you are here” matches Saturday’s lesson.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer style="margin-top:80px;border-top:3px solid var(--ink);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-family:var(--hand);font-size:20px;color:var(--ink2)">
+    <span>The Character Game · lo-fi spec v1.0 · pair with <b style="color:var(--ink)">Character Game - Design Spec.md</b></span>
+    <span style="color:var(--grn)">炼字之旅 · Casey Chinese School</span>
+  </footer>
+
+</div>
+</body>
+</html>
