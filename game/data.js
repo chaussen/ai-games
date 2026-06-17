@@ -164,37 +164,61 @@
   // the Han characters so the Use round builds clean, selectable tiles.
   function cleanWord(s){ return String(s||'').replace(/[（(][^（）()]*[）)]/g,'').replace(/\s+/g,'').trim(); }
 
+  // How many 应用 rounds a stage gets, and how long a sentence may run before
+  // it's too unwieldy to tap-assemble — both grow with the band so a B4 stage
+  // visibly drills more phrases and longer sentence patterns than a B1 one.
+  // (forge.js stretches the heat timer for longer sequences, so raising
+  // sentMax doesn't just punish later bands with the same per-tap clock.)
+  var USE_DEPTH = {
+    B1:{ words:2, sentences:1, sentMax:10 },
+    B2:{ words:2, sentences:2, sentMax:12 },
+    B3:{ words:3, sentences:2, sentMax:14 },
+    B4:{ words:3, sentences:3, sentMax:18 }
+  };
+
   function useBand(unit, idx){
     var out=[];
     // Look up the lesson content by band + unit number (the playlist now spans
     // all four bands, so a global index into a single content file won't do).
     var cb = DATA.contentByBand && DATA.contentByBand[unit.band];
     var cu = (cb && cb.units) ? cb.units.filter(function(x){ return x.n===unit.unit; })[0] : null;
+    var depth = USE_DEPTH[unit.band] || USE_DEPTH.B1;
     if (cu){
       var wc = (cu.core && cu.core.writeChars) || [];
-      // gather a 组词 word and an example sentence (句子 in B1–B3, 造句 in B4) from the facts
-      var word=null, sent=null;
+      // gather every 组词 word and example sentence (句子 in B1–B3, 造句 in B4)
+      // across the unit's write characters, not just the first one that has them.
+      var words=[], sents=[], seenW={}, seenS={};
       wc.forEach(function(w){
         (w.facts||[]).forEach(function(f){
-          if (!word && f.term==='组词' && f.zh){
+          if (f.term==='组词' && f.zh){
             var zhs=f.zh.split('·').map(cleanWord).filter(Boolean);
             var ens=(f.en||'').split('·').map(function(s){return s.trim();}).filter(Boolean);
             // Trust the gloss only when it lines up 1:1 with the words. The source
             // often lists two words and a single gloss for just one of them
             // (大火·火车 → "train"), which would mislabel the word we pick — so
             // when it doesn't align, build the word and cue from pinyin alone.
-            var en = (zhs.length===ens.length) ? (ens[0]||'') : '';
-            word={ zh: zhs[0]||cleanWord(f.zh), en: en };
+            zhs.forEach(function(zh, i){
+              if (!zh || seenW[zh]) return; seenW[zh]=true;
+              var en = (zhs.length===ens.length) ? (ens[i]||'') : '';
+              words.push({ zh:zh, en:en });
+            });
           }
-          if (!sent && (f.term==='句子'||f.term==='造句') && f.zh){ sent={ zh:f.zh.trim(), en:(f.en||'').trim() }; }
+          if ((f.term==='句子'||f.term==='造句') && f.zh){
+            var zh=f.zh.trim();
+            if (!zh || seenS[zh]) return; seenS[zh]=true;
+            sents.push({ zh:zh, en:(f.en||'').trim() });
+          }
         });
       });
-      if (word) out.push({ type:'word', text:word.zh, en:word.en });
-      // A sentence becomes a build-it round only when it's a playable length
-      // (2–10 characters). Longer sentences — common in B4 — would be a tedious
-      // tap-in-order slog against the heat timer, so that stage stays word-only.
-      if (sent){ var hl=(sent.zh.match(/[一-鿿]/g)||[]).length;
-        if (hl>=2 && hl<=10) out.push({ type:'sentence', text:sent.zh, en:sent.en }); }
+      words.slice(0, depth.words).forEach(function(word){ out.push({ type:'word', text:word.zh, en:word.en }); });
+      // A sentence becomes a build-it round only when it's a playable length —
+      // the cap itself grows with the band (see USE_DEPTH).
+      var sentPushed=0;
+      sents.forEach(function(sent){
+        if (sentPushed>=depth.sentences) return;
+        var hl=(sent.zh.match(/[一-鿿]/g)||[]).length;
+        if (hl>=2 && hl<=depth.sentMax){ out.push({ type:'sentence', text:sent.zh, en:sent.en }); sentPushed++; }
+      });
     }
     if (!out.length){
       // fallback: a doubled-character word from the first whole + the theme

@@ -220,7 +220,7 @@
     clearInterval(R.timer); R.timer=null; R.phase='forge'; R.skipped=skipped;
     if (skipped) RUN.score+=15;              // speed/confidence bonus
     renderForge(rd);
-    startHeat();
+    startHeat(rd);
   }
 
   // ───────── FORGE ─────────
@@ -505,9 +505,15 @@
   }
 
   // ───────── heat / scoring ─────────
-  function startHeat(){
+  function startHeat(rd){
     R.heat=100; clearInterval(R.timer);
     var rate = ({easy:0.40,normal:0.55,hard:0.78,expert:0.85})[RUN.settings.difficulty]||0.55;
+    // longer "use" sequences (B3/B4 sentence rounds) need more taps to finish —
+    // stretch the clock so they aren't punished by the same per-tap budget as
+    // a short B1 word round.
+    if (rd && rd.grain==='use' && rd.sequence && rd.sequence.length>6){
+      rate *= 6/rd.sequence.length;
+    }
     R.timer=setInterval(function(){ if(R.done) return; R.heat=Math.max(0,R.heat-rate); setHeatUI(); },90);
   }
   function heatZone(){ return R.heat>62?'hot':R.heat>30?'warm':'cool'; }
