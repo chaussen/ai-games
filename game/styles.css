@@ -264,11 +264,21 @@ body[data-bob="off"] .youare,body[data-bob="off"] .duebadge{animation:none;}
 @media (max-width:740px){ .hud-stats{display:none;} .hud-info span{display:none;} }
 
 /* ───────── ARENA HEAD ───────── */
-.arena-head{text-align:center;max-width:680px;flex-shrink:0;min-height:50px;display:flex;align-items:center;justify-content:center;}
+.arena-head{text-align:center;max-width:680px;flex-shrink:0;min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;z-index:2;}
 
 /* ───────── MAIN ARENA ───────── */
 .main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
   padding:clamp(8px,2vw,20px);min-height:0;position:relative;}
+/* On short/narrow screens the arena content (stroke canvas + tray, or 3 structure
+   options) can be taller than its flex slot. Centred + visible-overflow makes it spill
+   over the head (covering the "see it again" button) and the footer (breaking the
+   progress rail). Let the arena scroll inside itself instead, and keep head/footer
+   above any residual overflow. */
+@media (max-width:640px), (max-height:680px){
+  .main{justify-content:flex-start;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+  .footer{position:relative;z-index:2;}
+}
 
 /* ───────── PREVIEW PHASE ───────── */
 .preview-stage{display:flex;flex-direction:column;align-items:center;gap:12px;animation:pvFadeIn .4s ease;}
@@ -428,9 +438,6 @@ body[data-bob="off"] .youare,body[data-bob="off"] .duebadge{animation:none;}
 /* ── BUILD: structure recall (pick the shape before placing parts) ──
    An independent step — it gets room to breathe, with large, legible diagrams. */
 .struct-stage{display:flex;flex-direction:column;align-items:center;gap:clamp(22px,4vh,40px);width:100%;max-width:880px;}
-.struct-meaning{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;}
-.struct-meaning .sc-en{font-size:clamp(20px,2.6vw,28px);font-style:italic;color:var(--ink);font-weight:600;}
-.struct-meaning .sc-py{font-family:var(--serif);font-style:italic;font-size:clamp(16px,1.8vw,20px);color:var(--rc);}
 .struct-q{font-size:clamp(16px,2vw,21px);color:var(--ink-soft);text-align:center;font-weight:600;}
 .struct-q b{color:var(--rc);}
 .struct-opts{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(16px,2.4vw,28px);}

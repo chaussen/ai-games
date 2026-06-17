@@ -348,12 +348,10 @@
       return '<button class="structopt" data-op="'+o+'">'+structIcon(o)+
         '<span class="so-label zh">'+STRUCT_LABEL[o].zh+'</span><span class="so-en">'+STRUCT_LABEL[o].en+'</span></button>';
     }).join('');
-    var meaningCue =
-      (rd.meaning?'<span class="sc-en">“'+esc(rd.meaning)+'”</span>':'')+
-      (rd.cue && rd.cue.pinyin && rd.pinyin?'<span class="sc-py zh">'+esc(rd.pinyin)+'</span>':'');
+    // The meaning/pinyin cue already lives in #fg-head (renderForge) — don't repeat
+    // it here, or the structure page shows two stacked cues (feedback: duplicate pinyin).
     $('#fg-arena').innerHTML=
       '<div class="struct-stage">'+
-        (meaningCue?'<div class="struct-meaning">'+meaningCue+'</div>':'')+
         '<div class="struct-q">First — what is the <b>structure</b> of this character?</div>'+
         '<div class="struct-opts">'+optHtml+'</div></div>'+
       '<div class="howto" id="fg-howto">Recall its shape, then you’ll place the parts.</div>';
