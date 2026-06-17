@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Class Progress — Character Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=Noto+Serif+SC:wght@600&display=swap" rel="stylesheet" />
+<style>
+  :root{ --ink:#2b2017; --mute:#7a6a58; --paper:#fffaf2; --line:#e7dac4; --coral:#c2603a; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; font-family:Manrope,system-ui,sans-serif; background:var(--paper); color:var(--ink); }
+  header{ padding:24px 28px 12px; }
+  h1{ font-size:22px; margin:0 0 4px; }
+  h1 .zh{ font-family:"Noto Serif SC",serif; }
+  p.sub{ margin:0; color:var(--mute); font-size:14px; }
+  main{ padding:8px 28px 40px; overflow-x:auto; }
+  table{ border-collapse:collapse; width:100%; min-width:760px; font-size:14px; }
+  th,td{ text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); }
+  th{ color:var(--mute); font-weight:600; text-transform:uppercase; font-size:11px; letter-spacing:.04em; }
+  tr:hover td{ background:#fff5e6; }
+  .name{ font-weight:600; }
+  .stale{ color:var(--mute); }
+  .pill{ display:inline-block; padding:2px 8px; border-radius:999px; background:#f1e8f2; color:#7E4B86; font-size:12px; font-weight:600; }
+  #status{ font-size:13px; color:var(--mute); margin-bottom:10px; }
+  #status.err{ color:var(--coral); }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="zh">炼字坊</span> — Class progress</h1>
+  <p class="sub">Live from each student's saved game state. Refresh to update.</p>
+</header>
+<main>
+  <div id="status">Loading…</div>
+  <table id="tbl" style="display:none">
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Forge — chars owned</th>
+        <th>Forge — best score</th>
+        <th>Forge — runs played</th>
+        <th>Scroll — rank</th>
+        <th>Scroll — XP</th>
+        <th>Scroll — lessons cleared</th>
+        <th>Last synced</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="journey/firebase-config.js"></script>
+<script src="journey/teacher.js"></script>
+</body>
+</html>

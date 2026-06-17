@@ -323,5 +323,6 @@
     if(window.speechSynthesis){ speechSynthesis.onvoiceschanged=function(){}; speechSynthesis.getVoices(); }
   }
   window.JOURNEY = { applyTweaks:applyTweaks, reset:reset, redraw:function(){} };
-  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
+  function start(){ if (window.CloudSync && window.CloudSync.ready) window.CloudSync.ready.then(init); else init(); }
+  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Only the 15 known roster ids are readable/writable, and only by a
+    // signed-in (anonymous is fine) client. This is NOT per-student security
+    // -- any of the 15 docs can be read/written by anyone who is signed in,
+    // since there's no server to mint per-student credentials. That's an
+    // acceptable tradeoff for low-stakes classroom game progress, not for
+    // sensitive data.
+    match /students/{studentId} {
+      allow read, write: if request.auth != null
+        && studentId in ['s01', 's02', 's03', 's04', 's05', 's06', 's07', 's08', 's09', 's10', 's11', 's12', 's13', 's14', 's15'];
+    }
+  }
+}

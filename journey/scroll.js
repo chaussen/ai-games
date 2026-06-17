@@ -434,5 +434,6 @@
     setTimeout(function(){ layout(); renderMiniMap(); restore(); }, 360);
   }
   window.JOURNEY = { applyTweaks:applyTweaks, reset:reset, redraw:function(){ layout(); renderMiniMap(); } };
-  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
+  function start(){ if (window.CloudSync && window.CloudSync.ready) window.CloudSync.ready.then(init); else init(); }
+  if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
