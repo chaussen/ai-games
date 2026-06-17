@@ -73,11 +73,27 @@ body[data-pinyin="off"] ruby rt{visibility:hidden;}
 @media (max-width:680px){ .rankname em{display:none;} .xpbar{width:90px;} }
 
 /* ───────── THE SCROLL (horizontal) ───────── */
-.stage{flex:1;position:relative;overflow-x:auto;overflow-y:hidden;cursor:grab;
-  scrollbar-width:none;-ms-overflow-style:none;}
+.stage{flex:1;position:relative;display:flex;overflow-x:auto;overflow-y:hidden;cursor:grab;
+  scrollbar-width:none;-ms-overflow-style:none;
+  box-shadow:inset 0 20px 28px -24px rgba(35,25,18,.55), inset 0 -20px 28px -24px rgba(35,25,18,.55);}
 .stage::-webkit-scrollbar{display:none;}
 .stage.grabbing{cursor:grabbing;}
-#canvas{position:relative;height:100%;}
+#canvas{position:relative;height:100%;flex:0 0 auto;}
+
+/* wooden roller caps — the handscroll's two physical ends, pinned to the
+   viewport edges via sticky so they never scroll away with the paper */
+.scroll-rod{flex:0 0 auto;width:16px;align-self:stretch;position:sticky;top:0;z-index:6;
+  pointer-events:none;
+  background:linear-gradient(90deg,#4a2d1a 0%,#8a5a34 20%,#d3a872 40%,#8a5a34 58%,#4a2d1a 76%,#2e1a0d 100%);
+  box-shadow:0 0 0 1px rgba(0,0,0,.3) inset, 0 12px 32px rgba(0,0,0,.35);}
+.scroll-rod.rod-left{left:0;}
+.scroll-rod.rod-right{right:0;}
+.scroll-rod::before,.scroll-rod::after{content:"";position:absolute;left:-4px;right:-4px;height:24px;
+  background:linear-gradient(90deg,#2e1a0d,#8a5a34 32%,#d3a872 50%,#8a5a34 68%,#2e1a0d);
+  border-radius:5px;box-shadow:0 4px 10px rgba(0,0,0,.4);}
+.scroll-rod::before{top:-8px;}
+.scroll-rod::after{bottom:-8px;}
+body[data-scenery="off"] .scroll-rod{display:none;}
 
 .road{position:absolute;inset:0;overflow:visible;z-index:1;pointer-events:none;}
 .road path{fill:none;stroke-linecap:round;stroke-linejoin:round;}
@@ -90,7 +106,8 @@ body[data-path="stones"] .road-done{stroke-width:21;stroke-dasharray:2 30;}
 
 /* scene panels */
 .scenes{position:absolute;inset:0;z-index:0;}
-.scene{position:absolute;top:0;height:100%;overflow:hidden;border-right:1px solid var(--line-soft);}
+.scene{position:absolute;top:0;height:100%;overflow:hidden;border-right:1px solid var(--line-soft);
+  box-shadow:inset -12px 0 18px -16px rgba(35,25,18,.5), inset 4px 0 10px -8px rgba(255,255,255,.5);}
 .scene-wash{position:absolute;inset:0;background:
   linear-gradient(180deg, transparent 38%, color-mix(in srgb,var(--rc-tint) 80%, transparent) 100%),
   radial-gradient(120% 60% at 30% 118%, color-mix(in srgb,var(--rc-soft) 60%, transparent), transparent 70%);}
@@ -99,7 +116,11 @@ body[data-path="stones"] .road-done{stroke-width:21;stroke-dasharray:2 30;}
 body[data-scenery="off"] .scene-wash,body[data-scenery="off"] .scene-glyph{display:none;}
 .cartouche{position:absolute;left:26px;top:26px;display:flex;flex-direction:column;gap:2px;
   padding:11px 15px;border-radius:12px;background:rgba(255,255,255,.72);border:1px solid var(--rc-soft);
-  backdrop-filter:blur(4px);box-shadow:0 10px 22px -16px rgba(38,32,30,.4);}
+  backdrop-filter:blur(4px);
+  transform:perspective(700px) rotateX(4deg);transform-origin:top left;transition:transform .25s ease,box-shadow .25s ease;
+  box-shadow:0 16px 24px -16px rgba(38,32,30,.45),0 2px 0 rgba(255,255,255,.6) inset;}
+.scene:hover .cartouche{transform:perspective(700px) rotateX(0deg) translateY(-2px);
+  box-shadow:0 20px 30px -16px rgba(38,32,30,.5),0 2px 0 rgba(255,255,255,.6) inset;}
 .cartouche .vol{font-family:var(--zh);font-size:13px;color:var(--rc);letter-spacing:.1em;font-weight:700;}
 .cartouche .ssub{font-family:var(--zh);font-size:22px;color:var(--ink);font-weight:600;line-height:1.05;}
 .cartouche .sname{font-family:var(--serif);font-size:12.5px;font-style:italic;color:var(--ink-soft);}

@@ -13,13 +13,13 @@
   // generated from the loaded playlist — 2 units per chapter, cycling the four
   // seasonal palettes — so adding lessons needs no edits here (see getChapters).
   var CHAPTERS_SEED = [
-    { id:'c1', vol:'卷一', season:'春', name:'Spring · First Words',  sub:'春',
+    { id:'c1', vol:'册一', season:'春', name:'Spring · First Words',  sub:'春',
       rc:'#3E8E72', soft:'#BCDDD1', tint:'#E4F1EC', units:['b1-u1','b1-u2'] },
-    { id:'c2', vol:'卷二', season:'夏', name:'Summer · Numbers & Body', sub:'夏',
+    { id:'c2', vol:'册二', season:'夏', name:'Summer · Numbers & Body', sub:'夏',
       rc:'#2F7DA6', soft:'#BBD7E6', tint:'#E3EFF4', units:['b1-u3','b1-u4'] },
-    { id:'c3', vol:'卷三', season:'秋', name:'Autumn · Animals & Food', sub:'秋',
+    { id:'c3', vol:'册三', season:'秋', name:'Autumn · Animals & Food', sub:'秋',
       rc:'#C2603A', soft:'#F0C9B4', tint:'#FBEAE0', units:['b1-u5','b1-u6'] },
-    { id:'c4', vol:'卷四', season:'冬', name:'Winter · Class & Festival', sub:'冬',
+    { id:'c4', vol:'册四', season:'冬', name:'Winter · Class & Festival', sub:'冬',
       rc:'#7E4B86', soft:'#D8C4DB', tint:'#F1E8F2', units:['b1-u7','b1-u8'] }
   ];
   var SEASON_CYCLE = [
@@ -42,7 +42,7 @@
     for (var i=0;i<rest.length;i+=2){
       var grp = rest.slice(i,i+2), ci = out.length, s = SEASON_CYCLE[ci%4];
       var theme = grp.map(function(u){ return (u.theme && u.theme.en) || u.id; }).filter(Boolean).join(' & ');
-      out.push({ id:'c'+(ci+1), vol:'卷'+(CN_NUM[ci]||(ci+1)), season:s.season, sub:s.sub,
+      out.push({ id:'c'+(ci+1), vol:'册'+(CN_NUM[ci]||(ci+1)), season:s.season, sub:s.sub,
                  name:s.name+' · '+theme, rc:s.rc, soft:s.soft, tint:s.tint,
                  units:grp.map(function(u){ return u.id; }) });
     }

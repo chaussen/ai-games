@@ -109,6 +109,10 @@
         (st==='locked'?'':'<span class="th"><span class="zh">'+esc(unit.theme.zh)+'</span> · '+esc(unit.theme.en)+'</span>')+starRow+'</span></button>';
   }
 
+  // The chapter's lead theme — the "动物" half of "秋之卷 · 动物朋友" — so the
+  // scroll wording always reads as a named volume, not a bare season glyph.
+  function leadTheme(c){ var u=C.unitById(c.units[0]); return (u&&u.theme)||null; }
+
   function renderScroll(){
     buildNodes();
     var canvas=$('#canvas');
@@ -116,9 +120,11 @@
     var panels=''; var chs=S.chapters();
     chs.forEach(function(c){
       var unlocked=S.chapterUnlocked(c.id), state=unlocked?(S.chapterCleared(c.id)&&gateState(c.id)==='done'?'done':'open'):'locked';
+      var lt=leadTheme(c);
+      var sname=lt?(esc(lt.zh)+' · '+esc(lt.en)):esc(c.name);
       panels+='<div class="scene" data-ch="'+c.id+'" data-state="'+state+'" style="--rc:'+c.rc+';--rc-soft:'+c.soft+';--rc-tint:'+c.tint+'">'+
         '<div class="scene-wash"></div><div class="scene-glyph zh">'+c.season+'</div>'+
-        '<div class="cartouche"><span class="vol zh">'+c.vol+'</span><span class="ssub zh">'+c.sub+'</span><span class="sname">'+esc(c.name)+'</span></div></div>';
+        '<div class="cartouche"><span class="vol zh">'+c.vol+'</span><span class="ssub zh">'+c.sub+'之卷</span><span class="sname">'+sname+'</span></div></div>';
     });
     canvas.innerHTML='<svg class="road" id="road" preserveAspectRatio="none"><path class="road-base"/><path class="road-done"/></svg>'+
       '<div class="scenes" id="scenes">'+panels+'</div>'+
@@ -181,7 +187,7 @@
   function openStage(u){
     var st=S.get(), unit=C.unitById(u), c=S.chapterOf(u), state=unitState(u), due=S.unitDue(u)&&state==='done'; applyRC(c);
     var arc=C.resolveStage(u, st.owned);
-    var head='<div class="sh-eyebrow"><span class="dot"></span><span class="zh" style="margin-right:7px">'+c.vol+'</span>'+esc(c.name)+'</div>'+
+    var head='<div class="sh-eyebrow"><span class="dot"></span><span class="zh" style="margin-right:7px">'+c.sub+'之卷</span>'+esc(c.name)+'</div>'+
       '<h2><span class="zh">'+esc(unit.theme.zh)+'</span> · '+esc(unit.theme.en)+'</h2>'+
       '<p class="sh-sub">'+unit.writeChars.length+' target characters · '+arc.bands.parts.length+' parts · the forging arc below</p>';
     var body=bandRail(arc, state);
