@@ -1,14 +1,14 @@
 # 学字坊 · The Character Game — integrated build
 
 Fuses the **Journey** handscroll and the **Forge** into one classroom learning game,
-driven by the generated character-decomposition graph. Entry point: **`../The Character Game.html`**.
+driven by the generated character-decomposition graph. Entry point: **`../index.html`**.
 
 ## Run it
 `fetch()` needs a server (file:// is blocked):
 ```bash
 cd ..                       # repo root
 python3 -m http.server 8000
-# open http://localhost:8000/The%20Character%20Game.html
+# open http://localhost:8000/
 ```
 Class code **2580** (student) · **1357** (teacher → opens the console).
 
@@ -60,8 +60,23 @@ assets/data/playlists/*.json─┘               · buildRound()  → resolved f
 Scoring defaults live in `state.js` (`PRESETS` standard/generous/strict) and are teacher-editable
 at runtime. To regenerate the graph, see `../build-pipeline/build-characters.js`.
 
+## Bands wired
+All four bands (B1–B4, 32 units) are forge-ready: the graph + stroke data cover every write-char and
+its scaffold atoms, and `data.js` `useBand` now normalises all four content formats — it strips inline
+`(pinyin)` from `组词` words (B2–B4), accepts `造句` as the example sentence (B4), and only emits a
+sentence round when it's 2–10 Han chars (longer B4 sentences stay word-only). `buildUseRound` builds
+tiles from Han characters only, so punctuation is never tappable. Verified: 470/470 Parts+Wholes rounds
+and every Use round build with no errors across all 32 units.
+
 ## Known gaps (v1)
-- Use-band English glosses are shown only when the source `组词` gloss lines up 1:1 with its words
-  (`data.js` `useBand`); when it doesn't, the round falls back to a pinyin cue rather than risk a
-  mislabel. B1's glosses are curated; B2–B4 `组词` pairings have not all been audited.
-- Catalogue editor is read-only in the teacher console; roster peers are simulated (no backend).
+- Use-band **English glosses** appear only when the source `组词` gloss lines up 1:1 with its words
+  (`data.js` `useBand`); otherwise the round falls back to a pinyin cue rather than risk a mislabel.
+  This is now a *content* gap, not a wiring one: B1/B3/B4 glosses are mostly present (8/8, 7/8, 8/8);
+  **B2 `组词` lines ship empty `en` (1/8)** so most B2 word rounds cue from pinyin — author the B2
+  `en` glosses in `content-b2.json` to light them up (no code change needed).
+- Roster peers are simulated and grants to them persist only in-memory (no backend yet — see the
+  backend/multi-student-sync phase). The signed-in student's own 文/XP/claims/catalogue/current-stage
+  all persist to `localStorage`. The teacher console is otherwise complete per spec §8.2: scoring dials
+  (all §6 knobs + decay steps) · **editable catalogue** (add/edit/retire, persisted) · grant 文
+  (per-student or whole-class + bonus-quest chips) · roster with **claim fulfilment** · **class sync**
+  (set the current stage).
