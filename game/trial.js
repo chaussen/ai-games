@@ -147,25 +147,15 @@
         '<p class="tt-zh zh">'+step.body_zh+'</p>'+
         '<p class="tt-en">'+step.en+'</p>'+
         '<div class="tt-actions">'+
+          (i>0?'<button class="tt-arrow" id="tt-back" aria-label="Back">‹</button>':'')+
           (step.last?'':'<button class="tt-skip" id="tt-skip">跳过 Skip</button>')+
           '<button class="jbtn solid tt-next" id="tt-next" style="flex:0 0 auto;padding:11px 22px">'+
             (step.last?'<span class="zh">开始</span> Start ›':'<span class="zh">下一步</span> Next ›')+'</button>'+
         '</div>';
-      // position the card: under the target if there's room, else above, else centered
-      if (r && r.width && r.height){
-        var below = r.bottom + 14, cw=Math.min(330, window.innerWidth-28);
-        card.style.width=cw+'px';
-        var cx=Math.max(14, Math.min(window.innerWidth-cw-14, r.left+r.width/2-cw/2));
-        card.style.left=cx+'px';
-        if (below + 180 < window.innerHeight){ card.style.top=below+'px'; card.style.bottom='auto'; }
-        else { card.style.bottom=(window.innerHeight-r.top+14)+'px'; card.style.top='auto'; }
-        card.style.transform='none';
-      } else {
-        card.style.width=Math.min(340,window.innerWidth-28)+'px';
-        card.style.left='50%'; card.style.top='50%'; card.style.bottom='auto';
-        card.style.transform='translate(-50%,-50%)';
-      }
+      // The card is pinned to the bottom-centre by CSS so it can never be clipped
+      // off-screen on mobile (the spotlight ring still shows what it points at).
       var nx=$('#tt-next'); if(nx) nx.addEventListener('click', function(){ showTour(i+1); });
+      var bk=$('#tt-back'); if(bk) bk.addEventListener('click', function(){ showTour(i-1); });
       var sk=$('#tt-skip'); if(sk) sk.addEventListener('click', function(){ clearTour(); markToured(); });
     }
     // let scrollIntoView settle before measuring

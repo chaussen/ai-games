@@ -257,7 +257,9 @@
     var stage=$('#stage');
     stage.addEventListener('wheel', function(e){ if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){ stage.scrollLeft+=e.deltaY; e.preventDefault(); } },{passive:false});
     var down=false,sx=0,sl=0;
-    stage.addEventListener('pointerdown', function(e){ if(e.target.closest('.node')){down=false;return;} down=true; dragMoved=false; sx=e.clientX; sl=stage.scrollLeft; stage.classList.add('grabbing'); });
+    // reset dragMoved on every press — a tap on a node must never inherit a stale
+    // "was dragging" flag from a previous pan, or the first tap gets swallowed.
+    stage.addEventListener('pointerdown', function(e){ dragMoved=false; if(e.target.closest('.node')){down=false;return;} down=true; sx=e.clientX; sl=stage.scrollLeft; stage.classList.add('grabbing'); });
     window.addEventListener('pointermove', function(e){ if(!down) return; var dx=e.clientX-sx; if(Math.abs(dx)>4) dragMoved=true; stage.scrollLeft=sl-dx; });
     window.addEventListener('pointerup', function(){ down=false; stage.classList.remove('grabbing'); setTimeout(function(){dragMoved=false;},30); });
     stage.addEventListener('scroll', updateViewport);
