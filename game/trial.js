@@ -98,11 +98,87 @@
     el.innerHTML = '<span class="zh">剩 ' + left + ' 天</span> · ' + left + 'd left';
   }
 
+  // ── first-run tour (spotlight coach-marks over the real UI) ──
+  var K_TOUR = 'ccs-trial-toured-v1';
+  function toured(){ try { return !!localStorage.getItem(K_TOUR); } catch (e) { return false; } }
+  function markToured(){ try { localStorage.setItem(K_TOUR, '1'); } catch (e) {} }
+
+  var STEPS = [
+    { sel:'#stage', center:true,
+      zh:'这是你的学习长卷', body_zh:'左右滑动，就能看到春·夏·秋·冬整段旅程。',
+      en:'This is your scroll. Swipe sideways to travel through the whole journey — Spring, Summer, Autumn, Winter.' },
+    { sel:'.node[data-state="current"]', scroll:true,
+      zh:'从这里开始', body_zh:'点这个发光的关卡就能开始。每一关都从部件 → 合字 → 应用，一步步学。',
+      en:'Tap the glowing stage to begin. Each stage builds a character step by step: parts → whole → use it.' },
+    { sel:'#jhead',
+      zh:'你的进度', body_zh:'上面是你的等级（经验）、可用的「文」钱，还有收集到的部首卡。',
+      en:'Up here: your rank (经验), the 文 coins you earn, and the character parts you collect.' },
+    { center:true, last:true,
+      zh:'准备好了！', body_zh:'放心玩、慢慢写，感受汉字的乐趣。课堂见！',
+      en:'That’s it — play, write, and enjoy. Tap any stage to start. See you in class!' }
+  ];
+
+  function clearTour(){ var t=$('#trial-tour'); if(t) t.remove(); }
+  function showTour(i){
+    var steps = STEPS.filter(function(s){ return s.center || $(s.sel); });   // skip steps whose target is absent
+    if (i >= steps.length){ clearTour(); markToured(); return; }
+    var step = steps[i];
+    var target = step.sel ? $(step.sel) : null;
+    if (target && step.scroll && target.scrollIntoView) target.scrollIntoView({ inline:'center', block:'nearest' });
+
+    var t=$('#trial-tour');
+    if(!t){ t=document.createElement('div'); t.className='trial-tour'; t.id='trial-tour';
+      t.innerHTML='<div class="tt-ring" id="tt-ring"></div><div class="tt-card" id="tt-card"></div>';
+      document.body.appendChild(t); }
+    var ring=$('#tt-ring'), card=$('#tt-card');
+
+    function place(){
+      var r = (target && !step.center) ? target.getBoundingClientRect() : null;
+      t.classList.toggle('centered', !(r && r.width && r.height));   // dim via backdrop when no spotlight
+      if (r && r.width && r.height){
+        var pad=8;
+        ring.style.display='block';
+        ring.style.left=(r.left-pad)+'px'; ring.style.top=(r.top-pad)+'px';
+        ring.style.width=(r.width+pad*2)+'px'; ring.style.height=(r.height+pad*2)+'px';
+      } else { ring.style.display='none'; }
+      card.innerHTML=
+        '<div class="tt-step">'+(i+1)+' / '+steps.length+'</div>'+
+        '<h3><span class="zh">'+step.zh+'</span></h3>'+
+        '<p class="tt-zh zh">'+step.body_zh+'</p>'+
+        '<p class="tt-en">'+step.en+'</p>'+
+        '<div class="tt-actions">'+
+          (step.last?'':'<button class="tt-skip" id="tt-skip">跳过 Skip</button>')+
+          '<button class="jbtn solid tt-next" id="tt-next" style="flex:0 0 auto;padding:11px 22px">'+
+            (step.last?'<span class="zh">开始</span> Start ›':'<span class="zh">下一步</span> Next ›')+'</button>'+
+        '</div>';
+      // position the card: under the target if there's room, else above, else centered
+      if (r && r.width && r.height){
+        var below = r.bottom + 14, cw=Math.min(330, window.innerWidth-28);
+        card.style.width=cw+'px';
+        var cx=Math.max(14, Math.min(window.innerWidth-cw-14, r.left+r.width/2-cw/2));
+        card.style.left=cx+'px';
+        if (below + 180 < window.innerHeight){ card.style.top=below+'px'; card.style.bottom='auto'; }
+        else { card.style.bottom=(window.innerHeight-r.top+14)+'px'; card.style.top='auto'; }
+        card.style.transform='none';
+      } else {
+        card.style.width=Math.min(340,window.innerWidth-28)+'px';
+        card.style.left='50%'; card.style.top='50%'; card.style.bottom='auto';
+        card.style.transform='translate(-50%,-50%)';
+      }
+      var nx=$('#tt-next'); if(nx) nx.addEventListener('click', function(){ showTour(i+1); });
+      var sk=$('#tt-skip'); if(sk) sk.addEventListener('click', function(){ clearTour(); markToured(); });
+    }
+    // let scrollIntoView settle before measuring
+    setTimeout(place, step.scroll?260:0);
+  }
+  function startTour(){ showTour(0); }
+
   // ── flow ──
   function play(){
     if (expired()){ showExpired(); return; }
     if (typeof onPlay === 'function') onPlay();   // existing unlock(): hides gate, logs session, renders
     ensureRibbon();
+    if (!toured()) setTimeout(startTour, 500);     // gentle first-run tour
   }
   function start(opts){
     opts = opts || {};

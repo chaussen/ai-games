@@ -150,7 +150,8 @@
     $('#fg-title',h).textContent=opts.title||'Forge run';
     renderRound();
   }
-  function quit(){ if(R&&R.timer) clearInterval(R.timer); var h=$('#forge-screen'); if(h) h.classList.remove('open');
+  function quit(){ if(R&&R.timer) clearInterval(R.timer); if(R&&R.anim) R.anim.cancel(); if(R&&R.revealAnim) R.revealAnim.cancel();
+    var h=$('#forge-screen'); if(h) h.classList.remove('open');
     if(RUN&&RUN.onDone) RUN.onDone({ aborted:true }); RUN=null; R=null; }
 
   function curRound(){ return RUN.rounds[RUN.i]; }
@@ -184,6 +185,17 @@
   }
   function renderCombo(){ var c=$('#fg-combo'); c.className='combo'+(R.combo>1?' on':''); c.querySelector('b').textContent='×'+Math.max(1,R.combo); }
 
+  // single-character stroke data for the animated study clue (null for use/word
+  // rounds, which keep the multi-cell row, and for anything without stroke data).
+  function singleClueSD(rd){
+    if (rd.grain==='use') return null;
+    var sd=clueDataFor(rd, rd.char);
+    return (sd && sd.s && sd.s.length) ? sd : null;
+  }
+  // per-stroke draw speed (ms) — deliberately slow, and a touch slower in trial
+  // so first-timers at home can follow every stroke.
+  function animSpeed(){ var t=window.GAME_TRIAL; return (t && t.on) ? 820 : 600; }
+
   // ───────── PREVIEW ─────────
   function renderPreview(rd){
     var ms = RUN.settings.previewMs!=null ? RUN.settings.previewMs : 3000;
@@ -191,18 +203,26 @@
     var meta = rd.grain==='use'
       ? '<span class="pv-en">'+esc(rd.meaning||'a word to build')+'</span>'
       : '<span class="pv-py">'+esc(rd.pinyin||'')+'</span><span class="pv-en">'+esc(rd.meaning||'')+'</span>';
-    var cueText = ({ stroke:'Memorise the strokes — you’ll write it from memory.',
+    var cueText = ({ stroke:'Watch the stroke order — you’ll write it from memory.',
       component:'Two meanings combine. Remember which parts.',
       radical:'One part gives the meaning, one gives the sound.',
       use:'You’ll assemble this word from its characters.' })[rd.grain];
+    var sd = singleClueSD(rd);
+    var glyphHTML = sd ? '<div class="pv-glyph" id="pv-anim"></div>' : clueGlyphHTML(rd,'pv-glyph');
     $('#fg-arena').innerHTML=
       '<div class="preview-stage">'+
         '<div class="pv-round-badge">'+({parts:'偏旁部首 PART',wholes:'合字 WHOLE',use:'应用 USE'})[rd.band]+' · forge from memory</div>'+
-        '<div class="pv-glyph-wrap">'+clueGlyphHTML(rd,'pv-glyph')+'<div class="pv-meta">'+meta+'</div></div>'+
+        '<div class="pv-glyph-wrap">'+glyphHTML+'<div class="pv-meta">'+meta+'</div></div>'+
+        (sd ? G.StrokePlay.replayBtnHTML('pv-replay') : '')+
         '<div class="pv-cue">'+cueText+'</div>'+
         (ms>0?'<div class="pv-countdown" id="pv-cd"><svg class="pv-ring-svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="none" stroke="var(--rc-soft)" stroke-width="5"/><circle id="pv-arc" cx="32" cy="32" r="28" fill="none" stroke="var(--rc)" stroke-width="5" stroke-linecap="round" transform="rotate(-90 32 32)" stroke-dasharray="175.9" stroke-dashoffset="0"/></svg><span class="pv-cd-num" id="pv-num"></span></div>'+
           '<div class="pv-skip-hint">tap to start now ›</div>' : '')+
       '</div>';
+    if (sd){
+      R.anim = G.StrokePlay.mount($('#pv-anim'), sd, { perStroke:animSpeed(), gap:150, ghost:false, numbers:true });
+      var rb=$('#pv-replay'); if(rb) rb.addEventListener('click', function(){ if(R.anim) R.anim.replay(); });
+      ms = Math.max(ms, R.anim.duration + 1100);     // don't auto-advance before the draw finishes
+    }
     if (RUN.settings.sound!==false) speak(rd.grain==='use'?rd.word:rd.char);
     if (ms<=0){ startForge(rd,false); return; }
     var cd=$('#pv-cd'); cd.addEventListener('click', function(){ startForge(rd,true); });
@@ -217,7 +237,9 @@
   }
 
   function startForge(rd, skipped){
-    clearInterval(R.timer); R.timer=null; R.phase='forge'; R.skipped=skipped;
+    clearInterval(R.timer); R.timer=null;
+    if(R.anim){ R.anim.cancel(); R.anim=null; }
+    R.phase='forge'; R.skipped=skipped;
     if (skipped) RUN.score+=15;              // speed/confidence bonus
     renderForge(rd);
     startHeat(rd);
@@ -543,10 +565,15 @@
     var sv=''; for(var k=0;k<3;k++) sv+='<i class="'+(k<stars?'on':'')+'">★</i>';
     var last=RUN.i>=RUN.rounds.length-1;
     var glyph = rd.grain==='use'?rd.word:rd.char;
+    var rsd = rd.grain==='use' ? null : clueDataFor(rd, rd.char);
+    if(rsd && !(rsd.s && rsd.s.length)) rsd=null;
+    var chBlock = rsd
+      ? '<div class="rv-anim" id="rv-anim"></div>'+G.StrokePlay.replayBtnHTML('rv-replay')
+      : '<div class="rv-ch zh">'+esc(glyph)+'</div>';
     ov.innerHTML='<div class="rv-card" style="--rc:'+rd.accent+';--rc-soft:'+rd.soft+';--rc-tint:'+rd.tint+'">'+
       '<div class="rv-eyebrow"><span class="dot"></span>Forged · <span class="zh">炼成</span> · <span class="zh">'+rd.cat+'</span></div>'+
       '<div class="rv-stars">'+sv+'</div>'+
-      '<div class="rv-ch zh">'+esc(glyph)+'</div>'+
+      chBlock+
       (rd.pinyin?'<div class="rv-py">'+esc(rd.pinyin)+'</div>':'')+
       '<div class="rv-en">'+esc(rd.meaning||'')+'</div>'+
       '<div class="rv-tally"><span>heat <b>+'+timeBonus+'</b></span><span>combo ×'+Math.max(1,R.maxCombo)+'</span>'+
@@ -555,7 +582,11 @@
       '<div class="rv-actions"><button class="gbtn solid" id="rv-go">'+(last?'Finish stage <span class="zh">完成</span>':'Next <span class="zh">继续</span>')+' ›</button></div>'+
     '</div>';
     confetti(ov,[rd.accent,rd.soft,'#E0A23A','#fff']);
-    $('#rv-go').addEventListener('click', function(){ ov.className='reveal'; if(last) finish(); else { RUN.i++; renderRound(); } });
+    if(rsd){
+      R.revealAnim = G.StrokePlay.mount($('#rv-anim'), rsd, { perStroke:animSpeed(), gap:150, ghost:false, numbers:true });
+      var rrb=$('#rv-replay'); if(rrb) rrb.addEventListener('click', function(){ if(R.revealAnim) R.revealAnim.replay(); });
+    }
+    $('#rv-go').addEventListener('click', function(){ if(R.revealAnim){ R.revealAnim.cancel(); R.revealAnim=null; } ov.className='reveal'; if(last) finish(); else { RUN.i++; renderRound(); } });
   }
 
   function finish(){

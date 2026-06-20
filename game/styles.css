@@ -819,6 +819,34 @@ body[data-bob="off"] .youare,body[data-bob="off"] .duebadge{animation:none;}
 .muted{color:var(--ink-mute);}
 .cta-row{display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;}
 
+/* ───────── animated stroke-order playback (strokeplay.js) ───────── */
+.sp-svg{width:100%;height:100%;display:block;}
+.sp-svg .sp-num{transition:opacity .25s ease;}
+.rv-anim{width:clamp(128px,32vw,184px);height:clamp(128px,32vw,184px);margin:2px auto 0;
+  display:flex;align-items:center;justify-content:center;}
+.sp-replay{display:inline-flex;align-items:center;gap:6px;margin:2px auto 0;
+  padding:7px 14px;border-radius:999px;background:var(--paper);border:1px solid var(--rc-soft);
+  color:var(--rc);font-weight:700;font-size:12.5px;cursor:pointer;transition:.14s;}
+.sp-replay:hover{background:var(--rc-tint);}
+.sp-replay .zh{font-weight:600;}
+.sp-replay svg{opacity:.9;}
+
+/* ───────── trial first-run tour ───────── */
+.trial-tour{position:fixed;inset:0;z-index:150;}                 /* blocks the UI underneath while touring */
+.trial-tour.centered{background:rgba(28,22,20,.6);}
+.trial-tour .tt-ring{position:fixed;display:none;border-radius:14px;border:2px solid #fff;
+  box-shadow:0 0 0 9999px rgba(28,22,20,.6),0 0 0 4px var(--rc);pointer-events:none;transition:left .2s,top .2s,width .2s,height .2s;}
+.trial-tour .tt-card{position:fixed;background:var(--paper);border:1px solid var(--line);border-radius:18px;
+  padding:18px 20px;box-shadow:0 26px 50px -22px rgba(28,22,20,.5);max-width:340px;}
+.trial-tour .tt-step{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--ink-mute);text-transform:uppercase;}
+.trial-tour .tt-card h3{margin:4px 0 8px;font-family:var(--serif);font-weight:500;font-size:21px;color:var(--ink);}
+.trial-tour .tt-card h3 .zh{font-weight:600;}
+.trial-tour .tt-zh{margin:0 0 6px;font-size:14px;color:var(--ink);line-height:1.5;}
+.trial-tour .tt-en{margin:0 0 14px;font-size:13px;color:var(--ink-soft);line-height:1.5;}
+.trial-tour .tt-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;}
+.trial-tour .tt-skip{font-size:12.5px;font-weight:600;color:var(--ink-mute);text-decoration:underline;cursor:pointer;background:none;border:none;}
+.trial-tour .tt-skip:hover{color:var(--ink-soft);}
+
 /* ───────── free-trial (trial.html only) ───────── */
 /* welcome / expiry gate copy (reuses .lockgate shell) */
 .trial-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;
