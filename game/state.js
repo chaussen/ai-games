@@ -128,8 +128,11 @@
 
   var store;
   function load(){
-    try{ var s=JSON.parse(localStorage.getItem(LS)); store = (s&&s.book) ? s : seeded(); }
-    catch(e){ store = seeded(); }
+    // A brand-new player must start from the very beginning — no pre-cleared
+    // stages, no gifted 文. seeded() is demo-only (see reset()); never use it as
+    // the fallback for first-time/public users.
+    try{ var s=JSON.parse(localStorage.getItem(LS)); store = (s&&s.book) ? s : fresh(); }
+    catch(e){ store = fresh(); }
     // migrate older saves that predate teacher-editable fields
     if(!store.catalogue) store.catalogue = JSON.parse(JSON.stringify(STORE));
     if(!store.current)   store.current = 'b1-u1';
