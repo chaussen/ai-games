@@ -63,7 +63,18 @@
   }
 
   // ───────── book ─────────
-  function units(){ return DATA.units; }
+  // The public book is everything by default, but the free-trial entry
+  // (window.GAME_TRIAL) narrows it to a single band so the scroll, deck and
+  // totals all scope to that book. Internal resolution still reads the full
+  // DATA.units (so cross-book decoys stay rich) — only this public view shrinks.
+  function units(){
+    var T = window.GAME_TRIAL;
+    if (T && T.on){
+      var bk = (T.book || 'b1') + '-';
+      return DATA.units.filter(function(u){ return String(u.id).indexOf(bk)===0; });
+    }
+    return DATA.units;
+  }
   function unitAt(i){ return DATA.units[i]; }
   function unitById(id){ for(var i=0;i<DATA.units.length;i++) if(DATA.units[i].id===id) return DATA.units[i]; return null; }
 
