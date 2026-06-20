@@ -833,13 +833,15 @@ body[data-bob="off"] .youare,body[data-bob="off"] .duebadge{animation:none;}
 
 /* ───────── trial first-run tour ───────── */
 .trial-tour{position:fixed;inset:0;z-index:150;}                 /* blocks the UI underneath while touring */
-.trial-tour.centered{background:rgba(28,22,20,.6);}
+.trial-tour.centered{background:rgba(28,22,20,.42);}
 .trial-tour .tt-ring{position:fixed;display:none;border-radius:14px;border:2px solid #fff;
   box-shadow:0 0 0 9999px rgba(28,22,20,.6),0 0 0 4px var(--rc);pointer-events:none;transition:left .2s,top .2s,width .2s,height .2s;}
-.trial-tour .tt-card{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);transform:translateX(-50%);
-  width:min(360px,calc(100vw - 24px));max-height:64vh;overflow-y:auto;-webkit-overflow-scrolling:touch;
-  background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px 20px;
+.trial-tour .tt-card{position:fixed;left:50%;transform:translateX(-50%);
+  width:min(360px,calc(100vw - 24px));max-height:46vh;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:16px 20px;
   box-shadow:0 26px 60px -20px rgba(28,22,20,.55);}
+.trial-tour .tt-card.tt-bottom{bottom:calc(env(safe-area-inset-bottom,0px) + 16px);top:auto;}
+.trial-tour .tt-card.tt-top{top:calc(env(safe-area-inset-top,0px) + 16px);bottom:auto;}
 .trial-tour .tt-step{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--ink-mute);text-transform:uppercase;}
 .trial-tour .tt-card h3{margin:4px 0 8px;font-family:var(--serif);font-weight:500;font-size:21px;color:var(--ink);}
 .trial-tour .tt-card h3 .zh{font-weight:600;}

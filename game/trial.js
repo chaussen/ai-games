@@ -152,8 +152,13 @@
           '<button class="jbtn solid tt-next" id="tt-next" style="flex:0 0 auto;padding:11px 22px">'+
             (step.last?'<span class="zh">开始</span> Start ›':'<span class="zh">下一步</span> Next ›')+'</button>'+
         '</div>';
-      // The card is pinned to the bottom-centre by CSS so it can never be clipped
-      // off-screen on mobile (the spotlight ring still shows what it points at).
+      // Place the card on the OPPOSITE half from the highlighted target so it
+      // never covers what it's pointing at. (Header is high → card low; a stage
+      // node low → card high.) Centre/overview steps default to the bottom,
+      // leaving the upper journey visible.
+      var atTop = (r && r.width && r.height) ? ((r.top + r.height/2) > window.innerHeight*0.45) : false;
+      card.classList.toggle('tt-top', atTop);
+      card.classList.toggle('tt-bottom', !atTop);
       var nx=$('#tt-next'); if(nx) nx.addEventListener('click', function(){ showTour(i+1); });
       var bk=$('#tt-back'); if(bk) bk.addEventListener('click', function(){ showTour(i-1); });
       var sk=$('#tt-skip'); if(sk) sk.addEventListener('click', function(){ clearTour(); markToured(); });
