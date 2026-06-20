@@ -881,3 +881,73 @@ body[data-bob="off"] .youare,body[data-bob="off"] .duebadge{animation:none;}
   .trial-bar .tb-msg .tb-en{display:none;}
   .trial-bar{font-size:12px;}
 }
+
+/* ═══════════ kid-friendly "flash" layer (celebrations + sparkle) ═══════════
+   Aimed at Book 1's young learners — bigger, bouncier, shinier rewards.
+   Pure CSS where possible; the confetti JS adds emoji + drift to match. */
+
+/* — confetti: drift + spin + emoji bits (set by app.js / forge.js) — */
+.confetti-bit{animation-name:confettiFall;animation-timing-function:cubic-bezier(.3,.2,.5,1);will-change:transform;}
+.confetti-bit.emoji{background:none!important;border-radius:0;line-height:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.12));}
+@keyframes confettiFall{to{transform:translate(var(--dx,0),112vh) rotate(var(--rot,600deg));}}
+
+/* — celebratory glow on the gold stars, popping in one by one — */
+.rv-stars i.on,.bigstars i.on,.fin-item .fi-stars i.on{
+  color:var(--gold);
+  text-shadow:0 0 9px rgba(224,162,58,.75),0 0 20px rgba(224,162,58,.45);}
+.rv-stars i.on{animation:starPop .55s cubic-bezier(.2,1.5,.4,1) backwards;}
+.rv-stars i.on:nth-child(1){animation-delay:.12s;}
+.rv-stars i.on:nth-child(2){animation-delay:.27s;}
+.rv-stars i.on:nth-child(3){animation-delay:.42s;}
+.bigstars i.on{display:inline-block;animation:starPop .55s cubic-bezier(.2,1.5,.4,1) backwards;}
+.bigstars i.on:nth-child(1){animation-delay:.14s;}
+.bigstars i.on:nth-child(2){animation-delay:.30s;}
+.bigstars i.on:nth-child(3){animation-delay:.46s;}
+@keyframes starPop{0%{transform:scale(0) rotate(-45deg);opacity:0;}
+  60%{transform:scale(1.4) rotate(10deg);opacity:1;}100%{transform:scale(1) rotate(0);opacity:1;}}
+
+/* — spinning sunburst behind the reveal glyph & ceremony seal — */
+.rv-card,.ov-card{isolation:isolate;overflow:hidden;}
+.rv-card::before,.ov-card::before{
+  content:"";position:absolute;left:50%;top:118px;width:360px;height:360px;z-index:-1;
+  transform:translate(-50%,-50%);border-radius:50%;opacity:.55;pointer-events:none;
+  background:repeating-conic-gradient(from 0deg,var(--rc-soft) 0deg 11deg,transparent 11deg 22deg);
+  -webkit-mask:radial-gradient(circle,#000 0%,#000 30%,transparent 68%);
+  mask:radial-gradient(circle,#000 0%,#000 30%,transparent 68%);
+  animation:sunspin 16s linear infinite;}
+.ov-card::before{top:96px;}
+@keyframes sunspin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+
+/* — glow halo + lively pop on the forged character — */
+.rv-anim,.rv-ch{filter:drop-shadow(0 0 16px var(--rc-soft));}
+.rv-ch{animation:charBounce .7s cubic-bezier(.2,1.4,.35,1);}
+@keyframes charBounce{0%{transform:scale(.4) rotate(-10deg);opacity:0;}
+  55%{transform:scale(1.18) rotate(4deg);opacity:1;}80%{transform:scale(.95) rotate(-1deg);}100%{transform:scale(1) rotate(0);}}
+
+/* — shiny, gently pulsing primary buttons on rewards — */
+.ov-card .jbtn.solid,.rv-actions .gbtn.solid{position:relative;overflow:hidden;
+  animation:btnPulse 1.7s ease-in-out infinite;}
+.ov-card .jbtn.solid::after,.rv-actions .gbtn.solid::after{content:"";position:absolute;top:0;left:-65%;
+  width:45%;height:100%;transform:skewX(-18deg);pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.6),transparent);
+  animation:btnShine 2.6s ease-in-out infinite;}
+@keyframes btnPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.045);}}
+@keyframes btnShine{0%{left:-65%;}55%{left:130%;}100%{left:130%;}}
+
+/* — the ceremony seal: shine sweep + breathing glow — */
+.ov-rankseal{position:relative;overflow:hidden;animation:sealSpin .7s cubic-bezier(.2,.8,.3,1.2),sealGlow 2.2s ease-in-out .7s infinite;}
+.ov-rankseal::after{content:"";position:absolute;top:0;left:-70%;width:50%;height:100%;transform:skewX(-18deg);
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.65),transparent);animation:btnShine 3s ease-in-out 1s infinite;}
+@keyframes sealGlow{0%,100%{box-shadow:0 26px 50px -22px var(--rc),0 0 0 0 color-mix(in srgb,var(--rc) 45%,transparent);}
+  50%{box-shadow:0 26px 50px -22px var(--rc),0 0 28px 8px color-mix(in srgb,var(--rc) 28%,transparent);}}
+
+/* — make the "开始 Start" pill bounce & glow so young kids spot where to tap — */
+.startpill{box-shadow:0 8px 18px -6px var(--rc);animation:startBounce 1.4s ease-in-out infinite;}
+@keyframes startBounce{0%,100%{transform:translateX(-50%) scale(1);}50%{transform:translateX(-50%) scale(1.14);}}
+
+/* respect users who prefer less motion */
+@media (prefers-reduced-motion:reduce){
+  .rv-card::before,.ov-card::before,.ov-card .jbtn.solid,.rv-actions .gbtn.solid,
+  .ov-card .jbtn.solid::after,.rv-actions .gbtn.solid::after,.ov-rankseal,.ov-rankseal::after,
+  .startpill,.rv-stars i.on,.bigstars i.on,.rv-ch{animation:none!important;}
+}

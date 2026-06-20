@@ -130,11 +130,19 @@
 
   // ───────── ceremonies ─────────
   function ov(){ return $('#overlay'); }
+  var CONFETTI_EMOJI=['⭐','✨','🎉','🌟','🎈','💫','🎊'];
   function confetti(host, colors){ var f=document.createDocumentFragment();
-    for(var i=0;i<48;i++){ var b=document.createElement('i'); b.className='confetti-bit'; b.style.left=(Math.random()*100)+'%';
-      b.style.background=colors[i%colors.length]; b.style.animationDelay=(Math.random()*0.5)+'s';
-      b.style.animationDuration=(1.6+Math.random()*1.4)+'s'; b.style.width=b.style.height=(6+Math.random()*8)+'px'; f.appendChild(b); }
-    host.appendChild(f); setTimeout(function(){ $$('.confetti-bit',host).forEach(function(x){x.remove();}); },3400); }
+    for(var i=0;i<80;i++){ var b=document.createElement('i'); b.className='confetti-bit';
+      b.style.left=(Math.random()*100)+'%';
+      b.style.setProperty('--dx',((Math.random()*2-1)*130).toFixed(0)+'px');
+      b.style.setProperty('--rot',(360+Math.random()*620).toFixed(0)+'deg');
+      b.style.animationDelay=(Math.random()*0.6)+'s';
+      b.style.animationDuration=(1.9+Math.random()*1.7)+'s';
+      if(i%4===0){ b.className='confetti-bit emoji'; b.textContent=CONFETTI_EMOJI[i%CONFETTI_EMOJI.length]; b.style.fontSize=(15+Math.random()*15)+'px'; }
+      else { b.style.background=colors[i%colors.length]; var sz=(7+Math.random()*9);
+        b.style.width=sz+'px'; b.style.height=(Math.random()<0.3?sz*2.2:sz)+'px'; }
+      f.appendChild(b); }
+    host.appendChild(f); setTimeout(function(){ $$('.confetti-bit',host).forEach(function(x){x.remove();}); },3900); }
 
   function ceremonyStageClear(unit, stars, wen, xp, isReview, onGo){
     var o=ov(); o.className='overlay show';

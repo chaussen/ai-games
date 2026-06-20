@@ -599,11 +599,19 @@
 
   // ───────── fx ─────────
   function shake(){ var a=$('#fg-arena'); if(!a) return; a.classList.remove('shaking'); void a.offsetWidth; a.classList.add('shaking'); }
+  var CONFETTI_EMOJI=['⭐','✨','🎉','🌟','🎈','💫','🎊'];
   function confetti(hostEl, colors){ var f=document.createDocumentFragment();
-    for(var i=0;i<40;i++){ var b=document.createElement('i'); b.className='confetti-bit'; b.style.left=(Math.random()*100)+'%';
-      b.style.background=colors[i%colors.length]; b.style.animationDelay=(Math.random()*0.4)+'s';
-      b.style.animationDuration=(1.5+Math.random()*1.3)+'s'; b.style.width=b.style.height=(6+Math.random()*7)+'px'; f.appendChild(b); }
-    hostEl.appendChild(f); setTimeout(function(){ $$('.confetti-bit',hostEl).forEach(function(x){x.remove();}); },3200); }
+    for(var i=0;i<70;i++){ var b=document.createElement('i'); b.className='confetti-bit';
+      b.style.left=(Math.random()*100)+'%';
+      b.style.setProperty('--dx',((Math.random()*2-1)*120).toFixed(0)+'px');
+      b.style.setProperty('--rot',(360+Math.random()*600).toFixed(0)+'deg');
+      b.style.animationDelay=(Math.random()*0.5)+'s';
+      b.style.animationDuration=(1.8+Math.random()*1.5)+'s';
+      if(i%4===0){ b.className='confetti-bit emoji'; b.textContent=CONFETTI_EMOJI[i%CONFETTI_EMOJI.length]; b.style.fontSize=(14+Math.random()*14)+'px'; }
+      else { b.style.background=colors[i%colors.length]; var sz=(6+Math.random()*8);
+        b.style.width=sz+'px'; b.style.height=(Math.random()<0.3?sz*2.2:sz)+'px'; }
+      f.appendChild(b); }
+    hostEl.appendChild(f); setTimeout(function(){ $$('.confetti-bit',hostEl).forEach(function(x){x.remove();}); },3700); }
   function speak(ch){ try{ if(!window.speechSynthesis) return; var u=new SpeechSynthesisUtterance(ch); u.lang='zh-CN'; u.rate=.8;
     var vs=speechSynthesis.getVoices(); var zh=vs.filter(function(v){return /zh|Chinese/i.test(v.lang+v.name);})[0]; if(zh)u.voice=zh;
     speechSynthesis.cancel(); speechSynthesis.speak(u);}catch(e){} }
