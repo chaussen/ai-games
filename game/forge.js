@@ -197,18 +197,18 @@
   function clueSpeed(){ var t=window.GAME_TRIAL; return (t && t.on) ? 600 : 480; }
   function replaySpeed(){ return 300; }
 
-  // A non-standalone radical/component (e.g. 氵, 艹) — a building block, NOT a
-  // character a child should treat as a word. We badge these clearly.
+  // A building-block (radical or 声旁/component) rather than a standalone word —
+  // e.g. 氵 艹 扌, or 畐. Decided from curated data (Content.isComponentChar), so
+  // real words (田, 山, 好) are never mis-labelled.
   function isComponentOnly(ch){
     if (!ch || (Array.prototype.slice.call(ch)).length>1) return false;
-    var info = G.Content && G.Content.compInfo ? G.Content.compInfo(ch) : null;
-    return !!(info && info.standalone===false);
+    return !!(G.Content && G.Content.isComponentChar && G.Content.isComponentChar(ch));
   }
   function componentBadgeHTML(ch){
     if (!isComponentOnly(ch)) return '';
     return '<div class="part-badge"><span class="pb-ic">部</span>'+
-      '<span class="pb-tx"><b><span class="zh">偏旁部件</span> · component</b>'+
-      '<small>a building block — not a word on its own</small></span></div>';
+      '<span class="pb-tx"><b><span class="zh">部件</span> · building block</b>'+
+      '<small><span class="zh">用来组成别的字</span> · a piece that builds characters</small></span></div>';
   }
 
   // ───────── PREVIEW ─────────
@@ -218,10 +218,10 @@
     var meta = rd.grain==='use'
       ? '<span class="pv-en">'+esc(rd.meaning||'a word to build')+'</span>'
       : '<span class="pv-py">'+esc(rd.pinyin||'')+'</span><span class="pv-en">'+esc(rd.meaning||'')+'</span>';
-    var cueText = ({ stroke:'Watch the stroke order — you’ll write it from memory.',
-      component:'Two meanings combine. Remember which parts.',
-      radical:'One part gives the meaning, one gives the sound.',
-      use:'You’ll assemble this word from its characters.' })[rd.grain];
+    var cueText = ({ stroke:'Watch how it’s written, then write it from memory!',
+      component:'Made of smaller pieces — try to remember them!',
+      radical:'One piece shows the meaning, one shows the sound.',
+      use:'Put the characters together to make the word.' })[rd.grain];
     var sd = singleClueSD(rd);
     var glyphHTML = sd ? '<div class="pv-glyph" id="pv-anim"></div>' : clueGlyphHTML(rd,'pv-glyph');
     $('#fg-arena').innerHTML=
@@ -275,7 +275,7 @@
       cue='<div class="forge-cue">'+
         (rd.cue.meaning?'<span class="fc-meaning">“'+esc(rd.meaning)+'”</span>':'')+
         (rd.cue.pinyin?'<span class="fc-pinyin">'+esc(rd.pinyin)+'</span>':'')+
-        '<span class="fc-prompt">'+(rd.grain==='radical'?'build it: meaning part + sound part':'build it from its parts')+'</span></div>';
+        '<span class="fc-prompt">'+(rd.grain==='radical'?'put the meaning piece and the sound piece together':'put the pieces together')+'</span></div>';
     }
     $('#fg-head').innerHTML=cue+
       '<button class="peek-btn" id="fg-peek" type="button" title="See the target again">'+
@@ -430,7 +430,7 @@
     // it here, or the structure page shows two stacked cues (feedback: duplicate pinyin).
     $('#fg-arena').innerHTML=
       '<div class="struct-stage">'+
-        '<div class="struct-q">First — what is the <b>structure</b> of this character?</div>'+
+        '<div class="struct-q">First — how do the <b>pieces fit together</b>?</div>'+
         '<div class="struct-opts">'+optHtml+'</div></div>'+
       '<div class="howto" id="fg-howto">Recall its shape, then you’ll place the parts.</div>';
     $$('.structopt').forEach(function(b){ b.addEventListener('click', function(){ pickStruct(rd,b.dataset.op,b); }); });
@@ -456,8 +456,8 @@
         '<span class="pc-ch zh">'+esc(p.ch)+'</span>'+py+'</button>';
     }).join('');
     var prompt = rd.grain==='radical'
-      ? 'Drag the <b>meaning</b> part and the <b>sound</b> part onto the grid.'
-      : 'Drag each part onto the right area of the grid.';
+      ? 'Drag the <b>meaning</b> piece and the <b>sound</b> piece into place.'
+      : 'Drag each piece to where it belongs.';
     $('#fg-arena').innerHTML=
       '<div class="build-stage">'+
         '<div class="build-grid" data-n="'+zones.length+'" id="fg-grid">'+zoneHtml+'</div>'+

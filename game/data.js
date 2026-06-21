@@ -62,6 +62,20 @@
     return false;
   }
 
+  // Is this glyph a building-block (radical/component) rather than a standalone
+  // word? Two curated signals from the data, no guessing:
+  //   • components.json standalone:false → a bound radical form (氵 艹 扌 亻 宀)
+  //   • characters.json status:'C'       → the curator's "component-only" set,
+  //     which catches characters that exist but are essentially never used alone
+  //     (e.g. the 声旁 畐 in 福/富). 'W'/'R' (write/recognise vocabulary) words —
+  //     田, 山, 好 — are correctly NOT flagged.
+  function isComponentChar(ch){
+    if (!ch) return false;
+    var k=DATA.comps[ch]; if (k && k.standalone===false) return true;
+    var c=DATA.chars[ch]; if (c && c.status==='C') return true;
+    return false;
+  }
+
   // ───────── book ─────────
   // The public book is everything by default, but the free-trial entry
   // (window.GAME_TRIAL) narrows it to a single band so the scroll, deck and
@@ -430,7 +444,7 @@
     load:load, ready:function(){ return ready; },
     units:units, unitAt:unitAt, unitById:unitById,
     charInfo:charInfo, compInfo:compInfo, hasStrokes:hasStrokes, strokesOf:strokesOf,
-    meaningOf:meaningOf, pinyinOf:pinyinOf, isVocabSomewhere:isVocabSomewhere,
+    meaningOf:meaningOf, pinyinOf:pinyinOf, isVocabSomewhere:isVocabSomewhere, isComponentChar:isComponentChar,
     resolveStage:resolveStage, buildRound:buildRound, PAL:PAL, grainLabel:grainLabel,
     raw:function(){ return DATA; }
   };

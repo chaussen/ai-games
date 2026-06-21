@@ -211,7 +211,7 @@
 
   function bandRail(arc, state){
     var bands=[
-      { key:'parts', no:1, zh:'偏旁部首', en:'Parts', sub:'stroke atoms & sub-builds', items:arc.bands.parts.map(function(p){
+      { key:'parts', no:1, zh:'偏旁部首', en:'Parts', sub:'the little pieces', items:arc.bands.parts.map(function(p){
           var sObj=S.get(); var owned=sObj.owned[p.char]; var stt = owned?(S.isCharDue(p.char)?'review':'owned'):'new';
           return { ch:p.char, tag:C.grainLabel(p.grain).zh, st:stt }; }) },
       { key:'wholes', no:2, zh:'合字', en:'Wholes', sub:'this stage’s characters', items:arc.bands.wholes.map(function(w){
