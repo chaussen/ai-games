@@ -192,9 +192,24 @@
     var sd=clueDataFor(rd, rd.char);
     return (sd && sd.s && sd.s.length) ? sd : null;
   }
-  // per-stroke draw speed (ms) — deliberately slow, and a touch slower in trial
-  // so first-timers at home can follow every stroke.
-  function animSpeed(){ var t=window.GAME_TRIAL; return (t && t.on) ? 820 : 600; }
+  // per-stroke draw speed (ms). The study clue is slower (learn it); the post-
+  // answer replay is quicker (just a recap). Trial nudges the clue a touch slower.
+  function clueSpeed(){ var t=window.GAME_TRIAL; return (t && t.on) ? 600 : 480; }
+  function replaySpeed(){ return 300; }
+
+  // A non-standalone radical/component (e.g. 氵, 艹) — a building block, NOT a
+  // character a child should treat as a word. We badge these clearly.
+  function isComponentOnly(ch){
+    if (!ch || (Array.prototype.slice.call(ch)).length>1) return false;
+    var info = G.Content && G.Content.compInfo ? G.Content.compInfo(ch) : null;
+    return !!(info && info.standalone===false);
+  }
+  function componentBadgeHTML(ch){
+    if (!isComponentOnly(ch)) return '';
+    return '<div class="part-badge"><span class="pb-ic">部</span>'+
+      '<span class="pb-tx"><b><span class="zh">偏旁部件</span> · component</b>'+
+      '<small>a building block — not a word on its own</small></span></div>';
+  }
 
   // ───────── PREVIEW ─────────
   function renderPreview(rd){
@@ -212,20 +227,22 @@
     $('#fg-arena').innerHTML=
       '<div class="preview-stage">'+
         '<div class="pv-round-badge">'+({parts:'偏旁部首 PART',wholes:'合字 WHOLE',use:'应用 USE'})[rd.band]+' · forge from memory</div>'+
+        componentBadgeHTML(rd.char)+
         '<div class="pv-glyph-wrap">'+glyphHTML+'<div class="pv-meta">'+meta+'</div></div>'+
         (sd ? G.StrokePlay.replayBtnHTML('pv-replay') : '')+
         '<div class="pv-cue">'+cueText+'</div>'+
         (ms>0?'<div class="pv-countdown" id="pv-cd"><svg class="pv-ring-svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="none" stroke="var(--rc-soft)" stroke-width="5"/><circle id="pv-arc" cx="32" cy="32" r="28" fill="none" stroke="var(--rc)" stroke-width="5" stroke-linecap="round" transform="rotate(-90 32 32)" stroke-dasharray="175.9" stroke-dashoffset="0"/></svg><span class="pv-cd-num" id="pv-num"></span></div>'+
-          '<div class="pv-skip-hint">tap to start now ›</div>' : '')+
+          '<button class="pv-skip" id="pv-skip" type="button"><span class="zh">跳过</span> Skip · start now ›</button>' : '')+
       '</div>';
     if (sd){
-      R.anim = G.StrokePlay.mount($('#pv-anim'), sd, { perStroke:animSpeed(), gap:150, ghost:false, numbers:true });
+      R.anim = G.StrokePlay.mount($('#pv-anim'), sd, { perStroke:clueSpeed(), gap:120, ghost:false, numbers:true });
       var rb=$('#pv-replay'); if(rb) rb.addEventListener('click', function(){ if(R.anim) R.anim.replay(); });
       ms = Math.max(ms, R.anim.duration + 1100);     // don't auto-advance before the draw finishes
     }
     if (RUN.settings.sound!==false) speak(rd.grain==='use'?rd.word:rd.char);
     if (ms<=0){ startForge(rd,false); return; }
     var cd=$('#pv-cd'); cd.addEventListener('click', function(){ startForge(rd,true); });
+    var sk=$('#pv-skip'); if(sk) sk.addEventListener('click', function(){ startForge(rd,true); });
     var t0=Date.now(), C=175.9;
     R.timer=setInterval(function(){
       var el=Date.now()-t0, frac=Math.max(0,1-el/ms);
@@ -574,19 +591,23 @@
       '<div class="rv-eyebrow"><span class="dot"></span>Forged · <span class="zh">炼成</span> · <span class="zh">'+rd.cat+'</span></div>'+
       '<div class="rv-stars">'+sv+'</div>'+
       chBlock+
+      componentBadgeHTML(rd.char)+
       (rd.pinyin?'<div class="rv-py">'+esc(rd.pinyin)+'</div>':'')+
       '<div class="rv-en">'+esc(rd.meaning||'')+'</div>'+
       '<div class="rv-tally"><span>heat <b>+'+timeBonus+'</b></span><span>combo ×'+Math.max(1,R.maxCombo)+'</span>'+
         (R.cracks?'<span class="bad">cracks '+R.cracks+'</span>':'<span class="good">flawless</span>')+
         (R.skipped?'<span class="good">+speed</span>':'')+'</div>'+
       '<div class="rv-actions"><button class="gbtn solid" id="rv-go">'+(last?'Finish stage <span class="zh">完成</span>':'Next <span class="zh">继续</span>')+' ›</button></div>'+
+      '<div class="rv-skiphint"><span class="zh">轻触空白处继续</span> · tap anywhere to continue</div>'+
     '</div>';
     confetti(ov,[rd.accent,rd.soft,'#E0A23A','#fff']);
+    function proceed(){ if(R.revealAnim){ R.revealAnim.cancel(); R.revealAnim=null; } ov.onclick=null; ov.className='reveal'; if(last) finish(); else { RUN.i++; renderRound(); } }
     if(rsd){
-      R.revealAnim = G.StrokePlay.mount($('#rv-anim'), rsd, { perStroke:animSpeed(), gap:150, ghost:false, numbers:true });
-      var rrb=$('#rv-replay'); if(rrb) rrb.addEventListener('click', function(){ if(R.revealAnim) R.revealAnim.replay(); });
+      R.revealAnim = G.StrokePlay.mount($('#rv-anim'), rsd, { perStroke:replaySpeed(), gap:90, ghost:false, numbers:true });
+      var rrb=$('#rv-replay'); if(rrb) rrb.addEventListener('click', function(e){ e.stopPropagation(); if(R.revealAnim) R.revealAnim.replay(); });
     }
-    $('#rv-go').addEventListener('click', function(){ if(R.revealAnim){ R.revealAnim.cancel(); R.revealAnim=null; } ov.className='reveal'; if(last) finish(); else { RUN.i++; renderRound(); } });
+    $('#rv-go').addEventListener('click', function(e){ e.stopPropagation(); proceed(); });
+    ov.onclick=function(e){ if(e.target===ov) proceed(); };   // tap the backdrop to continue (clearly hinted)
   }
 
   function finish(){
