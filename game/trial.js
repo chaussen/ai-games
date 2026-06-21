@@ -58,8 +58,33 @@
       '</div>' +
       '<button class="jbtn solid" id="trial-start" style="display:inline-flex;flex:0 0 auto;padding:14px 32px;margin-top:4px">' +
         '<span class="zh">开始试用</span> Start ›</button>' +
-      '<p class="trial-left"><span class="zh">试用还剩 ' + left + ' 天</span> · ' + left + ' day' + (left===1?'':'s') + ' left</p>';
+      '<p class="trial-left"><span class="zh">试用还剩 ' + left + ' 天</span> · ' + left + ' day' + (left===1?'':'s') + ' left</p>' +
+      '<button class="trial-reset" id="trial-reset"><span class="zh">重新开始</span> · Start over (clear progress)</button>';
     $('#trial-start').addEventListener('click', play);
+    var rs=$('#trial-reset'); if(rs) rs.addEventListener('click', confirmReset);
+  }
+
+  // ── start over: clear progress + replay the tour (with a clear warning) ──
+  function confirmReset(){
+    if ($('#trial-confirm')) return;
+    var d=document.createElement('div'); d.className='trial-confirm'; d.id='trial-confirm';
+    d.innerHTML='<div class="tcf-box">'+
+      '<div class="tcf-ic">⚠️</div>'+
+      '<h3><span class="zh">重新开始？</span> Start over?</h3>'+
+      '<p class="tcf-zh">这会清除<b>所有进度</b>：印章、文钱、等级和复习记录，<b>无法恢复</b>。新手引导会重新出现。</p>'+
+      '<p class="tcf-en">This clears <b>all progress</b> — seals, 文 coins, rank and reviews — and <b>cannot be undone</b>. The guided tour will show again.</p>'+
+      '<div class="tcf-btns">'+
+        '<button class="jbtn ghost" id="tcf-cancel"><span class="zh">取消</span> Cancel</button>'+
+        '<button class="jbtn danger" id="tcf-go"><span class="zh">清除并重新开始</span> Clear &amp; start over</button>'+
+      '</div></div>';
+    document.body.appendChild(d);
+    $('#tcf-cancel').addEventListener('click', function(){ d.remove(); });
+    $('#tcf-go').addEventListener('click', doReset);
+    d.addEventListener('click', function(e){ if(e.target===d) d.remove(); });
+  }
+  function doReset(){
+    try { localStorage.removeItem('ccs-game-v1'); localStorage.removeItem(K_TOUR); } catch (e) {}
+    location.reload();   // reloads into a fresh state; welcome → tour shows again (trial clock kept)
   }
 
   function showExpired(){
