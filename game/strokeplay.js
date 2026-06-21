@@ -37,7 +37,7 @@
   }
 
   function shell(sd, opts){
-    var n=sd.s.length, cols=pal(n), uid=opts.uid;
+    var n=sd.s.length, cols=opts.color ? sd.s.map(function(){return opts.color;}) : pal(n), uid=opts.uid;
     var defs='<defs>'+sd.s.map(function(p,i){
       return '<clipPath id="'+uid+'-cp'+i+'" clipPathUnits="userSpaceOnUse">'+
         '<path d="'+p+'" transform="translate(0,900) scale(1,-1)"/></clipPath>'; }).join('')+'</defs>';
@@ -59,7 +59,7 @@
   function mount(container, sd, opts){
     opts=opts||{}; opts.uid='sp'+(UID++);
     if(!sd||!sd.s||!sd.s.length){ return { cancel:function(){}, replay:function(){}, duration:0 }; }
-    var n=sd.s.length, cols=pal(n);
+    var n=sd.s.length, cols=opts.color ? sd.s.map(function(){return opts.color;}) : pal(n);
     container.innerHTML=shell(sd, opts);
     var svg=container.querySelector('svg');
     var meds=Array.prototype.slice.call(svg.querySelectorAll('.sp-med'));

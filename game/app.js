@@ -144,20 +144,109 @@
       f.appendChild(b); }
     host.appendChild(f); setTimeout(function(){ $$('.confetti-bit',host).forEach(function(x){x.remove();}); },3900); }
 
+  // ── celebration helpers (reduced-motion, gentle sound, coin rain, count-up) ──
+  var GOLD='#D9A93E';
+  function reduceMotion(){ try{ return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){ return false; } }
+
+  // gentle, short WebAudio stings — additive, honor the mute setting, ≤1.2s.
+  var _ac=null;
+  function actx(){ if(_ac) return _ac; try{ _ac=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ _ac=null; } return _ac; }
+  function soundOn(){ try{ return S.get().settings.sound!==false; }catch(e){ return false; } }
+  function tone(freq, delay, dur, type, gain){
+    if(!soundOn()) return; var ac=actx(); if(!ac) return;
+    try{ if(ac.state==='suspended') ac.resume(); }catch(e){}
+    var o=ac.createOscillator(), g=ac.createGain(); o.type=type||'sine'; o.frequency.value=freq;
+    o.connect(g); g.connect(ac.destination); var t=ac.currentTime+(delay||0);
+    g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(gain||0.1, t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+dur); o.start(t); o.stop(t+dur+0.03);
+  }
+  function sGong(){ tone(196,0,1.1,'sine',0.16); tone(294,0,0.9,'sine',0.07); tone(392,0,0.6,'sine',0.04); }
+  function sStar(i){ tone(523.25*Math.pow(2,(i*3)/12), 0, 0.32,'triangle',0.13); }   // rises per star
+  function sCoins(){ for(var k=0;k<6;k++) tone(1000+k*150, k*0.05, 0.16,'triangle',0.045); }
+  function sClink(){ tone(1320,0,0.5,'triangle',0.12); tone(1976,0.02,0.4,'sine',0.05); }
+  function sFanfare(){ [0,4,7,12,16].forEach(function(st,idx){ tone(392*Math.pow(2,st/12), idx*0.13, 0.55,'sawtooth',0.06); }); }
+
+  // 文 coins + gold flecks rain from the top edge and fade (the in-aesthetic confetti)
+  function coinRain(host, n){
+    var f=document.createDocumentFragment();
+    for(var i=0;i<n;i++){ var c=document.createElement('div'); c.className='coinrain'+(i%3===0?' fleck':'');
+      c.style.left=(Math.random()*100)+'%';
+      c.style.setProperty('--dx',((Math.random()*2-1)*70).toFixed(0)+'px');
+      c.style.animationDelay=(Math.random()*0.8)+'s';
+      c.style.animationDuration=(1.7+Math.random()*1.3)+'s';
+      if(i%3===0){ var s=(7+Math.random()*7); c.style.width=c.style.height=s+'px'; }
+      else { c.innerHTML=G.Scroll.wenCoin(); var sz=(22+Math.random()*14); c.style.width=c.style.height=sz+'px'; }
+      f.appendChild(c); }
+    host.appendChild(f);
+    setTimeout(function(){ $$('.coinrain',host).forEach(function(x){x.remove();}); }, 3600);
+  }
+  function countUp(el, target, suffix){
+    if(!el) return;
+    if(reduceMotion()||target<=0){ el.textContent='+'+target+suffix; return; }
+    var t0=null, dur=750;
+    function step(ts){ if(t0===null) t0=ts; var p=Math.min(1,(ts-t0)/dur);
+      el.textContent='+'+Math.round(target*p)+suffix; if(p<1) requestAnimationFrame(step); }
+    requestAnimationFrame(step);
+  }
+  // a medal/seal flies up to the header seal tray on collect
+  function flyToSealTray(el){
+    var tray=$('.sealtray'); if(!el||!tray) return;
+    var r=el.getBoundingClientRect(), tr=tray.getBoundingClientRect();
+    var fly=el.cloneNode(true); fly.className='award-fly'; document.body.appendChild(fly);
+    fly.style.left=r.left+'px'; fly.style.top=r.top+'px'; fly.style.width=r.width+'px'; fly.style.height=r.height+'px';
+    requestAnimationFrame(function(){
+      fly.style.transform='translate('+(tr.left+tr.width/2-r.left-r.width/2)+'px,'+(tr.top+tr.height/2-r.top-r.height/2)+'px) scale(.28)';
+      fly.style.opacity='0.15';
+    });
+    setTimeout(function(){ fly.remove(); }, 720);
+  }
+
+  // ── STAGE CLEAR (priority #1): banner → gold self-paint + seal → coins → stars → tally ──
   function ceremonyStageClear(unit, stars, wen, xp, isReview, onGo){
-    var o=ov(); o.className='overlay show';
-    var sr=''; for(var k=0;k<3;k++) sr+='<i class="'+(k<stars?'on':'')+'">★</i>';
-    o.innerHTML='<div class="ov-card">'+
-      '<div class="ov-eyebrow"><span class="dot"></span>'+(isReview?'Ink refreshed · 复习':'Stage clear · <span class="zh">炼成</span>')+'</div>'+
-      '<div class="bigstars" style="font-size:34px;margin:0 auto 14px">'+sr+'</div>'+
-      '<div class="ov-big"><span class="zh">'+esc(unit.theme.zh)+'</span></div><div class="ov-py">'+esc(unit.theme.en)+'</div>'+
-      '<div class="ov-en"><b>+'+wen+' 文</b> to your wallet · <b>+'+xp+' 经验</b> to rank</div>'+
-      '<button class="jbtn solid" id="ov-go" style="display:inline-flex;flex:0 0 auto;padding:14px 28px">Collect <span class="zh">收</span> ›</button></div>';
-    confetti(o, ['#3E8E72','#2F7DA6','#C2603A','#7E4B86','#E0A23A']);
-    $('#ov-go').addEventListener('click', function(){ flyCoins(wen); o.className='overlay'; if(onGo) onGo(); });
+    var o=ov(); o.className='overlay show celebrate';
+    var glyph=(unit.writeChars&&unit.writeChars[0])||'字';
+    var sd=(C.hasStrokes&&C.hasStrokes(glyph))?C.strokesOf(glyph):null;
+    var nStars=Math.max(0,Math.min(3,stars|0)), reduce=reduceMotion();
+    o.innerHTML=
+      '<div class="cc-banner"><span class="zh">'+(isReview?'复习完成':'关卡完成')+'</span><em>'+(isReview?'Review done':'Stage Clear')+'</em></div>'+
+      '<div class="ov-card cc-card" id="cc-card">'+
+        '<div class="cc-glyphwrap">'+
+          (sd?'<div class="cc-glyph" id="cc-glyph"></div>':'<div class="cc-glyph cc-glyph-fallback zh" style="color:'+GOLD+'">'+esc(glyph)+'</div>')+
+          '<span class="cc-seal zh" id="cc-seal">印</span></div>'+
+        '<div class="ov-big"><span class="zh">'+esc(unit.theme.zh)+'</span></div><div class="ov-py">'+esc(unit.theme.en)+'</div>'+
+        '<div class="bigstars cc-stars" id="cc-stars"><i>★</i><i>★</i><i>★</i></div>'+
+        '<div class="ov-en"><b id="cc-wen">+0 文</b> · <b id="cc-xp">+0 经验</b></div>'+
+        '<button class="jbtn solid" id="ov-go" style="display:inline-flex;flex:0 0 auto;padding:14px 30px">'+
+          (isReview?'<span class="zh">继续</span>':'<span class="zh">下一关</span> Next')+' ›</button></div>';
+    var starsEls=$$('#cc-stars i'), sealEl=$('#cc-seal'), done=false, anim=null, timers=[], autoT=null;
+    function clearTimers(){ timers.forEach(clearTimeout); timers=[]; }
+    function finalState(){
+      clearTimers(); if(anim){ try{anim.cancel();}catch(e){} anim=null; }
+      starsEls.forEach(function(el,k){ el.classList.toggle('on', k<nStars); });
+      if(sealEl) sealEl.classList.add('stamped');
+      var w=$('#cc-wen'), x=$('#cc-xp'); if(w) w.textContent='+'+wen+' 文'; if(x) x.textContent='+'+xp+' 经验';
+      var gh=$('#cc-glyph'); if(sd && gh){ gh.innerHTML=''; G.StrokePlay.mount(gh, sd, {color:GOLD, numbers:false, grid:false, perStroke:1, gap:0}); }
+    }
+    function go(){ if(done) return; done=true; clearTimers(); if(autoT) clearTimeout(autoT); flyCoins(wen); o.className='overlay'; if(onGo) onGo(); }
+    $('#ov-go').addEventListener('click', function(e){ e.stopPropagation(); go(); });
+    o.onclick=function(e){ if(e.target===o) finalState(); };   // tap bg = skip to final state
+    function punch(){ var card=$('#cc-card'); if(card){ card.classList.remove('cc-punch'); void card.offsetWidth; card.classList.add('cc-punch'); } }
+    function afterPaint(){
+      if(done) return;
+      if(sealEl) sealEl.classList.add('stamped'); sClink();
+      coinRain(o, 10+nStars*7); sCoins();
+      for(var k=0;k<nStars;k++){ (function(k){ timers.push(setTimeout(function(){
+        if(done) return; starsEls[k].classList.add('on'); sStar(k); if(k===nStars-1) punch(); }, 220+k*340)); })(k); }
+      timers.push(setTimeout(function(){ if(done) return; countUp($('#cc-wen'),wen,' 文'); countUp($('#cc-xp'),xp,' 经验'); }, 240+nStars*340));
+    }
+    if(reduce){ finalState(); autoT=setTimeout(go, 8000); return; }
+    sGong();
+    if(sd){ anim=G.StrokePlay.mount($('#cc-glyph'), sd, {color:GOLD, numbers:false, grid:false, perStroke:330, gap:90, onDone:afterPaint}); }
+    else { timers.push(setTimeout(afterPaint, 500)); }
+    autoT=setTimeout(go, 8500);
   }
   function ceremonyReview(n, wen, xp, onGo){
-    var o=ov(); o.className='overlay show';
+    var o=ov(); o.className='overlay show'; o.onclick=null;
     o.innerHTML='<div class="ov-card"><div class="ov-eyebrow"><span class="dot"></span>Review complete · <span class="zh">复习</span></div>'+
       '<div class="ov-rankseal zh">复</div>'+
       '<div class="ov-en"><b>'+n+'</b> characters re-inked · <b>+'+wen+' 文</b> · <b>+'+xp+' 经验</b></div>'+
@@ -165,25 +254,35 @@
     confetti(o, ['#E0A23A','#3E8E72','#fff']);
     $('#ov-go').addEventListener('click', function(){ flyCoins(wen); o.className='overlay'; if(onGo) onGo(); });
   }
+  // ── AWARD / SEAL UNLOCK (priority #2): spotlight dim → medal arrival + rays → collect-flies-home ──
   function ceremonySeal(c, wen, xp, onGo){
-    var o=ov(); o.className='overlay show';
-    o.innerHTML='<div class="ov-card"><div class="ov-eyebrow"><span class="dot"></span>Chapter sealed · <span class="zh">得印</span></div>'+
-      '<div class="ov-rankseal big zh" style="background:'+c.rc+'">'+c.season+'</div>'+
+    var o=ov(); o.className='overlay show spotlight'; o.onclick=null; var reduce=reduceMotion(), done=false, autoT=null;
+    o.innerHTML='<div class="ov-card award-card">'+
+      '<div class="ov-eyebrow"><span class="dot"></span><span class="zh">新印章</span> · Award unlocked</div>'+
+      '<div class="award-medalwrap"><div class="award-rays"></div>'+
+        '<div class="award-medal zh" id="aw-medal" style="background:'+c.rc+'">'+c.season+'</div></div>'+
       '<div class="ov-big"><span class="zh">'+c.sub+'印</span> '+esc(c.name)+'</div>'+
       '<div class="ov-en">'+c.vol+' complete · <b>+'+wen+' 文</b> · <b>+'+xp+' 经验</b>. A new chapter unrolls.</div>'+
-      '<button class="jbtn solid" id="ov-go" style="display:inline-flex;flex:0 0 auto;padding:14px 28px">Onward <span class="zh">继续</span></button></div>';
-    confetti(o, [c.rc, c.soft, '#E0A23A', '#fff']);
-    $('#ov-go').addEventListener('click', function(){ flyCoins(wen); o.className='overlay'; if(onGo) onGo(); });
+      '<button class="jbtn solid" id="ov-go" style="display:inline-flex;flex:0 0 auto;padding:14px 30px"><span class="zh">收下</span> Collect ✦</button></div>';
+    function go(){ if(done) return; done=true; if(autoT) clearTimeout(autoT); flyToSealTray($('#aw-medal')); flyCoins(wen); o.className='overlay'; if(onGo) onGo(); }
+    $('#ov-go').addEventListener('click', function(e){ e.stopPropagation(); go(); });
+    if(!reduce) sClink();
+    autoT=setTimeout(go, 8000);
   }
+  // ── LEVEL-UP / RANK PROMOTION (priority #3): spotlight + rays + fanfare ──
   function ceremonyRankUp(rank){
-    var o=ov(); o.className='overlay show';
-    o.innerHTML='<div class="ov-card"><div class="ov-eyebrow"><span class="dot"></span>Rank up · <span class="zh">升级</span></div>'+
-      '<div class="ov-rankseal zh">'+rank.cn.charAt(0)+'</div>'+
+    var o=ov(); o.className='overlay show spotlight rankup'; o.onclick=null; var reduce=reduceMotion(), done=false, autoT=null;
+    o.innerHTML='<div class="ov-card rank-card">'+
+      '<div class="ov-eyebrow"><span class="dot"></span><span class="zh">科举晋升</span> · Rank up</div>'+
+      '<div class="award-medalwrap"><div class="award-rays gold"></div>'+
+        '<div class="ov-rankseal zh">'+rank.cn.charAt(0)+'</div></div>'+
       '<div class="ov-big"><span class="zh">'+rank.cn+'</span></div><div class="ov-py">'+esc(rank.py)+'</div>'+
       '<div class="ov-en">You are now a <b>'+esc(rank.en)+'</b> · level '+rank.lv+'</div>'+
-      '<button class="jbtn solid" id="ov-go" style="display:inline-flex;flex:0 0 auto;padding:14px 28px">Continue <span class="zh">继续</span></button></div>';
-    confetti(o, ['#3E8E72','#2F7DA6','#C2603A','#7E4B86','#E0A23A']);
-    $('#ov-go').addEventListener('click', function(){ o.className='overlay'; });
+      '<button class="jbtn solid" id="ov-go" style="display:inline-flex;flex:0 0 auto;padding:14px 30px"><span class="zh">继续</span> Continue ›</button></div>';
+    function go(){ if(done) return; done=true; if(autoT) clearTimeout(autoT); o.className='overlay'; }
+    $('#ov-go').addEventListener('click', function(e){ e.stopPropagation(); go(); });
+    if(!reduce){ confetti(o, ['#E0A23A', GOLD, '#C2603A', '#fff']); sFanfare(); }
+    autoT=setTimeout(go, 8000);
   }
 
   // 文 coins fly from center into the wallet chip (spec §10 motion)
