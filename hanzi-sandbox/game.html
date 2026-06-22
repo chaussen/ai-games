@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hanzi Sandbox — Phase 3 Room Shell</title>
+<style>
+  body { font-family: -apple-system, sans-serif; background: #1b1f24; color: #eee; margin: 0; padding: 20px; }
+  h1 { font-size: 18px; margin: 0 0 4px; }
+  .sub { color: #888; margin-bottom: 16px; font-size: 13px; }
+  #puzzlePicker { margin-bottom: 16px; }
+  #puzzlePicker button { margin: 2px; padding: 4px 8px; background: #2a2f36; color: #ccc; border: 1px solid #444; border-radius: 4px; cursor: pointer; font-size: 12px; }
+  #puzzlePicker button.active { background: #4A7C59; color: #fff; }
+  #obstacle { font-size: 14px; color: #ddd; margin-bottom: 12px; }
+  #terrainRow { display: flex; gap: 8px; margin-bottom: 16px; }
+  .cell { width: 90px; height: 90px; border: 2px solid #555; border-radius: 8px; display: flex; flex-direction: column;
+          align-items: center; justify-content: center; cursor: pointer; position: relative; background: #23272d; }
+  .cell .label { font-size: 10px; color: #999; }
+  .cell .mod { font-size: 22px; }
+  .cell.spirit-here::after { content: '◉'; position: absolute; top: 2px; right: 4px; color: #E0A82E; }
+  #hand { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+  .stamp { width: 46px; height: 46px; border-radius: 6px; background: #2a2f36; border: 1px solid #555;
+           display: flex; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; position: relative; }
+  .stamp.selected { outline: 2px solid #E0A82E; }
+  .stamp.depleted { opacity: 0.3; cursor: not-allowed; }
+  .stamp .count { position: absolute; bottom: -2px; right: -2px; font-size: 9px; background: #111; padding: 0 3px; border-radius: 3px; color: #aaa; }
+  .stamp.hint { animation: pulse var(--hint-ms, 1400ms) ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(224,168,46,0); } 50% { box-shadow: 0 0 8px 4px rgba(224,168,46,var(--hint-opacity,0.35)); } }
+  #fuseRow { margin-bottom: 16px; display: flex; gap: 8px; align-items: center; }
+  #fuseRow button { padding: 4px 10px; }
+  #log { font-size: 12px; color: #aaa; background: #15181c; border-radius: 6px; padding: 8px; height: 120px; overflow-y: auto; }
+  #spiritStatus { margin-bottom: 10px; font-size: 13px; }
+  .section-title { font-size: 12px; color: #777; text-transform: uppercase; margin: 14px 0 4px; }
+</style>
+</head>
+<body>
+<h1>Hanzi Sandbox — Room Shell (Phase 3)</h1>
+<div class="sub">Terrain + spirit + puzzle loader on top of the §2/§3 fusion prototype. Click two hand stamps to fuse them; click a stamp then a terrain cell to deploy it.</div>
+
+<div id="puzzlePicker"></div>
+<div id="obstacle"></div>
+<div id="spiritStatus"></div>
+<div id="terrainRow"></div>
+
+<div class="section-title">Hand</div>
+<div id="hand"></div>
+
+<div id="fuseRow">
+  <button id="fuseBtn" disabled>Fuse selected (pick 2)</button>
+  <span id="fuseHint" style="font-size:12px;color:#777;"></span>
+</div>
+
+<div class="section-title">Log</div>
+<div id="log"></div>
+
+<!-- Existing fusion prototype (Phase 1/2) — UMD-style globals, loaded as classic scripts. Not modified. -->
+<script src="recipes.js"></script>
+<script src="fusion.js"></script>
+<!-- Phase 3 additions — same UMD pattern as the files above for consistency. -->
+<script src="data/constants.js"></script>
+<script src="data/terrain.js"></script>
+<script src="data/puzzles.js"></script>
+<script src="engine/resolver.js"></script>
+<script src="engine/spirit.js"></script>
+<script src="engine/puzzleLoader.js"></script>
+
+<script type="module">
+  const HS = window.HanziSandbox;
+  const { Recipes, Fusion } = HS;
+  const { TERRAIN, makeCell } = HS.Terrain;
+  const { resolveInteraction } = HS.Resolver;
+  const Spirit = HS.Spirit;
+  const { loadPuzzle } = HS.PuzzleLoader;
+  const { PUZZLES } = HS.Puzzles;
+  const { HINT_PULSE_MS, HINT_OPACITY } = HS.Constants;
+
+  document.documentElement.style.setProperty("--hint-ms", HINT_PULSE_MS + "ms");
+  document.documentElement.style.setProperty("--hint-opacity", HINT_OPACITY);
+
+  const engine = new Fusion.FusionEngine();
+  let session = null;     // { puzzle, terrain, spirit, hand, levelHasTimer, stampPool }
+  let selectedStamps = [];
+  let deployingStamp = null;
+
+  const $puzzlePicker = document.getElementById("puzzlePicker");
+  const $obstacle = document.getElementById("obstacle");
+  const $spiritStatus = document.getElementById("spiritStatus");
+  const $terrainRow = document.getElementById("terrainRow");
+  const $hand = document.getElementById("hand");
+  const $fuseBtn = document.getElementById("fuseBtn");
+  const $fuseHint = document.getElementById("fuseHint");
+  const $log = document.getElementById("log");
+
+  function log(msg) {
+    const line = document.createElement("div");
+    line.textContent = msg;
+    $log.prepend(line);
+  }
+
+  function renderPuzzlePicker() {
+    $puzzlePicker.innerHTML = "";
+    PUZZLES.forEach(function (p) {
+      const btn = document.createElement("button");
+      btn.textContent = p.id + " " + p.act;
+      btn.className = session && session.puzzle.id === p.id ? "active" : "";
+      btn.onclick = function () { startPuzzle(p); };
+      $puzzlePicker.appendChild(btn);
+    });
+  }
+
+  function startPuzzle(puzzleDef) {
+    session = loadPuzzle(puzzleDef);
+    session.stampPool = new Fusion.StampPool(
+      puzzleDef.act === "Constrain" ? "depletion" : "infinite",
+      puzzleDef.act === "Constrain" ? session.hand : null
+    );
+    selectedStamps = [];
+    deployingStamp = null;
+    log("Loaded " + puzzleDef.id + " (" + puzzleDef.act + "): " + puzzleDef.obstacle);
+    renderAll();
+  }
+
+  function renderAll() {
+    renderPuzzlePicker();
+    renderObstacle();
+    renderSpiritStatus();
+    renderTerrain();
+    renderHand();
+  }
+
+  function renderObstacle() {
+    $obstacle.textContent = session ? session.puzzle.obstacle + " — " + session.puzzle.notes : "Pick a puzzle to begin.";
+  }
+
+  function renderSpiritStatus() {
+    if (!session) { $spiritStatus.textContent = ""; return; }
+    const s = session.spirit;
+    $spiritStatus.textContent = "Spirit: tile " + s.position.tile + " · state " + s.state +
+      " · hp " + s.hp + (s.activeBuff ? " · buff " + s.activeBuff.type + (s.activeBuff.consumed ? " (spent)" : "") : "");
+  }
+
+  function renderTerrain() {
+    $terrainRow.innerHTML = "";
+    if (!session) return;
+    session.terrain.forEach(function (cell, i) {
+      const div = document.createElement("div");
+      div.className = "cell" + (session.spirit.position.tile === i ? " spirit-here" : "");
+      div.innerHTML = '<div class="label">' + cell.type + '</div>' +
+        (cell.modifiedBy ? '<div class="mod">' + cell.modifiedBy + '</div>' : '');
+      div.onclick = function () { deployOnCell(i); };
+      $terrainRow.appendChild(div);
+    });
+  }
+
+  function renderHand() {
+    $hand.innerHTML = "";
+    if (!session) return;
+
+    const handChars = Object.keys(session.hand);
+    // Hint sparkle (D036): pulse radicals that are inputs to a recipe when
+    // >=2 compatible radicals are currently in hand with available stamps.
+    const hintChars = computeHintChars(handChars);
+
+    handChars.forEach(function (charKey) {
+      const count = session.stampPool.count(charKey);
+      const depleted = count <= 0;
+      const div = document.createElement("div");
+      div.className = "stamp" + (selectedStamps.includes(charKey) ? " selected" : "") +
+        (depleted ? " depleted" : "") + (hintChars.has(charKey) ? " hint" : "");
+      div.textContent = charKey;
+      if (count !== Infinity) {
+        const countSpan = document.createElement("span");
+        countSpan.className = "count";
+        countSpan.textContent = count;
+        div.appendChild(countSpan);
+      }
+      div.onclick = function () { if (!depleted) onStampClick(charKey); };
+      $hand.appendChild(div);
+    });
+
+    $fuseBtn.disabled = selectedStamps.length !== 2;
+    $fuseHint.textContent = deployingStamp ? "Deploying " + deployingStamp + " — click a terrain cell." : "";
+  }
+
+  function computeHintChars(handChars) {
+    const result = new Set();
+    Recipes.RECIPES.forEach(function (recipe) {
+      const have = recipe.inputs.every(function (input) {
+        return handChars.includes(input) && session.stampPool.count(input) > 0;
+      });
+      if (have && recipe.inputs.length === 2) {
+        recipe.inputs.forEach(function (input) { result.add(input); });
+      }
+    });
+    return result;
+  }
+
+  function onStampClick(charKey) {
+    if (selectedStamps.length < 2 && !deployingStamp) {
+      // Toggle into fuse-selection unless the player is single-clicking to deploy.
+      if (selectedStamps.length === 0) {
+        deployingStamp = charKey;
+        renderHand();
+        return;
+      }
+      selectedStamps = [];
+      deployingStamp = charKey;
+      renderHand();
+      return;
+    }
+    if (selectedStamps.includes(charKey)) {
+      selectedStamps = selectedStamps.filter(function (c) { return c !== charKey; });
+    } else if (selectedStamps.length < 2) {
+      selectedStamps.push(charKey);
+      deployingStamp = null;
+    }
+    renderHand();
+  }
+
+  $fuseBtn.onclick = function () {
+    if (selectedStamps.length !== 2) return;
+    const result = engine.fuse(selectedStamps[0], selectedStamps[1], session.stampPool);
+    if (!result.ok) {
+      log("Fuse failed: " + selectedStamps.join("+") + " (" + result.reason + ")");
+    } else {
+      log("Fused " + selectedStamps.join("+") + " -> " + result.recipe.char + " (" + result.recipe.gloss + ")");
+      if (session.hand[result.recipe.char] === undefined) session.hand[result.recipe.char] = session.stampPool.count(result.recipe.char);
+    }
+    selectedStamps = [];
+    renderAll();
+  };
+
+  function deployOnCell(tileIndex) {
+    if (!deployingStamp || !session) return;
+    const charKey = deployingStamp;
+    const cell = session.terrain[tileIndex];
+    const result = resolveInteraction(charKey, cell, session.levelHasTimer);
+    log("Deployed " + charKey + " on " + cell.type + " (tile " + tileIndex + "): " + result.symbol + " " + result.outcome);
+
+    applyOutcome(charKey, cell, tileIndex, result);
+    deployingStamp = null;
+    renderAll();
+  }
+
+  function applyOutcome(charKey, cell, tileIndex, result) {
+    const stateClasses = { "休": "rest", "好": "damage_immunity", "安": "fall_immunity" };
+    if (stateClasses[charKey]) {
+      if (charKey === "休") Spirit.applyRest(session.spirit, 5000);
+      else Spirit.applyBuff(session.spirit, charKey, stateClasses[charKey]);
+      return;
+    }
+
+    if (session.stampPool.mode === "depletion") {
+      if (session.stampPool.has(charKey, 1)) session.stampPool.take(charKey, 1);
+    }
+
+    cell.state = "modified";
+    cell.modifiedBy = charKey;
+
+    if (result.symbol === "✓") {
+      if (session.spirit.position.tile === tileIndex || tileIndex === session.spirit.position.tile + 1) {
+        session.spirit.position.tile = tileIndex;
+        Spirit.markSafe(session.spirit);
+      }
+    } else if (result.outcome === "fire_burns_raft_fall" || result.outcome === "fire_melts_bridge_fall") {
+      Spirit.fall(session.spirit);
+    }
+  }
+
+  startPuzzle(PUZZLES[0]);
+</script>
+</body>
+</html>
