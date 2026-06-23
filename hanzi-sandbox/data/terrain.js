@@ -182,6 +182,17 @@
       MUD: { symbol: "✗", outcome: "stuck" },
       SHADOW_WEB: { symbol: "—", outcome: "none" }
     },
+    // D048: 朋+朋 -> 朋朋, fills the Creature x chasm-large gap.
+    "朋朋": {
+      RIVER: { symbol: "✓", outcome: "link_across" },
+      ICE_WALL: { symbol: "—", outcome: "none" },
+      THORNS: { symbol: "✗", outcome: "tangled_double" },
+      DARKNESS: { symbol: "—", outcome: "none" },
+      CHASM_SMALL: { symbol: "✓", outcome: "creature_bridge" },
+      CHASM_LARGE: { symbol: "✓", outcome: "creature_bridge" },
+      MUD: { symbol: "✗", outcome: "stuck_double" },
+      SHADOW_WEB: { symbol: "—", outcome: "none" }
+    },
     "鸟": {
       RIVER: { symbol: "✓", outcome: "carry_over" },
       ICE_WALL: { symbol: "—", outcome: "none" },

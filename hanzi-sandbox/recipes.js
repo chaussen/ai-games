@@ -28,12 +28,13 @@
   ];
 
   // Tier-2 chain targets — Design Bible §3, "LEAN — to be playtested"
-  // 朋+朋 is intentionally absent: still [OPEN] in the design bible (no agreed output).
+  // 朋+朋 -> 朋朋 added per D048 (LOCKED): coined ligature glyph, marked ✦coined in UI.
   var TIER2_RECIPES = [
     { inputs: ["林", "木"], char: "森", pinyin: "sēn", gloss: "forest", class: "Tool", tier: 2, effect: "forest", color: "#4A7C59" },
     { inputs: ["炎", "火"], char: "焱", pinyin: "yàn", gloss: "blaze", class: "Force", tier: 2, effect: "blaze", color: "#D8472B" },
     { inputs: ["冰", "水"], char: "凌", pinyin: "líng", gloss: "surge", class: "Force", tier: 2, effect: "surge", color: "#5FB6CE" },
-    { inputs: ["明", "星"], char: "晶", pinyin: "jīng", gloss: "crystal", class: "Force", tier: 2, effect: "crystal", color: "#E0A82E" }
+    { inputs: ["明", "星"], char: "晶", pinyin: "jīng", gloss: "crystal", class: "Force", tier: 2, effect: "crystal", color: "#E0A82E" },
+    { inputs: ["朋", "朋"], char: "朋朋", pinyin: "péng-péng", gloss: "two-friends", class: "Creature", tier: 2, effect: "link", color: "#2A8A7E", coined: true }
   ];
 
   var RECIPES = BASE_RECIPES.concat(TIER2_RECIPES);

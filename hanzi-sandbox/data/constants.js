@@ -8,6 +8,9 @@
   return {
     // D036: hint sparkle on radicals that complete an unlearned recipe. Design to tune.
     HINT_PULSE_MS: 1400,
-    HINT_OPACITY: 0.35
+    HINT_OPACITY: 0.35,
+    // D042: sparkle must not fire until the player has been inactive (no deploy/fuse
+    // action) for this long. Prevents the hint from preempting the semantic aha moment.
+    HINT_DELAY_MS: 8000
   };
 });

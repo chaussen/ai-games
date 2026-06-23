@@ -23,13 +23,17 @@
   .stamp.selected { outline: 2px solid #E0A82E; }
   .stamp.depleted { opacity: 0.3; cursor: not-allowed; }
   .stamp .count { position: absolute; bottom: -2px; right: -2px; font-size: 9px; background: #111; padding: 0 3px; border-radius: 3px; color: #aaa; }
+  .stamp .pair-badge { position: absolute; top: -4px; left: -4px; font-size: 9px; background: #4A7C59; color: #fff; padding: 0 3px; border-radius: 3px; }
   .stamp.hint { animation: pulse var(--hint-ms, 1400ms) ease-in-out infinite; }
   @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(224,168,46,0); } 50% { box-shadow: 0 0 8px 4px rgba(224,168,46,var(--hint-opacity,0.35)); } }
   #fuseRow { margin-bottom: 16px; display: flex; gap: 8px; align-items: center; }
   #fuseRow button { padding: 4px 10px; }
   #log { font-size: 12px; color: #aaa; background: #15181c; border-radius: 6px; padding: 8px; height: 120px; overflow-y: auto; }
   #spiritStatus { margin-bottom: 10px; font-size: 13px; }
+  #recoveryCaption { font-size: 13px; color: #e07a5f; min-height: 16px; margin-bottom: 6px; }
   .section-title { font-size: 12px; color: #777; text-transform: uppercase; margin: 14px 0 4px; }
+  .cell.flash-fail { background: #7a2020 !important; border-color: #c0392b !important; }
+  .cell.flash-safe { background: #2a6e3f !important; border-color: #4A7C59 !important; }
 </style>
 </head>
 <body>
@@ -38,6 +42,7 @@
 
 <div id="puzzlePicker"></div>
 <div id="obstacle"></div>
+<div id="recoveryCaption"></div>
 <div id="spiritStatus"></div>
 <div id="terrainRow"></div>
 
@@ -46,6 +51,7 @@
 
 <div id="fuseRow">
   <button id="fuseBtn" disabled>Fuse selected (pick 2)</button>
+  <button id="clearBtn">Clear selection</button>
   <span id="fuseHint" style="font-size:12px;color:#777;"></span>
 </div>
 
@@ -71,22 +77,27 @@
   const Spirit = HS.Spirit;
   const { loadPuzzle } = HS.PuzzleLoader;
   const { PUZZLES } = HS.Puzzles;
-  const { HINT_PULSE_MS, HINT_OPACITY } = HS.Constants;
+  const { HINT_PULSE_MS, HINT_OPACITY, HINT_DELAY_MS } = HS.Constants;
 
   document.documentElement.style.setProperty("--hint-ms", HINT_PULSE_MS + "ms");
   document.documentElement.style.setProperty("--hint-opacity", HINT_OPACITY);
 
   const engine = new Fusion.FusionEngine();
-  let session = null;     // { puzzle, terrain, spirit, hand, levelHasTimer, stampPool }
+  let session = null;     // { puzzle, terrain, spirit, hand, levelHasTimer, stampPool, lastActionTs, flashFailTile, flashSafeTile }
+  // selectedStamps holds 0-2 charKeys for the fuse pair (duplicates allowed for self-pair recipes).
+  // deployingStamp mirrors selectedStamps[0] only while exactly one stamp is selected — that single
+  // selection doubles as "what gets placed if the player clicks a terrain cell next."
   let selectedStamps = [];
   let deployingStamp = null;
 
   const $puzzlePicker = document.getElementById("puzzlePicker");
   const $obstacle = document.getElementById("obstacle");
+  const $recoveryCaption = document.getElementById("recoveryCaption");
   const $spiritStatus = document.getElementById("spiritStatus");
   const $terrainRow = document.getElementById("terrainRow");
   const $hand = document.getElementById("hand");
   const $fuseBtn = document.getElementById("fuseBtn");
+  const $clearBtn = document.getElementById("clearBtn");
   const $fuseHint = document.getElementById("fuseHint");
   const $log = document.getElementById("log");
 
@@ -113,8 +124,12 @@
       puzzleDef.act === "Constrain" ? "depletion" : "infinite",
       puzzleDef.act === "Constrain" ? session.hand : null
     );
+    session.lastActionTs = Date.now();
+    session.flashFailTile = null;
+    session.flashSafeTile = null;
     selectedStamps = [];
     deployingStamp = null;
+    $recoveryCaption.textContent = "";
     log("Loaded " + puzzleDef.id + " (" + puzzleDef.act + "): " + puzzleDef.obstacle);
     renderAll();
   }
@@ -143,7 +158,10 @@
     if (!session) return;
     session.terrain.forEach(function (cell, i) {
       const div = document.createElement("div");
-      div.className = "cell" + (session.spirit.position.tile === i ? " spirit-here" : "");
+      div.className = "cell" +
+        (session.spirit.position.tile === i ? " spirit-here" : "") +
+        (session.flashFailTile === i ? " flash-fail" : "") +
+        (session.flashSafeTile === i ? " flash-safe" : "");
       div.innerHTML = '<div class="label">' + cell.type + '</div>' +
         (cell.modifiedBy ? '<div class="mod">' + cell.modifiedBy + '</div>' : '');
       div.onclick = function () { deployOnCell(i); };
@@ -151,22 +169,41 @@
     });
   }
 
+  // D041 fix: a recipe whose inputs are the same char twice (火+火, 木+木, 月+月, 朋+朋).
+  function isSelfPairable(charKey) {
+    return Recipes.RECIPES.some(function (r) {
+      return r.inputs.length === 2 && r.inputs[0] === charKey && r.inputs[1] === charKey;
+    });
+  }
+
+  // Counts how many of charKey are already held in selectedStamps (0, 1, or 2).
+  function selectedCount(charKey) {
+    return selectedStamps.filter(function (c) { return c === charKey; }).length;
+  }
+
   function renderHand() {
     $hand.innerHTML = "";
     if (!session) return;
 
     const handChars = Object.keys(session.hand);
-    // Hint sparkle (D036): pulse radicals that are inputs to a recipe when
-    // >=2 compatible radicals are currently in hand with available stamps.
+    // Hint sparkle (D036, D042, D043): pulse radicals that are inputs to a recipe
+    // relevant to the current puzzle's solutions, only after HINT_DELAY_MS of inactivity.
     const hintChars = computeHintChars(handChars);
 
     handChars.forEach(function (charKey) {
       const count = session.stampPool.count(charKey);
-      const depleted = count <= 0;
+      const selected = selectedCount(charKey);
+      const depleted = count <= 0 || selected >= count;
       const div = document.createElement("div");
-      div.className = "stamp" + (selectedStamps.includes(charKey) ? " selected" : "") +
+      div.className = "stamp" + (selected > 0 ? " selected" : "") +
         (depleted ? " depleted" : "") + (hintChars.has(charKey) ? " hint" : "");
       div.textContent = charKey;
+      if (isSelfPairable(charKey)) {
+        const pairBadge = document.createElement("span");
+        pairBadge.className = "pair-badge";
+        pairBadge.textContent = "×2";
+        div.appendChild(pairBadge);
+      }
       if (count !== Infinity) {
         const countSpan = document.createElement("span");
         countSpan.className = "count";
@@ -178,46 +215,80 @@
     });
 
     $fuseBtn.disabled = selectedStamps.length !== 2;
-    $fuseHint.textContent = deployingStamp ? "Deploying " + deployingStamp + " — click a terrain cell." : "";
+    $fuseHint.textContent = deployingStamp ? "Deploying " + deployingStamp + " — click a terrain cell, or select another stamp to fuse." : "";
+  }
+
+  // D043: only pulse radicals that contribute to a recipe relevant to the
+  // current puzzle's valid solutions (our equivalent of an obstacle "accepts" list).
+  function getAcceptedChars() {
+    const accepted = new Set();
+    (session.puzzle.validSolutions || []).forEach(function (solution) {
+      solution.forEach(function (c) { accepted.add(c); });
+    });
+    return accepted;
   }
 
   function computeHintChars(handChars) {
+    // D042: no sparkle until the player has been inactive for HINT_DELAY_MS.
+    if (Date.now() - session.lastActionTs < HINT_DELAY_MS) return new Set();
+
+    const accepted = getAcceptedChars();
     const result = new Set();
     Recipes.RECIPES.forEach(function (recipe) {
-      const have = recipe.inputs.every(function (input) {
-        return handChars.includes(input) && session.stampPool.count(input) > 0;
+      if (recipe.inputs.length !== 2) return;
+      if (!accepted.has(recipe.char)) return;
+      const need = recipe.inputs[0] === recipe.inputs[1] ? 2 : 1;
+      const have = recipe.inputs.every(function (input, idx) {
+        if (!handChars.includes(input)) return false;
+        const required = recipe.inputs[0] === recipe.inputs[1] ? need : 1;
+        return session.stampPool.count(input) >= required;
       });
-      if (have && recipe.inputs.length === 2) {
-        recipe.inputs.forEach(function (input) { result.add(input); });
-      }
+      if (have) recipe.inputs.forEach(function (input) { result.add(input); });
     });
     return result;
   }
 
+  // D041 fix: selectedStamps can hold the same charKey twice when the pool has
+  // >= 2 of it, so self-pair recipes (火+火, 木+木, 月+月, 朋+朋) are reachable.
   function onStampClick(charKey) {
-    if (selectedStamps.length < 2 && !deployingStamp) {
-      // Toggle into fuse-selection unless the player is single-clicking to deploy.
-      if (selectedStamps.length === 0) {
-        deployingStamp = charKey;
-        renderHand();
-        return;
-      }
-      selectedStamps = [];
+    session.lastActionTs = Date.now();
+
+    if (selectedStamps.length >= 2) {
+      selectedStamps = [charKey];
       deployingStamp = charKey;
       renderHand();
       return;
     }
-    if (selectedStamps.includes(charKey)) {
-      selectedStamps = selectedStamps.filter(function (c) { return c !== charKey; });
-    } else if (selectedStamps.length < 2) {
-      selectedStamps.push(charKey);
-      deployingStamp = null;
+
+    if (selectedStamps.length === 1) {
+      const isSamePair = selectedStamps[0] === charKey;
+      const available = session.stampPool.count(charKey);
+      if (isSamePair && available < 2) {
+        // Not enough stock to self-pair — restart selection on this stamp instead.
+        selectedStamps = [charKey];
+        deployingStamp = charKey;
+      } else {
+        selectedStamps.push(charKey);
+        deployingStamp = null; // two stamps selected -> fuse mode, not single-deploy
+      }
+      renderHand();
+      return;
     }
+
+    selectedStamps = [charKey];
+    deployingStamp = charKey;
     renderHand();
   }
 
+  $clearBtn.onclick = function () {
+    selectedStamps = [];
+    deployingStamp = null;
+    renderHand();
+  };
+
   $fuseBtn.onclick = function () {
     if (selectedStamps.length !== 2) return;
+    session.lastActionTs = Date.now();
     const result = engine.fuse(selectedStamps[0], selectedStamps[1], session.stampPool);
     if (!result.ok) {
       log("Fuse failed: " + selectedStamps.join("+") + " (" + result.reason + ")");
@@ -226,6 +297,7 @@
       if (session.hand[result.recipe.char] === undefined) session.hand[result.recipe.char] = session.stampPool.count(result.recipe.char);
     }
     selectedStamps = [];
+    deployingStamp = null;
     renderAll();
   };
 
@@ -236,9 +308,16 @@
     const result = resolveInteraction(charKey, cell, session.levelHasTimer);
     log("Deployed " + charKey + " on " + cell.type + " (tile " + tileIndex + "): " + result.symbol + " " + result.outcome);
 
-    applyOutcome(charKey, cell, tileIndex, result);
+    session.lastActionTs = Date.now();
+    const outcome = applyOutcome(charKey, cell, tileIndex, result);
+    selectedStamps = [];
     deployingStamp = null;
-    renderAll();
+
+    if (outcome && outcome.fallTriggered) {
+      triggerFallRecovery(tileIndex);
+    } else {
+      renderAll();
+    }
   }
 
   function applyOutcome(charKey, cell, tileIndex, result) {
@@ -246,7 +325,7 @@
     if (stateClasses[charKey]) {
       if (charKey === "休") Spirit.applyRest(session.spirit, 5000);
       else Spirit.applyBuff(session.spirit, charKey, stateClasses[charKey]);
-      return;
+      return { fallTriggered: false };
     }
 
     if (session.stampPool.mode === "depletion") {
@@ -261,10 +340,38 @@
         session.spirit.position.tile = tileIndex;
         Spirit.markSafe(session.spirit);
       }
-    } else if (result.outcome === "fire_burns_raft_fall" || result.outcome === "fire_melts_bridge_fall") {
-      Spirit.fall(session.spirit);
+      return { fallTriggered: false };
     }
+    if (result.outcome === "fire_burns_raft_fall" || result.outcome === "fire_melts_bridge_fall") {
+      return { fallTriggered: true };
+    }
+    return { fallTriggered: false };
   }
+
+  // D046: red flash on the failed tile, then snap back to the last safe tile with
+  // a brief green highlight there, plus a caption. Total under 1s, per spec.
+  function triggerFallRecovery(failedTile) {
+    session.flashFailTile = failedTile;
+    $recoveryCaption.textContent = "⚠ returned to safe ground";
+    renderAll();
+
+    setTimeout(function () {
+      session.flashFailTile = null;
+      Spirit.fall(session.spirit);
+      session.flashSafeTile = session.spirit.position.tile;
+      renderAll();
+
+      setTimeout(function () {
+        session.flashSafeTile = null;
+        $recoveryCaption.textContent = "";
+        renderTerrain();
+      }, 350);
+    }, 300);
+  }
+
+  // D042: hint sparkle is inactivity-driven, so it must re-evaluate on a timer,
+  // not only on click — otherwise it never appears for a player who sits idle.
+  setInterval(function () { if (session) renderHand(); }, 500);
 
   startPuzzle(PUZZLES[0]);
 </script>
