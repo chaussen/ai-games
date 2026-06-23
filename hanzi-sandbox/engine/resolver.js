@@ -1,5 +1,14 @@
 /* hanzi-sandbox/engine/resolver.js — resolveInteraction() (Design Bible §4a/§4b, CLAUDE.md Phase 3).
-   Standalone prototype. Not wired into game/ — separate product per design bible §0. */
+   Standalone prototype. Not wired into game/ — separate product per design bible §0.
+
+   AUTHORITY: matrix-primary. resolveInteraction's only inputs are charKey,
+   terrainCell, and levelHasTimer — it never reads a puzzle's validSolutions or
+   redHerrings. The §4a/§4b lookup tables in data/terrain.js are the sole source
+   of truth for what symbol/outcome a deployed char produces; a puzzle's
+   "solution" is just a citation into this matrix (per §5's own contract: "every
+   solution must trace to a matrix cell"), not a second authority that could
+   override it. Puzzle data is consumed only downstream of this function (e.g.
+   game.html's hint filtering) — never upstream of it. */
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory(require("../data/terrain.js"));
   else root.HanziSandbox = Object.assign(root.HanziSandbox || {}, { Resolver: factory(root.HanziSandbox.Terrain) });
