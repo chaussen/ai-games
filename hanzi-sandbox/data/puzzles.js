@@ -56,6 +56,17 @@
       levelHasTimer: false, notes: "fire lights insufficiently (~, not ✓)"
     },
     {
+      // D051: two-chasm forced fork. Inserted between P06 and P07 as P06b (kept
+      // unnumbered-in-sequence per D051 to avoid an P07-P15 renumber cascade).
+      id: "P06b", act: "Choose", obstacle: "two gaps in sequence",
+      terrain: [{ type: T.CHASM_SMALL }, { type: T.CHASM_LARGE }],
+      availableRadicals: ["木", "木", "木", "林"], validSolutions: [["林", "木"]], redHerrings: ["林"],
+      levelHasTimer: false,
+      notes: "tile 0 (small): 林 ✓ or chain to 森 ✓ for a bonus orb; tile 1 (large): 森 only, 林 ✗ too short. " +
+        "Player must assess gap size before committing. OPEN: bonus-orb mechanic is out of scope for Phase 3 " +
+        "(no scoring system); this puzzle is solvable without it."
+    },
+    {
       id: "P07", act: "Compound", obstacle: "wide chasm", terrain: [{ type: T.CHASM_LARGE }],
       availableRadicals: ["木", "林"], validSolutions: [["林", "木"]], redHerrings: ["林"],
       levelHasTimer: false, hintSparkle: true,
