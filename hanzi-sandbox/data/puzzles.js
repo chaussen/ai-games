@@ -126,10 +126,12 @@
       redHerrings: ["凌"], levelHasTimer: false, notes: "凌 thickens wall (✗); sequence matters — cut thorns before melting wall"
     },
     {
+      // D071: SHADOW_WEB swapped for a second MUD tile — its only clean solvers
+      // (明/尖/炎) are consumed by other terrain, and covering it would bloat the hand.
       id: "P15", act: "Constrain", obstacle: "all terrain types",
       terrain: [{ type: T.RIVER }, { type: T.THORNS }, { type: T.DARKNESS }, { type: T.ICE_WALL },
-        { type: T.CHASM_SMALL }, { type: T.CHASM_LARGE }, { type: T.MUD }, { type: T.SHADOW_WEB }],
-      availableRadicals: ["冫", "水", "火", "木", "日", "月", "山", "石", "小", "大", "氵"],
+        { type: T.CHASM_SMALL }, { type: T.CHASM_LARGE }, { type: T.MUD }, { type: T.MUD }],
+      availableRadicals: ["冫", "水", "火", "火", "木", "木", "木", "木", "日", "月", "山", "石", "小", "大", "氵"],
       validSolutions: [], redHerrings: [], levelHasTimer: false,
       notes: "mastery level; no single path; player-authored"
     }
