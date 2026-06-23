@@ -14,6 +14,8 @@
   #terrainRow { display: flex; gap: 8px; margin-bottom: 16px; }
   .cell { width: 90px; height: 90px; border: 2px solid #555; border-radius: 8px; display: flex; flex-direction: column;
           align-items: center; justify-content: center; cursor: pointer; position: relative; background: #23272d; }
+  .cell.cell-CHASM_SMALL { width: 50px; }
+  .cell.cell-CHASM_LARGE { width: 150px; }
   .cell .label { font-size: 10px; color: #999; }
   .cell .mod { font-size: 22px; }
   .cell.spirit-here::after { content: '◉'; position: absolute; top: 2px; right: 4px; color: #E0A82E; }
@@ -127,6 +129,7 @@
     session.lastActionTs = Date.now();
     session.flashFailTile = null;
     session.flashSafeTile = null;
+    session.solvedTiles = new Set();
     selectedStamps = [];
     deployingStamp = null;
     $recoveryCaption.textContent = "";
@@ -158,7 +161,7 @@
     if (!session) return;
     session.terrain.forEach(function (cell, i) {
       const div = document.createElement("div");
-      div.className = "cell" +
+      div.className = "cell cell-" + cell.type +
         (session.spirit.position.tile === i ? " spirit-here" : "") +
         (session.flashFailTile === i ? " flash-fail" : "") +
         (session.flashSafeTile === i ? " flash-safe" : "");
@@ -218,12 +221,24 @@
     $fuseHint.textContent = deployingStamp ? "Deploying " + deployingStamp + " — click a terrain cell, or select another stamp to fuse." : "";
   }
 
-  // D043: only pulse radicals that contribute to a recipe relevant to the
-  // current puzzle's valid solutions (our equivalent of an obstacle "accepts" list).
-  function getAcceptedChars() {
+  // D055: tile indices not yet successfully resolved (no ✓ outcome applied yet).
+  function getUnsolvedTileIndices() {
+    const unsolved = [];
+    session.terrain.forEach(function (cell, i) {
+      if (!session.solvedTiles.has(i)) unsolved.push(i);
+    });
+    return unsolved;
+  }
+
+  // D043/D055: only pulse radicals that contribute to a recipe relevant to a
+  // still-unsolved obstacle tile in the current puzzle's valid solutions —
+  // solution entries for already-solved tiles no longer count.
+  function getAcceptedChars(unsolvedTiles) {
     const accepted = new Set();
     (session.puzzle.validSolutions || []).forEach(function (solution) {
-      solution.forEach(function (c) { accepted.add(c); });
+      solution.forEach(function (c, idx) {
+        if (unsolvedTiles.includes(idx)) accepted.add(c);
+      });
     });
     return accepted;
   }
@@ -232,7 +247,7 @@
     // D042: no sparkle until the player has been inactive for HINT_DELAY_MS.
     if (Date.now() - session.lastActionTs < HINT_DELAY_MS) return new Set();
 
-    const accepted = getAcceptedChars();
+    const accepted = getAcceptedChars(getUnsolvedTileIndices());
     const result = new Set();
     Recipes.RECIPES.forEach(function (recipe) {
       if (recipe.inputs.length !== 2) return;
@@ -250,9 +265,9 @@
 
   // D041 fix: selectedStamps can hold the same charKey twice when the pool has
   // >= 2 of it, so self-pair recipes (火+火, 木+木, 月+月, 朋+朋) are reachable.
+  // D053: stamp select/deselect no longer resets the inactivity timer — only
+  // fuse and deploy (actual progress-making actions) do.
   function onStampClick(charKey) {
-    session.lastActionTs = Date.now();
-
     if (selectedStamps.length >= 2) {
       selectedStamps = [charKey];
       deployingStamp = charKey;
@@ -336,6 +351,7 @@
     cell.modifiedBy = charKey;
 
     if (result.symbol === "✓") {
+      session.solvedTiles.add(tileIndex);
       if (session.spirit.position.tile === tileIndex || tileIndex === session.spirit.position.tile + 1) {
         session.spirit.position.tile = tileIndex;
         Spirit.markSafe(session.spirit);
