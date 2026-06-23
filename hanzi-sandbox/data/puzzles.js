@@ -10,12 +10,22 @@
      pre-seeds terrain state, so this was added; see Bible Decision Log entry
      for this build).
    - orderedSolution: true when a validSolutions entry must be applied in the
-     listed order (P14 — "in that order" per CLAUDE.md).
+     listed order (P14 — "in that order" per CLAUDE.md). D063: documentary
+     only — resolver.js never reads this field or enforces ordering.
 
    OPEN: per-radical depletion counts for Constrain-act puzzles (P12-P15) are not
    specified anywhere in the Bible or CLAUDE.md beyond "each radical stamp is
    single-use." puzzleLoader.js defaults every Constrain-act radical to a count
-   of 1. Flag for Design before puzzles ship — see Bible Decision Log. */
+   of 1. Flag for Design before puzzles ship — see Bible Decision Log.
+
+   D059: terrain[] and the per-entry arrays inside validSolutions[] share one
+   index-to-tile convention — terrain[i] is the obstacle tile that
+   validSolutions entry's [i] is intended to resolve (see P09: terrain[0]=RIVER
+   pairs with validSolutions[0][0]="冰", terrain[1]=THORNS with [0][1]="尖").
+   This is an enforced data contract: puzzleLoader.js and game.html's hint
+   filtering (getAcceptedChars) both index into validSolutions by tile position.
+   Checked against all 15 puzzles for this pass — ordering holds throughout,
+   no divergence found. */
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory(require("./terrain.js"));
   else root.HanziSandbox = Object.assign(root.HanziSandbox || {}, { Puzzles: factory(root.HanziSandbox.Terrain) });
@@ -95,15 +105,20 @@
       levelHasTimer: false, notes: "water worsens mud (✗); 沐 clears mud first is the alt path"
     },
     {
-      id: "P12", act: "Constrain", obstacle: "river with placed 林", terrain: [{ type: T.RIVER }],
+      id: "P12", act: "Constrain", obstacle: "The raft is fragile — don't burn it.", terrain: [{ type: T.RIVER }],
       prePlaced: [{ tile: 0, char: "林" }],
       availableRadicals: ["冫", "水", "火"], validSolutions: [["冰"]], redHerrings: ["火"],
       levelHasTimer: false, notes: "fire burns your own raft (§4b); spirit falls -> setback (D034)"
     },
     {
-      id: "P13", act: "Constrain", obstacle: "timed darkness", terrain: [{ type: T.DARKNESS }],
+      // D065: redesigned from timed darkness to a looping shadow hazard (no countdown timer).
+      // 休 deployed on the spirit pauses it for the buff duration; the hazard pulse passes
+      // harmlessly while paused; 明 then clears the darkness tile. If the hazard pulse hits
+      // while the spirit is not paused, it takes 1 HP damage (好/D040 damage spec).
+      id: "P13", act: "Constrain", obstacle: "a shadow hazard pulses across the dark",
+      terrain: [{ type: T.DARKNESS }], hazardLoop: true,
       availableRadicals: ["人", "木", "日", "月", "宀", "女"], validSolutions: [["休", "明"]], redHerrings: ["安"],
-      levelHasTimer: true, notes: "休 buys timer time; 明 solves dark; 安 (fall-immunity) doesn't help here"
+      levelHasTimer: false, notes: "休 pauses spirit through the hazard pulse; 明 solves dark; 安 (fall-immunity) doesn't help here"
     },
     {
       id: "P14", act: "Constrain", obstacle: "thorns + ice-wall", terrain: [{ type: T.THORNS }, { type: T.ICE_WALL }],

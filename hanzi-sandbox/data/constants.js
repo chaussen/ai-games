@@ -11,6 +11,8 @@
     HINT_OPACITY: 0.35,
     // D042: sparkle must not fire until the player has been inactive (no deploy/fuse
     // action) for this long. Prevents the hint from preempting the semantic aha moment.
-    HINT_DELAY_MS: 8000
+    HINT_DELAY_MS: 8000,
+    // D065: P13's looping shadow hazard pulse interval. Design to tune.
+    HAZARD_PULSE_MS: 3000
   };
 });
