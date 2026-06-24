@@ -7,9 +7,6 @@
   body { font-family: -apple-system, sans-serif; background: #1b1f24; color: #eee; margin: 0; padding: 20px; }
   h1 { font-size: 18px; margin: 0 0 4px; }
   .sub { color: #888; margin-bottom: 16px; font-size: 13px; }
-  #puzzlePicker { margin-bottom: 16px; }
-  #puzzlePicker button { margin: 2px; padding: 4px 8px; background: #2a2f36; color: #ccc; border: 1px solid #444; border-radius: 4px; cursor: pointer; font-size: 12px; }
-  #puzzlePicker button.active { background: #4A7C59; color: #fff; }
   #obstacle { font-size: 14px; color: #ddd; margin-bottom: 12px; }
   #terrainRow { display: flex; gap: 8px; margin-bottom: 16px; }
   .cell { width: 90px; height: 90px; border: 2px solid #555; border-radius: 8px; display: flex; flex-direction: column;
@@ -37,29 +34,49 @@
   .cell.flash-fail { background: #7a2020 !important; border-color: #c0392b !important; }
   .cell.flash-safe { background: #2a6e3f !important; border-color: #4A7C59 !important; }
   .cell.hazard-pulse { background: #3a1f4a !important; border-color: #8e44ad !important; }
+
+  #metaScreen.hidden, #puzzleScreen.hidden { display: none; }
+  .actSection { margin-bottom: 22px; }
+  .actSection .actTitle { font-size: 13px; color: #999; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
+  .actSection.locked .actTitle { color: #555; }
+  .tileRow { display: flex; gap: 10px; flex-wrap: wrap; }
+  .tile { width: 64px; height: 64px; border-radius: 8px; background: #2a2f36; border: 1px solid #555;
+          display: flex; align-items: center; justify-content: center; font-size: 26px; cursor: pointer;
+          position: relative; color: #eee; }
+  .tile.locked { cursor: not-allowed; color: #555; background: #23272d; border-color: #3a3f46; }
+  .tile.complete { border-color: #4A7C59; }
+  .tile .badge { position: absolute; font-size: 13px; }
+  .tile .badge.lock { top: 2px; right: 4px; }
+  .tile .badge.check { bottom: 2px; right: 4px; color: #4A7C59; }
+  #backBtn { margin-bottom: 12px; padding: 4px 10px; background: #2a2f36; color: #ccc; border: 1px solid #444;
+             border-radius: 4px; cursor: pointer; font-size: 12px; }
 </style>
 </head>
 <body>
-<h1>Hanzi Sandbox — Room Shell (Phase 3)</h1>
+<h1>Hanzi Sandbox — Room Shell (Phase 3/9)</h1>
 <div class="sub">Terrain + spirit + puzzle loader on top of the §2/§3 fusion prototype. Click two hand stamps to fuse them; click a stamp then a terrain cell to deploy it.</div>
 
-<div id="puzzlePicker"></div>
-<div id="obstacle"></div>
-<div id="recoveryCaption"></div>
-<div id="spiritStatus"></div>
-<div id="terrainRow"></div>
+<div id="metaScreen"></div>
 
-<div class="section-title">Hand</div>
-<div id="hand"></div>
+<div id="puzzleScreen" class="hidden">
+  <button id="backBtn">← Back to map</button>
+  <div id="obstacle"></div>
+  <div id="recoveryCaption"></div>
+  <div id="spiritStatus"></div>
+  <div id="terrainRow"></div>
 
-<div id="fuseRow">
-  <button id="fuseBtn" disabled>Fuse selected (pick 2)</button>
-  <button id="clearBtn">Clear selection</button>
-  <span id="fuseHint" style="font-size:12px;color:#777;"></span>
+  <div class="section-title">Hand</div>
+  <div id="hand"></div>
+
+  <div id="fuseRow">
+    <button id="fuseBtn" disabled>Fuse selected (pick 2)</button>
+    <button id="clearBtn">Clear selection</button>
+    <span id="fuseHint" style="font-size:12px;color:#777;"></span>
+  </div>
+
+  <div class="section-title">Log</div>
+  <div id="log"></div>
 </div>
-
-<div class="section-title">Log</div>
-<div id="log"></div>
 
 <!-- Existing fusion prototype (Phase 1/2) — UMD-style globals, loaded as classic scripts. Not modified. -->
 <script src="recipes.js"></script>
@@ -94,7 +111,9 @@
   let deployingStamp = null;
   let hazardIntervalId = null;
 
-  const $puzzlePicker = document.getElementById("puzzlePicker");
+  const $metaScreen = document.getElementById("metaScreen");
+  const $puzzleScreen = document.getElementById("puzzleScreen");
+  const $backBtn = document.getElementById("backBtn");
   const $obstacle = document.getElementById("obstacle");
   const $recoveryCaption = document.getElementById("recoveryCaption");
   const $spiritStatus = document.getElementById("spiritStatus");
@@ -111,15 +130,123 @@
     $log.prepend(line);
   }
 
-  function renderPuzzlePicker() {
-    $puzzlePicker.innerHTML = "";
-    PUZZLES.forEach(function (p) {
-      const btn = document.createElement("button");
-      btn.textContent = p.id + " " + p.act;
-      btn.className = session && session.puzzle.id === p.id ? "active" : "";
-      btn.onclick = function () { startPuzzle(p); };
-      $puzzlePicker.appendChild(btn);
+  // Design Bible §9 / build CLAUDE.md "Progression & UI Layer". Act order is fixed
+  // (Teach -> Choose -> Compound -> Constrain); each puzzle's *own* puzzle.act field
+  // (already locked via D024/D028/D051) is the grouping key, not the static
+  // id-list tables in CLAUDE.md/§9 — those two tables disagree with each other and
+  // with puzzles.js (e.g. P08 is Compound per D024, not Choose; P06b is missing from
+  // both tables). Grouping by the data's own act field is the only version that
+  // matches what's actually implemented; flagged as D077 in the Bible rather than
+  // guessing between the two stale tables.
+  const ACT_ORDER = ["Teach", "Choose", "Compound", "Constrain"];
+
+  // Per-puzzle fused character shown on its meta-screen tile (CLAUDE.md table).
+  // P06b has no CLAUDE.md entry (added after that table was written, D051) — uses
+  // 林, the first character taught on its small-gap tile.
+  const TILE_CHAR = {
+    P01: "冰", P02: "冰", P03: "火", P04: "火", P05: "明", P06: "星", P06b: "林",
+    P07: "森", P08: "炎", P09: "冰", P10: "晶", P11: "岩", P12: "林", P13: "安",
+    P14: "尖", P15: "—"
+  };
+
+  function completionKey(puzzleId) {
+    return "hanzi_" + puzzleId.toLowerCase() + "_complete";
+  }
+
+  function isPuzzleComplete(puzzleId) {
+    return localStorage.getItem(completionKey(puzzleId)) === "1";
+  }
+
+  function markPuzzleComplete(puzzleId) {
+    localStorage.setItem(completionKey(puzzleId), "1");
+  }
+
+  // Groups PUZZLES by act, preserving ACT_ORDER and each puzzle's position in PUZZLES.
+  function groupPuzzlesByAct() {
+    const groups = {};
+    ACT_ORDER.forEach(function (act) { groups[act] = []; });
+    PUZZLES.forEach(function (p) { if (groups[p.act]) groups[p.act].push(p); });
+    return groups;
+  }
+
+  // Teach is always unlocked; each subsequent act unlocks once every puzzle in the
+  // act before it is complete (Design Bible §9 "Sequencing").
+  function isActUnlocked(actIndex, groups) {
+    if (actIndex === 0) return true;
+    const prevAct = ACT_ORDER[actIndex - 1];
+    return groups[prevAct].every(function (p) { return isPuzzleComplete(p.id); });
+  }
+
+  function showMetaScreen() {
+    $puzzleScreen.classList.add("hidden");
+    $metaScreen.classList.remove("hidden");
+    renderMetaScreen();
+  }
+
+  function showPuzzleScreen() {
+    $metaScreen.classList.add("hidden");
+    $puzzleScreen.classList.remove("hidden");
+  }
+
+  function renderMetaScreen() {
+    $metaScreen.innerHTML = "";
+    const groups = groupPuzzlesByAct();
+
+    ACT_ORDER.forEach(function (act, actIndex) {
+      const unlocked = isActUnlocked(actIndex, groups);
+      const section = document.createElement("div");
+      section.className = "actSection" + (unlocked ? "" : " locked");
+
+      const title = document.createElement("div");
+      title.className = "actTitle";
+      title.textContent = act;
+      section.appendChild(title);
+
+      const row = document.createElement("div");
+      row.className = "tileRow";
+      groups[act].forEach(function (p) {
+        const complete = isPuzzleComplete(p.id);
+        const tile = document.createElement("div");
+        tile.className = "tile" + (unlocked ? "" : " locked") + (complete ? " complete" : "");
+        tile.textContent = TILE_CHAR[p.id] || "?";
+
+        if (!unlocked) {
+          const lockBadge = document.createElement("span");
+          lockBadge.className = "badge lock";
+          lockBadge.textContent = "🔒";
+          tile.appendChild(lockBadge);
+        } else if (complete) {
+          const checkBadge = document.createElement("span");
+          checkBadge.className = "badge check";
+          checkBadge.textContent = "✓";
+          tile.appendChild(checkBadge);
+        }
+
+        tile.onclick = function () {
+          if (!unlocked) return;
+          startPuzzle(p);
+          showPuzzleScreen();
+        };
+        row.appendChild(tile);
+      });
+      section.appendChild(row);
+      $metaScreen.appendChild(section);
     });
+  }
+
+  $backBtn.onclick = function () { showMetaScreen(); };
+
+  // CLAUDE.md "Completion": spirit reaches goal (final tile, solved) -> write the
+  // localStorage flag. Detected here in the UI layer (not engine/*.js) by watching
+  // session state after each successful deploy, per "do not alter puzzle engine logic."
+  function checkCompletion() {
+    if (!session || session.completedThisRun) return;
+    const lastTile = session.terrain.length - 1;
+    if (session.spirit.position.tile === lastTile && session.solvedTiles.has(lastTile)) {
+      session.completedThisRun = true;
+      markPuzzleComplete(session.puzzle.id);
+      log(session.puzzle.id + " complete — spirit reached the goal.");
+    }
   }
 
   function startPuzzle(puzzleDef) {
@@ -138,6 +265,7 @@
     session.flashSafeTile = null;
     session.flashHazardTile = null;
     session.solvedTiles = new Set();
+    session.completedThisRun = false;
     selectedStamps = [];
     deployingStamp = null;
     $recoveryCaption.textContent = "";
@@ -181,7 +309,6 @@
   }
 
   function renderAll() {
-    renderPuzzlePicker();
     renderObstacle();
     renderSpiritStatus();
     renderTerrain();
@@ -375,6 +502,7 @@
     if (outcome && outcome.fallTriggered) {
       triggerFallRecovery(tileIndex);
     } else {
+      checkCompletion();
       renderAll();
     }
   }
@@ -442,7 +570,7 @@
   // not only on click — otherwise it never appears for a player who sits idle.
   setInterval(function () { if (session) renderHand(); }, 500);
 
-  startPuzzle(PUZZLES[0]);
+  showMetaScreen();
 </script>
 </body>
 </html>
