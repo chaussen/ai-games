@@ -32,7 +32,7 @@
     var isConstrain = puzzle.act === "Constrain";
     var hand = {};
     puzzle.availableRadicals.forEach(function (radical) {
-      hand[radical] = isConstrain ? DEFAULT_CONSTRAIN_COUNT : Infinity;
+      hand[radical] = isConstrain ? (hand[radical] || 0) + DEFAULT_CONSTRAIN_COUNT : Infinity;
     });
 
     return {
