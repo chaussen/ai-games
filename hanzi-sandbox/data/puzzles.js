@@ -128,10 +128,15 @@
     {
       // D071: SHADOW_WEB swapped for a second MUD tile — its only clean solvers
       // (明/尖/炎) are consumed by other terrain, and covering it would bloat the hand.
+      // D074: D073 found P15 unsolvable as a single "no single path" puzzle —
+      // MUD×2 always stranded a tile, and even SHADOW_WEB+火×2 pinned to exactly
+      // one complete path. Restored SHADOW_WEB as the 8th tile and added a third
+      // 火 (16 radicals total) so 炎-routing flexibility yields two independent
+      // complete solve paths, per Design's fix.
       id: "P15", act: "Constrain", obstacle: "all terrain types",
       terrain: [{ type: T.RIVER }, { type: T.THORNS }, { type: T.DARKNESS }, { type: T.ICE_WALL },
-        { type: T.CHASM_SMALL }, { type: T.CHASM_LARGE }, { type: T.MUD }, { type: T.MUD }],
-      availableRadicals: ["冫", "水", "火", "火", "木", "木", "木", "木", "日", "月", "山", "石", "小", "大", "氵"],
+        { type: T.CHASM_SMALL }, { type: T.CHASM_LARGE }, { type: T.MUD }, { type: T.SHADOW_WEB }],
+      availableRadicals: ["冫", "水", "火", "火", "火", "木", "木", "木", "木", "日", "月", "山", "石", "小", "大", "氵"],
       validSolutions: [], redHerrings: [], levelHasTimer: false,
       notes: "mastery level; no single path; player-authored"
     }
