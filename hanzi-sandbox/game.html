@@ -33,6 +33,11 @@
   .section-title { font-size: 12px; color: #777; text-transform: uppercase; margin: 14px 0 4px; }
   .cell.flash-fail { background: #7a2020 !important; border-color: #c0392b !important; }
   .cell.flash-safe { background: #2a6e3f !important; border-color: #4A7C59 !important; }
+  .cell.celebrate { animation: celebrate-pulse 1.4s ease-in-out 2; }
+  @keyframes celebrate-pulse {
+    0%, 100% { background: #2a6e3f; border-color: #4A7C59; }
+    50% { background: #f2c14e; border-color: #f2c14e; }
+  }
   .cell.hazard-pulse { background: #3a1f4a !important; border-color: #8e44ad !important; }
 
   #metaScreen.hidden, #puzzleScreen.hidden { display: none; }
@@ -145,7 +150,7 @@
   // 林, the first character taught on its small-gap tile.
   const TILE_CHAR = {
     P01: "冰", P02: "冰", P03: "火", P04: "火", P05: "明", P06: "星", P06b: "林",
-    P07: "森", P08: "炎", P09: "冰", P10: "晶", P11: "岩", P12: "林", P13: "安",
+    P07: "森", P08: "炎", P09: "冰", P10: "晶", P11: "岩", P12: "林", P13: "休",
     P14: "尖", P15: "—"
   };
 
@@ -246,6 +251,19 @@
       session.completedThisRun = true;
       markPuzzleComplete(session.puzzle.id);
       log(session.puzzle.id + " complete — spirit reached the goal.");
+
+      // D081: brief celebration before the back button becomes the obvious next
+      // action — tile glow + caption, no modal, no scoring.
+      session.celebrateTile = lastTile;
+      $recoveryCaption.textContent = "✓ puzzle complete!";
+      renderTerrain();
+      setTimeout(function () {
+        if (session) {
+          session.celebrateTile = null;
+          $recoveryCaption.textContent = "";
+          renderTerrain();
+        }
+      }, 2800);
     }
   }
 
@@ -264,6 +282,7 @@
     session.flashFailTile = null;
     session.flashSafeTile = null;
     session.flashHazardTile = null;
+    session.celebrateTile = null;
     session.solvedTiles = new Set();
     session.completedThisRun = false;
     selectedStamps = [];
@@ -316,7 +335,9 @@
   }
 
   function renderObstacle() {
-    $obstacle.textContent = session ? session.puzzle.obstacle + " — " + session.puzzle.notes : "Pick a puzzle to begin.";
+    // D076/D081: notes is internal authoring context (red herring rationale, etc.)
+    // and must never reach player-visible UI — obstacle text only.
+    $obstacle.textContent = session ? session.puzzle.obstacle : "Pick a puzzle to begin.";
   }
 
   function renderSpiritStatus() {
@@ -335,7 +356,8 @@
         (session.spirit.position.tile === i ? " spirit-here" : "") +
         (session.flashFailTile === i ? " flash-fail" : "") +
         (session.flashSafeTile === i ? " flash-safe" : "") +
-        (session.flashHazardTile === i ? " hazard-pulse" : "");
+        (session.flashHazardTile === i ? " hazard-pulse" : "") +
+        (session.celebrateTile === i ? " celebrate" : "");
       div.innerHTML = '<div class="label">' + cell.type + '</div>' +
         (cell.modifiedBy ? '<div class="mod">' + cell.modifiedBy + '</div>' : '');
       div.onclick = function () { deployOnCell(i); };
@@ -528,10 +550,11 @@
       if (session.stampPool.has(charKey, 1)) session.stampPool.take(charKey, 1);
     }
 
-    cell.state = "modified";
-    cell.modifiedBy = charKey;
-
     if (result.symbol === "✓") {
+      // D079: only a confirmed solve marks the cell modified — ✗/~ outcomes
+      // still spend the stamp above but must not poison §4b char×char lookups.
+      cell.state = "modified";
+      cell.modifiedBy = charKey;
       session.solvedTiles.add(tileIndex);
       if (session.spirit.position.tile === tileIndex || tileIndex === session.spirit.position.tile + 1) {
         session.spirit.position.tile = tileIndex;

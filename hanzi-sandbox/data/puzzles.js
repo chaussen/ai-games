@@ -68,7 +68,7 @@
     {
       // D051: two-chasm forced fork. Inserted between P06 and P07 as P06b (kept
       // unnumbered-in-sequence per D051 to avoid an P07-P15 renumber cascade).
-      id: "P06b", act: "Choose", obstacle: "two gaps in sequence",
+      id: "P06b", act: "Compound", obstacle: "two gaps in sequence",
       terrain: [{ type: T.CHASM_SMALL }, { type: T.CHASM_LARGE }],
       availableRadicals: ["木", "木", "木", "林"], validSolutions: [["林", "木"]], redHerrings: ["林"],
       levelHasTimer: false,
