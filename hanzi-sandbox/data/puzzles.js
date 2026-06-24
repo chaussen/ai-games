@@ -122,7 +122,7 @@
     },
     {
       id: "P14", act: "Constrain", obstacle: "thorns + ice-wall", terrain: [{ type: T.THORNS }, { type: T.ICE_WALL }],
-      availableRadicals: ["小", "大", "火", "冫", "水"], validSolutions: [["尖", "炎"]], orderedSolution: true,
+      availableRadicals: ["小", "大", "火", "火", "冫", "水"], validSolutions: [["尖", "炎"]], orderedSolution: true,
       redHerrings: ["凌"], levelHasTimer: false, notes: "凌 thickens wall (✗); sequence matters — cut thorns before melting wall"
     },
     {

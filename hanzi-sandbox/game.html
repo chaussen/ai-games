@@ -151,7 +151,7 @@
   const TILE_CHAR = {
     P01: "冰", P02: "冰", P03: "火", P04: "火", P05: "明", P06: "星", P06b: "林",
     P07: "森", P08: "炎", P09: "冰", P10: "晶", P11: "岩", P12: "林", P13: "休",
-    P14: "尖", P15: "—"
+    P14: "尖", P15: "？"
   };
 
   function completionKey(puzzleId) {
@@ -239,7 +239,13 @@
     });
   }
 
-  $backBtn.onclick = function () { showMetaScreen(); };
+  $backBtn.onclick = function () {
+    if (hazardIntervalId) {
+      clearInterval(hazardIntervalId);
+      hazardIntervalId = null;
+    }
+    showMetaScreen();
+  };
 
   // CLAUDE.md "Completion": spirit reaches goal (final tile, solved) -> write the
   // localStorage flag. Detected here in the UI layer (not engine/*.js) by watching
@@ -532,6 +538,12 @@
   function applyOutcome(charKey, cell, tileIndex, result) {
     const stateClasses = { "休": "rest", "好": "damage_immunity", "安": "fall_immunity" };
     if (stateClasses[charKey]) {
+      // bug report: state stamps (休/好/安) were returning before the
+      // depletion-mode stampPool.take() below ever ran, so Constrain act
+      // never consumed them. Spend the stamp here first.
+      if (session.stampPool.mode === "depletion") {
+        if (session.stampPool.has(charKey, 1)) session.stampPool.take(charKey, 1);
+      }
       if (charKey === "休") {
         const restDurationMs = 5000;
         const restSpirit = session.spirit;
