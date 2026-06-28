@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Hanzi Sandbox</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+  #game-container canvas { display: block; }
+</style>
+</head>
+<body>
+<div id="game-container"></div>
+
+<script src="data/characters.js"></script>
+<script src="data/puzzles.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+<script>
+// ─── Tag Resolution Engine ───────────────────────────────────────────────────
+
+const TERRAIN_TAGS = {
+  ground: [],
+  river:  ['is_wet', 'is_liquid'],
+  thorns: ['is_organic', 'is_fibrous'],
+  dark:   ['is_dark'],
+  goal:   []
+};
+
+function resolveTagInteraction(charTags, terrainTags) {
+  const has = (arr, tag) => arr.includes(tag);
+
+  // Rule 1: is_hot + flammable terrain → CLEAR
+  if (has(charTags, 'is_hot') && has(terrainTags, 'is_flammable')) return 'CLEAR';
+  // Rule 1b: is_hot + organic/fibrous terrain → CLEAR (thorns burn)
+  if (has(charTags, 'is_hot') && (has(terrainTags, 'is_organic') || has(terrainTags, 'is_fibrous'))) return 'CLEAR';
+  // Rule 2: is_hot + wet terrain → steam only
+  if (has(charTags, 'is_hot') && has(terrainTags, 'is_wet')) return 'NO_EFFECT';
+  // Rule 3: is_wet + hot terrain → extinguish (no hot terrain in this slice)
+  if (has(charTags, 'is_wet') && has(terrainTags, 'is_hot')) return 'CLEAR';
+  // Rule 4: is_buoyant on liquid → raft (CLEAR)
+  if (has(charTags, 'is_buoyant') && has(terrainTags, 'is_liquid')) return 'CLEAR';
+  // Rule 5: is_structural on chasm/pit → bridge (not in this slice)
+  if (has(charTags, 'is_structural') && has(terrainTags, 'is_pit')) return 'CLEAR';
+  // Rule 6: is_luminous on dark → CLEAR
+  if (has(charTags, 'is_luminous') && has(terrainTags, 'is_dark')) return 'CLEAR';
+  // Rule 7: is_luminous_dim on dark → PARTIAL
+  if (has(charTags, 'is_luminous_dim') && has(terrainTags, 'is_dark')) return 'PARTIAL';
+
+  return 'NO_EFFECT';
+}
+
+// ─── Constants ───────────────────────────────────────────────────────────────
+
+const COLS = 5;
+const ROWS = 4;
+const CELL = 96;
+const GRID_OFFSET_X = 48;
+const GRID_OFFSET_Y = 60;
+const HAND_Y_RATIO = 0.82;
+
+const TERRAIN_COLOR = {
+  ground: 0xc8b89a,
+  river:  0x4a90d9,
+  thorns: 0x5a7a3a,
+  dark:   0x1a1a2e,
+  goal:   0xffd700
+};
+
+const CHAR_MAP = {};
+CHARACTERS.forEach(c => { CHAR_MAP[c.char] = c; });
+
+// ─── MetaScene ───────────────────────────────────────────────────────────────
+
+class MetaScene extends Phaser.Scene {
+  constructor() { super({ key: 'MetaScene' }); }
+
+  create() {
+    const W = this.scale.width;
+    const H = this.scale.height;
+
+    this.add.text(W / 2, 48, '汉字 Sandbox', {
+      fontFamily: 'serif', fontSize: '36px', color: '#e8d8b0', align: 'center'
+    }).setOrigin(0.5);
+
+    this.add.text(W / 2, 90, 'select a puzzle', {
+      fontFamily: 'sans-serif', fontSize: '14px', color: '#888', align: 'center'
+    }).setOrigin(0.5);
+
+    this.tiles = [];
+    this.drawTiles();
+  }
+
+  isComplete(id) {
+    return localStorage.getItem('hanzi_complete_' + id) === 'true';
+  }
+
+  isUnlocked(index) {
+    if (index === 0) return true;
+    return this.isComplete(PUZZLES[index - 1].id);
+  }
+
+  drawTiles() {
+    this.tiles.forEach(t => t.destroy());
+    this.tiles = [];
+
+    const W = this.scale.width;
+    const startX = W / 2 - ((PUZZLES.length - 1) * 140) / 2;
+    const tileY = this.scale.height / 2;
+
+    PUZZLES.forEach((puzzle, i) => {
+      const x = startX + i * 140;
+      const unlocked = this.isUnlocked(i);
+      const done = this.isComplete(puzzle.id);
+
+      const bg = this.add.graphics();
+      const borderColor = done ? 0x7bc67b : unlocked ? 0xe8d8b0 : 0x444444;
+      const fillColor = done ? 0x2a3a2a : unlocked ? 0x2a2a1a : 0x1a1a1a;
+      bg.lineStyle(2, borderColor, 1);
+      bg.fillStyle(fillColor, 1);
+      bg.strokeRoundedRect(x - 55, tileY - 65, 110, 130, 8);
+      bg.fillRoundedRect(x - 55, tileY - 65, 110, 130, 8);
+      this.tiles.push(bg);
+
+      const idText = this.add.text(x, tileY - 44, puzzle.id, {
+        fontFamily: 'monospace', fontSize: '13px',
+        color: unlocked ? '#e8d8b0' : '#555'
+      }).setOrigin(0.5);
+      this.tiles.push(idText);
+
+      const actText = this.add.text(x, tileY - 22, puzzle.act, {
+        fontFamily: 'sans-serif', fontSize: '11px',
+        color: unlocked ? '#aaa' : '#444'
+      }).setOrigin(0.5);
+      this.tiles.push(actText);
+
+      // Terrain icon (first obstacle terrain type)
+      const terrainIcon = this.getTerrainIcon(puzzle);
+      const iconText = this.add.text(x, tileY + 8, terrainIcon.icon, {
+        fontFamily: 'sans-serif', fontSize: '28px',
+        color: terrainIcon.color
+      }).setOrigin(0.5);
+      this.tiles.push(iconText);
+
+      if (done) {
+        const doneText = this.add.text(x, tileY + 46, '✓', {
+          fontFamily: 'sans-serif', fontSize: '22px', color: '#7bc67b'
+        }).setOrigin(0.5);
+        this.tiles.push(doneText);
+      } else if (!unlocked) {
+        const lockText = this.add.text(x, tileY + 46, '🔒', {
+          fontFamily: 'sans-serif', fontSize: '20px'
+        }).setOrigin(0.5);
+        this.tiles.push(lockText);
+      }
+
+      if (unlocked) {
+        const zone = this.add.zone(x, tileY, 110, 130).setInteractive({ cursor: 'pointer' });
+        zone.on('pointerdown', () => {
+          this.scene.start('PuzzleScene', { puzzleId: puzzle.id });
+        });
+        zone.on('pointerover', () => { bg.setAlpha(0.8); });
+        zone.on('pointerout',  () => { bg.setAlpha(1.0); });
+        this.tiles.push(zone);
+      }
+    });
+  }
+
+  getTerrainIcon(puzzle) {
+    const flat = puzzle.terrain.flat();
+    if (flat.includes('river'))  return { icon: '〜', color: '#4a90d9' };
+    if (flat.includes('thorns')) return { icon: '✦', color: '#7a9a5a' };
+    if (flat.includes('dark'))   return { icon: '◆', color: '#5a5a8a' };
+    return { icon: '○', color: '#888' };
+  }
+
+  // Called when returning from PuzzleScene
+  init() {
+    // Will re-run create which redraws tiles with fresh localStorage state
+  }
+}
+
+// ─── PuzzleScene ─────────────────────────────────────────────────────────────
+
+class PuzzleScene extends Phaser.Scene {
+  constructor() { super({ key: 'PuzzleScene' }); }
+
+  init(data) {
+    this.puzzleId = data.puzzleId;
+    this.puzzle = PUZZLES.find(p => p.id === this.puzzleId);
+  }
+
+  create() {
+    const W = this.scale.width;
+    const H = this.scale.height;
+
+    // Deep-copy terrain state
+    this.terrainState = this.puzzle.terrain.map(row => row.map(cell => ({
+      type: cell,
+      cleared: false,
+      partial: false
+    })));
+
+    this.selectedCard = null;
+    this.spiritMoving = false;
+    this.completed = false;
+
+    // Build hand from available_chars (accumulate duplicates per spec)
+    this.hand = {};
+    this.puzzle.available_chars.forEach(ch => {
+      this.hand[ch] = (this.hand[ch] || 0) + 1;
+    });
+
+    // Spirit position (col, row)
+    this.spiritPos = { col: this.puzzle.spirit_start[0], row: this.puzzle.spirit_start[1] };
+    this.spiritPartial = false; // moving through partial-resolved dark
+
+    this.gridOffsetX = (W - COLS * CELL) / 2;
+    this.gridOffsetY = 60;
+
+    this.drawUI(W, H);
+    this.drawGrid();
+    this.drawHand(W, H);
+    this.drawSpirit();
+    this.drawBackButton(W);
+
+    // Start spirit walking
+    this.time.delayedCall(300, () => this.stepSpirit());
+  }
+
+  drawUI(W, H) {
+    // Background
+    this.add.rectangle(W / 2, H / 2, W, H, 0x0d0d18);
+
+    // Header
+    this.add.text(W / 2, 24, this.puzzle.id + ' — ' + this.puzzle.act, {
+      fontFamily: 'monospace', fontSize: '14px', color: '#888'
+    }).setOrigin(0.5);
+  }
+
+  drawBackButton(W) {
+    const btn = this.add.text(28, 24, '← back', {
+      fontFamily: 'sans-serif', fontSize: '13px', color: '#888'
+    }).setOrigin(0.5).setInteractive({ cursor: 'pointer' });
+    btn.on('pointerdown', () => this.scene.start('MetaScene'));
+    btn.on('pointerover', () => btn.setColor('#e8d8b0'));
+    btn.on('pointerout',  () => btn.setColor('#888'));
+  }
+
+  cellToWorld(col, row) {
+    return {
+      x: this.gridOffsetX + col * CELL + CELL / 2,
+      y: this.gridOffsetY + row * CELL + CELL / 2
+    };
+  }
+
+  drawGrid() {
+    if (this.gridGroup) this.gridGroup.destroy(true);
+    this.gridGroup = this.add.group();
+
+    // Clickable zones stored separately so we can re-create them
+    if (this.cellZones) this.cellZones.forEach(z => z.destroy());
+    this.cellZones = [];
+
+    for (let row = 0; row < ROWS; row++) {
+      for (let col = 0; col < COLS; col++) {
+        const state = this.terrainState[row][col];
+        const wx = this.gridOffsetX + col * CELL;
+        const wy = this.gridOffsetY + row * CELL;
+
+        const g = this.add.graphics();
+        this.gridGroup.add(g);
+
+        let fillColor = TERRAIN_COLOR[state.type] || 0x444444;
+        if (state.cleared) fillColor = TERRAIN_COLOR.ground;
+        if (state.partial) fillColor = 0x3a3a5e; // dim resolved dark
+
+        const isGoal = state.type === 'goal' ||
+          (col === this.puzzle.goal[0] && row === this.puzzle.goal[1]);
+
+        if (isGoal) fillColor = TERRAIN_COLOR.goal;
+
+        g.lineStyle(1, 0x333333, 0.6);
+        g.fillStyle(fillColor, 1);
+        g.fillRoundedRect(wx + 2, wy + 2, CELL - 4, CELL - 4, 6);
+        g.strokeRoundedRect(wx + 2, wy + 2, CELL - 4, CELL - 4, 6);
+
+        // Terrain label
+        let label = '';
+        if (!state.cleared && !state.partial) {
+          if (state.type === 'river')  label = '〜';
+          if (state.type === 'thorns') label = '✦';
+          if (state.type === 'dark')   label = '◆';
+        }
+        if (isGoal) label = '★';
+
+        if (label) {
+          const t = this.add.text(wx + CELL / 2, wy + CELL / 2, label, {
+            fontFamily: 'sans-serif', fontSize: '22px',
+            color: isGoal ? '#333' : '#ffffff88'
+          }).setOrigin(0.5);
+          this.gridGroup.add(t);
+        }
+
+        // River shimmer animation
+        if (state.type === 'river' && !state.cleared) {
+          this.tweens.add({
+            targets: g, alpha: { from: 1, to: 0.75 },
+            duration: 900, yoyo: true, repeat: -1,
+            ease: 'Sine.easeInOut',
+            delay: (col + row) * 80
+          });
+        }
+
+        // Click zone for deployment
+        const zone = this.add.zone(wx + CELL / 2, wy + CELL / 2, CELL - 4, CELL - 4)
+          .setInteractive({ cursor: 'pointer' });
+        const capturedCol = col;
+        const capturedRow = row;
+        zone.on('pointerdown', () => this.onCellClick(capturedCol, capturedRow));
+        this.cellZones.push(zone);
+      }
+    }
+  }
+
+  drawHand(W, H) {
+    if (this.handGroup) this.handGroup.destroy(true);
+    this.handGroup = this.add.group();
+
+    const chars = Object.keys(this.hand).filter(ch => this.hand[ch] > 0);
+    const cardW = 80;
+    const cardH = 90;
+    const gap = 16;
+    const totalW = chars.length * (cardW + gap) - gap;
+    const startX = (W - totalW) / 2;
+    const cardY = H * HAND_Y_RATIO;
+
+    this.cardObjects = {};
+
+    chars.forEach((ch, i) => {
+      const cx = startX + i * (cardW + gap) + cardW / 2;
+      const charData = CHAR_MAP[ch];
+      const isSelected = this.selectedCard === ch;
+
+      const g = this.add.graphics();
+      this.handGroup.add(g);
+
+      const borderCol = isSelected
+        ? Phaser.Display.Color.HexStringToColor(charData.color).color
+        : 0x555555;
+      const fillCol = isSelected ? 0x2a2a1a : 0x1a1a1a;
+
+      g.lineStyle(isSelected ? 3 : 2, borderCol, 1);
+      g.fillStyle(fillCol, 1);
+      g.fillRoundedRect(cx - cardW / 2, cardY - cardH / 2, cardW, cardH, 8);
+      g.strokeRoundedRect(cx - cardW / 2, cardY - cardH / 2, cardW, cardH, 8);
+
+      const glyph = this.add.text(cx, cardY - 10, ch, {
+        fontFamily: 'serif', fontSize: '36px',
+        color: charData.color
+      }).setOrigin(0.5);
+      this.handGroup.add(glyph);
+
+      const pinyin = this.add.text(cx, cardY + 26, charData.pinyin, {
+        fontFamily: 'sans-serif', fontSize: '11px', color: '#aaa'
+      }).setOrigin(0.5);
+      this.handGroup.add(pinyin);
+
+      const gloss = this.add.text(cx, cardY + 40, charData.gloss, {
+        fontFamily: 'sans-serif', fontSize: '10px', color: '#777'
+      }).setOrigin(0.5);
+      this.handGroup.add(gloss);
+
+      const zone = this.add.zone(cx, cardY, cardW, cardH).setInteractive({ cursor: 'pointer' });
+      zone.on('pointerdown', () => this.onCardClick(ch));
+      this.handGroup.add(zone);
+
+      this.cardObjects[ch] = { g, glyph, zone };
+    });
+
+    // Instruction hint
+    if (chars.length > 0 && !this.selectedCard) {
+      const hint = this.add.text(W / 2, H - 18, 'tap a card, then tap a tile', {
+        fontFamily: 'sans-serif', fontSize: '12px', color: '#555'
+      }).setOrigin(0.5);
+      this.handGroup.add(hint);
+    }
+  }
+
+  drawSpirit() {
+    if (this.spiritObj) this.spiritObj.destroy();
+    if (this.spiritTween) this.spiritTween.stop();
+
+    const pos = this.cellToWorld(this.spiritPos.col, this.spiritPos.row);
+
+    const g = this.add.graphics();
+    g.fillStyle(0xffffff, 0.9);
+    g.fillCircle(0, 0, 14);
+    g.fillStyle(0xffd700, 0.7);
+    g.fillCircle(0, 0, 10);
+    g.fillStyle(0xffffff, 1);
+    g.fillCircle(0, 0, 5);
+    g.x = pos.x;
+    g.y = pos.y;
+    this.spiritObj = g;
+
+    this.spiritTween = this.tweens.add({
+      targets: g, alpha: { from: 1, to: 0.6 },
+      duration: 700, yoyo: true, repeat: -1, ease: 'Sine.easeInOut'
+    });
+  }
+
+  onCardClick(ch) {
+    if (this.completed) return;
+    this.selectedCard = (this.selectedCard === ch) ? null : ch;
+    const W = this.scale.width;
+    const H = this.scale.height;
+    this.drawHand(W, H);
+  }
+
+  onCellClick(col, row) {
+    if (!this.selectedCard || this.completed) return;
+
+    const ch = this.selectedCard;
+    const charData = CHAR_MAP[ch];
+    const state = this.terrainState[row][col];
+
+    // Don't deploy on goal, ground, or already-cleared cells unless it's a useful action
+    const terrainTags = TERRAIN_TAGS[state.cleared ? 'ground' : state.type] || [];
+    const result = resolveTagInteraction(charData.tags, terrainTags);
+
+    if (result === 'NO_EFFECT' && state.cleared) return; // nothing happens on cleared ground
+
+    // Deploy animation
+    this.deployAnimation(ch, charData, col, row, () => {
+      this.applyResult(result, row, col);
+      this.applyAreaEffects(charData, result, row, col);
+      this.consumeCard(ch);
+      this.selectedCard = null;
+      const W = this.scale.width;
+      const H = this.scale.height;
+      this.drawGrid();
+      this.drawHand(W, H);
+      this.drawSpirit();
+      this.time.delayedCall(200, () => this.stepSpirit());
+    });
+  }
+
+  deployAnimation(ch, charData, col, row, onComplete) {
+    const targetPos = this.cellToWorld(col, row);
+    const W = this.scale.width;
+    const H = this.scale.height;
+    const startX = W / 2; // approximate card position
+    const startY = H * HAND_Y_RATIO;
+
+    const flyText = this.add.text(startX, startY, ch, {
+      fontFamily: 'serif', fontSize: '28px',
+      color: charData.color
+    }).setOrigin(0.5).setDepth(10);
+
+    this.tweens.add({
+      targets: flyText,
+      x: targetPos.x, y: targetPos.y,
+      scaleX: 2.2, scaleY: 2.2,
+      duration: 280,
+      ease: 'Quad.easeOut',
+      onComplete: () => {
+        // Flash
+        this.tweens.add({
+          targets: flyText,
+          alpha: 0, scaleX: 3, scaleY: 3,
+          duration: 220,
+          ease: 'Quad.easeIn',
+          onComplete: () => {
+            flyText.destroy();
+            onComplete();
+          }
+        });
+      }
+    });
+  }
+
+  applyResult(result, row, col) {
+    if (result === 'CLEAR') {
+      this.terrainState[row][col].cleared = true;
+      this.terrainState[row][col].partial = false;
+    } else if (result === 'PARTIAL') {
+      this.terrainState[row][col].partial = true;
+    }
+  }
+
+  applyAreaEffects(charData, result, row, col) {
+    if (result === 'NO_EFFECT') return;
+
+    // Luminous characters illuminate all dark terrain globally (sun rises everywhere)
+    if (charData.tags.includes('is_luminous')) {
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          const s = this.terrainState[r][c];
+          if (s.type === 'dark' && !s.cleared) s.cleared = true;
+        }
+      }
+    } else if (charData.tags.includes('is_luminous_dim')) {
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          const s = this.terrainState[r][c];
+          if (s.type === 'dark' && !s.cleared && !s.partial) s.partial = true;
+        }
+      }
+    }
+
+    // Hot characters: fire spreads to all connected flammable/organic/fibrous tiles
+    if (charData.tags.includes('is_hot') && result === 'CLEAR') {
+      const stack = [{ r: row, c: col }];
+      const seen = new Set([`${row},${col}`]);
+      while (stack.length > 0) {
+        const { r, c } = stack.pop();
+        for (const [dr, dc] of [[-1,0],[1,0],[0,-1],[0,1]]) {
+          const nr = r + dr, nc = c + dc;
+          if (nr < 0 || nr >= ROWS || nc < 0 || nc >= COLS) continue;
+          const key = `${nr},${nc}`;
+          if (seen.has(key)) continue;
+          seen.add(key);
+          const s = this.terrainState[nr][nc];
+          if (s.cleared || s.partial) continue;
+          const tags = TERRAIN_TAGS[s.type] || [];
+          if (tags.some(t => ['is_organic','is_fibrous','is_flammable'].includes(t))) {
+            s.cleared = true;
+            stack.push({ r: nr, c: nc });
+          }
+        }
+      }
+    }
+  }
+
+  consumeCard(ch) {
+    this.hand[ch] = Math.max(0, (this.hand[ch] || 1) - 1);
+  }
+
+  isBlocked(col, row) {
+    const state = this.terrainState[row][col];
+    if (state.cleared) return false;
+    if (state.partial) return false; // partial = passable (half speed handled by delay)
+    const isGoal = col === this.puzzle.goal[0] && row === this.puzzle.goal[1];
+    if (isGoal) return false;
+    return ['river', 'thorns', 'dark'].includes(state.type);
+  }
+
+  findNextStep() {
+    const { col, row } = this.spiritPos;
+    const [gc, gr] = this.puzzle.goal;
+    const manhattan = Math.abs(gc - col) + Math.abs(gr - row);
+    const dirs = [
+      { dc: 1, dr: 0 }, { dc: 0, dr: 1 },
+      { dc: 0, dr: -1 }, { dc: -1, dr: 0 }
+    ];
+    // BFS capped at Manhattan distance — prevents routing around barriers meant to block
+    const queue = [{ col, row, first: null, steps: 0 }];
+    const visited = new Set([`${col},${row}`]);
+    while (queue.length > 0) {
+      const cur = queue.shift();
+      if (cur.steps >= manhattan) continue;
+      for (const { dc, dr } of dirs) {
+        const nc = cur.col + dc;
+        const nr = cur.row + dr;
+        if (nc < 0 || nc >= COLS || nr < 0 || nr >= ROWS) continue;
+        if (this.isBlocked(nc, nr)) continue;
+        const key = `${nc},${nr}`;
+        if (visited.has(key)) continue;
+        visited.add(key);
+        const first = cur.first || { col: nc, row: nr };
+        if (nc === gc && nr === gr) return first;
+        queue.push({ col: nc, row: nr, first, steps: cur.steps + 1 });
+      }
+    }
+    return null;
+  }
+
+  stepSpirit() {
+    if (this.spiritMoving || this.completed) return;
+
+    const { col, row } = this.spiritPos;
+    const [gc, gr] = this.puzzle.goal;
+
+    if (col === gc && row === gr) {
+      this.onComplete();
+      return;
+    }
+
+    const next = this.findNextStep();
+    if (!next) return; // no path — spirit waits for player to deploy a card
+
+    this.spiritMoving = true;
+    const state = this.terrainState[next.row][next.col];
+    const moveDuration = state.partial ? 600 : 300;
+    const dest = this.cellToWorld(next.col, next.row);
+    this.tweens.add({
+      targets: this.spiritObj,
+      x: dest.x, y: dest.y,
+      duration: moveDuration,
+      ease: 'Sine.easeInOut',
+      onComplete: () => {
+        this.spiritPos = { col: next.col, row: next.row };
+        this.spiritMoving = false;
+        this.stepSpirit();
+      }
+    });
+  }
+
+  onComplete() {
+    if (this.completed) return;
+    this.completed = true;
+
+    localStorage.setItem('hanzi_complete_' + this.puzzleId, 'true');
+
+    const W = this.scale.width;
+    const H = this.scale.height;
+
+    // Celebration
+    const overlay = this.add.rectangle(W / 2, H / 2, W, H, 0x000000, 0.5).setDepth(20);
+    const msg = this.add.text(W / 2, H / 2 - 20, '✓', {
+      fontFamily: 'sans-serif', fontSize: '72px', color: '#ffd700'
+    }).setOrigin(0.5).setDepth(21).setAlpha(0);
+
+    const sub = this.add.text(W / 2, H / 2 + 50, this.puzzleId + ' complete', {
+      fontFamily: 'monospace', fontSize: '16px', color: '#e8d8b0'
+    }).setOrigin(0.5).setDepth(21).setAlpha(0);
+
+    this.tweens.add({
+      targets: [msg, sub], alpha: 1,
+      duration: 400, ease: 'Quad.easeOut'
+    });
+
+    this.time.delayedCall(1500, () => {
+      this.scene.start('MetaScene');
+    });
+  }
+}
+
+// ─── Game Config ─────────────────────────────────────────────────────────────
+
+const config = {
+  type: Phaser.AUTO,
+  width: COLS * CELL + GRID_OFFSET_X * 2,
+  height: 560,
+  backgroundColor: '#0d0d18',
+  parent: 'game-container',
+  scene: [MetaScene, PuzzleScene],
+  input: {
+    activePointers: 2
+  }
+};
+
+const game = new Phaser.Game(config);
+</script>
+</body>
+</html>
