@@ -223,6 +223,7 @@ class PuzzleScene extends Phaser.Scene {
     this.drawHand(W, H);
     this.drawSpirit();
     this.drawBackButton(W);
+    this.drawRetryButton(W);
 
     // Start spirit walking
     this.time.delayedCall(300, () => this.stepSpirit());
@@ -243,6 +244,17 @@ class PuzzleScene extends Phaser.Scene {
       fontFamily: 'sans-serif', fontSize: '13px', color: '#888'
     }).setOrigin(0.5).setInteractive({ cursor: 'pointer' });
     btn.on('pointerdown', () => this.scene.start('MetaScene'));
+    btn.on('pointerover', () => btn.setColor('#e8d8b0'));
+    btn.on('pointerout',  () => btn.setColor('#888'));
+  }
+
+  drawRetryButton(W) {
+    const btn = this.add.text(W - 36, 24, '↺ retry', {
+      fontFamily: 'sans-serif', fontSize: '13px', color: '#888'
+    }).setOrigin(0.5).setInteractive({ cursor: 'pointer' });
+    btn.on('pointerdown', () => {
+      if (!this.completed) this.scene.start('PuzzleScene', { puzzleId: this.puzzleId });
+    });
     btn.on('pointerover', () => btn.setColor('#e8d8b0'));
     btn.on('pointerout',  () => btn.setColor('#888'));
   }
@@ -616,23 +628,23 @@ class PuzzleScene extends Phaser.Scene {
     const W = this.scale.width;
     const H = this.scale.height;
 
-    // Celebration
-    const overlay = this.add.rectangle(W / 2, H / 2, W, H, 0x000000, 0.5).setDepth(20);
-    const msg = this.add.text(W / 2, H / 2 - 20, '✓', {
+    // 500ms success flash then advance
+    const flash = this.add.rectangle(W / 2, H / 2, W, H, 0xffd700, 0).setDepth(20);
+    const msg = this.add.text(W / 2, H / 2, '✓', {
       fontFamily: 'sans-serif', fontSize: '72px', color: '#ffd700'
     }).setOrigin(0.5).setDepth(21).setAlpha(0);
 
-    const sub = this.add.text(W / 2, H / 2 + 50, this.puzzleId + ' complete', {
-      fontFamily: 'monospace', fontSize: '16px', color: '#e8d8b0'
-    }).setOrigin(0.5).setDepth(21).setAlpha(0);
+    this.tweens.add({ targets: flash, alpha: 0.3, duration: 250, yoyo: true, ease: 'Quad.easeOut' });
+    this.tweens.add({ targets: msg,  alpha: 1,   duration: 250, ease: 'Quad.easeOut' });
 
-    this.tweens.add({
-      targets: [msg, sub], alpha: 1,
-      duration: 400, ease: 'Quad.easeOut'
-    });
-
-    this.time.delayedCall(1500, () => {
-      this.scene.start('MetaScene');
+    this.time.delayedCall(500, () => {
+      const idx = PUZZLES.findIndex(p => p.id === this.puzzleId);
+      const next = PUZZLES[idx + 1];
+      if (next) {
+        this.scene.start('PuzzleScene', { puzzleId: next.id });
+      } else {
+        this.scene.start('MetaScene');
+      }
     });
   }
 }
