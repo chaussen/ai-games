@@ -335,9 +335,9 @@ class PuzzleScene extends Phaser.Scene {
 
           const crescent = this.add.graphics();
           crescent.fillStyle(0xe8eef7, 0.35);
-          crescent.fillCircle(wx + CELL / 2 + 6, wy + CELL / 2 - 6, 16);
+          crescent.fillCircle(wx + CELL / 2 + 6, wy + CELL / 2 - 6, 22);
           crescent.fillStyle(fillColor, 1);
-          crescent.fillCircle(wx + CELL / 2 + 14, wy + CELL / 2 - 10, 15);
+          crescent.fillCircle(wx + CELL / 2 + 14, wy + CELL / 2 - 10, 20);
           this.gridGroup.add(crescent);
           this.tweens.add({
             targets: crescent, alpha: { from: 0.7, to: 0.25 },
@@ -370,6 +370,12 @@ class PuzzleScene extends Phaser.Scene {
             duration: 1200, yoyo: true, repeat: -1,
             ease: 'Sine.easeInOut'
           });
+        }
+        if (state.cleared && state.type === 'dark') {
+          const sunGlow = this.add.graphics();
+          sunGlow.fillStyle(0xF5A623, 0.12);
+          sunGlow.fillCircle(wx + CELL / 2, wy + CELL / 2, CELL * 0.45);
+          this.gridGroup.add(sunGlow);
         }
 
         // Click zone for deployment
@@ -598,18 +604,34 @@ class PuzzleScene extends Phaser.Scene {
         targets: g, alpha: 0, duration: 1600, delay: 200,
         ease: 'Sine.easeIn', onComplete: () => g.destroy()
       });
-    } else if ((charData.char === '日' || charData.char === '月') && state.type === 'dark') {
+    } else if (charData.char === '日' && state.type === 'dark') {
       const ring = this.add.graphics().setDepth(4);
       const ringState = { radius: 6, alpha: 0.85 };
       this.tweens.add({
         targets: ringState,
-        radius: CELL * 0.65,
+        radius: 72,
         alpha: 0,
         duration: 1400,
         ease: 'Sine.easeOut',
         onUpdate: () => {
           ring.clear();
-          ring.lineStyle(3, 0xffffff, ringState.alpha);
+          ring.lineStyle(3, 0xF5A623, ringState.alpha);
+          ring.strokeCircle(cx, cy, ringState.radius);
+        },
+        onComplete: () => ring.destroy()
+      });
+    } else if (charData.char === '月' && state.type === 'dark') {
+      const ring = this.add.graphics().setDepth(4);
+      const ringState = { radius: 6, alpha: 0.85 };
+      this.tweens.add({
+        targets: ringState,
+        radius: 52,
+        alpha: 0,
+        duration: 1400,
+        ease: 'Sine.easeOut',
+        onUpdate: () => {
+          ring.clear();
+          ring.lineStyle(3, 0xd0d8e8, ringState.alpha);
           ring.strokeCircle(cx, cy, ringState.radius);
         },
         onComplete: () => ring.destroy()
@@ -786,11 +808,21 @@ class PuzzleScene extends Phaser.Scene {
 
     const next = this.findNextStep();
     if (!next) {
-      // no path — spirit waits for player to deploy a card
+      // no path — spirit waits; nudge immediately then repeat every ~4s while stuck
       this.nudgeSpirit();
+      if (!this.stuckTimer) {
+        this.stuckTimer = this.time.addEvent({
+          delay: 4000, loop: true,
+          callback: () => {
+            if (!this.findNextStep() && !this.completed) this.nudgeSpirit();
+          }
+        });
+      }
       return;
     }
 
+    // path found — cancel stuck timer
+    if (this.stuckTimer) { this.stuckTimer.remove(); this.stuckTimer = null; }
     this.spiritMoving = true;
     const state = this.terrainState[next.row][next.col];
     const moveDuration = state.partial ? 600 : 300;
