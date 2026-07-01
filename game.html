@@ -203,6 +203,7 @@ class PuzzleScene extends Phaser.Scene {
 
     this.selectedCard = null;
     this.spiritMoving = false;
+    this.spiritNudging = false;
     this.completed = false;
 
     // Build hand from available_chars (accumulate duplicates per spec)
@@ -285,7 +286,7 @@ class PuzzleScene extends Phaser.Scene {
 
         let fillColor = TERRAIN_COLOR[state.type] || 0x444444;
         if (state.cleared) fillColor = TERRAIN_COLOR.ground;
-        if (state.partial) fillColor = 0x3a3a5e; // dim resolved dark
+        if (state.partial) fillColor = 0x7a8fc2; // cool desaturated moonlit blue
 
         const isGoal = state.type === 'goal' ||
           (col === this.puzzle.goal[0] && row === this.puzzle.goal[1]);
@@ -321,6 +322,53 @@ class PuzzleScene extends Phaser.Scene {
             duration: 900, yoyo: true, repeat: -1,
             ease: 'Sine.easeInOut',
             delay: (col + row) * 80
+          });
+        }
+
+        // Moonlit glow pulse + faint crescent overlay
+        if (state.partial) {
+          this.tweens.add({
+            targets: g, alpha: { from: 0.6, to: 1.0 },
+            duration: 1500, yoyo: true, repeat: -1,
+            ease: 'Sine.easeInOut'
+          });
+
+          const crescent = this.add.graphics();
+          crescent.fillStyle(0xe8eef7, 0.35);
+          crescent.fillCircle(wx + CELL / 2 + 6, wy + CELL / 2 - 6, 16);
+          crescent.fillStyle(fillColor, 1);
+          crescent.fillCircle(wx + CELL / 2 + 14, wy + CELL / 2 - 10, 15);
+          this.gridGroup.add(crescent);
+          this.tweens.add({
+            targets: crescent, alpha: { from: 0.7, to: 0.25 },
+            duration: 2600, yoyo: true, repeat: -1,
+            ease: 'Sine.easeInOut'
+          });
+        }
+
+        // Cleared terrain memory: faint trace of what used to be here
+        if (state.cleared && state.type === 'river') {
+          const wave = this.add.graphics();
+          wave.lineStyle(2, 0x4a90d9, 0.25);
+          for (let i = 0; i < 3; i++) {
+            const ly = wy + 22 + i * 18;
+            wave.beginPath();
+            wave.moveTo(wx + 8, ly);
+            wave.lineTo(wx + CELL / 2, ly + 6);
+            wave.lineTo(wx + CELL - 8, ly);
+            wave.strokePath();
+          }
+          this.gridGroup.add(wave);
+        }
+        if (state.cleared && state.type === 'thorns') {
+          const ember = this.add.graphics();
+          ember.fillStyle(0xE8472B, 0.18);
+          ember.fillCircle(wx + CELL / 2, wy + CELL / 2, CELL * 0.3);
+          this.gridGroup.add(ember);
+          this.tweens.add({
+            targets: ember, alpha: { from: 0.4, to: 0.12 },
+            duration: 1200, yoyo: true, repeat: -1,
+            ease: 'Sine.easeInOut'
           });
         }
 
@@ -441,31 +489,138 @@ class PuzzleScene extends Phaser.Scene {
     const terrainTags = TERRAIN_TAGS[state.cleared ? 'ground' : state.type] || [];
     const result = resolveTagInteraction(charData.tags, terrainTags);
 
-    if (result === 'NO_EFFECT' && state.cleared) return; // nothing happens on cleared ground
+    if (result === 'NO_EFFECT') {
+      this.rejectDeploy(ch, charData, col, row);
+      return;
+    }
+
+    const originPos = this.cardWorldPos(ch);
 
     // Deploy animation
-    this.deployAnimation(ch, charData, col, row, () => {
+    this.deployAnimation(ch, charData, col, row, originPos, () => {
       this.applyResult(result, row, col);
-      this.applyAreaEffects(charData, result, row, col);
-      this.consumeCard(ch);
-      this.selectedCard = null;
+      this.spawnDeployArtifact(charData, result, row, col);
       const W = this.scale.width;
       const H = this.scale.height;
       this.drawGrid();
-      this.drawHand(W, H);
       this.drawSpirit();
-      this.time.delayedCall(200, () => this.stepSpirit());
+
+      this.applyAreaEffects(charData, result, row, col, () => {
+        this.consumeCard(ch);
+        this.selectedCard = null;
+        this.drawGrid();
+        this.drawHand(W, H);
+        this.time.delayedCall(200, () => this.stepSpirit());
+      });
     });
   }
 
-  deployAnimation(ch, charData, col, row, onComplete) {
-    const targetPos = this.cellToWorld(col, row);
+  cardWorldPos(ch) {
+    const obj = this.cardObjects && this.cardObjects[ch];
+    if (obj && obj.glyph) return { x: obj.glyph.x, y: obj.glyph.y };
     const W = this.scale.width;
     const H = this.scale.height;
-    const startX = W / 2; // approximate card position
-    const startY = H * HAND_Y_RATIO;
+    return { x: W / 2, y: H * HAND_Y_RATIO };
+  }
 
-    const flyText = this.add.text(startX, startY, ch, {
+  rejectDeploy(ch, charData, col, row) {
+    const originPos = this.cardWorldPos(ch);
+    const targetPos = this.cellToWorld(col, row);
+    const midX = originPos.x + (targetPos.x - originPos.x) * 0.4;
+    const midY = originPos.y + (targetPos.y - originPos.y) * 0.4;
+
+    const flyText = this.add.text(originPos.x, originPos.y, ch, {
+      fontFamily: 'serif', fontSize: '28px',
+      color: charData.color
+    }).setOrigin(0.5).setDepth(10);
+
+    this.tweens.add({
+      targets: flyText,
+      x: midX, y: midY,
+      duration: 150,
+      ease: 'Quad.easeOut',
+      onComplete: () => {
+        this.tweens.add({
+          targets: flyText,
+          x: originPos.x, y: originPos.y,
+          alpha: 0,
+          duration: 220,
+          ease: 'Quad.easeIn',
+          onComplete: () => flyText.destroy()
+        });
+      }
+    });
+
+    this.pulseCellReject(col, row);
+
+    this.selectedCard = null;
+    const W = this.scale.width;
+    const H = this.scale.height;
+    this.drawHand(W, H);
+  }
+
+  pulseCellReject(col, row) {
+    const wx = this.gridOffsetX + col * CELL;
+    const wy = this.gridOffsetY + row * CELL;
+    const g = this.add.graphics().setDepth(6);
+    g.fillStyle(0x992222, 0.55);
+    g.fillRoundedRect(wx + 2, wy + 2, CELL - 4, CELL - 4, 6);
+    this.tweens.add({
+      targets: g, alpha: 0,
+      duration: 400,
+      ease: 'Quad.easeIn',
+      onComplete: () => g.destroy()
+    });
+  }
+
+  spawnDeployArtifact(charData, result, row, col) {
+    if (result !== 'CLEAR' && result !== 'PARTIAL') return;
+
+    const state = this.terrainState[row][col];
+    const wx = this.gridOffsetX + col * CELL;
+    const wy = this.gridOffsetY + row * CELL;
+    const cx = wx + CELL / 2;
+    const cy = wy + CELL / 2;
+
+    if (charData.char === '木' && state.type === 'river') {
+      const g = this.add.graphics().setDepth(4);
+      g.fillStyle(0x8a6a3a, 0.55);
+      g.fillRoundedRect(wx + 2, wy + 2, CELL - 4, CELL - 4, 6);
+      this.tweens.add({
+        targets: g, alpha: 0, duration: 1500, delay: 200,
+        ease: 'Sine.easeIn', onComplete: () => g.destroy()
+      });
+    } else if (charData.char === '火' && state.type === 'thorns') {
+      const g = this.add.graphics().setDepth(4);
+      g.fillStyle(0xE8472B, 0.5);
+      g.fillCircle(cx, cy, CELL * 0.45);
+      this.tweens.add({
+        targets: g, alpha: 0, duration: 1600, delay: 200,
+        ease: 'Sine.easeIn', onComplete: () => g.destroy()
+      });
+    } else if ((charData.char === '日' || charData.char === '月') && state.type === 'dark') {
+      const ring = this.add.graphics().setDepth(4);
+      const ringState = { radius: 6, alpha: 0.85 };
+      this.tweens.add({
+        targets: ringState,
+        radius: CELL * 0.65,
+        alpha: 0,
+        duration: 1400,
+        ease: 'Sine.easeOut',
+        onUpdate: () => {
+          ring.clear();
+          ring.lineStyle(3, 0xffffff, ringState.alpha);
+          ring.strokeCircle(cx, cy, ringState.radius);
+        },
+        onComplete: () => ring.destroy()
+      });
+    }
+  }
+
+  deployAnimation(ch, charData, col, row, originPos, onComplete) {
+    const targetPos = this.cellToWorld(col, row);
+
+    const flyText = this.add.text(originPos.x, originPos.y, ch, {
       fontFamily: 'serif', fontSize: '28px',
       color: charData.color
     }).setOrigin(0.5).setDepth(10);
@@ -501,8 +656,8 @@ class PuzzleScene extends Phaser.Scene {
     }
   }
 
-  applyAreaEffects(charData, result, row, col) {
-    if (result === 'NO_EFFECT') return;
+  applyAreaEffects(charData, result, row, col, onDone) {
+    if (result === 'NO_EFFECT') { if (onDone) onDone(); return; }
 
     // Luminous characters illuminate all dark terrain globally (sun rises everywhere)
     if (charData.tags.includes('is_luminous')) {
@@ -521,8 +676,10 @@ class PuzzleScene extends Phaser.Scene {
       }
     }
 
-    // Hot characters: fire spreads to all connected flammable/organic/fibrous tiles
+    // Hot characters: fire spreads to all connected flammable/organic/fibrous tiles.
+    // Staggered so each cell clears in sequence instead of all at once.
     if (charData.tags.includes('is_hot') && result === 'CLEAR') {
+      const order = [];
       const stack = [{ r: row, c: col }];
       const seen = new Set([`${row},${col}`]);
       while (stack.length > 0) {
@@ -537,12 +694,40 @@ class PuzzleScene extends Phaser.Scene {
           if (s.cleared || s.partial) continue;
           const tags = TERRAIN_TAGS[s.type] || [];
           if (tags.some(t => ['is_organic','is_fibrous','is_flammable'].includes(t))) {
-            s.cleared = true;
+            order.push({ r: nr, c: nc });
             stack.push({ r: nr, c: nc });
           }
         }
       }
+      this.staggerFireSpread(order, 0, onDone);
+      return;
     }
+
+    if (onDone) onDone();
+  }
+
+  staggerFireSpread(order, i, onDone) {
+    if (i >= order.length) { if (onDone) onDone(); return; }
+    const { r, c } = order[i];
+    this.terrainState[r][c].cleared = true;
+    this.drawGrid();
+    this.pulseClearingCell(c, r);
+    this.stepSpirit();
+    this.time.delayedCall(80, () => this.staggerFireSpread(order, i + 1, onDone));
+  }
+
+  pulseClearingCell(col, row) {
+    const wx = this.gridOffsetX + col * CELL;
+    const wy = this.gridOffsetY + row * CELL;
+    const g = this.add.graphics().setDepth(6);
+    g.fillStyle(0xE8472B, 0.8);
+    g.fillRoundedRect(wx + 2, wy + 2, CELL - 4, CELL - 4, 6);
+    this.tweens.add({
+      targets: g, alpha: 0,
+      duration: 200,
+      ease: 'Quad.easeOut',
+      onComplete: () => g.destroy()
+    });
   }
 
   consumeCard(ch) {
@@ -600,7 +785,11 @@ class PuzzleScene extends Phaser.Scene {
     }
 
     const next = this.findNextStep();
-    if (!next) return; // no path — spirit waits for player to deploy a card
+    if (!next) {
+      // no path — spirit waits for player to deploy a card
+      this.nudgeSpirit();
+      return;
+    }
 
     this.spiritMoving = true;
     const state = this.terrainState[next.row][next.col];
@@ -616,6 +805,36 @@ class PuzzleScene extends Phaser.Scene {
         this.spiritMoving = false;
         this.stepSpirit();
       }
+    });
+  }
+
+  nudgeSpirit() {
+    if (this.spiritMoving || this.spiritNudging || this.completed) return;
+
+    const { col, row } = this.spiritPos;
+    const dirs = [{ dc: 1, dr: 0 }, { dc: 0, dr: 1 }, { dc: 0, dr: -1 }, { dc: -1, dr: 0 }];
+    let target = null;
+    for (const { dc, dr } of dirs) {
+      const nc = col + dc, nr = row + dr;
+      if (nc < 0 || nc >= COLS || nr < 0 || nr >= ROWS) continue;
+      target = { col: nc, row: nr };
+      break;
+    }
+    if (!target) return;
+
+    this.spiritNudging = true;
+    const origin = this.cellToWorld(col, row);
+    const dest = this.cellToWorld(target.col, target.row);
+    const nudgeX = origin.x + (dest.x - origin.x) * 0.3;
+    const nudgeY = origin.y + (dest.y - origin.y) * 0.3;
+
+    this.tweens.add({
+      targets: this.spiritObj,
+      x: nudgeX, y: nudgeY,
+      duration: 125,
+      yoyo: true,
+      ease: 'Quad.easeOut',
+      onComplete: () => { this.spiritNudging = false; }
     });
   }
 
