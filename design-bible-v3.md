@@ -394,7 +394,7 @@ Every solution must trace to a matrix cell or tag resolution.
 |---|---|---|---|---|---|---|
 | L1-P01 | Teach | spirit can't cross | river | [木 raft] | — | first deploy; one answer |
 | L1-P02 | Teach | path blocked | thorns | [火 burn] | — | teaches fire |
-| L1-P03 | Teach | spirit lost | darkness | [日, 月] | — | moon dimmer but works |
+| L1-P03 | Choose | spirit lost | darkness | [日, 月] | — | moon dimmer but works; sun/moon strength contrast is the lesson |
 | L1-P04 | Choose | can't cross | river | [木 raft, 山 dam] | [水] | water deepens |
 | L1-P05 | Choose | path blocked | thorns | [火, 刀, 手] | [雨] | rain does nothing |
 | L1-P06 | Choose | spirit lost | darkness | [日, 目] | [月] | moon partial only |
@@ -513,6 +513,7 @@ The animations carry the narrative. The characters are the characters.
 4. Act gating: Teach puzzles unlock in order; subsequent acts unlock after all prior act puzzles complete.
 5. Design receives the full file set for playtesting — never game.html alone.
 6. Tag resolution fires before matrix lookup. Matrix overrides win when both apply.
+7. Hand composition is the primary balance lever for tag side-effects (e.g. 火's is_luminous clearing all dark cells). Puzzle authors must not include characters whose tag side-effects would trivialize an obstacle the puzzle intends to keep — do not rely on engine-side filtering.
 
 ---
 
@@ -562,6 +563,16 @@ Any agent proposing these must log a Decision entry first.
 
 | date | id | decision | by | status | supersedes |
 |---|---|---|---|---|---|
+| 2026-07-01 | D050 | L1-P01–P03 vertical slice CLOSED: 5/7 confirmed, 2 partial (both improved, non-blocking), 0 regressions, 4 close-out fixes shipped. Exit condition met. | chat+design+code | LOCKED | — |
+| 2026-07-01 | D046 | Crescent overlay enlarged 16→22px (inner), 15→20px (cutout) — legibility fix confirmed | code | LOCKED | D035 |
+| 2026-07-01 | D045 | 日-cleared dark cells get static warm-glow residual (0xF5A623, 12% alpha) — parity with river/thorns memory | code | LOCKED | D032 |
+| 2026-07-01 | D044 | Spirit nudge re-triggers every 4s while blocked via stuckTimer; cancels on path found | code | LOCKED | D036 |
+| 2026-07-01 | D042 | 日/月 deploy rings differentiated: amber r72 vs silver r52 — reinforces P03 sun/moon strength lesson | code | LOCKED | D037 |
+| 2026-07-01 | D041 | Fire spread is DFS not BFS — correct for linear L1 thorns, deferred fix required before first branching thorn-patch puzzle (L2+) | design | LEAN | — |
+| 2026-07-01 | D043 | spawnDeployArtifact keyed to char literal not tag — must be refactored to tag-class keying before Layer 2 introduces second buoyant/hot/luminous character | design | LEAN | — |
+| 2026-07-01 | D048 | nudgeSpirit direction heuristic (first in-bounds neighbor) is correct for linear L1 obstacles only — needs goal-direction heuristic before non-linear L2 obstacle | design | LEAN | — |
+| 2026-07-01 | D040 | L1-P03 reclassified Teach→Choose: two valid solutions (日,月) from same hand is structurally Choose, not Teach | chat | LOCKED | §7 row |
+| 2026-07-01 | D033 | 火's is_luminous global-dark-clear ruled a feature, not a bug: fire-gives-light is correct. Hand composition (not engine filtering) is the balance lever — added to §11 | chat | LOCKED | — |
 | 2026-06-28 | D030 | Rotating characters to reverse meaning (下→上) rejected: breaks visual consistency | chat | LOCKED | — |
 | 2026-06-28 | D029 | Mandatory stroke tracing and pronunciation gates rejected: destroy 3-second action loop | chat | LOCKED | — |
 | 2026-06-28 | D028 | SRS/Leitner interval locks rejected: contradicts infinite-stamp model, breaks flow | chat | LOCKED | — |
