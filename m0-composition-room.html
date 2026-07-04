@@ -203,6 +203,78 @@
  * S1-S9 + affordance + adjacency + reach regression suite re-run clean,
  * zero console errors. No deviations from spec required.
  * ---------------------------------------------------------------------------
+ *
+ * ---------------------------------------------------------------------------
+ * 末 LIVE-PLAY DEFECT — build note (R4-D020, per m0.2-code-handoff.md)
+ * ---------------------------------------------------------------------------
+ * Root cause: H3 confirmed, H1/H2/H4/H5 ruled out. All prior self-tests
+ * (S3/S4/S9 etc.) called onChipDragStart/onChipDrag/onChipDragEnd directly,
+ * bypassing Phaser's real drag pipeline entirely — so they could never have
+ * caught this. Reproduced instead via headless Chromium + CDP-dispatched
+ * real mousedown/mousemove/mouseup flowing through the actual input plugin.
+ *
+ * The 上+木(top) recipe requires releasing inside the host cell's 'top'
+ * band (the outer third of the cell, y<0.33). For every one of the 4
+ * adjacency approaches, that band sits at or near the edge of the host
+ * cell FARTHEST from the avatar — i.e. directly against the boundary of a
+ * cell that is one step OUT of reach (R4-D016 allows only orthogonal
+ * distance-1 targets). The persistent reach highlight (R4-D017,
+ * showReachHighlight) draws its frame right up against that same boundary,
+ * visually inviting a release exactly where a few pixels of ordinary mouse
+ * overshoot pushes the release into the unreachable cell beyond. Confirmed
+ * empirically: a release just 2-6px past the host's top edge, from every
+ * approach direction, previously fell straight through the out-of-reach
+ * check in onChipDragEnd to a silent snap-back — no fizzle, no feedback,
+ * indistinguishable from doing nothing. This matches the router's report
+ * exactly (tried both orders, repeatedly, from live mouse play).
+ * H1 (chip circles occluding the top band) does not hold: the satchel is
+ * anchored just above the AVATAR's own cell, and for all 4 approaches the
+ * chips' hit circles never geometrically overlap the host's *top* band
+ * (occasionally they clip the host's *bottom* band instead, which is
+ * irrelevant here) — verified by direct coordinate computation and by
+ * T2 below. H2 does not hold: onChipDragEnd never hit-tests against chips,
+ * so an overlapping chip circle cannot intercept a dragend. H4/H5 checked
+ * clean: the 末 recipe fires identically regardless of the host 木's
+ * provenance, and 木 dragged onto standalone 上-in-world already fizzles
+ * visibly (T3) — no second defect there.
+ *
+ * Fix (input-layer only, per handoff constraints — R4-D016/D017/D018 left
+ * untouched): `updateZoneOverlay` now records `lastValidTarget` (cell +
+ * zone) every time the drag is legitimately hovering a reachable, non-inert
+ * cell. `onChipDragEnd` calls a new `resolveDropTarget(pointer)`: it tries
+ * the raw release pixel first (unchanged common-case behavior), and only if
+ * that fails, falls back to `lastValidTarget` provided the release is still
+ * within one cell-width of it. A release that never touched a legal target,
+ * or that wandered far away afterward (a deliberate cancel), still snaps
+ * back exactly as before (T7) — this forgives the final pixel of a drag
+ * that was clearly aimed correctly, it does not widen which cells are
+ * reachable.
+ *
+ * Reproduction + T1-T7 (all via real dispatched pointer events, headless
+ * Chromium + CDP, none via direct handler calls):
+ *   Repro (pre-fix) — 12/12 combinations (4 approach directions x 3
+ *     overshoot depths, 2-105px past the host's top edge) silently
+ *     snapped back: host stayed bare 木, 上 returned to inventory, zero
+ *     visual feedback. Post-fix: all 12 now lock 末.
+ *   T1 PASS — 上 -> top band of bare 木 from all 4 adjacency positions,
+ *     each drag routed through a real hover-then-6px-overshoot path: 末
+ *     locks in all 4 (glyph flips, "mò" plays, growth glyph where the
+ *     cell above is empty).
+ *   T2 PASS — same drag with 2 other inventory slots filled (chip
+ *     circles present nearby): 末 still locks; chip circles never gated
+ *     resolution (H1/H2 ruled out per above).
+ *   T3 PASS — 木 dragged onto standalone 上-in-world: visible fizzle
+ *     (spark/shake), host remains plain 上, never silent.
+ *   T4 PASS — plain click (zero movement) on a filled chip: no board or
+ *     inventory change (R4-D017 regression).
+ *   T5 PASS — middle chip clicked at 9 points spanning its hit circle:
+ *     avatar never moves, inventory unchanged (R4-D018 regression).
+ *   T6 PASS — 林/森/炎/沐 recipes and fire/blaze darkness-clear
+ *     magnitudes all resolve correctly via real pointer drags.
+ *   T7 PASS — release far from any valid target: snap-back, with the
+ *     blocked-X overlay confirmed live mid-drag (R4-D016 regression).
+ * Zero console errors across the full suite.
+ * ---------------------------------------------------------------------------
  */
 
 // ---------------------------------------------------------------------------
@@ -305,6 +377,7 @@ class RoomScene extends Phaser.Scene {
     this.dragging = null;
     this.zoneOverlay = null;
     this.reachHighlight = null;
+    this.lastValidTarget = null;
 
     // board input: tap a cell (walk / harvest / strike)
     // R4-D018: chips float in world space above the avatar (the satchel is
@@ -745,6 +818,7 @@ class RoomScene extends Phaser.Scene {
     }).setOrigin(0.5).setAlpha(0.9);
     this.fxLayer.add(this.dragGhost);
     chip.label.setAlpha(0.25);
+    this.lastValidTarget = null; // fresh per drag — see resolveDropTarget
     this.showReachHighlight(); // the 4 in-reach cells, visible for the whole drag, not just on hover
   }
 
@@ -784,17 +858,15 @@ class RoomScene extends Phaser.Scene {
     this.clearReachHighlight();
     const m = this.inventory[chip.slotIndex];
     if (!m) return;
-    const cellCoord = this.pixelToCell(pointer.x, pointer.y);
-    if (!cellCoord) { this.updateInventoryLayout(); this.startChipIdle(chip); return; } // released off-grid -> snap back
 
-    const { r, c } = cellCoord;
+    const dropTarget = this.resolveDropTarget(pointer);
+    this.lastValidTarget = null;
+    if (!dropTarget) { this.updateInventoryLayout(); this.startChipIdle(chip); return; } // genuinely out of reach / cancelled -> snap back
+
+    const { r, c, zone, hasMatter } = dropTarget;
     const target = this.grid[r][c];
-    const inReach = this.isAdjacent(this.avatar.r, this.avatar.c, r, c);
-    if (target.type === 'inert' || !inReach) {
-      this.updateInventoryLayout(); this.startChipIdle(chip); return; // out of reach or invalid -> snap back
-    }
 
-    if (!target.matter) {
+    if (!hasMatter) {
       // drop on empty ground -> place as standalone matter
       this.inventory[chip.slotIndex] = null;
       this.placeStandaloneMatter(r, c, m);
@@ -805,8 +877,7 @@ class RoomScene extends Phaser.Scene {
     }
 
     // compose against host matter — zone within cell picks the slot
-    const local = this.cellLocalZone(pointer.x, pointer.y, r, c);
-    const result = this.resolveComposition(target.matter, m, local);
+    const result = this.resolveComposition(target.matter, m, zone);
     this.inventory[chip.slotIndex] = null;
     this.updateInventoryLayout();
 
@@ -819,6 +890,43 @@ class RoomScene extends Phaser.Scene {
     } else {
       this.fizzle(r, c, target.matter, m);
     }
+  }
+
+  // R4-D020 fix: resolves the actual drop target for a release, forgiving
+  // small pixel overshoot past the edge of the cell the player was
+  // legitimately targeting. Root cause of the 末 live-play defect: the
+  // 'top' slot band sits at the far edge of the host cell from the avatar,
+  // immediately adjacent to a cell that is one step OUT of reach (R4-D016).
+  // A release aimed at "the top of the tree" routinely lands a few pixels
+  // past that edge — trivial mouse overshoot, and the persistent reach
+  // highlight (showReachHighlight) draws its frame right up against that
+  // same edge, inviting exactly this overshoot. Previously any such release
+  // fell straight through to the out-of-reach snap-back with zero fizzle or
+  // feedback, indistinguishable from doing nothing at all.
+  // Fix: if the raw release pixel doesn't resolve to a legal target, fall
+  // back to the last cell+zone that WAS validly highlighted during this
+  // drag (tracked continuously in updateZoneOverlay), as long as the
+  // release is still within one cell-width of it. A release far from any
+  // previously-valid target still snaps back exactly as before — this does
+  // not loosen which cells are reachable (R4-D016 stands), it only forgives
+  // the exact final pixel of a drag that was clearly aimed at a legal cell.
+  resolveDropTarget(pointer) {
+    const cellCoord = this.pixelToCell(pointer.x, pointer.y);
+    if (cellCoord) {
+      const { r, c } = cellCoord;
+      const target = this.grid[r][c];
+      if (target.type !== 'inert' && this.isAdjacent(this.avatar.r, this.avatar.c, r, c)) {
+        const zone = target.matter ? this.cellLocalZone(pointer.x, pointer.y, r, c) : null;
+        return { r, c, zone, hasMatter: !!target.matter };
+      }
+    }
+    if (this.lastValidTarget) {
+      const { x, y } = this.cellCenter(this.lastValidTarget.r, this.lastValidTarget.c);
+      if (Phaser.Math.Distance.Between(pointer.x, pointer.y, x, y) <= CELL * 1.25) {
+        return this.lastValidTarget;
+      }
+    }
+    return null;
   }
 
   // Zone geometry — R4-D011 (M0.1 Change 1a). Fractions of the cell, y-check
@@ -857,8 +965,10 @@ class RoomScene extends Phaser.Scene {
     if (target.matter) {
       const zone = this.cellLocalZone(pointer.x, pointer.y, r, c);
       this.drawZoneOverlay(r, c, zone, target.matter);
+      this.lastValidTarget = { r, c, zone, hasMatter: true };
     } else {
       this.drawDropOverlay(r, c);
+      this.lastValidTarget = { r, c, zone: null, hasMatter: false };
     }
   }
 
