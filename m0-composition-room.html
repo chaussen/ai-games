@@ -275,6 +275,75 @@
  *     blocked-X overlay confirmed live mid-drag (R4-D016 regression).
  * Zero console errors across the full suite.
  * ---------------------------------------------------------------------------
+ *
+ * ---------------------------------------------------------------------------
+ * STATELESS ZONE RESOLUTION — build note (R4-D023, per m0.3-code-handoff.md,
+ * fixes the R4-D022 defect: R4-D020/D021's fallback locked 末 from N/S
+ * approaches but silently snapped back from E/W)
+ * ---------------------------------------------------------------------------
+ * Root cause (per Design's R4-D022 instrumentation of updateZoneOverlay):
+ * the R4-D020/D021 fallback resolved an overshoot release against
+ * `lastValidTarget` — the last zone the pointer had HOVERED before leaving
+ * the cell. That's path-dependent by construction. A lateral (E/W) approach
+ * crosses the left/right band on its way toward the top band; if the
+ * pointer exits the cell before any sampled hover point lands purely inside
+ * 'top', the fallback is left frozen on 'left'/'right', so the release
+ * (correctly aimed at the top band) resolved against the wrong zone and
+ * failed validity — silent snap-back. N/S approaches happened to exit the
+ * cell already inside the top band, so they never hit this.
+ *
+ * Ruling (m0.3-code-handoff.md): zone resolution must be STATELESS — a pure
+ * function of the release position, never of hover history.
+ *   - `resolveZone(px, py, r, c)` projects the raw point onto the host
+ *     cell's rect (a no-op if already inside it — Phaser.Math.Clamp) and
+ *     runs the existing, untouched `cellLocalZone` on the projected point.
+ *     A release 6px above the cell now resolves 'top' regardless of which
+ *     side the drag approached from.
+ *   - `resolveHostAndZone(pointer)` does host-CELL selection (unchanged
+ *     logic: the cell directly under the pointer if legal, else the
+ *     nearest legal adjacent neighbor within the existing 1.25 cell-width
+ *     forgiveness radius) and calls `resolveZone` on whichever cell it
+ *     picks — computed fresh from the avatar's current neighbors every
+ *     time, never from a remembered cell.
+ *   - `lastValidTarget` deleted entirely, including as overlay-painting
+ *     state (turned out to be unnecessary, per the handoff's prediction).
+ *   - Binding invariant: `updateZoneOverlay` (drag-time) and
+ *     `onChipDragEnd` (release) both call the SAME `resolveHostAndZone`,
+ *     so the zone painted at any pointer position during a drag is always
+ *     exactly the zone a release there would produce.
+ *
+ * Verification (LOCKED, R4-D020: real dispatched pointer events only, no
+ * direct handler calls — driven via headless Chromium + CDP
+ * Input.dispatchMouseEvent through the actual canvas and Phaser's input
+ * plugin; onChipDragStart/onChipDrag/onChipDragEnd were never invoked
+ * directly by the test script). T1-T8 per m0.3-code-handoff.md, all PASS:
+ *   T1 PASS — north approach, in-band release: locks 末.
+ *   T2 PASS — south approach, 6px overshoot: locks 末.
+ *   T3 PASS — east approach, 6px overshoot, both 8-step and 60-step drag
+ *     interpolation: locks 末 in both.
+ *   T4 PASS — west approach, both densities: locks 末 in both (T3/T4 are
+ *     the two directions R4-D022 found broken — confirmed fixed).
+ *   T5 PASS — release ~200px past the cell in all 4 directions: snaps
+ *     back in all 4 (the 1.25 cell-width forgiveness radius is unchanged).
+ *   T6 PASS — 25-point 5x5 in-cell scan (fine geometry check against the
+ *     untouched cellLocalZone, precedent: R4-D011 S1/S2) plus real-
+ *     dispatched-drag spot checks per zone (top→末, left/right→林,
+ *     left→沐, bottom→fizzle): all resolve per geometry, zero enclose hits.
+ *   T7 PASS — parity sweep: 44 real dispatched drag-and-release samples
+ *     along an E→W path crossing the host cell and drifting toward a
+ *     top-band overshoot (the exact geometry that broke R4-D020/D021);
+ *     the overlay's resolved zone and the release's resolved zone were
+ *     captured from the live handlers at each sample (a passing debug
+ *     field, `__debugOverlayResolved`/`__debugReleaseResolved`, exposed
+ *     for headless verification only — same pattern as `window.__game`)
+ *     and matched at all 44, including overshoot positions within radius.
+ *   T8 PASS — full regression: 林/森/炎/沐 recipes; luminosity magnitudes
+ *     (火=1 clears darkness-1 and dents darkness-2 to 1, 炎=2 clears
+ *     darkness-2 fully); D017 zero-movement chip click; D018 middle-chip
+ *     top-edge click; D016 adjacency snap-back. Zero console errors across
+ *     the full suite.
+ * No deviations from m0.3-code-handoff.md were required.
+ * ---------------------------------------------------------------------------
  */
 
 // ---------------------------------------------------------------------------
@@ -377,7 +446,6 @@ class RoomScene extends Phaser.Scene {
     this.dragging = null;
     this.zoneOverlay = null;
     this.reachHighlight = null;
-    this.lastValidTarget = null;
 
     // board input: tap a cell (walk / harvest / strike)
     // R4-D018: chips float in world space above the avatar (the satchel is
@@ -818,7 +886,6 @@ class RoomScene extends Phaser.Scene {
     }).setOrigin(0.5).setAlpha(0.9);
     this.fxLayer.add(this.dragGhost);
     chip.label.setAlpha(0.25);
-    this.lastValidTarget = null; // fresh per drag — see resolveDropTarget
     this.showReachHighlight(); // the 4 in-reach cells, visible for the whole drag, not just on hover
   }
 
@@ -859,8 +926,8 @@ class RoomScene extends Phaser.Scene {
     const m = this.inventory[chip.slotIndex];
     if (!m) return;
 
-    const dropTarget = this.resolveDropTarget(pointer);
-    this.lastValidTarget = null;
+    const dropTarget = this.resolveHostAndZone(pointer);
+    this.__debugReleaseResolved = dropTarget; // exposed for headless verification only (T7 parity sweep)
     if (!dropTarget) { this.updateInventoryLayout(); this.startChipIdle(chip); return; } // genuinely out of reach / cancelled -> snap back
 
     const { r, c, zone, hasMatter } = dropTarget;
@@ -892,46 +959,73 @@ class RoomScene extends Phaser.Scene {
     }
   }
 
-  // R4-D020 fix: resolves the actual drop target for a release, forgiving
-  // small pixel overshoot past the edge of the cell the player was
-  // legitimately targeting. Root cause of the 末 live-play defect: the
-  // 'top' slot band sits at the far edge of the host cell from the avatar,
-  // immediately adjacent to a cell that is one step OUT of reach (R4-D016).
-  // A release aimed at "the top of the tree" routinely lands a few pixels
-  // past that edge — trivial mouse overshoot, and the persistent reach
-  // highlight (showReachHighlight) draws its frame right up against that
-  // same edge, inviting exactly this overshoot. Previously any such release
-  // fell straight through to the out-of-reach snap-back with zero fizzle or
-  // feedback, indistinguishable from doing nothing at all.
-  // Fix: if the raw release pixel doesn't resolve to a legal target, fall
-  // back to the last cell+zone that WAS validly highlighted during this
-  // drag (tracked continuously in updateZoneOverlay), as long as the
-  // release is still within one cell-width of it. A release far from any
-  // previously-valid target still snaps back exactly as before — this does
-  // not loosen which cells are reachable (R4-D016 stands), it only forgives
-  // the exact final pixel of a drag that was clearly aimed at a legal cell.
-  resolveDropTarget(pointer) {
+  // R4-D023 fix (m0.3-code-handoff.md): zone resolution is now STATELESS —
+  // the resolved zone is a pure function of the release position, never of
+  // hover history. R4-D020/D021's fallback (freeze on the last-hovered
+  // zone) was direction-dependent by construction: a lateral (E/W) approach
+  // crosses the left/right band on its way to the top band and often exits
+  // the cell before a sample lands purely inside 'top', so the fallback
+  // froze on left/right and silently snapped back — while N/S approaches
+  // happened to exit already inside the top band, so they locked. Fixing
+  // the fallback's memory window would only ever patch the directions
+  // already tested; the defect is the memory itself.
+  //
+  // resolveZone(px, py, r, c) projects the raw point onto the host cell's
+  // rect (a no-op if already inside it) and runs the existing, untouched
+  // cellLocalZone geometry on the projected point — so a release 6px above
+  // the cell resolves 'top' regardless of which side the drag approached
+  // from. resolveHostAndZone(pointer) does host-CELL selection (unchanged
+  // logic from R4-D016/R4-D020: the cell directly under the pointer if
+  // legal, else the nearest legal adjacent neighbor within the existing
+  // 1.25 cell-width forgiveness radius) and then calls resolveZone on
+  // whichever cell it picks — no cell or zone is ever chosen from what the
+  // pointer visited earlier in the drag.
+  //
+  // Binding invariant: the drag-time overlay (updateZoneOverlay) and the
+  // release handler (onChipDragEnd) both call this SAME resolveHostAndZone
+  // function, so the zone painted at any pointer position during a drag is
+  // always exactly the zone a release at that position would produce.
+  resolveZone(px, py, r, c) {
+    const { x, y } = this.cellCenter(r, c);
+    const half = CELL / 2;
+    const projX = Phaser.Math.Clamp(px, x - half, x + half);
+    const projY = Phaser.Math.Clamp(py, y - half, y + half);
+    return this.cellLocalZone(projX, projY, r, c);
+  }
+
+  resolveHostAndZone(pointer) {
     const cellCoord = this.pixelToCell(pointer.x, pointer.y);
     if (cellCoord) {
       const { r, c } = cellCoord;
       const target = this.grid[r][c];
       if (target.type !== 'inert' && this.isAdjacent(this.avatar.r, this.avatar.c, r, c)) {
-        const zone = target.matter ? this.cellLocalZone(pointer.x, pointer.y, r, c) : null;
+        const zone = target.matter ? this.resolveZone(pointer.x, pointer.y, r, c) : null;
         return { r, c, zone, hasMatter: !!target.matter };
       }
     }
-    if (this.lastValidTarget) {
-      const { x, y } = this.cellCenter(this.lastValidTarget.r, this.lastValidTarget.c);
-      if (Phaser.Math.Distance.Between(pointer.x, pointer.y, x, y) <= CELL * 1.25) {
-        return this.lastValidTarget;
-      }
+    // Pointer isn't inside a legal host cell — check the avatar's reachable
+    // neighbors directly (never a remembered cell) for the nearest one
+    // within the forgiveness radius, per R4-D016/R4-D020's unchanged
+    // host-selection rule.
+    let best = null, bestDist = Infinity;
+    for (const [nr, nc] of this.neighbors(this.avatar.r, this.avatar.c)) {
+      if (this.grid[nr][nc].type === 'inert') continue;
+      const { x, y } = this.cellCenter(nr, nc);
+      const dist = Phaser.Math.Distance.Between(pointer.x, pointer.y, x, y);
+      if (dist < bestDist) { bestDist = dist; best = { r: nr, c: nc }; }
+    }
+    if (best && bestDist <= CELL * 1.25) {
+      const target = this.grid[best.r][best.c];
+      const zone = target.matter ? this.resolveZone(pointer.x, pointer.y, best.r, best.c) : null;
+      return { r: best.r, c: best.c, zone, hasMatter: !!target.matter };
     }
     return null;
   }
 
-  // Zone geometry — R4-D011 (M0.1 Change 1a). Fractions of the cell, y-check
-  // first: top/bottom are full-width bands; left/right split the middle band
-  // at the x-midline. Every pixel resolves to a directional zone — no dead
+  // Zone geometry — R4-D011 (M0.1 Change 1a), untouched by R4-D023 per the
+  // handoff's explicit constraint. Fractions of the cell, y-check first:
+  // top/bottom are full-width bands; left/right split the middle band at
+  // the x-midline. Every pixel resolves to a directional zone — no dead
   // zone, no center special-case, enclose is unreachable.
   cellLocalZone(px, py, r, c) {
     const { x, y } = this.cellCenter(r, c);
@@ -943,32 +1037,28 @@ class RoomScene extends Phaser.Scene {
   }
 
   // Drag-time zone overlay — R4-D011 (M0.1 Change 1b), mandatory while carrying.
-  // World-anchored on the hovered cell; zero persistence after release.
-  // R4-D012 extension: empty walkable ground now also gets a marker (a
-  // "place here" ring, distinct from the 4-zone host box) — the playtest
-  // showed a filled inventory reads as a dead end ("can't swap or give up")
-  // even though dropping onto empty ground already frees the slot; nothing
-  // signaled that. This makes the drop path visible wherever it's valid.
-  // R4-D016: gated on isAdjacent (reach 1, orthogonal) — a cell across the
-  // room is never a valid target now (see onChipDragEnd), so it must not
-  // light up as one either; the overlay is a promise the drop will honor.
-  // R4-D017: an out-of-reach cell no longer goes silent — it draws a dimmed
-  // "blocked" X. Players kept trying other far cells hoping something would
-  // happen; silence read as "not implemented yet," not "not reachable."
+  // World-anchored on the resolved host cell, zero persistence after release.
+  // R4-D012 extension: empty walkable ground gets a "place here" ring.
+  // R4-D016/D017: gated on reach — an out-of-reach cell draws a dimmed
+  // "blocked" X instead of going silent.
+  // R4-D023: now calls the exact same resolveHostAndZone used at release,
+  // so what's painted here IS the promise the drop honors — including in
+  // the overshoot band, where earlier builds either showed nothing or (in
+  // the R4-D020/D021 fallback) could paint a zone release wouldn't match.
   updateZoneOverlay(pointer) {
-    const cellCoord = this.pixelToCell(pointer.x, pointer.y);
-    if (!cellCoord) { this.clearZoneOverlay(); return; }
-    const { r, c } = cellCoord;
-    const target = this.grid[r][c];
-    const inReach = this.isAdjacent(this.avatar.r, this.avatar.c, r, c);
-    if (target.type === 'inert' || !inReach) { this.drawBlockedOverlay(r, c); return; }
-    if (target.matter) {
-      const zone = this.cellLocalZone(pointer.x, pointer.y, r, c);
-      this.drawZoneOverlay(r, c, zone, target.matter);
-      this.lastValidTarget = { r, c, zone, hasMatter: true };
+    const resolved = this.resolveHostAndZone(pointer);
+    this.__debugOverlayResolved = resolved; // exposed for headless verification only (T7 parity sweep)
+    if (!resolved) {
+      const cellCoord = this.pixelToCell(pointer.x, pointer.y);
+      if (cellCoord) { this.drawBlockedOverlay(cellCoord.r, cellCoord.c); return; }
+      this.clearZoneOverlay();
+      return;
+    }
+    const { r, c, zone, hasMatter } = resolved;
+    if (hasMatter) {
+      this.drawZoneOverlay(r, c, zone, this.grid[r][c].matter);
     } else {
       this.drawDropOverlay(r, c);
-      this.lastValidTarget = { r, c, zone: null, hasMatter: false };
     }
   }
 
