@@ -44,7 +44,7 @@
  *   fizzle path unchanged.
  * Change 3 — 口 cut: COMPONENTS['口'] entry, the vent makeSource() call, and
  *   respawnSource's vent branch are commented (not deleted), each tagged
- *   `// M1:` per R4-D013.
+ *   `// M1:` per R4-D007.
  * Change 4 — luminosity magnitudes moved to a LUMINOUS_MAGNITUDE data object
  *   ({'火':1,'炎':2}) + luminousMagnitudeOf() lookup, replacing the two
  *   inline ternaries in applyReactions. No behavior change.
@@ -353,7 +353,7 @@ const COMPONENTS = {
   '水': { tags: ['is_wet', 'flows'], color: 0x4A90D9 },
   '火': { tags: ['is_hot', 'is_luminous'], color: 0xE8472B },
   '木': { tags: ['is_flammable', 'is_buoyant', 'is_structural', 'is_organic'], color: 0x6B8E4E },
-  // M1: 口 returns with 鸟/鸣 (R4-D013) — cut from M0 live set (zero live interactions in M0)
+  // M1: 口 returns with 鸟/鸣 (R4-D007) — cut from M0 live set (zero live interactions in M0)
   // '口': { tags: ['emits_sound'], color: 0xE8A090 },
   '上': { tags: ['mark_vector_up'], color: 0xA0C4A0, markOnly: true }
 };
@@ -496,7 +496,7 @@ class RoomScene extends Phaser.Scene {
     // (charter names only pond/木-stand explicitly; hearth/vent/waystone are this build's
     // addition, logged as R4-D007 — kept infinite since M0 has no conservation pressure yet)
     this.makeSource(5, 4, '火', 'hearth');
-    // M1: 口 returns with 鸟/鸣 (R4-D013) — vent source cut from M0
+    // M1: 口 returns with 鸟/鸣 (R4-D007) — vent source cut from M0
     // this.makeSource(2, 1, '口', 'vent');
     this.makeSource(4, 6, '上', 'waystone');
   }
