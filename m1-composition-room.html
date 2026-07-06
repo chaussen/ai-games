@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>M1 — Widen the Table</title>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+<style>
+  html, body { margin:0; padding:0; background:#0d0d10; overflow:hidden; height:100%; }
+  #game-root { display:flex; justify-content:center; align-items:center; height:100%; }
+  canvas { touch-action:none; }
+</style>
+</head>
+<body>
+<div id="game-root"></div>
+<script>
+/*
+ * R4-D042-20260705-1
+ * M1.2 — Affordance + Fizzle + Regrowth Fixes
+ * Reviewer-4 Charter v1 · governed by m1.2-code-handoff.md
+ * Fork of R4-D030-20260704-1 (fingerprint cb77d1c0). Triggered by the Part D
+ * naive-human BOUNCE (R4-D039/D040/D041-revised). All M0/M1 code paths not
+ * touched below (D016/D017/D018/D023/D024 adjacency + gesture geometry,
+ * §4.5 reaction layer's core dispatch, the stability registry) are
+ * unchanged.
+ *
+ * ---------------------------------------------------------------------------
+ * R4-D037 OPEN QUESTION, ANSWERED (required before shipping this pass)
+ * ---------------------------------------------------------------------------
+ * The prior build failed to load before the router hand-fixed it, and Code's
+ * own smoke test didn't catch it because the smoke test only ever ran
+ * AFTER that manual fix was already in the file — the broken artifact and
+ * the tested artifact were never the same bytes, so "clean boot" was true
+ * of the file by the time anyone looked, not because the check caught
+ * anything. (This is the same failure shape R4-D026 named for playtest
+ * verdicts — stale-artifact vs. tested-artifact divergence — just on the
+ * Code side of the handoff instead of the Design side.) No code fix for
+ * this report; the process fix is R4-D037's own BUILD_ID-bump-on-any-edit
+ * rule, which this build follows.
+ *
+ * ---------------------------------------------------------------------------
+ * M1.2 FIXES (m1.2-code-handoff.md, six scoped fixes + two [LOCKED] rulings)
+ * ---------------------------------------------------------------------------
+ * Fix 1 — keyboard movement (additive). Arrow/WASD keydown steps the avatar
+ *   exactly one cell via the SAME walkTo/bfsPath/isBlocked path pointer
+ *   input already uses — no new movement code, per the fix's constraint.
+ * Fix 2 — inventory pre-visibility. CHIP_STROKE_EMPTY/FILLED constants
+ *   raise baseline fill/stroke so all 3 base slots read as "3 waiting
+ *   slots" from frame one, filled or not. No text/icon/numeral added.
+ * Fix 3 — drag-discoverability, directional tug. startChipIdle now tweens
+ *   a nested `wobble` container's x/y (toward nearestValidAdjacentDelta)
+ *   AND scale, not scale-only. The outer `container` stays the exclusive
+ *   target of updateInventoryLayout's per-frame satchel-follow reposition —
+ *   splitting these into inner/outer containers means the per-frame layout
+ *   call and the idle x/y tween never fight over the same transform.
+ * Fix 3b — two independently-gated one-shot demos. this.demo1Played (first
+ *   harvest of the session, ghost slides toward nearest host) and
+ *   this.demo2Played (first carry of 口 specifically, gated additionally on
+ *   !this.encloseDiscovered — ghost slides into a host's CENTER) are
+ *   separate booleans set eagerly at the triggering action, not inside the
+ *   delayed callback, so a second qualifying action in the same frame can't
+ *   double-fire either one. encloseDiscovered flips true the first time
+ *   onChipDragEnd resolves zone==='enclose', independent of demo2Played.
+ * Fix 4 — carried 口 previews 囗. onChipDragStart's dragGhost renders 囗
+ *   instead of 口 whenever the carried char is 口, extending the pattern
+ *   already established for 水->氵 / 火->灬 to the one carried glyph that
+ *   never got it.
+ * Fix 5 — enclose indicator, categorically distinct grammar (supersedes
+ *   relying on Fix 4 alone). The old center-seam-box in drawZoneOverlay
+ *   (same lineStyle/strokeRect language as the 4 directional seams) is
+ *   removed — R4-D039 named that exact failure mode ("a smaller box in the
+ *   same stroke style" cannot signal a categorically different option).
+ *   Replaced by showEncloseIndicators(): a soft pulsing radial glow
+ *   (Graphics circle, radius+alpha tween — a different primitive AND a
+ *   different animation type) painted on every reachable host the instant
+ *   onChipDragStart fires, whenever the carried matter is enclosure-form —
+ *   visible before the pointer ever approaches the center, not gated behind
+ *   hovering it. drawZoneOverlay's resolved-zone fill (same visual language
+ *   as top/bottom/left/right) is untouched — that's "which direction is
+ *   active", a different question from "does a 5th kind exist at all".
+ * Fix 6 — Differentiated Failure Doctrine (R4-D040, [LOCKED]). The generic
+ *   `{kind:'fizzle'}` fallback in resolveComposition now routes through
+ *   fallbackFizzleReaction(), which checks the SAME §4.5 tag pairs
+ *   applyReactions already uses (zero new pairs authored) before falling
+ *   back to the old uniform spark: hot+flammable actually ignites (reuses
+ *   the existing ignite-host kind — this also closes a latent gap where
+ *   火 beside, not under, a flammable host used to fizzle instead of
+ *   igniting), hot+wet renders steam (T-F1), wet+hot actually extinguishes,
+ *   living+hot or hot+living flinches, luminous-near-darkness flickers.
+ *   Only a genuinely tag-inert pair (e.g. 目 onto 人, T-F2) reaches the
+ *   original generic spark. The 4 existing transient variants (§2.2:
+ *   under-bake-土, under-generic, mud, sink-本) are untouched — they were
+ *   already differentiated; this generalizes what they did piecemeal for
+ *   every OTHER pair.
+ * Fix 7 — regrowth, narrowed to the tree stand only (R4-D041 revised,
+ *   [LOCKED]). 木 is the only flammable M1 primitive, hence the only one
+ *   with a real Law-2 dead-end (ignition-to-ash); every other primitive
+ *   already survives indefinitely through harvest/compose/decompose. The 3
+ *   tree-stand cells get sourceKind:'treestand', sourceCharges:Infinity (so
+ *   harvestCell's existing charge-decrement path never reaches zero) and a
+ *   TREESTAND_REGROW_MS=6000 cadence — deliberately slower than the
+ *   hearth's 1500ms, since this isn't a charge-limited resource, it just
+ *   regrows. respawnSource now branches on sourceKind for both the
+ *   respawned component and whether dimAlpha applies (hearth dims per
+ *   charge; tree stand, not being scarce, always regrows at full
+ *   visibility). Pond/hearth/scattered singles/sky-slot get ZERO changes —
+ *   `renewable` stays unset on all of them, which was already the M0
+ *   no-regen default (T-G1b negative case).
+ * Fix 8 — retry-cost cut (R4-D016 watch-item, activated). New shared
+ *   returnCarriedAfterFailure(fromX, fromY, carriedMatter): free inventory
+ *   slot first (flies there via the existing flyGlyphToInventory), else the
+ *   first non-blocked cell adjacent to the AVATAR — replacing the old
+ *   nearestEmptyDrop(r, c), which searched neighbors of the HOST cell and
+ *   could land the returned piece on the far side of the host from the
+ *   player. Both fizzle() and beginTransient()'s post-collapse step now
+ *   call this instead (nearestEmptyDrop deleted, no remaining callers).
+ *
+ * Toy Test / Fun Gate coverage, stability registry, conservation model,
+ * slot geometry, and everything else carried from R4-D030 are unchanged —
+ * see that build's own header (git history) for the full M0->M1 account.
+ * ---------------------------------------------------------------------------
+ * SELF-TEST RESULTS — R4-D042-20260705-1, all PASS after one live-caught fix,
+ * zero console/page errors in every final run below
+ * ---------------------------------------------------------------------------
+ * Method: headless Chromium (system binary, /usr/bin/chromium) driven via
+ * Python Playwright's CDP transport — page.mouse.move/down/up and
+ * page.keyboard.press dispatch real events through the canvas and Phaser's
+ * own input/keyboard plugins, per the R4-D020 lock (no onChipDrag-family
+ * handler or resolveComposition ever called directly by any test script to
+ * SUBSTITUTE for input). Two pure-logic functions (fizzle, for its
+ * `reaction` argument) were wrapped as an observation spy AFTER dispatching
+ * the real drag, to read back which branch the real input-driven call chose
+ * — this inspects, it does not fake, the input path. Board/chip coordinates
+ * read from the canvas's live bounding rect, not hardcoded pixels.
+ *
+ * LIVE BUG CAUGHT BY THIS PASS (fixed before final results below):
+ *   respawnSource's cosmetic pop-in tween referenced `cell.matter.dimAlpha`
+ *   unconditionally, but Fix 7 only set dimAlpha for sourceKind==='hearth' —
+ *   tree-stand regrowth left it `undefined`, and Phaser's tween builder
+ *   throws on an undefined target value ("Cannot read properties of
+ *   undefined (reading 'hasOwnProperty')"). That uncaught exception fired
+ *   inside Phaser's own step loop and silently froze the ENTIRE game (no
+ *   further tween/update ticks at all — every subsequent click or keypress
+ *   became a permanent no-op with zero console output). Fixed by always
+ *   setting dimAlpha (1 for non-hearth regrowth) so the tween target is
+ *   never undefined. This is exactly the class of defect real-input
+ *   self-testing exists to catch — a code-path review would very plausibly
+ *   have missed it, since the bug only manifests after a full regrow cycle.
+ *
+ * Fix 1 keyboard — PASS. Real dispatched ArrowRight/KeyA(WASD)/ArrowUp
+ *   keydowns: avatar steps exactly one cell per press via the existing
+ *   walkTo path; a press toward a matter-occupied cell is correctly blocked
+ *   (no movement, no error).
+ * Fix 2 inventory pre-visibility — PASS. All 3 base chips read
+ *   strokeAlpha 0.55 / lineWidth 2 at boot, before any harvest.
+ * Fix 3 drag-tug — PASS. inventoryChips[i].idleTween.data keys include
+ *   both 'x' and 'y' (plus scale), confirmed after the post-harvest nudge
+ *   settles into steady idle — not a scale-only tween.
+ * Fix 3b one-shot x2 — PASS. demo1Played flips true on the session's first
+ *   harvest (鸟); a second, unrelated harvest (口, while encloseDiscovered
+ *   was still false) flips demo2Played true independently, WITH demo1Played
+ *   already true and encloseDiscovered still false at that moment —
+ *   confirms the two flags are genuinely independent, not a shared gate.
+ * Fix 4 囗-preview — PASS. dragGhost.text === '囗' (not '口') for the
+ *   entire duration of a real drag carrying 口.
+ * Fix 5 enclose-indicator — PASS. encloseIndicators is populated the
+ *   instant onChipDragStart fires (carrying 口, before the pointer ever
+ *   approached the host's center) and fully cleared on drag end.
+ * Fix 6 differentiated failure — PASS both required cases:
+ *   T-F1: 火 dragged onto standalone 水 → fizzle() invoked with
+ *     reaction==='steam' (not the generic spark); host water unchanged
+ *     (char still 水, not ignited — steam stays visual-only per the
+ *     original v3 doctrine); carried 火 returned to the player, not
+ *     consumed.
+ *   T-F2: 目 dragged onto 人 (confirmed tag-inert: reveals_darkness vs.
+ *     is_living, no hot/wet/luminous/living-hot collision) → fizzle()
+ *     invoked with reaction===undefined, i.e. the original generic spark
+ *     fallback path is intact; host 人 unaffected.
+ * Fix 7 tree-stand regrowth — PASS, positive and negative:
+ *   T-G1a: harvested tree-stand cell (1,3) empties immediately, regrows 木
+ *     on its own after TREESTAND_REGROW_MS (6000ms).
+ *   T-G1b (negative, all four other source kinds, each past both the
+ *     hearth's 1.5s AND the tree stand's 6s cadence): hearth goes bare
+ *     after exactly 3 draws and stays bare; a scattered single (上), the
+ *     sky-slot (日), and a pond cell all stay bare after one draw with zero
+ *     respawn — `renewable` unset is still the M0 no-regen default for all
+ *     of them, untouched by Fix 7.
+ * Fix 8 retry-cost cut — PASS (via T-F1 above, and T-G2 by construction):
+ *   the fizzled 火 from T-F1 landed back in inventory (a free slot), not
+ *   wherever the old neighbors-of-HOST search would have placed it. Since
+ *   onChipDragEnd always frees the carried item's own inventory slot
+ *   immediately before calling fizzle/beginTransient, returnCarriedAfter-
+ *   Failure's inventory branch is structurally always reachable first in
+ *   this build — the adjacent-to-avatar fallback branch is defensive code
+ *   for a case (all slots occupied by something ELSE at return time) that
+ *   cannot currently arise; both are still within the spec's allowed
+ *   outcome set ("a free inventory slot first, else a cell adjacent to the
+ *   avatar"). The mud/sink-本 transient variants deliberately do NOT return
+ *   carried matter at all (absorbed — unchanged pre-existing behavior, not
+ *   touched by Fix 8); confirmed 土+水 still enters its wet/non-structural
+ *   transient state correctly.
+ * Regression (unaffected by this pass) — all PASS:
+ *   T-R1 (木+木 beside → 林), T-R 本 south-approach (木+下 bottom → 本, the
+ *   historically fragile direction per the D020 chain), T-E1 (口 enclosing
+ *   木 → 困), T-E2 (口 released left of 鸟 → 鸣, not enclose), T-E3 parity
+ *   (the same left-offset release point never resolves to 'enclose' for
+ *   non-enclosure-form matter), T-B1 (zero inert-glyph cells, fresh boot).
+ * Smoke — PASS. Clean boot every run, BUILD_ID renders in-app, zero
+ *   console/page errors in all final runs (the one page error caught mid-
+ *   pass is documented above as a real bug, now fixed and re-verified).
+ * ---------------------------------------------------------------------------
+ */
+
+const BUILD_ID = 'R4-D042-20260705-1';
+
+// ---------------------------------------------------------------------------
+// DATA — component table (spec §1, all 12 for M1)
+// ---------------------------------------------------------------------------
+const COMPONENTS = {
+  '水': { tags: ['is_wet', 'flows'], color: 0x4A90D9 },
+  '火': { tags: ['is_hot', 'is_luminous'], color: 0xE8472B },
+  '木': { tags: ['is_flammable', 'is_buoyant', 'is_structural', 'is_organic'], color: 0x6B8E4E },
+  '上': { tags: ['mark_vector_up'], color: 0xA0C4A0, markOnly: true },
+  '下': { tags: ['mark_vector_down'], color: 0xB08968, markOnly: true },
+  '日': { tags: ['is_hot_mild', 'is_luminous'], color: 0xF5A623 },
+  '月': { tags: ['is_luminous'], color: 0xB8C4D4 },
+  '土': { tags: ['is_structural'], color: 0x9C7A4A },
+  '口': { tags: ['emits_sound'], color: 0xE8A090 },
+  '鸟': { tags: ['is_living', 'vector_up'], color: 0x5FBFB3 },
+  '人': { tags: ['is_living'], color: 0xC9A0DC },
+  '目': { tags: ['reveals_darkness'], color: 0xE8E4C9 }
+};
+
+// Enclosure-family forms — only 口 (renders 囗 when enclosing) in M1.
+// R4-D031: this is the ONLY thing that gates the center zone's existence.
+const ENCLOSURE_FORMS = { '口': true };
+
+// Luminosity magnitudes — spec §1. clear when magnitude >= darkness level,
+// else darkness level reduces by magnitude. 目 is intentionally absent (see
+// build note above); it resolves through revealDarknessNear instead.
+const LUMINOUS_MAGNITUDE = { '火': 1, '月': 1, '日': 2, '炎': 2, '明': 3 };
+function luminousMagnitudeOf(char) {
+  return LUMINOUS_MAGNITUDE.hasOwnProperty(char) ? LUMINOUS_MAGNITUDE[char] : 1;
+}
+
+// Stability registry — spec §3. Ten core (林森炎沐末 carried from M0, plus
+// 明本困鸣休) + three stretch (泪朋相), all real characters, Tier A parts.
+const PINYIN = {
+  '林': 'lín', '森': 'sēn', '炎': 'yán', '沐': 'mù', '末': 'mò',
+  '明': 'míng', '本': 'běn', '困': 'kùn', '鸣': 'míng', '休': 'xiū',
+  '泪': 'lèi', '朋': 'péng', '相': 'xiāng'
+};
+const DECOMPOSE_MAP = {
+  '林': ['木', '木'],
+  '森': ['木', '木', '木'],
+  '炎': ['火', '火'],
+  '沐': ['木', '水'],
+  '末': ['木', '上'],
+  '明': ['日', '月'],
+  '本': ['木', '下'],
+  '困': ['木', '口'],
+  '鸣': ['口', '鸟'],
+  '休': ['人', '木'],
+  '泪': ['目', '水'],
+  '朋': ['月', '月'],
+  '相': ['木', '目']
+};
+
+// ---------------------------------------------------------------------------
+// GRID / WORLD LAYOUT — one screen, widened per spec §8 item 8
+// ---------------------------------------------------------------------------
+const COLS = 9, ROWS = 7, CELL = 72;
+const BOARD_W = COLS * CELL, BOARD_H = ROWS * CELL;
+const INVENTORY_BASE = 3, INVENTORY_MAX = 4;
+
+const COLOR_GROUND = 0x1c1c22;
+const COLOR_GRID_LINE = 0x2a2a33;
+const COLOR_DARK = 0x08080c;
+
+// Fix 7 (m1.2, R4-D041 revised) — tree stand is the ONLY regrowing source
+// in M1: 木 is the sole flammable primitive, hence the only one with a real
+// dead-end vector under Law 2 (ignition-to-ash). A slow diegetic timer,
+// deliberately much slower than the hearth's 1.5s charge-respawn, since
+// this isn't a charge-limited resource — it just regrows, indefinitely.
+const TREESTAND_REGROW_MS = 6000;
+
+function key(r, c) { return r + '_' + c; }
+
+// Fix 2 (m1.2) — baseline stroke/fill bumped so all 3 base inventory slots
+// read as "3 waiting slots" from frame one, empty or not (R4-D039 finding
+// #2). No text/numeral/icon added — salience only, per the fix's constraint.
+const CHIP_STROKE_EMPTY = { width: 2, alpha: 0.55 };
+const CHIP_STROKE_FILLED = { width: 2, alpha: 0.65 };
+
+class RoomScene extends Phaser.Scene {
+  constructor() { super('RoomScene'); }
+
+  create() {
+    this.grid = [];
+    for (let r = 0; r < ROWS; r++) {
+      const row = [];
+      for (let c = 0; c < COLS; c++) {
+        row.push({
+          type: 'ground', matter: null, darknessLevel: 0, bg: null, glyph: null,
+          encloseBox: null, underMark: null, cooldownUntil: 0, sourceKind: null,
+          renewable: false, sourceCharges: 0, transientLock: false
+        });
+      }
+      this.grid.push(row);
+    }
+
+    this.boardLayer = this.add.container(0, 0);
+    this.fxLayer = this.add.container(0, 0);
+    this.avatarLayer = this.add.container(0, 0);
+    this.uiLayer = this.add.container(0, 0);
+
+    this.drawGrid();
+    this.seedWorld();
+
+    // avatar
+    this.avatar = { r: 3, c: 3, moving: false };
+    this.avatarSprite = this.add.circle(0, 0, 15, 0xFFE9A8, 1).setStrokeStyle(2, 0xFFFFFF, 0.9);
+    this.avatarLayer.add(this.avatarSprite);
+    this.positionAvatarSprite(true);
+    this.tweens.add({ targets: this.avatarSprite, scale: 1.12, duration: 700, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+
+    this.input.dragDistanceThreshold = 8; // R4-D017 — click jitter never starts a drag
+
+    // inventory (satchel — follows avatar in-world). INVENTORY_MAX chips are
+    // created up front; only activeSlotCount() of them are ever shown/usable
+    // — the 4th unlocks while a 朋 compound exists anywhere on the board.
+    this.inventory = new Array(INVENTORY_MAX).fill(null);
+    this.inventoryChips = [];
+    for (let i = 0; i < INVENTORY_MAX; i++) {
+      const chip = this.makeChip(0, 0, null, 15);
+      chip.slotIndex = i;
+      chip.bg.setInteractive({ draggable: true, useHandCursor: true });
+      this.input.setDraggable(chip.bg);
+      chip.bg.on('drag', (pointer, dragX, dragY) => this.onChipDrag(chip, pointer, dragX, dragY));
+      chip.bg.on('dragstart', () => this.onChipDragStart(chip));
+      chip.bg.on('dragend', (pointer) => this.onChipDragEnd(chip, pointer));
+      chip.bg.on('pointerover', () => this.onChipHoverStart(chip));
+      chip.bg.on('pointerout', () => this.onChipHoverEnd(chip));
+      this.inventoryChips.push(chip);
+      this.uiLayer.add(chip.container);
+    }
+    this.dragGhost = null;
+    this.dragging = null;
+    this.zoneOverlay = null;
+    this.reachHighlight = null;
+    this.encloseIndicators = [];
+
+    // Fix 3b (m1.2) — two INDEPENDENTLY gated one-shot demo flags. Demo 1
+    // fires on the session's first harvest; Demo 2 fires on the first carry
+    // of 口 specifically, while enclose is still undiscovered. Separate
+    // flags on purpose — a shared flag would let Demo 1 consume the "first
+    // ever" moment before enclose is even reachable, and Demo 2 would
+    // likely never fire (handoff's explicit warning).
+    this.demo1Played = false;
+    this.demo2Played = false;
+    this.encloseDiscovered = false;
+
+    // board input: tap a cell (walk / harvest / strike) — R4-D018 chip-guard
+    this.input.on('pointerdown', (pointer) => {
+      if (this.dragging) return;
+      const hits = this.input.hitTestPointer(pointer);
+      if (hits.some(obj => this.inventoryChips.some(chip => chip.bg === obj))) return;
+      const cell = this.pixelToCell(pointer.x, pointer.y);
+      if (!cell) return;
+      this.onCellTap(cell.r, cell.c);
+    });
+
+    // Fix 1 (m1.2) — keyboard movement, additive. Steps the avatar exactly
+    // one cell per real keydown via the SAME walkTo/bfsPath/isBlocked path
+    // pointer-driven movement already uses — no new movement code, no touch
+    // of composition/drag/[LOCKED] mechanics.
+    const KEY_STEP = {
+      'ArrowUp': [-1, 0], 'KeyW': [-1, 0],
+      'ArrowDown': [1, 0], 'KeyS': [1, 0],
+      'ArrowLeft': [0, -1], 'KeyA': [0, -1],
+      'ArrowRight': [0, 1], 'KeyD': [0, 1]
+    };
+    this.input.keyboard.on('keydown', (event) => {
+      const step = KEY_STEP[event.code];
+      if (!step || this.dragging) return;
+      const nr = this.avatar.r + step[0], nc = this.avatar.c + step[1];
+      if (nr < 0 || nr >= ROWS || nc < 0 || nc >= COLS) return;
+      this.walkTo(nr, nc);
+    });
+
+    // BUILD_ID — rendered in-app per R4-D026/R4-D030
+    this.add.text(6, 6, BUILD_ID, { fontFamily: 'monospace', fontSize: '11px', color: '#5a5a66' });
+
+    this.updateInventoryLayout();
+  }
+
+  // -------------------------------------------------------------------------
+  // WORLD SEEDING — spec §8 item 8 + §4 conservation, §4.6/R4-D033 no-inert-glyphs
+  // -------------------------------------------------------------------------
+  seedWorld() {
+    // pond — 4 discrete charges (Law 2: finite, harvested, never respawns;
+    // draining the pond visibly lowers it as each cell empties)
+    [[4, 0], [4, 1], [5, 0], [5, 1]].forEach(([r, c]) => this.placeStandaloneMatter(r, c, this.newPrimitive('水')));
+
+    // tree stand — 3 standalone 木, regrows on a slow timer (Fix 7 / T-G1a).
+    // Every other source in the room stays exactly as it was (T-G1b): no
+    // regen is the M0 default whenever `renewable` is left unset.
+    [[1, 3], [1, 4], [1, 5]].forEach(([r, c]) => {
+      this.placeStandaloneMatter(r, c, this.newPrimitive('木'), { sourceKind: 'treestand', renewable: true });
+      this.grid[r][c].sourceCharges = Infinity;
+    });
+
+    // hearth — 3 charges, dims per draw, dead (bare ground) when spent
+    this.makeHearth(5, 3);
+
+    // sky-slot — 1 charge each, no regen: "you can take the sun down. Once."
+    this.placeStandaloneMatter(0, 3, this.newPrimitive('日'));
+    this.placeStandaloneMatter(0, 4, this.newPrimitive('月'));
+
+    // scattered matter — authored per-instance, no regen (§4 "others" row)
+    this.placeStandaloneMatter(3, 6, this.newPrimitive('土'));
+    this.placeStandaloneMatter(4, 6, this.newPrimitive('土'));
+    this.placeStandaloneMatter(2, 1, this.newPrimitive('口'));
+    this.placeStandaloneMatter(2, 6, this.newPrimitive('口'));
+    this.placeStandaloneMatter(2, 3, this.newPrimitive('鸟'));
+    this.placeStandaloneMatter(3, 5, this.newPrimitive('鸟'));
+    this.placeStandaloneMatter(4, 8, this.newPrimitive('人'));
+    this.placeStandaloneMatter(5, 6, this.newPrimitive('人'));
+    this.placeStandaloneMatter(2, 8, this.newPrimitive('目'));
+    this.placeStandaloneMatter(5, 8, this.newPrimitive('目'));
+    this.placeStandaloneMatter(2, 0, this.newPrimitive('上'));
+    this.placeStandaloneMatter(1, 0, this.newPrimitive('下'));
+    this.placeStandaloneMatter(4, 3, this.newPrimitive('下'));
+
+    // dark corner, levels 1-3 (§1 luminosity table). (1,8) hides a scattered
+    // 上 beneath the overlay — R4-D033: even hidden, it's real matter; the
+    // darkness only occludes it. 目 (reveals_darkness) peeks without clearing.
+    this.placeStandaloneMatter(1, 8, this.newPrimitive('上'));
+    this.setDarkness(0, 6, 1);
+    this.setDarkness(0, 7, 2);
+    this.setDarkness(0, 8, 3);
+    this.setDarkness(1, 6, 2);
+    this.setDarkness(1, 7, 1);
+    this.setDarkness(1, 8, 1);
+  }
+
+  makeHearth(r, c) {
+    this.placeStandaloneMatter(r, c, this.newPrimitive('火'), { sourceKind: 'hearth', renewable: true });
+    this.grid[r][c].sourceCharges = 3;
+  }
+
+  setDarkness(r, c, level) {
+    const cell = this.grid[r][c];
+    cell.darknessLevel = level;
+    const { x, y } = this.cellCenter(r, c);
+    const alpha = Math.min(0.55 + level * 0.15, 0.92);
+    const g = this.add.text(x, y, '暗', { fontFamily: 'sans-serif', fontSize: '26px', color: '#1a1a2e' }).setOrigin(0.5).setAlpha(alpha * 0.5);
+    const overlay = this.add.rectangle(x, y, CELL - 4, CELL - 4, COLOR_DARK, alpha);
+    this.boardLayer.add([overlay, g]);
+    cell.darkOverlay = overlay; cell.darkGlyph = g;
+  }
+
+  // -------------------------------------------------------------------------
+  // GRID RENDERING
+  // -------------------------------------------------------------------------
+  drawGrid() {
+    const g = this.add.graphics();
+    g.fillStyle(COLOR_GROUND, 1).fillRect(0, 0, BOARD_W, BOARD_H);
+    g.lineStyle(1, COLOR_GRID_LINE, 0.6);
+    for (let c = 0; c <= COLS; c++) g.lineBetween(c * CELL, 0, c * CELL, BOARD_H);
+    for (let r = 0; r <= ROWS; r++) g.lineBetween(0, r * CELL, BOARD_W, r * CELL);
+    this.boardLayer.add(g);
+  }
+
+  cellCenter(r, c) { return { x: c * CELL + CELL / 2, y: r * CELL + CELL / 2 }; }
+
+  pixelToCell(x, y) {
+    const c = Math.floor(x / CELL), r = Math.floor(y / CELL);
+    if (r < 0 || r >= ROWS || c < 0 || c >= COLS) return null;
+    return { r, c };
+  }
+
+  // -------------------------------------------------------------------------
+  // MATTER MODEL
+  // -------------------------------------------------------------------------
+  newPrimitive(comp) {
+    return { char: comp, tags: COMPONENTS[comp].tags.slice(), compound: false, ignited: false, inert: false };
+  }
+  newCompound(char, tags) {
+    return { char, tags: tags.slice(), compound: true, ignited: false, inert: false };
+  }
+  newAsh() {
+    return { char: '灰', tags: [], compound: false, ignited: false, inert: true };
+  }
+
+  hasTag(m, t) { return !!m && m.tags && m.tags.indexOf(t) !== -1; }
+  pairMatches(host, carried, a, b) { return (host.char === a && carried.char === b) || (host.char === b && carried.char === a); }
+
+  hasCompoundChar(char) {
+    for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+      const m = this.grid[r][c].matter;
+      if (m && m.char === char) return true;
+    }
+    return false;
+  }
+  activeSlotCount() { return this.hasCompoundChar('朋') ? INVENTORY_MAX : INVENTORY_BASE; }
+
+  placeStandaloneMatter(r, c, matter, opts) {
+    opts = opts || {};
+    const cell = this.grid[r][c];
+    cell.matter = matter;
+    cell.sourceKind = opts.sourceKind || null;
+    cell.renewable = !!opts.renewable;
+    this.renderCellMatter(r, c);
+  }
+
+  renderCellMatter(r, c) {
+    const cell = this.grid[r][c];
+    if (cell.bg) { cell.bg.destroy(); cell.bg = null; }
+    if (cell.glyph) { cell.glyph.destroy(); cell.glyph = null; }
+    if (cell.encloseBox) { cell.encloseBox.destroy(); cell.encloseBox = null; }
+    if (cell.underMark) { cell.underMark.destroy(); cell.underMark = null; }
+    if (!cell.matter) return;
+    const { x, y } = this.cellCenter(r, c);
+    const m = cell.matter;
+    const color = m.inert ? '#5a5a55' : this.glyphColorHex(m);
+    const bg = this.add.circle(x, y, 26, this.glyphColor(m), m.inert ? 0.15 : 0.22);
+    const g = this.add.text(x, y, m.char, { fontFamily: 'sans-serif', fontSize: '34px', color }).setOrigin(0.5);
+    if (m.ignited) g.setColor('#ff7a3d');
+    if (m.baked) g.setColor('#c96a3e');
+    if (m.dimAlpha != null) g.setAlpha(m.dimAlpha);
+    this.boardLayer.add([bg, g]);
+    cell.bg = bg; cell.glyph = g;
+
+    // 困 (permanent) and mid-transient enclose both render the same box —
+    // one code path for "locked" and "previewing containment" (build note §2.2)
+    if (m.contained) {
+      const box = this.add.graphics();
+      box.lineStyle(2.5, 0xE8E4C9, 0.8);
+      box.strokeRect(x - 30, y - 30, 60, 60);
+      this.boardLayer.add(box);
+      cell.encloseBox = box;
+    }
+    // 灬-under attach — transient only (no stable "under" compound exists)
+    if (m.underAttach) {
+      const mark = this.add.text(x, y + 24, '灬', { fontFamily: 'sans-serif', fontSize: '18px', color: '#ff9a5a' }).setOrigin(0.5).setAlpha(0.9);
+      this.boardLayer.add(mark);
+      cell.underMark = mark;
+    }
+
+    // idle tweens — 鸟/人, "a toy, not a system" (spec §7 risk row)
+    if (m.char === '鸟' || m.char === '人') {
+      this.tweens.add({ targets: g, y: y - 4, duration: 620, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+    }
+  }
+
+  glyphColor(m) {
+    if (COMPONENTS[m.char]) return COMPONENTS[m.char].color;
+    if (m.char === '灰') return 0x5a5a55;
+    return 0xE0C84B; // compounds default (林/森/炎/沐/末/明/本/困/鸣/休/泪/朋/相)
+  }
+  glyphColorHex(m) { return '#' + this.glyphColor(m).toString(16).padStart(6, '0'); }
+
+  // -------------------------------------------------------------------------
+  // AVATAR / MOVEMENT
+  // -------------------------------------------------------------------------
+  positionAvatarSprite(instant) {
+    const { x, y } = this.cellCenter(this.avatar.r, this.avatar.c);
+    if (instant) { this.avatarSprite.x = x; this.avatarSprite.y = y; }
+  }
+
+  isBlocked(r, c) {
+    if (r < 0 || r >= ROWS || c < 0 || c >= COLS) return true;
+    const cell = this.grid[r][c];
+    return cell.type === 'inert' || !!cell.matter;
+  }
+
+  neighbors(r, c) {
+    return [[r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1]].filter(([nr, nc]) => nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS);
+  }
+
+  isAdjacent(r1, c1, r2, c2) { return Math.abs(r1 - r2) + Math.abs(c1 - c2) === 1; }
+
+  bfsPath(sr, sc, tr, tc) {
+    if (sr === tr && sc === tc) return [];
+    const seen = new Set([key(sr, sc)]);
+    const q = [[sr, sc, []]];
+    while (q.length) {
+      const [r, c, path] = q.shift();
+      for (const [nr, nc] of this.neighbors(r, c)) {
+        if (seen.has(key(nr, nc))) continue;
+        if (this.isBlocked(nr, nc)) continue;
+        const newPath = path.concat([[nr, nc]]);
+        if (nr === tr && nc === tc) return newPath;
+        seen.add(key(nr, nc));
+        q.push([nr, nc, newPath]);
+      }
+    }
+    return null;
+  }
+
+  nearestWalkableAdjacent(r, c) {
+    let best = null, bestDist = Infinity;
+    for (const [nr, nc] of this.neighbors(r, c)) {
+      if (this.isBlocked(nr, nc)) continue;
+      const d = Math.abs(nr - this.avatar.r) + Math.abs(nc - this.avatar.c);
+      if (d < bestDist) { bestDist = d; best = [nr, nc]; }
+    }
+    return best;
+  }
+
+  walkTo(r, c, onArrive) {
+    if (this.avatar.moving) return;
+    const path = this.bfsPath(this.avatar.r, this.avatar.c, r, c);
+    if (!path) { if (onArrive) onArrive(); return; }
+    if (path.length === 0) { if (onArrive) onArrive(); return; }
+    this.avatar.moving = true;
+    const step = (i) => {
+      if (i >= path.length) {
+        this.avatar.moving = false;
+        if (onArrive) onArrive();
+        return;
+      }
+      const [nr, nc] = path[i];
+      const { x, y } = this.cellCenter(nr, nc);
+      this.tweens.add({
+        targets: this.avatarSprite, x, y, duration: 130, ease: 'Sine.easeInOut',
+        onComplete: () => { this.avatar.r = nr; this.avatar.c = nc; step(i + 1); }
+      });
+    };
+    step(0);
+  }
+
+  // -------------------------------------------------------------------------
+  // TAP HANDLING
+  // -------------------------------------------------------------------------
+  onCellTap(r, c) {
+    const cell = this.grid[r][c];
+    if (cell.type === 'inert') { this.bumpFeedback(r, c); return; }
+    if (cell.matter) {
+      if (this.isAdjacent(this.avatar.r, this.avatar.c, r, c)) {
+        this.interactWithCell(r, c);
+      } else {
+        const adj = this.nearestWalkableAdjacent(r, c);
+        if (!adj) { this.bumpFeedback(r, c); return; }
+        this.walkTo(adj[0], adj[1], () => this.interactWithCell(r, c));
+      }
+      return;
+    }
+    this.walkTo(r, c);
+  }
+
+  bumpFeedback(r, c) {
+    const { x, y } = this.cellCenter(r, c);
+    const dot = this.add.circle(x, y, 4, 0xffffff, 0.6);
+    this.fxLayer.add(dot);
+    this.tweens.add({ targets: dot, alpha: 0, scale: 2, duration: 250, onComplete: () => dot.destroy() });
+  }
+
+  interactWithCell(r, c) {
+    const cell = this.grid[r][c];
+    const m = cell.matter;
+    if (!m || m.inert) { this.bumpFeedback(r, c); return; }
+    if (cell.transientLock) { this.bumpFeedback(r, c); return; } // mid-bake/mid-contain: settling, not yet interactable
+    if (m.compound) this.strikeCell(r, c);
+    else this.harvestCell(r, c);
+  }
+
+  freeInventorySlot() {
+    const bound = this.activeSlotCount();
+    for (let i = 0; i < bound; i++) if (!this.inventory[i]) return i;
+    return -1;
+  }
+
+  harvestCell(r, c) {
+    const slot = this.freeInventorySlot();
+    if (slot === -1) { this.bumpFeedback(r, c); return; }
+    const cell = this.grid[r][c];
+    const m = cell.matter;
+    const { x: fromX, y: fromY } = this.cellCenter(r, c);
+
+    cell.matter = null;
+    if (cell.renewable) {
+      cell.sourceCharges = (cell.sourceCharges || 1) - 1;
+      if (cell.sourceCharges > 0) {
+        // Fix 7 (m1.2) — tree stand regrows on its own, slower, uncharged
+        // cadence; hearth keeps its existing quick charge-respawn pattern.
+        const delay = cell.sourceKind === 'treestand' ? TREESTAND_REGROW_MS : 1500;
+        cell.cooldownUntil = this.time.now + delay;
+        this.time.delayedCall(delay, () => this.respawnSource(r, c));
+      }
+      // else: exhausted — cell stays bare ground, no glyph (§4 "dead when spent")
+    }
+    this.renderCellMatter(r, c);
+
+    this.inventory[slot] = m;
+    this.flyGlyphToInventory(m, fromX, fromY, slot);
+
+    // Fix 3b (m1.2) — Demo 1 gates on THIS action specifically (first
+    // harvest of the session), per the handoff's wording. Flag flips now,
+    // not inside the delayed callback, so two harvests inside the same
+    // frame/tween window can't both slip through.
+    if (!this.demo1Played) {
+      this.demo1Played = true;
+      this.time.delayedCall(420, () => this.playDemo1(slot));
+    }
+    if (m.char === '口' && !this.demo2Played && !this.encloseDiscovered) {
+      this.demo2Played = true;
+      this.time.delayedCall(420, () => this.playDemo2(slot));
+    }
+  }
+
+  respawnSource(r, c) {
+    const cell = this.grid[r][c];
+    if (cell.matter) return;
+    const comp = cell.sourceKind === 'hearth' ? '火' : cell.sourceKind === 'treestand' ? '木' : null;
+    if (!comp) return;
+    cell.matter = this.newPrimitive(comp);
+    // hearth dims per draw as its 3 charges deplete (§4); tree stand isn't a
+    // scarce resource (Fix 7) — it always regrows at full visibility.
+    cell.matter.dimAlpha = cell.sourceKind === 'hearth' ? Math.min(1, 0.4 + 0.2 * cell.sourceCharges) : 1;
+    this.renderCellMatter(r, c);
+    const g = cell.glyph;
+    g.setScale(0.3).setAlpha(0.3);
+    this.tweens.add({ targets: g, scale: 1, alpha: cell.matter.dimAlpha, duration: 300, ease: 'Back.easeOut' });
+  }
+
+  strikeCell(r, c) {
+    const cell = this.grid[r][c];
+    const m = cell.matter;
+    const parts = DECOMPOSE_MAP[m.char];
+    if (!parts) { this.bumpFeedback(r, c); return; }
+    const { x, y } = this.cellCenter(r, c);
+    cell.matter = null;
+    this.renderCellMatter(r, c);
+    this.applyReactions(r, c);
+
+    const spillCells = [[r, c]].concat(this.neighbors(r, c));
+    let spillIdx = 0;
+    for (const part of parts) {
+      const slot = this.freeInventorySlot();
+      if (slot !== -1) {
+        this.inventory[slot] = this.newPrimitive(part);
+        this.flyGlyphToInventory(this.newPrimitive(part), x, y, slot);
+        // Fix 3b (m1.2) — Demo 2 can also fire off a decompose that yields
+        // 口 (e.g. striking 困 or 鸣), not just a direct harvest; Demo 1 is
+        // deliberately NOT hooked here (harvest-only, per the handoff).
+        if (part === '口' && !this.demo2Played && !this.encloseDiscovered) {
+          this.demo2Played = true;
+          this.time.delayedCall(420, () => this.playDemo2(slot));
+        }
+        continue;
+      }
+      let placed = false;
+      while (spillIdx < spillCells.length) {
+        const [sr, sc] = spillCells[spillIdx++];
+        if (sr === r && sc === c && this.grid[r][c].matter) continue;
+        if (this.isBlockedForDrop(sr, sc)) continue;
+        this.placeStandaloneMatter(sr, sc, this.newPrimitive(part));
+        this.popIn(sr, sc);
+        this.applyReactions(sr, sc);
+        placed = true;
+        break;
+      }
+      if (!placed) { /* nowhere to put it — acceptable small-grid edge case */ }
+    }
+  }
+
+  isBlockedForDrop(r, c) {
+    const cell = this.grid[r][c];
+    return cell.type === 'inert' || !!cell.matter || cell.transientLock || (this.avatar.r === r && this.avatar.c === c);
+  }
+
+  popIn(r, c) {
+    const cell = this.grid[r][c];
+    if (!cell.glyph) return;
+    cell.glyph.setScale(0.2);
+    this.tweens.add({ targets: cell.glyph, scale: 1, duration: 220, ease: 'Back.easeOut' });
+  }
+
+  flyGlyphToInventory(matter, fromX, fromY, slotIndex) {
+    const g = this.add.text(fromX, fromY, matter.char, { fontFamily: 'sans-serif', fontSize: '28px', color: this.glyphColorHex(matter) }).setOrigin(0.5);
+    this.fxLayer.add(g);
+    const chip = this.inventoryChips[slotIndex];
+    this.tweens.add({
+      targets: g, x: chip.container.x, y: chip.container.y, scale: 0.6, duration: 260, ease: 'Cubic.easeIn',
+      onComplete: () => { g.destroy(); this.refreshChip(slotIndex); }
+    });
+  }
+
+  // -------------------------------------------------------------------------
+  // INVENTORY CHIPS (satchel — follows avatar, display only)
+  // -------------------------------------------------------------------------
+  // Fix 3 (m1.2) — `container` is positioned by updateInventoryLayout only
+  // (every frame, satchel-follows-avatar); the nested `wobble` container is
+  // the exclusive target of idle/tug tweens. Splitting these out means the
+  // per-frame layout reposition and the idle x/y tween never fight over the
+  // same transform — no anchor-tracking bookkeeping needed.
+  makeChip(x, y, matter, radius) {
+    const container = this.add.container(x, y);
+    const wobble = this.add.container(0, 0);
+    const bg = this.add.circle(0, 0, radius, 0xffffff, 0.14).setStrokeStyle(2, 0xffffff, 0.55);
+    const label = this.add.text(0, 0, '', { fontFamily: 'sans-serif', fontSize: '20px', color: '#ffffff' }).setOrigin(0.5);
+    wobble.add([bg, label]);
+    container.add(wobble);
+    return { container, wobble, bg, label, matter, filled: false, idleTween: null, hovering: false };
+  }
+
+  refreshChip(i) {
+    const chip = this.inventoryChips[i];
+    const m = this.inventory[i];
+    const wasFilled = chip.filled;
+    chip.filled = !!m;
+    chip.label.setText(m ? m.char : '');
+    chip.label.setColor(m ? this.glyphColorHex(m) : '#ffffff');
+    chip.bg.setFillStyle(0xffffff, m ? 0.22 : 0.14);
+    if (!chip.hovering) {
+      const s = m ? CHIP_STROKE_FILLED : CHIP_STROKE_EMPTY;
+      chip.bg.setStrokeStyle(s.width, 0xffffff, s.alpha);
+    }
+    if (m && !wasFilled) this.nudgeChip(chip);
+    else if (!m && wasFilled) this.stopChipIdle(chip);
+  }
+
+  nudgeChip(chip) {
+    this.stopChipIdle(chip);
+    chip.wobble.setScale(1);
+    chip.idleTween = this.tweens.add({
+      targets: chip.wobble, scale: 1.4, duration: 160, yoyo: true, repeat: 2, ease: 'Sine.easeInOut',
+      onComplete: () => this.startChipIdle(chip)
+    });
+  }
+
+  // Fix 3 (m1.2) — directional tug: augments the old scale-only idle pulse
+  // with a positional (x/y) drift toward the nearest valid adjacent target,
+  // springing back, repeating. Directional motion implies "pull me toward a
+  // target" the way in-place pulsing (R4-D015, confirmed present but
+  // insufficient per R4-D039) never could.
+  startChipIdle(chip) {
+    this.stopChipIdle(chip);
+    const delta = this.nearestValidAdjacentDelta();
+    chip.wobble.setPosition(0, 0).setScale(1);
+    chip.idleTween = this.tweens.add({
+      targets: chip.wobble, x: delta.dx, y: delta.dy, scale: 1.15,
+      duration: 650, yoyo: true, repeat: -1, ease: 'Sine.easeInOut'
+    });
+  }
+
+  // Direction (in screen px) toward the nearest reach-adjacent cell that
+  // currently holds matter (a valid compose host); falls back to any
+  // reachable non-inert neighbor, then a fixed default. Recomputed each time
+  // idle starts, so it always points at what's actually nearby right now.
+  nearestValidAdjacentDelta() {
+    const dirs = [
+      { dr: -1, dc: 0, dx: 0, dy: -7 },
+      { dr: 1, dc: 0, dx: 0, dy: 7 },
+      { dr: 0, dc: -1, dx: -7, dy: 0 },
+      { dr: 0, dc: 1, dx: 7, dy: 0 }
+    ];
+    let fallback = null;
+    for (const d of dirs) {
+      const nr = this.avatar.r + d.dr, nc = this.avatar.c + d.dc;
+      if (nr < 0 || nr >= ROWS || nc < 0 || nc >= COLS) continue;
+      const cell = this.grid[nr][nc];
+      if (cell.type === 'inert') continue;
+      if (cell.matter && !cell.transientLock) return { dx: d.dx, dy: d.dy };
+      if (!fallback) fallback = { dx: d.dx, dy: d.dy };
+    }
+    return fallback || { dx: 0, dy: -7 };
+  }
+
+  stopChipIdle(chip) {
+    if (chip.idleTween) { chip.idleTween.stop(); chip.idleTween = null; }
+    chip.wobble.setScale(1).setPosition(0, 0);
+  }
+
+  onChipHoverStart(chip) {
+    if (!this.inventory[chip.slotIndex]) return;
+    chip.hovering = true;
+    chip.bg.setStrokeStyle(2.5, 0xffffff, 0.95);
+  }
+
+  onChipHoverEnd(chip) {
+    chip.hovering = false;
+    const s = this.inventory[chip.slotIndex] ? CHIP_STROKE_FILLED : CHIP_STROKE_EMPTY;
+    chip.bg.setStrokeStyle(s.width, 0xffffff, s.alpha);
+  }
+
+  updateInventoryLayout() {
+    const { x, y } = this.cellCenter(this.avatar.r, this.avatar.c);
+    const bound = this.activeSlotCount();
+    const spacing = 22;
+    for (let i = 0; i < INVENTORY_MAX; i++) {
+      const chip = this.inventoryChips[i];
+      if (i >= bound) { chip.container.setVisible(false); continue; }
+      chip.container.setVisible(true);
+      const offsetX = (i - (bound - 1) / 2) * spacing;
+      chip.container.setPosition(x + offsetX, y - 34);
+      this.refreshChip(i);
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // DRAG-TO-COMPOSE — D016/D017/D018/D023/D024 unchanged. isEnclosureForm is
+  // the one new parameter threaded through the shared resolver (R4-D031).
+  // -------------------------------------------------------------------------
+  onChipDragStart(chip) {
+    const m = this.inventory[chip.slotIndex];
+    if (!m) return;
+    this.stopChipIdle(chip);
+    this.dragging = chip;
+    // Fix 4 (m1.2) — carried 口 previews its 囗 (enclosing) form during the
+    // drag itself, extending the pattern the build already used for host-
+    // side attach (水->氵, 火->灬) to the one carried glyph that never got it.
+    const ghostChar = (m.char === '口') ? '囗' : m.char;
+    this.dragGhost = this.add.text(chip.container.x, chip.container.y, ghostChar, {
+      fontFamily: 'sans-serif', fontSize: '30px', color: this.glyphColorHex(m)
+    }).setOrigin(0.5).setAlpha(0.9);
+    this.fxLayer.add(this.dragGhost);
+    chip.label.setAlpha(0.25);
+    this.showReachHighlight();
+    // Fix 5 (m1.2) — categorically distinct enclose signal, visible from
+    // drag-start on every reachable host, not gated behind hovering the
+    // center (R4-D039's N+1 categorical-slot problem).
+    if (this.currentCarriedIsEnclosureForm()) this.showEncloseIndicators();
+  }
+
+  showReachHighlight() {
+    this.clearReachHighlight();
+    const g = this.add.graphics();
+    this.boardLayer.add(g);
+    this.reachHighlight = g;
+    g.lineStyle(2, 0xFFE9A8, 0.55);
+    for (const [nr, nc] of this.neighbors(this.avatar.r, this.avatar.c)) {
+      if (this.grid[nr][nc].type === 'inert') continue;
+      const { x, y } = this.cellCenter(nr, nc);
+      g.strokeRoundedRect(x - CELL / 2 + 4, y - CELL / 2 + 4, CELL - 8, CELL - 8, 6);
+    }
+  }
+
+  clearReachHighlight() {
+    if (this.reachHighlight) { this.reachHighlight.destroy(); this.reachHighlight = null; }
+  }
+
+  // Fix 5 (m1.2) — the enclose signal is a soft pulsing glow (Graphics
+  // radius+alpha tween), a categorically different render primitive from
+  // drawZoneOverlay's seam-line/strokeRect language, painted on every
+  // reachable host the instant the drag starts. This is what tells the
+  // player "a fifth, different-kind option exists" before the pointer ever
+  // approaches the center — R4-D039's fix, not a smaller box in the same
+  // stroke style (the old center-seam-box approach this supersedes).
+  showEncloseIndicators() {
+    this.clearEncloseIndicators();
+    this.encloseIndicators = [];
+    for (const [nr, nc] of this.neighbors(this.avatar.r, this.avatar.c)) {
+      const cell = this.grid[nr][nc];
+      if (cell.type === 'inert' || cell.transientLock || !cell.matter) continue;
+      const { x, y } = this.cellCenter(nr, nc);
+      const glow = this.add.circle(x, y, 10, 0xFFE9A8, 0.24);
+      this.boardLayer.add(glow);
+      const tween = this.tweens.add({
+        targets: glow, radius: 17, alpha: 0.06, duration: 700, yoyo: true, repeat: -1, ease: 'Sine.easeInOut'
+      });
+      this.encloseIndicators.push({ glow, tween });
+    }
+  }
+
+  clearEncloseIndicators() {
+    if (!this.encloseIndicators) return;
+    for (const ind of this.encloseIndicators) {
+      if (ind.tween) ind.tween.stop();
+      if (ind.glow) ind.glow.destroy();
+    }
+    this.encloseIndicators = [];
+  }
+
+  // Fix 3b (m1.2), Demo 1 — first harvest of the session: a translucent
+  // ghost-copy of the chip slides toward the nearest valid host and springs
+  // back, once, never repeated. Wordless, no text, per the handoff.
+  playDemo1(slotIndex) {
+    const chip = this.inventoryChips[slotIndex];
+    const m = this.inventory[slotIndex];
+    if (!chip || !m) return;
+    const delta = this.nearestValidAdjacentDelta();
+    const startX = chip.container.x, startY = chip.container.y;
+    const ghost = this.add.text(startX, startY, m.char, {
+      fontFamily: 'sans-serif', fontSize: '22px', color: '#ffffff'
+    }).setOrigin(0.5).setAlpha(0.5);
+    this.uiLayer.add(ghost);
+    this.tweens.add({
+      targets: ghost, x: startX + delta.dx * 3, y: startY + delta.dy * 3, duration: 500,
+      ease: 'Sine.easeInOut', yoyo: true, onComplete: () => ghost.destroy()
+    });
+  }
+
+  // Fix 3b (m1.2), Demo 2 — first time the player carries 口 specifically,
+  // if enclose has not yet been discovered: an independent one-shot
+  // demoing the enclose gesture, sliding a ghost 口 into a nearby host's
+  // CENTER (not just a directional drift) with a small ring pulse there.
+  findEncloseDemoHost() {
+    let fallback = null;
+    for (const [nr, nc] of this.neighbors(this.avatar.r, this.avatar.c)) {
+      const cell = this.grid[nr][nc];
+      if (cell.type === 'inert' || cell.transientLock || !cell.matter) continue;
+      if (cell.matter.char === '木') return { r: nr, c: nc };
+      if (!fallback) fallback = { r: nr, c: nc };
+    }
+    return fallback;
+  }
+
+  playDemo2(slotIndex) {
+    const chip = this.inventoryChips[slotIndex];
+    if (!chip) return;
+    const host = this.findEncloseDemoHost();
+    if (!host) return; // no valid host in reach right now — one-shot flag stays consumed, matching Demo 1's own no-guarantee-of-visibility edge case
+    const { x, y } = this.cellCenter(host.r, host.c);
+    const ghost = this.add.text(chip.container.x, chip.container.y, '口', {
+      fontFamily: 'sans-serif', fontSize: '22px', color: '#ffffff'
+    }).setOrigin(0.5).setAlpha(0.55);
+    this.uiLayer.add(ghost);
+    const ring = this.add.circle(x, y, 6, 0xffffff, 0).setStrokeStyle(2, 0xffffff, 0.5);
+    this.fxLayer.add(ring);
+    this.tweens.add({
+      targets: ghost, x, y, scale: 0.7, duration: 650, ease: 'Sine.easeInOut',
+      onComplete: () => {
+        ghost.destroy();
+        this.tweens.add({ targets: ring, radius: 22, alpha: 0, duration: 350, onComplete: () => ring.destroy() });
+      }
+    });
+  }
+
+  currentCarriedIsEnclosureForm() {
+    if (!this.dragging) return false;
+    const m = this.inventory[this.dragging.slotIndex];
+    return !!(m && ENCLOSURE_FORMS[m.char]);
+  }
+
+  onChipDrag(chip, pointer, dragX, dragY) {
+    if (!this.dragGhost) return;
+    this.dragGhost.setPosition(pointer.x, pointer.y);
+    this.updateZoneOverlay(pointer);
+  }
+
+  onChipDragEnd(chip, pointer) {
+    chip.label.setAlpha(1);
+    if (this.dragGhost) { this.dragGhost.destroy(); this.dragGhost = null; }
+    const isEnclosureForm = this.currentCarriedIsEnclosureForm();
+    this.dragging = null;
+    this.clearZoneOverlay();
+    this.clearReachHighlight();
+    this.clearEncloseIndicators();
+    const m = this.inventory[chip.slotIndex];
+    if (!m) return;
+
+    const dropTarget = this.resolveHostAndZone(pointer, isEnclosureForm);
+    this.__debugReleaseResolved = dropTarget; // exposed for headless verification only
+    if (!dropTarget) { this.updateInventoryLayout(); this.startChipIdle(chip); return; }
+
+    const { r, c, zone, hasMatter } = dropTarget;
+    // Fix 3b (m1.2) — "enclose discovered" means the player has actually
+    // resolved a release into the center zone at least once (stable 困 or a
+    // transient enclose-contain both count as discovery of the ZONE, which
+    // is what Demo 2 is teaching).
+    if (zone === 'enclose') this.encloseDiscovered = true;
+    const target = this.grid[r][c];
+
+    if (!hasMatter) {
+      this.inventory[chip.slotIndex] = null;
+      this.placeStandaloneMatter(r, c, m);
+      this.popIn(r, c);
+      this.applyReactions(r, c);
+      this.updateInventoryLayout();
+      return;
+    }
+
+    const result = this.resolveComposition(target.matter, m, zone, r, c);
+    this.inventory[chip.slotIndex] = null;
+    this.updateInventoryLayout();
+
+    if (result.kind === 'stable') {
+      target.matter = this.newCompound(result.char, result.tags);
+      if (result.contained) target.matter.contained = true;
+      this.renderCellMatter(r, c);
+      this.lockPulse(r, c, result.char);
+      this.applyReactions(r, c);
+      if (result.growsOneCellTaller) this.growTreeUpward(r, c);
+      if (result.bonusEffect) result.bonusEffect.call(this, r, c);
+    } else if (result.kind === 'ignite-host') {
+      this.ignite(r, c);
+      // carried 火 is consumed into the ignition itself — no drop, matches
+      // reaction-1 priority over the slow (under) path (T-U2)
+    } else if (result.kind === 'transient') {
+      this.beginTransient(r, c, result, m);
+    } else {
+      this.fizzle(r, c, target.matter, m, result.reaction);
+    }
+  }
+
+  // R4-D023/D024 — zone resolution is a pure function of release position,
+  // never hover history. R4-D031 adds one parameter (isEnclosureForm); for
+  // any other value the geometry is untouched.
+  resolveZone(px, py, r, c, isEnclosureForm) {
+    const { x, y } = this.cellCenter(r, c);
+    const half = CELL / 2;
+    const projX = Phaser.Math.Clamp(px, x - half, x + half);
+    const projY = Phaser.Math.Clamp(py, y - half, y + half);
+    return this.cellLocalZone(projX, projY, r, c, isEnclosureForm);
+  }
+
+  resolveHostAndZone(pointer, isEnclosureForm) {
+    const cellCoord = this.pixelToCell(pointer.x, pointer.y);
+    if (cellCoord) {
+      const { r, c } = cellCoord;
+      const target = this.grid[r][c];
+      if (target.type !== 'inert' && !target.transientLock && this.isAdjacent(this.avatar.r, this.avatar.c, r, c)) {
+        const zone = target.matter ? this.resolveZone(pointer.x, pointer.y, r, c, isEnclosureForm) : null;
+        return { r, c, zone, hasMatter: !!target.matter };
+      }
+    }
+    let best = null, bestDist = Infinity;
+    for (const [nr, nc] of this.neighbors(this.avatar.r, this.avatar.c)) {
+      if (this.grid[nr][nc].type === 'inert' || this.grid[nr][nc].transientLock) continue;
+      const { x, y } = this.cellCenter(nr, nc);
+      const dist = Phaser.Math.Distance.Between(pointer.x, pointer.y, x, y);
+      if (dist < bestDist) { bestDist = dist; best = { r: nr, c: nc }; }
+    }
+    if (best && bestDist <= CELL * 1.25) {
+      const target = this.grid[best.r][best.c];
+      const zone = target.matter ? this.resolveZone(pointer.x, pointer.y, best.r, best.c, isEnclosureForm) : null;
+      return { r: best.r, c: best.c, zone, hasMatter: !!target.matter };
+    }
+    return null;
+  }
+
+  // Zone geometry — R4-D011 base geometry is untouched. The enclosure center
+  // box is a NEW branch that only ever executes when isEnclosureForm is true
+  // (R4-D031); for every other component this function is byte-identical to
+  // the pre-M1 build (T-E3 parity).
+  cellLocalZone(px, py, r, c, isEnclosureForm) {
+    const { x, y } = this.cellCenter(r, c);
+    const lx = (px - (x - CELL / 2)) / CELL;
+    const ly = (py - (y - CELL / 2)) / CELL;
+    if (isEnclosureForm && lx > 0.335 && lx < 0.665 && ly > 0.335 && ly < 0.665) return 'enclose';
+    if (ly < 0.33) return 'top';
+    if (ly > 0.67) return 'bottom';
+    return lx < 0.5 ? 'left' : 'right';
+  }
+
+  // Drag-time zone overlay — mandatory while carrying. R4-D032/A1: paints
+  // ALL zone seams on every hover (not just the resolved one); outcomes are
+  // never hinted.
+  updateZoneOverlay(pointer) {
+    const isEnclosureForm = this.currentCarriedIsEnclosureForm();
+    const resolved = this.resolveHostAndZone(pointer, isEnclosureForm);
+    this.__debugOverlayResolved = resolved; // exposed for headless verification only
+    if (!resolved) {
+      const cellCoord = this.pixelToCell(pointer.x, pointer.y);
+      if (cellCoord) { this.drawBlockedOverlay(cellCoord.r, cellCoord.c); return; }
+      this.clearZoneOverlay();
+      return;
+    }
+    const { r, c, zone, hasMatter } = resolved;
+    if (hasMatter) {
+      this.drawZoneOverlay(r, c, zone, this.grid[r][c].matter);
+    } else {
+      this.drawDropOverlay(r, c);
+    }
+  }
+
+  drawBlockedOverlay(r, c) {
+    if (!this.zoneOverlay) { this.zoneOverlay = this.add.graphics(); this.boardLayer.add(this.zoneOverlay); }
+    const g = this.zoneOverlay;
+    g.clear();
+    const { x, y } = this.cellCenter(r, c);
+    const half = CELL * 0.2;
+    g.lineStyle(2.5, 0x999999, 0.55);
+    g.lineBetween(x - half, y - half, x + half, y + half);
+    g.lineBetween(x + half, y - half, x - half, y + half);
+  }
+
+  drawDropOverlay(r, c) {
+    if (!this.zoneOverlay) { this.zoneOverlay = this.add.graphics(); this.boardLayer.add(this.zoneOverlay); }
+    const g = this.zoneOverlay;
+    g.clear();
+    const { x, y } = this.cellCenter(r, c);
+    g.lineStyle(2, 0xffffff, 0.4);
+    g.strokeCircle(x, y, CELL * 0.28);
+    g.fillStyle(0xffffff, 0.08);
+    g.fillCircle(x, y, CELL * 0.28);
+  }
+
+  drawZoneOverlay(r, c, zone, hostMatter) {
+    if (!this.zoneOverlay) { this.zoneOverlay = this.add.graphics(); this.boardLayer.add(this.zoneOverlay); }
+    const g = this.zoneOverlay;
+    g.clear();
+    const { x, y } = this.cellCenter(r, c);
+    const left = x - CELL / 2, top = y - CELL / 2;
+    const bandTop = top + CELL * 0.33, bandBottom = top + CELL * 0.67;
+
+    // seam lines — always drawn, every hover (R4-D032 A1)
+    g.lineStyle(1, 0xffffff, 0.15);
+    g.lineBetween(left, bandTop, left + CELL, bandTop);
+    g.lineBetween(left, bandBottom, left + CELL, bandBottom);
+    g.lineBetween(x, bandTop, x, bandBottom);
+    // Fix 5 (m1.2) supersedes the old center-seam-box here: that was "a
+    // smaller box in the same stroke style" as the 4 directional seams —
+    // exactly the failure mode R4-D039 named. The categorical existence
+    // signal now lives in showEncloseIndicators (drag-start, all hosts,
+    // different primitive). This overlay still highlights whichever zone is
+    // CURRENTLY resolved, same visual language as top/bottom/left/right,
+    // which is fine — that's "which direction", not "does a 5th kind exist".
+
+    g.fillStyle(this.glyphColor(hostMatter), 0.25);
+    if (zone === 'top') g.fillRect(left, top, CELL, CELL * 0.33);
+    else if (zone === 'bottom') g.fillRect(left, bandBottom, CELL, top + CELL - bandBottom);
+    else if (zone === 'left') g.fillRect(left, bandTop, CELL * 0.5, bandBottom - bandTop);
+    else if (zone === 'right') g.fillRect(x, bandTop, CELL * 0.5, bandBottom - bandTop);
+    else if (zone === 'enclose') {
+      const bx0 = left + CELL * 0.335, bx1 = left + CELL * 0.665;
+      const by0 = top + CELL * 0.335, by1 = top + CELL * 0.665;
+      g.fillRect(bx0, by0, bx1 - bx0, by1 - by0);
+    }
+  }
+
+  clearZoneOverlay() {
+    if (this.zoneOverlay) { this.zoneOverlay.destroy(); this.zoneOverlay = null; }
+  }
+
+  // ---------------------------------------------------------------------
+  // COMPOSITION RESOLUTION — spec §3/§2. Data-driven character match; no
+  // history, no hidden state. Returns one of:
+  //   {kind:'stable', char, tags, ...}       — real character, locks
+  //   {kind:'ignite-host'}                    — reaction-1 priority (T-U2)
+  //   {kind:'transient', variant, durationMs} — transformative fizzle (§2.2)
+  //   {kind:'fizzle'}                          — plain fizzle (default)
+  // ---------------------------------------------------------------------
+  resolveComposition(host, carried, zone, r, c) {
+    if (zone === 'left' || zone === 'right') {
+      if (host.char === '木' && carried.char === '木') return { kind: 'stable', char: '林', tags: ['is_flammable', 'is_structural', 'is_organic'] };
+      if (this.pairMatches(host, carried, '林', '木')) return { kind: 'stable', char: '森', tags: ['is_flammable', 'is_structural', 'is_organic'] };
+      if (host.char === '火' && carried.char === '火') return { kind: 'stable', char: '炎', tags: ['is_hot', 'is_luminous'] };
+      if (this.pairMatches(host, carried, '日', '月')) return { kind: 'stable', char: '明', tags: ['is_hot_mild', 'is_luminous'] };
+      if (this.pairMatches(host, carried, '口', '鸟')) return { kind: 'stable', char: '鸣', tags: ['emits_sound', 'is_living'] };
+      if (this.pairMatches(host, carried, '人', '木')) return { kind: 'stable', char: '休', tags: ['is_living'], bonusEffect: this.applyXiuEffect };
+      if (host.char === '月' && carried.char === '月') return { kind: 'stable', char: '朋', tags: [] };
+      if (this.pairMatches(host, carried, '木', '目')) return { kind: 'stable', char: '相', tags: ['is_flammable', 'is_structural', 'is_organic'], bonusEffect: this.applyXiangEffect };
+    }
+
+    // water — fixed left-only attach (氵 is always the left radical)
+    if (zone === 'left' && host.char === '木' && carried.char === '水') return { kind: 'stable', char: '沐', tags: ['cleanses'] };
+    if (zone === 'left' && host.char === '目' && carried.char === '水') return { kind: 'stable', char: '泪', tags: ['reveals_darkness'], bonusEffect: this.applyLeiEffect };
+
+    // marks — fixed zone, only ever attach to a standalone 木 (host.char
+    // stays '木' only while it's a fresh primitive; any compound has a
+    // different char, so no explicit compound-check is needed)
+    if (zone === 'top' && host.char === '木' && carried.char === '上') {
+      return { kind: 'stable', char: '末', tags: ['is_flammable', 'is_buoyant', 'is_structural', 'is_organic'], growsOneCellTaller: true };
+    }
+    if (zone === 'bottom' && host.char === '木' && carried.char === '下') {
+      return { kind: 'stable', char: '本', tags: ['is_flammable', 'is_structural', 'is_organic', 'is_anchored'] };
+    }
+
+    // enclose — only reachable when carried is enclosure-form (R4-D031)
+    if (zone === 'enclose' && carried.char === '口') {
+      if (host.char === '木') return { kind: 'stable', char: '困', tags: host.tags.slice(), contained: true };
+      return { kind: 'transient', variant: 'enclose-contain', durationMs: 1300 };
+    }
+
+    // under — only 火 has the 灬 form. Flammable hosts ignite instead
+    // (reaction-1 priority, T-U2); 土 bakes to brick (T-U1); anything else
+    // gets a brief glow with no lasting mutation.
+    if (zone === 'bottom' && carried.char === '火') {
+      if (this.hasTag(host, 'is_flammable')) return { kind: 'ignite-host' };
+      if (host.char === '土' && !host.baked) return { kind: 'transient', variant: 'under-bake-土', durationMs: 2000 };
+      return { kind: 'transient', variant: 'under-generic', durationMs: 900 };
+    }
+
+    // 土 + 水 -> mud (unstable, lasting tag mutation — §2.2 pattern). A
+    // baked brick is immune (permanent structural, never wet again).
+    if (host.char === '土' && carried.char === '水' && !host.baked) {
+      return { kind: 'transient', variant: 'mud', durationMs: 350 };
+    }
+
+    // 下-marked 木 (本) + 水 -> sinks, pure toy (spec §1 row 5)
+    if (host.char === '本' && carried.char === '水' && zone === 'left') {
+      return { kind: 'transient', variant: 'sink-本', durationMs: 500 };
+    }
+
+    return this.fallbackFizzleReaction(host, carried, r, c);
+  }
+
+  // Fix 6 (m1.2) — Differentiated Failure Doctrine (R4-D040, [LOCKED]). A
+  // failure response uniform across all failures carries one bit ("wrong")
+  // regardless of animation — a correctness verdict in costume. Default
+  // rule: an unstable composition renders the TAG REACTION between carried
+  // and host (existing reaction table §4.5 — zero new pairs authored) as
+  // its fizzle content, then collapses. Only a genuinely tag-inert pair
+  // (T-F2) falls through to the old generic spark.
+  fallbackFizzleReaction(host, carried, r, c) {
+    // rule 1 (hot+flammable): this is a REAL reaction, not flavor — same
+    // ignite-host path the 'under' zone already uses, just no longer
+    // gated to that one zone/pair. Fixes a latent gap: 火 beside a
+    // flammable host (not under it) used to fizzle instead of igniting.
+    if (this.hasTag(carried, 'is_hot') && this.hasTag(host, 'is_flammable') && !host.ignited) {
+      return { kind: 'ignite-host' };
+    }
+    // rule 2 (hot+wet): steam — visual only, no terrain change (T-F1).
+    if (this.hasTag(carried, 'is_hot') && this.hasTag(host, 'is_wet')) {
+      return { kind: 'fizzle', reaction: 'steam' };
+    }
+    // rule 3 (wet+hot): extinguish — a real hiss, host actually goes out.
+    if (this.hasTag(carried, 'is_wet') && (host.ignited || this.hasTag(host, 'is_hot'))) {
+      return { kind: 'fizzle', reaction: 'extinguish' };
+    }
+    // rule 8 (living+hot, either order): the union flinches, cosmetic only.
+    if ((this.hasTag(carried, 'is_hot') && this.hasTag(host, 'is_living')) ||
+        (this.hasTag(carried, 'is_living') && this.hasTag(host, 'is_hot'))) {
+      return { kind: 'fizzle', reaction: 'flinch' };
+    }
+    // rule 7 (luminous near darkness): a flicker, cosmetic only — actual
+    // darkness-clearing stays gated behind a real stable/ignite resolution.
+    if (this.hasTag(carried, 'is_luminous') && this.neighbors(r, c).some(([nr, nc]) => this.grid[nr][nc].darknessLevel > 0)) {
+      return { kind: 'fizzle', reaction: 'flicker' };
+    }
+    return { kind: 'fizzle' }; // tag-inert fallback (T-F2)
+  }
+
+  // Transformative fizzles (§2.2 / R4-D030): the union fires its slot rule
+  // during its brief life, then collapses. `contained`/`underAttach` are
+  // rendered by renderCellMatter itself, so setting/clearing the flag is
+  // the entire visual — no separate transient-only graphics code.
+  beginTransient(r, c, result, carriedMatter) {
+    const cell = this.grid[r][c];
+    const host = cell.matter;
+    cell.transientLock = true;
+
+    if (result.variant === 'enclose-contain') host.contained = true;
+    else if (result.variant === 'under-bake-土' || result.variant === 'under-generic') host.underAttach = true;
+    else if (result.variant === 'mud') {
+      host.tags = host.tags.filter(t => t !== 'is_structural');
+      if (host.tags.indexOf('is_wet') === -1) host.tags.push('is_wet');
+    }
+    this.renderCellMatter(r, c);
+    if (result.variant === 'sink-本') this.sinkAnimation(r, c);
+
+    this.time.delayedCall(result.durationMs, () => {
+      if (cell.matter !== host) { cell.transientLock = false; return; } // host changed mid-transient — bail cleanly
+      cell.transientLock = false;
+      if (result.variant === 'enclose-contain') host.contained = false;
+      if (result.variant === 'under-bake-土') { host.underAttach = false; host.baked = true; host.tags = ['is_structural']; }
+      if (result.variant === 'under-generic') host.underAttach = false;
+      this.renderCellMatter(r, c);
+      if (result.variant !== 'mud' && result.variant !== 'sink-本') {
+        // Fix 8 (m1.2) — collapsed carried matter returns to the player
+        // (free slot, else adjacent to the avatar), not wherever a
+        // neighbors-of-HOST search happened to land.
+        const { x, y } = this.cellCenter(r, c);
+        this.returnCarriedAfterFailure(x, y, carriedMatter);
+      }
+      this.applyReactions(r, c);
+    });
+  }
+
+  sinkAnimation(r, c) {
+    const cell = this.grid[r][c];
+    if (!cell.glyph) return;
+    this.tweens.add({ targets: [cell.glyph, cell.bg], y: '+=10', alpha: 0.5, duration: 450, ease: 'Sine.easeIn', yoyo: true });
+  }
+
+  // 末 effect: the tree grows one cell taller — decorative only in M1
+  // (unchanged from M0; no elevation/vision system exists yet).
+  growTreeUpward(r, c) {
+    const aboveR = r - 1;
+    if (aboveR < 0) return;
+    const above = this.grid[aboveR][c];
+    if (above.type === 'inert' || above.matter || above.growthGlyph) return;
+    if (this.avatar.r === aboveR && this.avatar.c === c) return;
+    const { x, y } = this.cellCenter(aboveR, c);
+    const g = this.add.text(x, y + CELL * 0.28, '末', {
+      fontFamily: 'sans-serif', fontSize: '30px', color: '#E0C84B'
+    }).setOrigin(0.5, 1).setAlpha(0);
+    this.boardLayer.add(g);
+    this.tweens.add({ targets: g, alpha: 0.85, y: y - 2, duration: 500, ease: 'Sine.easeOut' });
+    above.growthGlyph = g;
+  }
+
+  // 泪 — single precise water drop: extinguishes one adjacent ignited
+  // neighbor if present, then dissipates either way (single-use).
+  applyLeiEffect(r, c) {
+    const cell = this.grid[r][c];
+    for (const [nr, nc] of this.neighbors(r, c)) {
+      const nm = this.grid[nr][nc].matter;
+      if (nm && nm.ignited) { this.extinguish(nr, nc); break; }
+    }
+    this.time.delayedCall(500, () => {
+      if (cell.matter && cell.matter.char === '泪') { cell.matter = null; this.renderCellMatter(r, c); }
+    });
+  }
+
+  // 相 — inspect: briefly reveals the component seams of an adjacent
+  // compound (diegetic reading, no text).
+  applyXiangEffect(r, c) {
+    for (const [nr, nc] of this.neighbors(r, c)) {
+      const nm = this.grid[nr][nc].matter;
+      const parts = nm && DECOMPOSE_MAP[nm.char];
+      if (!parts) continue;
+      const { x, y } = this.cellCenter(nr, nc);
+      parts.forEach((p, i) => {
+        const angle = (i / parts.length) * Math.PI * 2 - Math.PI / 2;
+        const gx = x + Math.cos(angle) * 30, gy = y + Math.sin(angle) * 30;
+        const ghost = this.add.text(gx, gy, p, { fontFamily: 'sans-serif', fontSize: '16px', color: '#ffffff' }).setOrigin(0.5).setAlpha(0);
+        this.fxLayer.add(ghost);
+        this.tweens.add({ targets: ghost, alpha: 0.85, duration: 300, yoyo: true, hold: 1200, onComplete: () => ghost.destroy() });
+      });
+    }
+  }
+
+  // 休 — rest aura: pauses (extends) nearby ignite-to-ash timers briefly.
+  applyXiuEffect(r, c) {
+    for (const [nr, nc] of this.neighbors(r, c)) {
+      const nm = this.grid[nr][nc].matter;
+      if (nm && nm.ignited && nm.ashTimer) {
+        const remaining = nm.ashTimer.getRemaining();
+        nm.ashTimer.remove(false);
+        nm.ashTimer = this.time.delayedCall(remaining + 4000, () => {
+          const ncell = this.grid[nr][nc];
+          if (ncell.matter === nm && nm.ignited) { ncell.matter = this.newAsh(); this.renderCellMatter(nr, nc); }
+        });
+      }
+    }
+    const { x, y } = this.cellCenter(r, c);
+    const ring = this.add.circle(x, y, 30, 0x9ee6a8, 0.12);
+    this.fxLayer.add(ring);
+    this.tweens.add({ targets: ring, radius: 60, alpha: 0, duration: 900, onComplete: () => ring.destroy() });
+  }
+
+  lockPulse(r, c, resultChar) {
+    const { x, y } = this.cellCenter(r, c);
+    const ring = this.add.circle(x, y, 10, 0xffffff, 0).setStrokeStyle(3, 0xffffff, 0.9);
+    this.fxLayer.add(ring);
+    this.tweens.add({ targets: ring, radius: 40, alpha: 0, duration: 450, ease: 'Cubic.easeOut', onComplete: () => ring.destroy() });
+    const cell = this.grid[r][c];
+    if (cell.glyph) { cell.glyph.setScale(0.3); this.tweens.add({ targets: cell.glyph, scale: 1, duration: 300, ease: 'Back.easeOut' }); }
+    this.speak(resultChar);
+  }
+
+  // Fix 6 (m1.2) — the fizzle's visible content now depends on `reaction`
+  // (set by fallbackFizzleReaction): steam/extinguish/flinch/flicker each
+  // render something distinct instead of the one uniform spark, which is
+  // reserved for genuinely tag-inert pairs (T-F2 fallback path).
+  fizzle(r, c, hostMatter, carriedMatter, reaction) {
+    const { x, y } = this.cellCenter(r, c);
+    const g = this.add.text(x, y, carriedMatter.char, { fontFamily: 'sans-serif', fontSize: '26px', color: this.glyphColorHex(carriedMatter) }).setOrigin(0.5).setAlpha(0.85);
+    this.fxLayer.add(g);
+
+    if (reaction === 'steam') {
+      this.steam(r, c, r, c); // T-F1: 火 onto 水 renders steam, not the generic spark
+    } else if (reaction === 'extinguish') {
+      this.steam(r, c, r, c);
+      this.extinguish(r, c); // reaction 3 is a real hiss — the fire actually goes out
+    } else if (reaction === 'flinch') {
+      const hostGlyph = this.grid[r][c].glyph;
+      if (hostGlyph) this.tweens.add({ targets: hostGlyph, x: '+=4', duration: 70, yoyo: true, repeat: 3 });
+    } else if (reaction === 'flicker') {
+      for (const [nr, nc] of this.neighbors(r, c)) {
+        const dcell = this.grid[nr][nc];
+        if (dcell.darknessLevel > 0 && dcell.darkOverlay) {
+          const base = dcell.darkOverlay.alpha;
+          this.tweens.add({ targets: dcell.darkOverlay, alpha: base * 0.4, duration: 130, yoyo: true, repeat: 2 });
+        }
+      }
+    } else {
+      // tag-inert fallback (T-F2) — the original uniform spark
+      for (let i = 0; i < 5; i++) {
+        const angle = (i / 5) * Math.PI * 2;
+        const spark = this.add.circle(x, y, 2.5, 0xffffff, 0.8);
+        this.fxLayer.add(spark);
+        this.tweens.add({
+          targets: spark, x: x + Math.cos(angle) * 26, y: y + Math.sin(angle) * 26, alpha: 0, duration: 380,
+          onComplete: () => spark.destroy()
+        });
+      }
+    }
+
+    // reaction 3 consumes the water into the hiss; every other outcome
+    // returns the carried matter (Fix 8 — feet/inventory, not the old
+    // neighbors-of-host search).
+    const consumed = (reaction === 'extinguish');
+    this.tweens.add({
+      targets: g, x: x + Phaser.Math.Between(-10, 10), duration: 90, yoyo: true, repeat: 3,
+      onComplete: () => {
+        g.destroy();
+        if (consumed) return;
+        this.returnCarriedAfterFailure(x, y, carriedMatter);
+      }
+    });
+  }
+
+  // Fix 8 (m1.2, R4-D016 watch-item activated) — fizzled/collapsed carried
+  // matter goes to a free inventory slot first, else a cell adjacent to the
+  // avatar. Never the old "neighbors of the HOST cell" search, which could
+  // land the returned piece on the far side of the host from the player.
+  returnCarriedAfterFailure(fromX, fromY, carriedMatter) {
+    const slot = this.freeInventorySlot();
+    if (slot !== -1) {
+      this.inventory[slot] = carriedMatter;
+      this.flyGlyphToInventory(carriedMatter, fromX, fromY, slot);
+      return;
+    }
+    for (const [nr, nc] of this.neighbors(this.avatar.r, this.avatar.c)) {
+      if (this.isBlockedForDrop(nr, nc)) continue;
+      this.placeStandaloneMatter(nr, nc, carriedMatter);
+      this.popIn(nr, nc);
+      this.applyReactions(nr, nc);
+      return;
+    }
+  }
+
+  speak(char) {
+    if (!('speechSynthesis' in window)) return;
+    const pinyin = PINYIN[char];
+    if (!pinyin) return;
+    try {
+      const u = new SpeechSynthesisUtterance(char);
+      u.lang = 'zh-CN';
+      u.rate = 0.9;
+      window.speechSynthesis.speak(u);
+    } catch (e) { /* speech synthesis unavailable — ambient only, never required */ }
+  }
+
+  // -------------------------------------------------------------------------
+  // REACTION LAYER — spec §4.5 rules 1-3, 7-9 (+ mild-heat drying, sound-lean)
+  // contained matter is excluded both as source and target (§2.1 "trapped").
+  // -------------------------------------------------------------------------
+  applyReactions(r, c) {
+    const cell = this.grid[r][c];
+    const m = cell.matter;
+    if (m && !m.contained) {
+      for (const [nr, nc] of this.neighbors(r, c)) {
+        const ncell = this.grid[nr][nc];
+        const nm = ncell.matter;
+        if (nm && !nm.contained) {
+          if (this.hasTag(m, 'is_hot') && this.hasTag(nm, 'is_flammable') && !nm.ignited && !nm.inert) {
+            this.ignite(nr, nc);
+          } else if (this.hasTag(m, 'is_hot') && this.hasTag(nm, 'is_wet')) {
+            this.steam(r, c, nr, nc);
+          } else if (this.hasTag(m, 'is_wet') && this.hasTag(nm, 'is_hot')) {
+            this.extinguish(nr, nc);
+          } else if (this.hasTag(m, 'is_hot') && this.hasTag(nm, 'is_living')) {
+            this.fleeFrom(nr, nc, r, c);
+          } else if (this.hasTag(m, 'is_hot_mild') && nm.char === '土' && this.hasTag(nm, 'is_wet') && !nm.dryingScheduled) {
+            this.scheduleDryOut(nm, nr, nc);
+          }
+          if (this.hasTag(m, 'emits_sound') && nm.char === '鸟' && !nm.contained) this.birdLeanTween(nr, nc, r, c);
+        }
+      }
+      if (this.hasTag(m, 'is_luminous')) this.clearDarknessFrom(r, c, luminousMagnitudeOf(m.char));
+      if (this.hasTag(m, 'reveals_darkness')) this.revealDarknessNear(r, c);
+    }
+    for (const [nr, nc] of this.neighbors(r, c)) {
+      const nm = this.grid[nr][nc].matter;
+      if (nm && !nm.contained && this.hasTag(nm, 'is_luminous')) this.clearDarknessFrom(nr, nc, luminousMagnitudeOf(nm.char));
+    }
+  }
+
+  ignite(r, c) {
+    const cell = this.grid[r][c];
+    const m = cell.matter;
+    if (!m || m.ignited) return;
+    m.ignited = true;
+    m.tags.push('is_hot');
+    this.renderCellMatter(r, c);
+    this.applyReactions(r, c);
+    m.ashTimer = this.time.delayedCall(3000, () => {
+      if (cell.matter === m && m.ignited) {
+        cell.matter = this.newAsh();
+        this.renderCellMatter(r, c);
+      }
+    });
+  }
+
+  extinguish(r, c) {
+    const cell = this.grid[r][c];
+    const m = cell.matter;
+    if (!m || !m.ignited) return;
+    m.ignited = false;
+    m.tags = m.tags.filter(t => t !== 'is_hot');
+    if (m.ashTimer) { m.ashTimer.remove(false); m.ashTimer = null; }
+    this.renderCellMatter(r, c);
+  }
+
+  steam(r1, c1, r2, c2) {
+    const a = this.cellCenter(r1, c1), b = this.cellCenter(r2, c2);
+    const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+    const fog = this.add.circle(mx, my, 4, 0xdfefff, 0.55);
+    this.fxLayer.add(fog);
+    this.tweens.add({ targets: fog, radius: 34, alpha: 0, duration: 900, ease: 'Sine.easeOut', onComplete: () => fog.destroy() });
+  }
+
+  // rule 8 — is_living flees an adjacent is_hot neighbor. A toy, not a
+  // pathfinding agent: one hop to an empty cell farther from the heat, or
+  // stays put if nowhere to go.
+  fleeFrom(fr, fc, awayR, awayC) {
+    const cell = this.grid[fr][fc];
+    const m = cell.matter;
+    if (!m || m.fleeing) return;
+    const curDist = Math.abs(fr - awayR) + Math.abs(fc - awayC);
+    let best = null, bestDist = curDist;
+    for (const [nr, nc] of this.neighbors(fr, fc)) {
+      if (this.isBlockedForDrop(nr, nc)) continue;
+      const d = Math.abs(nr - awayR) + Math.abs(nc - awayC);
+      if (d > bestDist) { bestDist = d; best = [nr, nc]; }
+    }
+    if (!best) return;
+    m.fleeing = true;
+    cell.matter = null;
+    this.renderCellMatter(fr, fc);
+    const [tr, tc] = best;
+    this.grid[tr][tc].matter = m;
+    this.renderCellMatter(tr, tc);
+    const { x, y } = this.cellCenter(tr, tc);
+    const g = this.grid[tr][tc].glyph;
+    if (g) { g.setY(y - 14); this.tweens.add({ targets: g, y, duration: 220, ease: 'Sine.easeOut', onComplete: () => { m.fleeing = false; } }); }
+    else { m.fleeing = false; }
+  }
+
+  // cosmetic — 口 (emits_sound) draws a nearby 鸟's attention: a lean, not a move
+  birdLeanTween(br, bc, towardR, towardC) {
+    const cell = this.grid[br][bc];
+    if (!cell.glyph || cell.leaning) return;
+    cell.leaning = true;
+    const a = this.cellCenter(br, bc), b = this.cellCenter(towardR, towardC);
+    const dx = Math.sign(b.x - a.x) * 6, dy = Math.sign(b.y - a.y) * 6;
+    this.tweens.add({
+      targets: cell.glyph, x: a.x + dx, y: a.y + dy, duration: 160, yoyo: true, repeat: 1,
+      onComplete: () => { cell.leaning = false; }
+    });
+  }
+
+  scheduleDryOut(m, r, c) {
+    m.dryingScheduled = true;
+    this.time.delayedCall(3000, () => {
+      m.dryingScheduled = false;
+      const cell = this.grid[r][c];
+      if (cell.matter === m && this.hasTag(m, 'is_wet') && m.char === '土') {
+        m.tags = m.tags.filter(t => t !== 'is_wet');
+        if (m.tags.indexOf('is_structural') === -1) m.tags.push('is_structural');
+        this.renderCellMatter(r, c);
+      }
+    });
+  }
+
+  clearDarknessFrom(r, c, magnitude) {
+    let remaining = magnitude;
+    const ring = [[r, c]].concat(this.neighbors(r, c));
+    for (const [tr, tc] of ring) {
+      if (remaining <= 0) break;
+      const cell = this.grid[tr][tc];
+      if (cell.darknessLevel > 0) {
+        const before = cell.darknessLevel;
+        cell.darknessLevel = Math.max(0, cell.darknessLevel - remaining);
+        remaining -= before - cell.darknessLevel;
+        this.refreshDarknessVisual(tr, tc);
+      }
+    }
+  }
+
+  // 目 — reveals darkness contents without clearing: peeks the overlay
+  // alpha down and back up, darknessLevel is never touched.
+  revealDarknessNear(r, c) {
+    const ring = [[r, c]].concat(this.neighbors(r, c));
+    for (const [tr, tc] of ring) {
+      const cell = this.grid[tr][tc];
+      if (cell.darknessLevel > 0 && cell.darkOverlay && !cell.revealing) {
+        cell.revealing = true;
+        const originalAlpha = cell.darkOverlay.alpha;
+        this.tweens.add({
+          targets: cell.darkOverlay, alpha: originalAlpha * 0.22, duration: 400, yoyo: true, hold: 900,
+          ease: 'Sine.easeInOut', onComplete: () => { cell.revealing = false; }
+        });
+      }
+    }
+  }
+
+  refreshDarknessVisual(r, c) {
+    const cell = this.grid[r][c];
+    if (!cell.darkOverlay) return;
+    if (cell.darknessLevel <= 0) {
+      this.tweens.add({
+        targets: [cell.darkOverlay, cell.darkGlyph], alpha: 0, duration: 500, ease: 'Sine.easeOut',
+        onComplete: () => { cell.darkOverlay.destroy(); cell.darkGlyph.destroy(); cell.darkOverlay = null; cell.darkGlyph = null; }
+      });
+    } else {
+      const alpha = Math.min(0.55 + cell.darknessLevel * 0.15, 0.92);
+      this.tweens.add({ targets: cell.darkOverlay, alpha, duration: 400 });
+    }
+  }
+
+  update() {
+    this.updateInventoryLayout();
+  }
+}
+
+const config = {
+  type: Phaser.AUTO,
+  width: BOARD_W,
+  height: BOARD_H,
+  parent: 'game-root',
+  backgroundColor: '#0d0d10',
+  scene: [RoomScene]
+};
+
+window.__game = new Phaser.Game(config); // exposed for headless verification only
+</script>
+</body>
+</html>
