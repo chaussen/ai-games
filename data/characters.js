@@ -42,5 +42,71 @@ const CHARACTERS = [
     tags: ['is_luminous_dim'],
     color: '#B8C4D4',
     layer_unlock: 1
+  },
+  {
+    char: '山',
+    pinyin: 'shān',
+    gloss: 'mountain',
+    class: 'Tool',
+    etymology: '象形',
+    tier: 'A',
+    tags: ['is_structural', 'is_heavy'],
+    color: '#8B7355',
+    layer_unlock: 1
+  },
+  {
+    char: '水',
+    pinyin: 'shuǐ',
+    gloss: 'water',
+    class: 'Force',
+    etymology: '象形',
+    tier: 'A',
+    tags: ['is_wet', 'flows'],
+    color: '#4A90D9',
+    layer_unlock: 1
+  },
+  {
+    char: '刀',
+    pinyin: 'dāo',
+    gloss: 'blade',
+    class: 'Tool',
+    etymology: '象形',
+    tier: 'A',
+    tags: ['is_sharp'],
+    color: '#B0B0B0',
+    layer_unlock: 1
+  },
+  {
+    char: '手',
+    pinyin: 'shǒu',
+    gloss: 'hand',
+    class: 'Tool',
+    etymology: '象形',
+    tier: 'A',
+    tags: ['is_sharp', 'vector_right'],
+    color: '#D4A574',
+    layer_unlock: 1
+  },
+  {
+    char: '雨',
+    pinyin: 'yǔ',
+    gloss: 'rain',
+    class: 'Force',
+    etymology: '象形',
+    tier: 'A',
+    tags: ['is_wet', 'flows'],
+    color: '#6B9FBF',
+    layer_unlock: 1
+  },
+  {
+    char: '目',
+    pinyin: 'mù',
+    gloss: 'eye',
+    class: 'Force',
+    etymology: '象形',
+    tier: 'A',
+    tags: ['is_luminous'],
+    color: '#5B8C5A',
+    layer_unlock: 1
   }
 ];

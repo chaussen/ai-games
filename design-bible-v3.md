@@ -514,6 +514,7 @@ The animations carry the narrative. The characters are the characters.
 5. Design receives the full file set for playtesting — never game.html alone.
 6. Tag resolution fires before matrix lookup. Matrix overrides win when both apply.
 7. Hand composition is the primary balance lever for tag side-effects (e.g. 火's is_luminous clearing all dark cells). Puzzle authors must not include characters whose tag side-effects would trivialize an obstacle the puzzle intends to keep — do not rely on engine-side filtering.
+8. Every Code deliverable embeds a `BUILD_ID` (log id + short content hash) in the file header and rendered in-app; every playtest verdict quotes the fingerprint tested. Verdicts without matching fingerprints are void. (Extends rule 5: stale artifact is the sibling failure of missing dependency.)
 
 ---
 
@@ -563,6 +564,23 @@ Any agent proposing these must log a Decision entry first.
 
 | date | id | decision | by | status | supersedes |
 |---|---|---|---|---|---|
+
+
+# Hanzi Sandbox — L1-P04–P06 Puzzle Specs & Code Handoff
+
+**Chat arbitration pass — read before implementing.**
+These are the first Choose-act puzzles with a genuine red herring in hand (P03 was two-valid-no-wrong; this is different). Two design tensions were resolved before writing the specs — see Decision Log entries below. Append these to design-bible-v3.md.
+
+---
+
+## Decision Log additions (append-only, newest on top)
+
+| date | id | decision | by | status | supersedes |
+|---|---|---|---|---|---|
+| 2026-07-04 | D054 | Build-fingerprint rule adopted for BOTH tracks (charter R4-D026, after a stale-artifact fork produced a false BOUNCE): BUILD_ID in file header + rendered in-app; verdicts must quote the fingerprint tested; mismatch/absence voids the verdict. Added as §11 rule 8 | chat + router | LOCKED | extends §11 rule 5 |
+| 2026-07-04 | D053 | R4 track M0.1 verdict: **CONDITIONAL GO** (charter R4-D019). Per fight protocol §8 step 3 (modified): all further L1 puzzle authoring (P04+) **FREEZES** effective now; R4 M1 planning begins. This bible retains full authority for its own track and is **not** ported to legacy status until the R4 M1 duration gate clears (>10 min at ~12 components). If that gate fails, v3 authoring resumes at P04–P06 per §8 step 4 | router | LOCKED | freezes §7 L1-P04+ authoring |
+| 2026-07-01 | D052 | L1-P06 red herring 月 is puzzle-geometry-dependent, not a tag exception. Darkness patch spans 2 cells; 月's dim/partial clear resolves only 1, leaving path blocked. 日 and 目 clear both. 月 remains a genuinely valid Tier A solve elsewhere (P03) — this is not a contradiction, it's D033's principle applied: hand composition and puzzle geometry are the balance lever, never engine-side tag exceptions. | chat | LOCKED | — |
+| 2026-07-01 | D051 | L1-P04 red herring 水 backfires (river deepens) rather than no-ops. First use of a backfiring red herring outside Constrain act. Ruled acceptable: the deepen is cosmetic/non-blocking — 木 and 山 still solve afterward. Choose-act red herrings may worsen visually but must never produce an unrecoverable state; hard lockouts stay reserved for Constrain. | chat | LOCKED | — |
 | 2026-07-01 | D050 | L1-P01–P03 vertical slice CLOSED: 5/7 confirmed, 2 partial (both improved, non-blocking), 0 regressions, 4 close-out fixes shipped. Exit condition met. | chat+design+code | LOCKED | — |
 | 2026-07-01 | D046 | Crescent overlay enlarged 16→22px (inner), 15→20px (cutout) — legibility fix confirmed | code | LOCKED | D035 |
 | 2026-07-01 | D045 | 日-cleared dark cells get static warm-glow residual (0xF5A623, 12% alpha) — parity with river/thorns memory | code | LOCKED | D032 |

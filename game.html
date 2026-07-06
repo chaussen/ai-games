@@ -38,13 +38,19 @@ function resolveTagInteraction(charTags, terrainTags) {
   if (has(charTags, 'is_hot') && has(terrainTags, 'is_wet')) return 'NO_EFFECT';
   // Rule 3: is_wet + hot terrain → extinguish (no hot terrain in this slice)
   if (has(charTags, 'is_wet') && has(terrainTags, 'is_hot')) return 'CLEAR';
+  // Rule 3b: is_wet + liquid terrain → BACKFIRE (deepens river, card consumed, not locked)
+  if (has(charTags, 'is_wet') && has(terrainTags, 'is_liquid')) return 'BACKFIRE';
   // Rule 4: is_buoyant on liquid → raft (CLEAR)
   if (has(charTags, 'is_buoyant') && has(terrainTags, 'is_liquid')) return 'CLEAR';
+  // Rule 4b: is_heavy on liquid → fills/sinks → CLEAR
+  if (has(charTags, 'is_heavy') && has(terrainTags, 'is_liquid')) return 'CLEAR';
   // Rule 5: is_structural on chasm/pit → bridge (not in this slice)
   if (has(charTags, 'is_structural') && has(terrainTags, 'is_pit')) return 'CLEAR';
+  // Rule 5b: is_sharp + organic/fibrous → CLEAR (cuts/pushes through)
+  if (has(charTags, 'is_sharp') && (has(terrainTags, 'is_fibrous') || has(terrainTags, 'is_organic'))) return 'CLEAR';
   // Rule 6: is_luminous on dark → CLEAR
   if (has(charTags, 'is_luminous') && has(terrainTags, 'is_dark')) return 'CLEAR';
-  // Rule 7: is_luminous_dim on dark → PARTIAL
+  // Rule 7: is_luminous_dim on dark → PARTIAL (target cell only — see D052)
   if (has(charTags, 'is_luminous_dim') && has(terrainTags, 'is_dark')) return 'PARTIAL';
 
   return 'NO_EFFECT';
@@ -105,11 +111,23 @@ class MetaScene extends Phaser.Scene {
     this.tiles = [];
 
     const W = this.scale.width;
-    const startX = W / 2 - ((PUZZLES.length - 1) * 140) / 2;
-    const tileY = this.scale.height / 2;
+    const H = this.scale.height;
+    const tilesPerRow = 3;
+    const spacingX = 160;
+    const spacingY = 160;
+    const tileW = 110;
+    const tileH = 130;
+    const rowCount = Math.ceil(PUZZLES.length / tilesPerRow);
+    const gridH = (rowCount - 1) * spacingY + tileH;
+    const gridStartY = (H - gridH) / 2 + 30;
 
     PUZZLES.forEach((puzzle, i) => {
-      const x = startX + i * 140;
+      const tileCol = i % tilesPerRow;
+      const tileRow = Math.floor(i / tilesPerRow);
+      const rowLen = Math.min(tilesPerRow, PUZZLES.length - tileRow * tilesPerRow);
+      const rowStartX = W / 2 - ((rowLen - 1) * spacingX) / 2;
+      const x = rowStartX + tileCol * spacingX;
+      const tileY = gridStartY + tileRow * spacingY + tileH / 2;
       const unlocked = this.isUnlocked(i);
       const done = this.isComplete(puzzle.id);
 
@@ -285,6 +303,7 @@ class PuzzleScene extends Phaser.Scene {
         this.gridGroup.add(g);
 
         let fillColor = TERRAIN_COLOR[state.type] || 0x444444;
+        if (state.deepened) fillColor = 0x2055a8; // darker, deepened river (water backfire)
         if (state.cleared) fillColor = TERRAIN_COLOR.ground;
         if (state.partial) fillColor = 0x7a8fc2; // cool desaturated moonlit blue
 
@@ -580,17 +599,42 @@ class PuzzleScene extends Phaser.Scene {
   }
 
   spawnDeployArtifact(charData, result, row, col) {
-    if (result !== 'CLEAR' && result !== 'PARTIAL') return;
-
     const state = this.terrainState[row][col];
     const wx = this.gridOffsetX + col * CELL;
     const wy = this.gridOffsetY + row * CELL;
     const cx = wx + CELL / 2;
     const cy = wy + CELL / 2;
 
+    // BACKFIRE: turbulent deep-water splash
+    if (result === 'BACKFIRE') {
+      const splash = this.add.graphics().setDepth(4);
+      const st = { radius: 8, alpha: 0.75 };
+      this.tweens.add({
+        targets: st, radius: CELL * 0.52, alpha: 0,
+        duration: 900, ease: 'Sine.easeOut',
+        onUpdate: () => {
+          splash.clear();
+          splash.lineStyle(5, 0x1a4a8a, st.alpha);
+          splash.strokeCircle(cx, cy, st.radius);
+        },
+        onComplete: () => splash.destroy()
+      });
+      return;
+    }
+
+    if (result !== 'CLEAR' && result !== 'PARTIAL') return;
+
     if (charData.char === '木' && state.type === 'river') {
       const g = this.add.graphics().setDepth(4);
       g.fillStyle(0x8a6a3a, 0.55);
+      g.fillRoundedRect(wx + 2, wy + 2, CELL - 4, CELL - 4, 6);
+      this.tweens.add({
+        targets: g, alpha: 0, duration: 1500, delay: 200,
+        ease: 'Sine.easeIn', onComplete: () => g.destroy()
+      });
+    } else if (charData.char === '山' && state.type === 'river') {
+      const g = this.add.graphics().setDepth(4);
+      g.fillStyle(0x8B7355, 0.65);
       g.fillRoundedRect(wx + 2, wy + 2, CELL - 4, CELL - 4, 6);
       this.tweens.add({
         targets: g, alpha: 0, duration: 1500, delay: 200,
@@ -604,14 +648,34 @@ class PuzzleScene extends Phaser.Scene {
         targets: g, alpha: 0, duration: 1600, delay: 200,
         ease: 'Sine.easeIn', onComplete: () => g.destroy()
       });
+    } else if (charData.char === '刀' && state.type === 'thorns') {
+      const slash = this.add.graphics().setDepth(4);
+      slash.lineStyle(4, 0xC8C8C8, 0.9);
+      slash.beginPath();
+      slash.moveTo(wx + 10, wy + 10);
+      slash.lineTo(wx + CELL - 10, wy + CELL - 10);
+      slash.strokePath();
+      slash.beginPath();
+      slash.moveTo(wx + CELL - 10, wy + 10);
+      slash.lineTo(wx + 10, wy + CELL - 10);
+      slash.strokePath();
+      this.tweens.add({
+        targets: slash, alpha: 0, duration: 700,
+        ease: 'Sine.easeIn', onComplete: () => slash.destroy()
+      });
+    } else if (charData.char === '手' && state.type === 'thorns') {
+      const g = this.add.graphics().setDepth(4);
+      g.fillStyle(0xD4A574, 0.5);
+      g.fillRoundedRect(wx + 2, wy + 2, CELL - 4, CELL - 4, 6);
+      this.tweens.add({
+        targets: g, alpha: 0, duration: 1100, delay: 100,
+        ease: 'Sine.easeIn', onComplete: () => g.destroy()
+      });
     } else if (charData.char === '日' && state.type === 'dark') {
       const ring = this.add.graphics().setDepth(4);
       const ringState = { radius: 6, alpha: 0.85 };
       this.tweens.add({
-        targets: ringState,
-        radius: 72,
-        alpha: 0,
-        duration: 1400,
+        targets: ringState, radius: 72, alpha: 0, duration: 1400,
         ease: 'Sine.easeOut',
         onUpdate: () => {
           ring.clear();
@@ -620,14 +684,24 @@ class PuzzleScene extends Phaser.Scene {
         },
         onComplete: () => ring.destroy()
       });
+    } else if (charData.char === '目' && state.type === 'dark') {
+      const ring = this.add.graphics().setDepth(4);
+      const ringState = { radius: 6, alpha: 0.85 };
+      this.tweens.add({
+        targets: ringState, radius: 60, alpha: 0, duration: 1400,
+        ease: 'Sine.easeOut',
+        onUpdate: () => {
+          ring.clear();
+          ring.lineStyle(3, 0x5B8C5A, ringState.alpha);
+          ring.strokeCircle(cx, cy, ringState.radius);
+        },
+        onComplete: () => ring.destroy()
+      });
     } else if (charData.char === '月' && state.type === 'dark') {
       const ring = this.add.graphics().setDepth(4);
       const ringState = { radius: 6, alpha: 0.85 };
       this.tweens.add({
-        targets: ringState,
-        radius: 52,
-        alpha: 0,
-        duration: 1400,
+        targets: ringState, radius: 52, alpha: 0, duration: 1400,
         ease: 'Sine.easeOut',
         onUpdate: () => {
           ring.clear();
@@ -675,25 +749,21 @@ class PuzzleScene extends Phaser.Scene {
       this.terrainState[row][col].partial = false;
     } else if (result === 'PARTIAL') {
       this.terrainState[row][col].partial = true;
+    } else if (result === 'BACKFIRE') {
+      this.terrainState[row][col].deepened = true;
     }
   }
 
   applyAreaEffects(charData, result, row, col, onDone) {
     if (result === 'NO_EFFECT') { if (onDone) onDone(); return; }
 
-    // Luminous characters illuminate all dark terrain globally (sun rises everywhere)
+    // Luminous characters illuminate all dark terrain globally (sun/eye rises everywhere)
+    // is_luminous_dim (moon) is target-only — applyResult already set the single cell (D052)
     if (charData.tags.includes('is_luminous')) {
       for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
           const s = this.terrainState[r][c];
           if (s.type === 'dark' && !s.cleared) s.cleared = true;
-        }
-      }
-    } else if (charData.tags.includes('is_luminous_dim')) {
-      for (let r = 0; r < ROWS; r++) {
-        for (let c = 0; c < COLS; c++) {
-          const s = this.terrainState[r][c];
-          if (s.type === 'dark' && !s.cleared && !s.partial) s.partial = true;
         }
       }
     }
