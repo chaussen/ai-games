@@ -341,7 +341,6 @@
     if (isTeacher) setTimeout(function(){ G.Screens.open('teacher'); }, 400);
   }
   function lock(){
-    if (G.Trial && G.Trial.on()){ G.Trial.relock(); return; }   // trial has no class code — return to the trial gate
     codeBuf=''; buildLock(); $('#lockgate').classList.remove('hidden');
   }
 
@@ -353,7 +352,7 @@
       S.load();
       G.Scroll.init();
       if(loadEl) loadEl.style.display='none';
-      if (G.Trial && G.Trial.on()) G.Trial.start({ onPlay:unlock }); else buildLock();
+      buildLock();
     }).catch(function(err){
       if(loadEl) loadEl.innerHTML='<div style="padding:40px;text-align:center;color:#8E7F79">'+
         '<h2 style="font-family:var(--serif)">Couldn’t load the character graph</h2>'+

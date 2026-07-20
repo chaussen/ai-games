@@ -193,8 +193,8 @@
     return (sd && sd.s && sd.s.length) ? sd : null;
   }
   // per-stroke draw speed (ms). The study clue is slower (learn it); the post-
-  // answer replay is quicker (just a recap). Trial nudges the clue a touch slower.
-  function clueSpeed(){ var t=window.GAME_TRIAL; return (t && t.on) ? 600 : 480; }
+  // answer replay is quicker (just a recap).
+  function clueSpeed(){ return 480; }
   function replaySpeed(){ return 300; }
 
   // A building-block (radical or 声旁/component) rather than a standalone word —
