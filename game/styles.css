@@ -765,6 +765,10 @@ body[data-bob="off"] .youare,body[data-bob="off"] .duebadge{animation:none;}
 .tc-card{border:1px solid var(--line);border-radius:16px;background:var(--paper);padding:18px 20px;margin-bottom:16px;}
 .tc-card h3{margin:0 0 4px;font-family:var(--serif);font-weight:500;font-size:18px;}
 .tc-card .tc-hint{font-size:12px;color:var(--ink-mute);font-weight:600;margin:0 0 16px;}
+.tc-danger{border-color:#c24b3a55;}
+.tc-danger h3{color:#c24b3a;}
+.tc-reset-btn{border-color:#c24b3a55;color:#c24b3a;}
+.tc-reset-btn:hover{background:#c24b3a;border-color:#c24b3a;color:#fff;}
 .preset-row{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
 .preset-btn{padding:8px 16px;border-radius:10px;border:1px solid var(--line);background:var(--bg-warm);font-weight:700;font-size:13px;transition:.16s;}
 .preset-btn.on{background:var(--rc);color:#fff;border-color:var(--rc);}

@@ -169,13 +169,19 @@
       '</div>'+
       '<div class="tc-card"><h3>Spaced-review decay</h3><p class="tc-hint">Days until ink fades and a character becomes due (Leitner steps).</p>'+
         '<div class="decay-row">'+cfg.decay.map(function(d,i){ return '<div class="fld"><label>step '+(i+1)+'</label>'+
-          '<input type="number" min="1" max="60" value="'+d+'" data-decay="'+i+'" style="width:74px"></div>'; }).join('')+'</div></div>';
+          '<input type="number" min="1" max="60" value="'+d+'" data-decay="'+i+'" style="width:74px"></div>'; }).join('')+'</div></div>'+
+      '<div class="tc-card tc-danger"><h3>Reset progress</h3><p class="tc-hint">Wipes this device\'s saved scroll — XP, 文, seals, mastery, review schedule — back to a blank first day. Only affects the browser you\'re using now; scoring dials above are kept.</p>'+
+        '<button class="jbtn ghost tc-reset-btn" id="tc-reset-progress">Reset progress on this device ›</button></div>';
     tcPane(html);
     $$('#tc-panes [data-preset]').forEach(function(b){ b.addEventListener('click', function(){ S.applyPreset(b.dataset.preset); renderTeacher(); }); });
     $$('#tc-panes [data-cfg]').forEach(function(inp){ inp.addEventListener('input', function(){ var v=+inp.value;
       $('#val-'+inp.dataset.cfg).textContent=v; S.setConfig(inp.dataset.cfg, v); }); });
     $$('#tc-panes [data-decay]').forEach(function(inp){ inp.addEventListener('change', function(){
       S.setDecay(+inp.dataset.decay, +inp.value); renderTeacher(); }); });
+    $('#tc-reset-progress').addEventListener('click', function(){
+      if(!confirm('Reset all progress on this device? This cannot be undone.')) return;
+      S.hardReset(); G.App.toast('Progress reset — starting fresh'); close();
+    });
   }
 
   // editable catalogue (spec §8.1/§8.2): add · edit name/tier/price · retire
