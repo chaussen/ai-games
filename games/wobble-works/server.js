@@ -419,12 +419,17 @@ function step(dtSec) {
         const closing = ((pv.x - ov.x) * towardX + (pv.z - ov.z) * towardZ) / towardLen;
         const speedP = Math.hypot(pv.x, pv.z);
         const speedO = Math.hypot(ov.x, ov.z);
-        const cooling = p.lastTackleAt && now - p.lastTackleAt < 900;
+        // The attacker must be moving toward the victim under its own steam and
+        // steering at them; a station-keeper pushed around by the carrier is not.
+        const selfApproach = (pv.x * towardX + pv.z * towardZ) / towardLen;
+        const inLen = Math.hypot(inp.x, inp.z) || 1;
+        const aimed = hasMove && (inp.x * towardX + inp.z * towardZ) / (inLen * towardLen) > 0.5;
+        const cooling = p.lastTackleAt && now - p.lastTackleAt < 4000;
         // speedP > speedO is the key test: a shoved victim moves slower than
         // the carrier that rammed it, so it can no longer farm points.
         // hasMove: only a player actively steering can be the tackler, so a
         // bystander who gets shoved never earns points.
-        if (other.carrying && !p.carrying && hasMove && closing > 5.0 && speedP > speedO && !cooling) {
+        if (other.carrying && !p.carrying && aimed && selfApproach > 4.0 && closing > 5.0 && speedP > speedO && !cooling) {
           p.lastTackleAt = now;
           other.carrying = false;
           S.ballCarrierId = null;
@@ -635,7 +640,8 @@ const httpServer = http.createServer((req, res) => {
     return;
   }
 
-  let filePath = path.join(ROOT, urlPath === '/' ? 'index.html' : urlPath);
+  let filePath = path.join(ROOT, urlPath);
+  if (urlPath.endsWith('/')) filePath = path.join(filePath, 'index.html');
   if (!filePath.startsWith(ROOT)) {
     res.writeHead(403);
     res.end('Forbidden');
@@ -674,7 +680,18 @@ function send(socket, data) {
 }
 
 httpServer.on('upgrade', (req, socket, head) => {
-  if (req.url.split('?')[0] !== '/ws') {
+  const path = req.url.split('?')[0];
+  // The classic side-view 2D build lives in classic/ and owns its own room.
+  // Routing it here keeps one port and one QR code for the whole family.
+  if (path === '/ws2d') {
+    try {
+      require('./classic/net2d.js').handleUpgrade(req, socket);
+    } catch (e) {
+      socket.destroy();
+    }
+    return;
+  }
+  if (path !== '/ws') {
     socket.destroy();
     return;
   }
@@ -815,8 +832,14 @@ setInterval(() => {
   broadcast(makeSnapshot());
 }, SNAP_MS);
 
-// Check firewall helper
+// Firewall self-check. OPT-IN only (FIREWALL_CHECK=1): firewall-cmd triggers a
+// polkit password prompt, and every server start (including each test run)
+// would pop it up and can lock the account after failed attempts.
 function checkFirewall(port) {
+  if (process.env.FIREWALL_CHECK !== '1') {
+    console.log('    Firewall      : not checked (run ./lan-doctor.sh, or start with FIREWALL_CHECK=1)');
+    return;
+  }
   require('child_process').execFile('firewall-cmd', ['--query-port=' + port + '/tcp'],
     { timeout: 8000 }, (err, stdout) => {
       const answer = String(stdout || '').trim();

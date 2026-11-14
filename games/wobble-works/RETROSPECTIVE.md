@@ -1,11 +1,11 @@
-# WOBBLE WORKS 3D — Retrospective
+# WOBBLE WORKS — Retrospective
 
 | | |
 |---|---|
-| Subject | **Wobble Works 3D** (搭把手) — a chaotic free-roam co-op / anti-co-op physics arena for a home WLAN |
-| Where it lives | `games/wobble-works/` |
+| Subject | **Wobble Works** (搭把手) — two local-network family co-op builds: the **3D arena** and the **CLASSIC side-view 2D** campaign. This document covers both. |
+| Where it lives | `games/wobble-works/` (3D at the root, 2D in `classic/`) |
 | Document date | 2026-11-14 |
-| Build status | playable prototype; 18 of 18 automated assertions passing; 10 evidence screenshots |
+| Build status | both builds playable; **18/18** assertions on the 3D contract, **34/34** on the 2D contract; 17 evidence screenshots |
 | Written for | external reviewers, playtesters, and whoever evaluates the design or the code |
 | Companions | [README.md](README.md) (how to run), [design-v1-2d.md](docs/design-v1-2d.md) (superseded plan), [screenshots/](screenshots/) (evidence), [wireframe.html](wireframe.html) (historical wireframes) |
 
@@ -35,12 +35,16 @@ Two conventions worth stating up front:
 2. **Where the build contradicts the design, the build wins** and the
    contradiction is recorded in §3 and §8 rather than smoothed over.
 
-A concrete example of why that matters: until this document was written, the
-folder's README described a 2D Matter.js campaign with four chapters and route
-medals. None of that exists. The shipped game is a 3D Cannon.js arena with an
-individual leaderboard — two of those words ("2D", "medals") were wrong, and the
-leaderboard was a **deliberate reversal** of the original design (§2.4). That is
-now §3 of this document, and called out at the top of the README.
+A concrete example of why that matters: for most of this project the folder's
+README described a 2D Matter.js campaign with four chapters and route medals,
+while the shipped game was a 3D Cannon.js arena with an individual leaderboard.
+Two of those words ("2D", "medals") were wrong at the time, and the leaderboard
+was a **deliberate reversal** of the original design (§2.4).
+
+The ending changed again after that: the family played both and asked for the 2D
+build back, so the folder now ships **two** builds and the retrospective covers
+both. §2.2 and §3 describe the pivot; §12 describes the reconstruction of the 2D
+game, which is new code driven by the original level data.
 
 ---
 
@@ -140,9 +144,9 @@ run and sabotage on the next, without any authored branching.
 | P4 No marked answer | The level never tells you the right route. | **Yes** — no arrows, no ghost, no tutorial. All five beacons are shown as dim rings; only the active one is lit. [O] |
 | P5 No game over | Falling costs a respawn, never progress. | **Yes** — `y < −5` teleports to the plaza; the Core respawns. Nothing is deducted. [M] |
 
-### 2.2 Version 1 — the 2D campaign (designed, mostly not built)
+### 2.2 Version 1 — the 2D campaign (built, played, then overwritten)
 
-The first full design was a Matter.js, top-down campaign:
+The first full design was a Matter.js, side-view campaign:
 
 | Chapter | Space | Structure | Planned valid routes |
 |---|---|---|---|
@@ -160,12 +164,18 @@ independent grab hands with spring constraints, and **no leaderboard at all** �
 the research on intergenerational play said shared goals beat individual
 scoring.
 
-**What actually survives from v1:** the four-beat *kishōtenketsu* intent, the
-"no marked answer" principle, the see-saw, the crates, the bounce pads, the
-chasm, and the no-lives respawn. **What does not survive:** the 2D renderer,
-the chapter campaign, the plates and gates, the ropes, the wind zone, the water,
-the tool dispenser budget, the route medals, the scrapbook, and the ban on
-leaderboards.
+**This was not a paper design — it was a running build.** The family played it,
+and when they later saw the 3D rewrite their feedback was that the 2D one was
+friendlier and funnier, *"because you can see the jumping to the sky"* [A],
+which is exactly what a side view gives you and a follow camera does not.
+
+**What actually survives from v1 today** [M]: the finished level geometry for all
+five spaces (`levels.js`, 185 lines, unmodified), the vendored Matter.js 0.20.0,
+the wireframes, and the design document (`docs/design-v1-2d.md`) that used to be
+the README. **What was lost:** the 2D runtime itself — renderer, server, room
+loop, HUD. The folder was untracked when the 3D rewrite replaced those files in
+place, so no commit, stash or backup ever held them [M]. §12 records the rebuild
+that now runs as `classic/`.
 
 ### 2.3 The 3D pivot
 
@@ -184,7 +194,7 @@ Three requirements, each of which moved the design measurably:
 
 | Requirement | Design response |
 |---|---|
-| 3D | Server-side **Cannon.js 0.6.2**, client-side **Three.js r128**. The 2D Matter.js world was retired to `levels.js` / `vendor/matter.min.js` (still present, unused). |
+| 3D | Server-side **Cannon.js 0.6.2**, client-side **Three.js r128**. The 2D Matter.js runtime was overwritten in place during this rewrite (see §2.2 and §12); only its level data survived. |
 | Free roam, wander without doing the task | A 96 × 96 m arena with five separated zones and no forced order. The goal is a beacon you can ignore. |
 | Players can bump and push each other | Player bodies are dynamic (mass 16, no fixed rotation lock in X/Z) and genuinely collide; a charging player can knock the Core out of a carrier's hands. |
 
@@ -260,7 +270,7 @@ Three additions followed:
 
 | Dimension | Expected / designed | Actually shipped | Verdict |
 |---|---|---|---|
-| Renderer | 2D top-down Canvas | **3D Three.js r128** with gradient sky, fog, orbit and follow cameras | Changed on request |
+| Renderer | 2D Canvas | **3D Three.js r128** with gradient sky, fog, orbit and follow cameras — *and* the 2D Canvas side view, kept as `classic/` (§12) | Both exist |
 | Physics | Matter.js 2D | **Cannon.js 0.6.2**, server-side, 60 Hz | Changed on request |
 | Structure | 4 chapters + sandbox, gated progression | **5 rotating beacons in one open arena** | Collapsed into arena |
 | Verbs | left, right, jump, two grab hands | move, jump, grab-drag, lift, throw, 4 quick calls | Simplified; throw added |
@@ -275,6 +285,7 @@ Three additions followed:
 | Art | "warm cardboard workshop" | grey-box primitives with a warm palette and nameplates | **Fell short** |
 | Hosting | zero install, no internet | zero-dependency Node server, vendored libs | As designed |
 | Documentation | README + wireframe | README (now accurate), retrospective, superseded design doc | This document |
+| 2D availability | replaced by the 3D pivot | **recovered as a second mode** on the same port and QR | Reversal of the pivot |
 
 The honest summary: **the mechanics went roughly as intended and the production
 values did not.** The single largest gap between expectation and artifact is not a
@@ -693,11 +704,36 @@ spectator board and three WebSocket controllers — the same protocol a phone us
 Result: **18/18 pass**, final line `ALL 3D PHYSICS & NETWORKING TESTS PASSED`.
 Reproduce with `node smoke-test.mjs`. Runtime ≈ 6 s. [M]
 
-Note what is *not* asserted: scoring a goal end-to-end, tackle attribution, the
-ceiling of players, or physics stability over a long session. Those were checked
-with throwaway diagnostics (§6.2), not with a permanent test. **[A] That is a
-gap** — the two most behaviour-critical systems (scoring and tackles) are the
-ones with no regression test.
+Note what is *not* asserted here: scoring a goal end-to-end, tackle attribution,
+the ceiling of players, or physics stability over a long session. For a while
+that was a real gap — the two most behaviour-critical systems had no permanent
+test. They do now:
+
+`scoring-test.mjs` (port 3466) drives three controllers and a board through the
+behaviours that actually broke, and is the regression test for the §7 defects:
+
+| # | Assertion | The defect it guards |
+|---|---|---|
+| 1 | Alice picks the Core up | carry acquisition |
+| 2 | a charging attacker takes it and gets **+25** | tackle scoring |
+| 3 | the victim drops the Core | strip on tackle |
+| 4 | Alice can re-acquire it | no stuck state after a tackle |
+| 5 | a bystander standing still earns **at most one** +25 per 4 s | the 350-point bystander bug (defect 3) |
+| 6 | the goal rotated to MEADOW POST | operator rotation |
+| 7 | Alice carries it for the goal run | carry survives a rotation |
+| 8 | `goalScored` fires with Alice's id | attribution of the score |
+| 9 | the scorer gets **+100** | score value |
+| 10 | the goal rotates away afterwards | single-use beacons |
+| 11 | the next goal is SKY HOOP | rotation order |
+| 12 | Alice has the Core for the trampoline run | setup for the last check |
+
+Result: **12/12 pass** [M]. One known issue is printed rather than asserted: a
+carrier on the SUPER BOUNCE pad never lifts (a bouncing *carrier* does not reach
+the SKY HOOP; an unencumbered player reaches ~16 m). That is a design gap, not a
+regression, so the test reports it as `KNOWN-ISSUE` and stays green.
+
+Still not covered anywhere: the player-count ceiling, multi-hour stability, and
+the 2D medal rules.
 
 ### 6.2 Diagnostic harnesses
 
@@ -845,12 +881,19 @@ beacons at five different heights requiring five different tricks.
 | **Audio** | None. A room playing this is silent except for people. |
 | **Replay value** | Five beacons, one Core, one verb set. There is no progression, no unlock, no variation between sessions. |
 
-### 8.4 What was abandoned
+### 8.4 What was abandoned — and what came back
 
-The chapter campaign, plates and gates, ropes, wind, water, the shared tool
-budget, the weight-transfer model, route medals, the Family Scrapbook, two
-independent hand constraints, and measurement of round-trip latency. Each was
-dropped for a reason recorded in §2; none is coming back without a new decision.
+Abandoned in the 3D pivot: the chapter campaign, plates and gates, ropes, wind,
+water, the shared tool budget, the weight-transfer model, route medals, the
+Family Scrapbook, two independent hand constraints, and measurement of
+round-trip latency. Each was dropped for a reason recorded in §2.
+
+That list is now only half true. When the family asked for the 2D build back,
+most of it returned *there* rather than in the 3D arena: chapters, plates and
+gates, ropes, wind, water, the tool budget, per-hand grab constraints and route
+medals all work in `classic/` again (§12). Still genuinely abandoned: the
+Family Scrapbook (nothing persists between sessions), the "no leaderboard at
+all" rule, and latency measurement.
 
 ### 8.5 Known rough edges in the code
 
@@ -862,7 +905,7 @@ dropped for a reason recorded in §2; none is coming back without a new decision
 | No input rate limiting | Low | a hostile client could flood the server; irrelevant for a family LAN |
 | `levels.js`, `vendor/matter.min.js`, `wireframe.html` are **dead code** from the 2D era | Low | kept deliberately, referenced from the superseded design doc |
 | `diag.mjs`, `diag3.mjs`, `diag4.mjs`, `browser-test.cjs`, `cyl-test.cjs` are dev leftovers | Low | useful as debugging artefacts, not part of the product |
-| No regression test for scoring or tackles | **High** | the two mechanics with real bugs are the two with no assertions |
+| ~~No regression test for scoring or tackles~~ | ~~High~~ | **closed** — `scoring-test.mjs` now asserts tackle attribution, bystander farming and the +100 goal path (§6.1) |
 | No CI | Medium | tests are run by hand |
 | The `Toggle Cam` button gives no feedback beyond a toast | Low | cosmetic |
 
@@ -927,7 +970,7 @@ Ordered by what would change the experience most per unit of work.
 
 1. Reward disruption (§8.6). Cheapest change with the largest effect on the
    stated goal.
-2. **Regression tests for scoring and tackles**, driven by the `diag4` harness
+2. ~~**Regression tests for scoring and tackles**, driven by the `diag4` harness~~ — done, see `scoring-test.mjs` (§6.1). What it does not cover: the player ceiling, and the bounce-pad carrier issue it reports as `KNOWN-ISSUE`
    rather than hand-written assertions.
 3. **Discoverability:** a one-line prompt on the first carry ("LIFT is not the
    only option — try THROW"), shown once per device.
@@ -959,21 +1002,194 @@ Ordered by what would change the experience most per unit of work.
 
 | Metric | Value |
 |---|---|
-| Lines of code in the folder | **3,692** (including legacy 2D and throwaway diagnostics) |
-| Lines in the shipped 3D build | **2,453** (server 848, client 891, level data 111, HTML 181, CSS 422) |
+| Lines of code in the folder | **7,380** across both builds plus docs and diagnostics |
+| Lines in the shipped 3D build | **2,453** (server 848, client 891, level data 111, HTML 181, CSS 422) — server grew to 871 with the `/ws2d` route |
+| Lines in the shipped 2D build | **2,171** (sim 678, room 252, client 848, HTML 104, CSS 285) |
+| Lines in the shared level data | **296** (2D geometry 185, 3D geometry 111) |
 | Lines of documentation | **1,488** (this retrospective, README, superseded design doc, wireframe) |
 | Server dependencies | **0** |
 | Vendored libraries | 2 used (Three.js 603 KB, Cannon.js 132 KB) + QR generator 57 KB |
-| Automated assertions | **18**, all passing |
-| Screenshots | **10** |
+| Automated assertions | **64** (18 on the 3D contract, 12 on scoring/tackles, 34 on the 2D contract), all passing |
+| Screenshots | **17** (10 3D in `screenshots/`, 7 2D in `screenshots/2d/`) |
 | Beacons | 5 |
 | Static colliders | 32 |
 | Dynamic bodies | 7 (6 crates + 1 see-saw) + 1 Core + up to 16 players |
 | Simulation rate | 60 Hz |
 | Snapshot rate | 20 Hz |
 | Measured free speed | 8.5 m/s |
-| Tested concurrent clients | 7 |
-| Player cap (unenforced) | 16 |
+| Tested concurrent clients | 7 (3D), 3 (2D: one board, two phones) |
+| Player cap | 16 declared but unenforced (3D); 12 enforced (2D) |
+| 2D jump height | 290 px |
+| 2D free run speed | 337 px/s |
+
+---
+
+## 12. The CLASSIC 2D rebuild
+
+### 12.1 What this section is
+
+The 3D arena is not the whole game any more. A second build, `classic/`, runs the
+original side-view campaign on the same server and the same QR code. This
+section records how it came back, what it is, and what it is not — because
+"we restored the 2D version" would be a misleading way to describe it.
+
+### 12.2 Restoration was impossible; reconstruction was not
+
+When the 3D pivot landed, it replaced the 2D entry point in place
+(`index.html`, `app.js`, `style.css`, `server.js`) inside a folder that was not yet
+under version control. There is no commit, stash, editor backup or copy of the
+2D runtime anywhere on the machine [M] — a full search for Matter.js API usage
+outside `vendor/` returns nothing.
+
+What did survive, because the 3D rewrite did not touch it [M]:
+
+| Artefact | Why it survived | What it gave back |
+|---|---|---|
+| `levels.js` (185 lines) | the 3D rewrite used a new `levels3d.js` and left this alone | exact geometry for all five spaces: statics, plates, gates, ropes, water, wind, see-saws, checkpoints, spawns, tool budgets, hints |
+| `vendor/matter.min.js` | vendored, then unused | the same physics engine, same version (0.20.0) |
+| `docs/design-v1-2d.md` | was the old README, kept as history | the mechanics specification: weight transfer, medals, grab model, the `kishōtenketsu` beats |
+| `wireframe.html` | static design artefact | layout intent, the CHAOS GREMLINS framing, research notes |
+
+So the geometry is **original data**, the physics engine is the **original
+library**, and the rules are **the original specification** — but every line of
+runtime code is new. `12.4–12.6 describe it as built, not as remembered.
+
+### 12.3 What was rebuilt
+
+| File | Lines | Role |
+|---|---|---|
+| `classic/sim2d.js` | 678 | authoritative Matter.js world: level build, players, hands, Core, plates/gates, ropes, see-saws, wind, water, checkpoints, tools, medals |
+| `classic/net2d.js` | 252 | the `/ws2d` room: join, input, level switching, prop drops, 60 Hz step, 20 Hz snapshots, AFK handling |
+| `classic/app2d.js` | 848 | Canvas renderer, camera, HUD, board controls, phone deck, confetti, win banner |
+| `classic/index.html` | 104 | board view and controller view in one document |
+| `classic/style2d.css` | 285 | warm-cardboard workshop theme |
+| `classic-smoke.mjs` | 233 | 34 assertions against the real server plus a headless win path |
+| `capture-classic.py` | 87 | Playwright capture for the seven 2D screenshots |
+
+Routing is one line in the 3D server: an upgrade request to `/ws2d` is handed to
+`classic/net2d.js` and everything else keeps doing exactly what it did [M]. That
+keeps **one process, one port, one QR code** — the family does not have to pick a
+server, only a mode.
+
+### 12.4 The rebuilt architecture
+
+| Layer | Choice | Why |
+|---|---|---|
+| Authority | server-side Matter.js, fixed 16.67 ms steps | identical model to the 3D build: thin clients, no cheating, no divergence |
+| Pacing | wall-clock accumulator, not `setInterval(16.67)` | the naive interval ran the room at roughly half speed under load (D18) |
+| Transport | hand-rolled RFC 6455 frames on `/ws2d` | no dependencies, same code shape as the 3D socket |
+| Client | Canvas 2D, 60 fps rAF, snapshot interpolation at 0.35 | cheap, and the flat art style is the point |
+| Camera (board) | follows the Core, zoom fits 1900 × 1150 world px | the Core is the thing everyone is arguing about |
+| Camera (phone) | follows your wobbler, zoom fits 560 px of world width, wobbler held ~75 % down the screen | you can see your own jump arc and the ground you are about to miss |
+
+Protocol (client → server): `join`, `input {x, jump, grabL, grabR}`, `call`,
+`visibility`; board only: `level`, `tool {kind}`, `nextLevel`, `reset`.
+Server → client: `joined {id, color, level, tabs}`, `state` at 20 Hz,
+`level`, `toast`, `fx`.
+
+### 12.5 Fidelity — designed in v1 vs. shipped in the rebuild
+
+| Mechanic | v1 intent | Rebuild | Verdict |
+|---|---|---|---|
+| Weight transfer | 1 wobbler ≈ 16 px/s, 4 ≈ 80 px/s, never solos | 1 pusher ≈ 100 px/s on flat ground, 4 ≈ 190 px/s | **reversed on purpose**: solo is possible but slow, so nobody is locked out |
+| Two grab hands | two independent spring constraints | two independent `Matter.Constraint` springs, 44 px, stiffness 0.09 | shipped |
+| Carry | both hands on the same body | same rule, flagged `carrying`, slows you to 4.4 px/tick | shipped |
+| Plates + gates | latch vs. momentary | both; gate slides up 340 px when pressed, returns when released | shipped |
+| Ropes | 8–10 node chains you can hang from | node chain, group collider, grabbable | shipped |
+| See-saws | pivot + plank | plank on a zero-length pin constraint | shipped |
+| Water | poof and respawn | sensor region → respawn at last checkpoint, Core floats back to start | shipped |
+| Wind | force region, arrows on screen | same, arrows animate | shipped |
+| Tool dispenser | shared budget per chapter | shared budget, board-only buttons, budget visible | shipped |
+| Route medals | 5 medals from mechanics used | 5 labels from flags: CATAPULT CREW, HUMAN CHAIN, TWO-HAND CARRY, BRIDGE BUILDERS, CHAOS GREMLINS | **heuristic**, not a real route classifier |
+| Family Scrapbook | persistent keepsakes | none | **not built** |
+| Chapter progression | automatic | board presses "Next" | manual by choice |
+| Leaderboard | none | points exist (+100/+50 on the beacon) | **design rule broken**, see `12.9 |
+
+### 12.6 Measured behaviour [M]
+
+Numbers below come from the headless harness and the running server, not from
+intent.
+
+| Property | Value |
+|---|---|
+| Free run speed | 337 px/s (6.6 px per tick) |
+| Carrying speed | 225 px/s |
+| Jump height | 290 px — the ground sits at y=760 and the highest ledge at y=560, so a jump clears the whole vertical vocabulary |
+| Time to apex | ~0.78 s (about 47 ticks) |
+| Core push, one wobbler | ~100 px/s on flat ground |
+| Plate → gate | opens in ~0.4 s, fully clear in ~0.8 s |
+| Chapter 1 solved by two wobblers in simulation | win at tick 396 (~6.6 s of simulation) |
+| Snapshot rate | 20 Hz measured (19–20 on the wire) |
+| Physics tick | 60 Hz, wall-clock corrected |
+| Player cap | 12 (enforced on join) |
+| Tested concurrent clients | 2 phones + 1 board, driven by keyboard |
+
+### 12.7 Defects found while rebuilding (D13–D19)
+
+| # | Defect | Cause | Fix |
+|---|---|---|---|
+| D13 | The phone rendered only sky and hills | `renderCore` had no `tx`/`ty` before the first snapshot, so `lerp(0, undefined)` made the camera `NaN`, and a `createRadialGradient` with `NaN` threw once per frame and killed the rAF loop | initialise all interpolated state, make `lerp` and the camera NaN-proof, keep the frame loop alive with try/catch |
+| D14 | Every board received each snapshot twice | board sockets were registered both as boards and as clients | boards are no longer stored in the client map |
+| D15 | Board commands (level, tool, reset) were ignored | the handler returned early unless the socket owned a player | board verbs are handled before the player guard |
+| D16 | Dropping a prop in FREE PLAY did nothing | the sandbox has no beacon, `info.goal` is `null`, and `Math.round(info.goal.x)` threw inside `setLevel` before the tab rebuild | null-safe goal line: "Free play — no beacon, no rules." |
+| D17 | Tab highlight lagged a chapter behind | side effect of D16 — the exception aborted `setLevel` before `buildTabs()` | fixed by D16; tabs are now driven by server-provided level names |
+| D18 | The room ran in slow motion (≈28 ticks/s) | `setInterval(16.67)` drifts under load and the tick was hard-coded to one step per callback | wall-clock accumulator with up to 8 catch-up steps |
+| D19 | The client asked the server to switch level back | a `state` message arriving with a stale `levelId` triggered a "correct it" round trip that fought the board | removed — the server broadcasts `level` on every change |
+
+D13 and D16 are the interesting ones: both were invisible in a headless test and
+only showed up in a screenshot review. That is a small argument for keeping the
+screenshot pipeline even when the assertions are green.
+
+### 12.8 Verification
+
+`node classic-smoke.mjs` (port 3457) boots the real server and checks, in order:
+static assets, that `/` still serves the 3D shell, board join with level data,
+snapshot cadence, two controllers joining with distinct colours, jump height,
+horizontal movement, grab input, chapter switching, sandbox tool budget, prop
+drops, reset, a fresh chapter starting unwon, the server surviving every
+disconnect, and then — headless, against the module directly — that a wobbler
+standing on the plate opens the gate, that pushing the Core into the beacon
+wins, that a medal and points are awarded, and that a fresh wobbler still jumps
+290 px. **34 of 34 pass** [M].
+
+Screenshots in `screenshots/2d/` were captured from a running build with
+Playwright and Chromium (ANGLE/SwiftShader), **zero console errors** [M]: the
+board for chapters 1–4 and FREE PLAY, a phone mid-jump, and a phone HUD.
+
+### 12.9 Why the side view reads as friendlier
+
+The family's phrasing was "they can see jumping to the sky" [A]. Mechanically
+that is three things the 3D build cannot do:
+
+1. **A jump is legible as a whole shape.** In a side view the entire arc is on
+   screen at once, so committing to a jump is a decision you can see the end of.
+2. **Failure is comic, not disorienting.** Falling is straight down, in view,
+   and costs a respawn and nothing else.
+3. **The frame is stable.** The camera moves on one axis, so a wobbler that
+   tumbles still reads as *that wobbler* — the 3D follow camera makes a ragdoll
+   mid-tumble hard to identify.
+
+The cost is stated plainly: the 2D build has less free play, fewer emergent
+situations, and no equivalent of the tackle. It is a better *first* game and a
+smaller sandbox.
+
+One rule broke on the way: points exist in the 2D build (+100 in the beacon
+radius of the Core, +50 nearby). v1 explicitly refused a leaderboard. Points are
+only shown as a personal score on the phone and there is no ranking, but calling
+that "no leaderboard" would be a stretch.
+
+### 12.10 What is still missing from the classic build
+
+- **No Family Scrapbook / persistence.** Nothing survives a page reload.
+- **Medals are heuristics.** `CATAPULT CREW` fires when the Core is still moving
+  fast inside the beacon radius; that is a proxy, not a proof of a catapult.
+- **Chapter order is manual.** There is no gating and therefore no sense of a
+  campaign finishing.
+- **The 12-player cap has only been exercised with three clients.**
+- **No client-side prediction**, so a bad LAN shows up as input lag, exactly as
+  in the 3D build (`5.10).
+- **No regression test for the medal rules.** The win path is tested; which medal
+  you get is not.
 
 ---
 
@@ -987,6 +1203,7 @@ Ordered by what would change the experience most per unit of work.
 | `index.html` | 181 | board view + controller view + firewall hint | **shipped** |
 | `style.css` | 422 | board and portrait phone presentation | **shipped** |
 | `smoke-test.mjs` | 136 | 18 assertions against the real server | **test** |
+| `scoring-test.mjs` | 130 | 12 assertions: tackle attribution, bystander farming, +100 goal path | **test** |
 | `puppet-driver.mjs` | 55 | six scripted wobblers | **test** |
 | `capture-screens.py` | 109 | Playwright screenshot pipeline | **test** |
 | `verify-browser.py` | 44 | single-page error check | **test** |
@@ -996,12 +1213,20 @@ Ordered by what would change the experience most per unit of work.
 | `browser-test.cjs` | — | early headless check | **dev** |
 | `cyl-test.cjs` | — | cylinder collision reproduction | **dev** |
 | `lan-doctor.sh` | — | read-only LAN diagnostics | **ops** |
-| `levels.js` | 185 | 2D chapter geometry | **legacy, unused** |
+| `levels.js` | 185 | 2D chapter geometry — still the single source of truth for the classic build | **shipped (2D)** |
+| `classic/sim2d.js` | 678 | Matter.js world, hands, Core, plates, ropes, wind, water, medals | **shipped (2D)** |
+| `classic/net2d.js` | 252 | the `/ws2d` room: join, input, levels, props, 60 Hz step, 20 Hz snapshots | **shipped (2D)** |
+| `classic/app2d.js` | 848 | Canvas renderer, cameras, HUD, board tabs, phone deck | **shipped (2D)** |
+| `classic/index.html` | 104 | board view + controller view | **shipped (2D)** |
+| `classic/style2d.css` | 285 | workshop theme | **shipped (2D)** |
+| `classic-smoke.mjs` | 233 | 34 assertions, including a headless win path | **test (2D)** |
+| `capture-classic.py` | 87 | Playwright capture of the 2D screenshots | **test (2D)** |
+| `screenshots/2d/` | — | 7 evidence captures | **evidence** |
 | `wireframe.html` | 418 | historical wireframes and research table | **legacy** |
 | `vendor/three.min.js` | — | Three.js r128, MIT | **vendored** |
 | `vendor/cannon.min.js` | — | Cannon.js 0.6.2, MIT | **vendored** |
 | `vendor/qrcode.js` | — | qrcode-generator 1.4.4, MIT | **vendored** |
-| `vendor/matter.min.js` | — | Matter.js 0.20.0, MIT | **legacy, unused** |
+| `vendor/matter.min.js` | — | Matter.js 0.20.0, MIT | **vendored (2D)** |
 
 ---
 
@@ -1033,12 +1258,27 @@ curl -m 3 http://<host-ip>:3000/config.js
 Timeout → firewall or AP isolation. Connection refused → wrong port or dead
 server. `bash lan-doctor.sh` answers the same question with more detail.
 
+**Two modes, one server**
+
+Both builds are served by the same process, so the QR code never changes:
+
+| Mode | Board URL | What it is |
+|---|---|---|
+| 3D arena | `http://localhost:3000/?board=1` | free-roam physics playground |
+| CLASSIC 2D | `http://localhost:3000/classic/?board=1` | side-view chapter campaign |
+
+Phones scan the QR on whichever board they landed on; the 3D board has a
+**2D CLASSIC** link in its header and vice versa.
+
 **Tests**
 
 ```sh
-node smoke-test.mjs          # 18 assertions, port 3455
+node smoke-test.mjs          # 18 assertions, 3D contract, port 3455
+node scoring-test.mjs        # 12 assertions, scoring + tackles, port 3466
+node classic-smoke.mjs       # 34 assertions, 2D contract, port 3457
 node diag4.mjs               # scoring / tackle view, port 3464
-python3 capture-screens.py   # 10 screenshots, port 3470
+python3 capture-screens.py   # 10 screenshots (3D), port 3470
+python3 capture-classic.py   # 7 screenshots (2D), port 3470
 ```
 
 **Never use port 3000 for tests** — that is the family's live server.

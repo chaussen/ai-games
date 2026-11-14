@@ -1,10 +1,13 @@
 # Design v1 (2D / Matter.js) — SUPERSEDED
 
-> **Historical document.** This is the original design and research write-up for the
-> Matter.js campaign version of Wobble Works. It was never fully built: the project
-> pivoted to a 3D Cannon.js arena (see ../RETROSPECTIVE.md §2.3). The research table,
-> the chapter plan and the reasoning are preserved verbatim below because the
-> retrospective refers back to them.
+> **Historical document — but no longer a dead end.** This is the original design
+> and research write-up for the Matter.js campaign version of Wobble Works. The
+> project pivoted to a 3D Cannon.js arena before this design was finished (see
+> ../RETROSPECTIVE.md §2.3), and the 2D runtime was lost in that pivot. It has
+> since been rebuilt from this document plus the surviving level geometry and now
+> ships as ../classic/ — see ../RETROSPECTIVE.md §12 for what was implemented,
+> what was simplified and what is still missing. The text below is preserved
+> verbatim because the retrospective refers back to it.
 >
 > Two edits were made: markdown links were rewritten to point one directory up,
 > and the scope note in section 9 ("not committed to this repo") is obsolete —

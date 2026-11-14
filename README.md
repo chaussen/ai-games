@@ -10,7 +10,7 @@ installs, no internet.
 | Path | Game | Players | Tech | Runs on |
 |---|---|---|---|---|
 | `index.html` + `game/` | **学字坊 · The Character Game** — classroom Chinese-character learning game (production, Casey Chinese School) | class of students | vanilla JS, static | GitHub Pages · [play.caseychinese.org](https://play.caseychinese.org) |
-| [games/wobble-works/](games/wobble-works/) | **Wobble Works 3D** — chaotic free-roam co-op physics arena: carry one heavy Glow Core to a beacon while everyone else gets in your way | 2–16 | Node + hand-rolled WebSocket, Cannon.js (server), Three.js (client) | `node server.js` on the LAN |
+| [games/wobble-works/](games/wobble-works/) | **Wobble Works** — two builds, one server: a chaotic free-roam **3D arena** (carry one heavy Glow Core to a beacon while everyone else gets in your way) and the **CLASSIC 2D** side-view chapter campaign it replaced, rebuilt and shipped alongside | 2–16 | Node + hand-rolled WebSocket, Cannon.js + Three.js (3D), Matter.js + Canvas 2D (2D) | `node server.js` on the LAN |
 | [games/firefly-relay/](games/firefly-relay/) | **Firefly Relay** — one-button rhythm relay; keep the spark alive from lantern to lantern | 2–12 | Node + WebSocket, Canvas 2D | `node server.js` on the LAN |
 | [games/cavern-rush/](games/cavern-rush/) | **Crystal Cavern Rush** — 90-second 3D crystal collecting race with proximity multipliers | 2–8 | Node + `ws`, Three.js | `npm install && npm start` |
 | [games/neon-dash/](games/neon-dash/) | **Neon Dash** — single-file solo runner | 1 | one HTML file, Canvas | open the file |
@@ -44,8 +44,8 @@ Every game folder carries:
 
 | Document | Why it exists |
 |---|---|
-| [games/wobble-works/RETROSPECTIVE.md](games/wobble-works/RETROSPECTIVE.md) | Full design-and-build retrospective: intent vs. shipped artifact, defect log, open risks. Written for external review. |
-| [games/wobble-works/docs/design-v1-2d.md](games/wobble-works/docs/design-v1-2d.md) | The superseded 2D campaign design and its research table, kept for the record. |
+| [games/wobble-works/RETROSPECTIVE.md](games/wobble-works/RETROSPECTIVE.md) | Full design-and-build retrospective for **both** Wobble Works builds: intent vs. shipped artifact, defect log, the 2D reconstruction, open risks. Written for external review. |
+| [games/wobble-works/docs/design-v1-2d.md](games/wobble-works/docs/design-v1-2d.md) | The original 2D campaign design and its research table — now implemented in `games/wobble-works/classic/`. |
 | [games/wobble-works/wireframe.html](games/wobble-works/wireframe.html) | Historical wireframes and level schematics. |
 | [games/firefly-relay/wireframe.html](games/firefly-relay/wireframe.html) | Firefly Relay wireframes, research table, roadmap. |
 
