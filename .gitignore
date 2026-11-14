@@ -1,0 +1,15 @@
+# Runtime and build artefacts
+node_modules/
+__pycache__/
+*.pyc
+.DS_Store
+*.log
+
+# Locally persisted game state (created at runtime by the LAN prototypes)
+.wobble-save.json
+
+# Playwright / Chromium caches
+.playwright/
+
+# Per-device runtime save created by firefly-relay
+.family-sky.json

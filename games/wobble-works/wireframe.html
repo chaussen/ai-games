@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wobble Works · Design Spec &amp; Wireframes</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='34' r='20' fill='%23f2b544'/%3E%3C/svg%3E">
+<style>
+:root{--paper:#f7f1e6;--card:#fffaf0;--ink:#1e2a44;--muted:#6d778c;--line:rgba(30,42,68,.16);
+--coral:#ef6f5b;--teal:#3aa6a0;--amber:#f2b544;--purple:#8b6fd4}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 'Trebuchet MS','Segoe UI',system-ui,sans-serif}
+a{color:var(--teal);text-decoration:none;font-weight:700}a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:auto;padding:0 22px 90px}
+.topbar{position:sticky;top:0;z-index:9;background:rgba(247,241,230,.95);backdrop-filter:blur(8px);
+ border-bottom:2px solid var(--line);padding:10px 22px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;font-size:.78rem}
+.topbar b{letter-spacing:.08em}.topbar nav{display:flex;gap:13px;flex-wrap:wrap;margin-left:auto}
+.topbar nav a{color:var(--muted);font-weight:700}
+.hero{padding:56px 0 28px;border-bottom:3px solid var(--ink)}
+.eyebrow{font-size:.72rem;letter-spacing:.22em;font-weight:900;color:var(--coral)}
+h1{font-size:clamp(2.4rem,6vw,4.4rem);line-height:1;margin:10px 0;letter-spacing:.02em}
+h1 span{color:var(--coral);font-size:.55em;letter-spacing:.1em}
+.lede{font-size:1.08rem;max-width:800px;color:#3c4760}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:26px}
+.stat{background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:13px 15px;box-shadow:4px 4px 0 var(--line)}
+.stat b{display:block;font-size:1.5rem;line-height:1}.stat small{color:var(--muted);font-size:.7rem;font-weight:800;letter-spacing:.08em}
+section{padding-top:52px}
+h2{font-size:1.7rem;margin:0 0 6px;letter-spacing:.01em;display:flex;align-items:center;gap:12px}
+h2 i{font-style:normal;background:var(--ink);color:#fff;border-radius:9px;padding:3px 11px;font-size:.72rem;letter-spacing:.1em}
+h3{font-size:1.02rem;margin:22px 0 8px}
+.sub{color:var(--muted);margin:0 0 20px;max-width:840px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 8px 24px rgba(30,42,68,.07)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+table{border-collapse:collapse;width:100%;font-size:.82rem;background:var(--card);border-radius:12px;overflow:hidden}
+th,td{border:1px solid var(--line);padding:10px 11px;text-align:left;vertical-align:top}
+th{background:var(--ink);color:#fff;font-size:.7rem;letter-spacing:.07em}
+tr:nth-child(even) td{background:rgba(30,42,68,.025)}
+.tag{display:inline-block;border-radius:999px;padding:2px 9px;font-size:.66rem;font-weight:900;letter-spacing:.06em}
+.t1{background:#ffe0d8;color:#a53c29}.t2{background:#fff0c9;color:#8a5a00}.t3{background:#d9f2ec;color:#146b63}
+.t4{background:#e5ddfa;color:#543a9e}.t5{background:#e4eaf4;color:#2c446e}
+.note{border-left:5px solid var(--amber);background:#fff8e6;padding:12px 16px;border-radius:0 12px 12px 0;margin:16px 0;font-size:.86rem}
+.warn{border-left-color:var(--coral);background:#fff0ec}
+.good{border-left-color:var(--teal);background:#eaf8f5}
+.beat{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+.beat div{background:var(--card);border:2px dashed var(--line);border-radius:12px;padding:12px;text-align:center}
+.beat b{display:block;color:var(--purple);font-size:.7rem;letter-spacing:.12em}
+.beat span{font-size:.8rem}
+/* wireframe mockups */
+.wf{background:#fff;border:2px solid var(--ink);border-radius:12px;padding:9px;box-shadow:4px 4px 0 var(--line)}
+.wf-t{font-size:.62rem;font-weight:900;letter-spacing:.1em;color:var(--muted);margin-bottom:7px}
+.wf-bar{height:19px;background:var(--ink);border-radius:5px;margin-bottom:6px;display:flex;align-items:center;gap:5px;padding:0 6px}
+.wf-bar i{display:block;height:7px;background:rgba(255,255,255,.65);border-radius:3px;width:38px}
+.wf-bar i.s{width:20px}
+.wf-body{display:flex;gap:6px;height:150px}
+.wf-stage{flex:1;border:2px dashed var(--line);border-radius:8px;background:repeating-linear-gradient(0deg,#fbf6ea,#fbf6ea 22px,rgba(30,42,68,.05) 23px);position:relative;overflow:hidden}
+.wf-side{width:76px;display:flex;flex-direction:column;gap:5px}
+.wf-box{border:1.5px solid var(--line);border-radius:6px;background:var(--card);height:24px}
+.wf-qr{width:54px;height:54px;margin:6px auto;border:2px solid var(--ink);
+ background:repeating-conic-gradient(#1e2a44 0 25%,#fff 0 50%) 0 0/8px 8px;border-radius:4px}
+.wf-chip{display:inline-block;background:var(--ink);color:#fff;border-radius:99px;padding:2px 7px;font-size:.55rem;font-weight:800;margin:2px}
+.wf-dot{position:absolute;border-radius:50%;border:2px solid var(--ink);width:16px;height:16px}
+.wf-core{position:absolute;border-radius:50%;background:var(--amber);border:2px solid var(--ink);width:24px;height:24px;box-shadow:0 0 0 5px rgba(242,181,68,.35)}
+.wf-goal{position:absolute;border:2px dashed var(--coral);border-radius:50%;width:38px;height:38px}
+.wf-ground{position:absolute;left:0;right:0;bottom:0;height:22px;background:#d9a566;border-top:3px solid var(--ink)}
+.wf-plate{position:absolute;bottom:22px;width:34px;height:7px;background:var(--purple);border-radius:3px}
+.wf-gate{position:absolute;bottom:22px;width:7px;height:52px;background:#4a5b7a;border-radius:2px}
+.wf-pads{display:flex;gap:5px;margin-top:6px;justify-content:center}
+.wf-pad{border:2px solid var(--ink);border-radius:9px;background:var(--card);height:30px;flex:1;font-size:.55rem;font-weight:900;display:grid;place-items:center}
+.wf-pad.jump{background:var(--coral);color:#fff}.wf-pad.grab{background:#fff4d6}
+.wf-phone{width:126px;margin:auto;border:3px solid var(--ink);border-radius:16px;padding:6px;background:#fff}
+.wf-phone .wf-stage{height:118px;border-radius:8px}
+.wf-hud{font-size:.55rem;font-weight:800;color:var(--muted);padding:3px 0}
+/* schematics */
+.maps{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.map{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:12px}
+.map h4{margin:0 0 2px;font-size:.88rem}.map p{margin:0 0 8px;color:var(--muted);font-size:.7rem}
+.map svg{width:100%;height:auto;background:#fbf6ea;border:1px solid var(--line);border-radius:8px}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.68rem;font-weight:800;margin-top:8px;color:var(--muted)}
+.legend i{display:inline-block;width:16px;height:3px;vertical-align:middle;margin-right:4px}
+ul.tight{margin:8px 0;padding-left:20px}ul.tight li{margin:5px 0;font-size:.86rem}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.flow div{background:var(--card);border:2px solid var(--ink);border-radius:12px;padding:10px;text-align:center;font-size:.76rem;font-weight:800}
+.flow div b{display:block;color:var(--coral);font-size:1.1rem}
+.arch{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap;margin:16px 0}
+.arch>div{flex:1;min-width:150px;background:var(--card);border:2px solid var(--ink);border-radius:12px;padding:12px;text-align:center}
+.arch b{display:block;font-size:.84rem}.arch small{color:var(--muted);font-size:.68rem}
+.arrow{display:grid;place-items:center;font-size:1.5rem;color:var(--teal);font-weight:900}
+.src{columns:2;column-gap:30px;font-size:.8rem} .src li{margin-bottom:7px;break-inside:avoid}
+footer{margin-top:60px;border-top:3px solid var(--ink);padding-top:18px;color:var(--muted);font-size:.78rem}
+@media(max-width:860px){.grid2,.grid3,.grid4,.maps{grid-template-columns:1fr}.beat,.flow{grid-template-columns:repeat(2,1fr)}.src{columns:1}}
+</style>
+</head>
+<body>
+<div class="topbar"><b>✋ WOBBLE WORKS · DESIGN SPEC</b>
+<nav><a href="#brief">Brief</a><a href="#ladder">Ladder</a><a href="#maps">Level maps</a><a href="#screens">Screens</a><a href="#research">Research</a><a href="#arch">Architecture</a><a href="#status">Status</a><a href="#sources">Sources</a></nav></div>
+
+<div class="wrap">
+<header class="hero">
+  <div class="eyebrow">FAMILY CO-OP · HOME WLAN / LAN · PC + PHONES · PHYSICS SANDBOX</div>
+  <h1>WOBBLE WORKS <span>搭把手</span></h1>
+  <p class="lede">A team of small, wobbly characters with <b>two independently controlled hands</b> share one job: deliver a single, absurdly heavy <b>Glow Core</b> to a beacon. Nobody owns a piece of the puzzle. You push, lift, hang, swing, stack, link hands and occasionally fling each other — and the level never tells you which of those was the "right" answer.</p>
+  <p class="sub">Designed as the higher-challenge sibling of the one-button rhythm relay: same room, same zero-install LAN host, but the difficulty now lives in <b>the world and the physics</b>, not in a timing window.</p>
+  <div class="stats">
+    <div class="stat"><b>2–8</b><small>PLAYERS, ONE ROOM</small></div>
+    <div class="stat"><b>4</b><small>VERBS TO LEARN</small></div>
+    <div class="stat"><b>5</b><small>SPACES (1→OPEN)</small></div>
+    <div class="stat"><b>0</b><small>INSTALLS / ACCOUNTS</small></div>
+    <div class="stat"><b>∞</b><small>VALID SOLUTIONS</small></div>
+  </div>
+</header>
+
+<section id="brief"><h2><i>01</i> The brief &amp; the answer</h2>
+<p class="sub">"A team of players just act like normal game characters together to complete tasks. Depending on complexity, it can range from simple scripted puzzles, to an open world map to achieve something in creative ways." Reference: <i>Human: Fall Flat</i>.</p>
+<div class="grid2">
+  <div class="card"><h3>What we took from the reference</h3><ul class="tight">
+    <li><b>Embodied avatars</b>, not abstract buttons. A character has weight, momentum, two hands, and can be used as a tool.</li>
+    <li><b>Physics is the puzzle.</b> HFF began as a controls prototype; playtesting with the creator's son showed he ignored the puzzles and just played with the physics engine, so the game was rebuilt around that (<a href="https://en.wikipedia.org/wiki/Human:_Fall_Flat">Wikipedia</a>).</li>
+    <li><b>Countless routes.</b> "Your only goal is to get to the exit at the other end of the level. So it's all about finding different routes to it" (<a href="https://gamingbolt.com/human-fall-flat-interview-what-dreams-may-come">GamingBolt interview</a>).</li>
+    <li><b>Shared experience.</b> "Co-op in Human: Fall Flat is for better and for worse an entirely shared experience" (same interview); some puzzles need a second player (<a href="https://news.xbox.com/en-us/2016/03/17/gdc-2016-human-fall-flat-xbox-one/">Xbox Wire, GDC 2016</a>).</li>
+    <li><b>Failure is the joke.</b> Slapstick converts repeated, unfair failure into fun (<a href="https://www.ign.com/articles/2016/07/28/human-fall-flat-review">IGN review</a>).</li>
+  </ul></div>
+  <div class="card"><h3>What we changed for a family on a sofa</h3><ul class="tight">
+    <li><b>One shared object.</b> The Core is too heavy for one wobbler. Interdependence is enforced by physics, not by a rule or a score penalty — measured at ~16 px/s solo vs ~56 px/s with three players in the prototype.</li>
+    <li><b>Phone-sized controls.</b> Four verbs only: left, right, jump, and two hold-to-grab hands. HFF's independent arm control (<a href="https://www.fanatical.com/en/blog/human-fall-flat-stumbling-upon-a-physics-based-gem">Fanatical interview</a>) survives as two buttons.</li>
+    <li><b>Asymmetric screens.</b> One TV shows the whole workshop; each phone gets a personal follow camera plus quick-call pings. Everyone can see the shared goal; nobody has to squint at a TV from the couch.</li>
+    <li><b>No dead ends.</b> Poof-respawn at a soft checkpoint, no lives, no score, no elimination. The Core is indestructible and never loses progress.</li>
+    <li><b>Collectible routes, not a leaderboard.</b> Each chapter ends with a playful Route Medal and a stamp in a persistent Family Scrapbook.</li>
+  </ul></div>
+</div>
+<div class="note"><b>Design hypothesis, not a proven finding:</b> cheap failure keeps a mixed-age group playing. The research supports that slapstick makes repeated failure enjoyable and that respawn cost measurably shapes experience (<a href="https://doi.org/10.1109/cog52621.2021.9618894">Die-r Consequences, IEEE CoG 2021</a>), but we found no source proving "no-lives keeps groups playing". We treat it as a deliberate design bet and say so.</div>
+</section>
+
+<section id="ladder"><h2><i>02</i> The complexity ladder</h2>
+<p class="sub">Complexity rises by removing constraints, not by adding buttons. This is the low-floor / high-ceiling / wide-walls idea: four verbs stay constant while the number of valid routes grows (<a href="https://mres.medium.com/designing-for-wide-walls-323bdb4e7277">Resnick, Designing for Wide Walls</a>).</p>
+<table>
+<tr><th>Stage</th><th>Space</th><th>What is fixed</th><th>What is free</th><th>Teaches</th><th>Valid routes</th><th>Feel</th></tr>
+<tr><td><span class="tag t1">SCRIPTED</span></td><td><b>CH.1 THE DOOR</b><br>第一课 · 门</td><td>One flat room, a plate, a gate, a beacon</td><td>How you move the Core; whether you use the dispenser</td><td>Weight, pushing, "we have to do this together"</td><td>1 intended, several accidental</td><td>2 min tutorial</td></tr>
+<tr><td><span class="tag t2">SEMI-SCRIPTED</span></td><td><b>CH.2 THE SEE-SAW</b><br>第二课 · 跷跷板</td><td>A high deck, a non-latching plate, one see-saw</td><td>Carry with two, lever with a barrel, ramp with planks, climb the rope</td><td>Two-hand carry, counterweights, holding a switch for someone else</td><td>3–4</td><td>"Oh, WE have to split up"</td></tr>
+<tr><td><span class="tag t3">SEMI-OPEN</span></td><td><b>CH.3 THE GAP</b><br>第三课 · 深沟</td><td>A chasm, a rope, wind, a see-saw, two planks, a barrel</td><td>Bridge / swing / catapult / ride the wind / human chain — in any order</td><td>Planning, dividing labour, testing a silly idea</td><td>4+</td><td>First real argument about the plan</td></tr>
+<tr><td><span class="tag t4">OPEN</span></td><td><b>CH.4 BELL ISLAND</b><br>第四课 · 灯塔岛</td><td>One island, one summit bell, a shared tool budget</td><td>Everything: route, order, role, whether to scout or build</td><td>Creative problem-solving; the family invents the puzzle</td><td>Effectively open</td><td>"Wait, can we try…?"</td></tr>
+<tr><td><span class="tag t5">SANDBOX</span></td><td><b>FREE PLAY</b><br>随便玩 · 沙盒</td><td>Nothing. No beacon, no clock</td><td>Unlimited parts, persistent placements, pure play</td><td>Nothing — it is the toy box</td><td>—</td><td>The bit kids stay for</td></tr>
+</table>
+<div class="note good"><b>Kishōtenketsu across the campaign.</b> Nintendo's four-beat structure — introduce, develop, twist, conclude — is a way to teach a mechanic safely before complicating it (<a href="https://mcvuk.com/business-news/publishing/video-nintendos-level-design-secrets-in-four-steps/">MCV/DEVELOP</a>, <a href="https://www.eurogamer.net/how-nintendos-best-mario-levels-were-structured-using-chinese-poetry">Eurogamer</a>). CH.1 introduces weight; CH.2 develops the two-hand vocabulary; CH.3 twists it by removing the marked answer; CH.4 concludes by handing the level to the players. <i>Correction:</i> the Zelda "Change and Constant" talk is <b>GDC 2017</b>, not 2024; the 2024 talk is "Tunes of the Kingdom" (<a href="https://blog.kartones.net/post/gdc-game-dev-talks-about-zelda-botw-and-zelda-totk/">Kartones</a>).</div>
+<div class="beat"><div><b>INTRODUCE</b><span>Push the heavy thing onto the plate</span></div><div><b>DEVELOP</b><span>Two hands, one plank, a see-saw</span></div><div><b>TWIST</b><span>No answer is marked any more</span></div><div><b>CONCLUDE</b><span>Here is an island. Go.</span></div></div>
+</section>
+
+<section id="maps"><h2><i>03</i> Level schematics — the same goal, many routes</h2>
+<p class="sub">Each diagram is a side-view of the actual prototype geometry. Coloured dashed lines are <i>player-invented</i> routes, not scripted paths. Everything drawn is a real physics body in the shipped level data.</p>
+<div class="maps">
+  <div class="map"><h4>CH.1 · THE DOOR <span class="tag t1">SCRIPTED</span></h4><p>Introduce: one heavy Core, one plate, a latching gate. Remove all loose props so the lesson stays clean.</p>
+  <svg viewBox="0 0 420 170" role="img" aria-label="Chapter 1 schematic">
+    <rect x="0" y="128" width="420" height="42" fill="#d9a566"/><line x1="0" y1="128" x2="420" y2="128" stroke="#1e2a44" stroke-width="3"/>
+    <rect x="0" y="0" width="8" height="170" fill="#3a4761"/><rect x="412" y="0" width="8" height="170" fill="#3a4761"/>
+    <circle cx="88" cy="110" r="17" fill="#f2b544" stroke="#1e2a44" stroke-width="3"/>
+    <rect x="176" y="121" width="44" height="7" rx="3" fill="#8b6fd4"/><rect x="250" y="66" width="8" height="62" fill="#4a5b7a"/>
+    <circle cx="360" cy="106" r="22" fill="none" stroke="#ef6f5b" stroke-width="2.5" stroke-dasharray="6 5"/>
+    <text x="360" y="72" font-size="10" text-anchor="middle" fill="#1e2a44" font-weight="bold">BEACON</text>
+    <path d="M110 110 L168 110 L214 110 L268 110 L336 106" stroke="#ef6f5b" stroke-width="3" fill="none" stroke-dasharray="7 5" marker-end="url(#ar)"/>
+    <text x="60" y="152" font-size="9" fill="#6d778c">CORE</text><text x="180" y="145" font-size="9" fill="#6d778c">PLATE</text><text x="246" y="58" font-size="9" fill="#6d778c">GATE</text>
+  </svg></div>
+
+  <div class="map"><h4>CH.2 · THE SEE-SAW <span class="tag t2">SEMI-SCRIPTED</span></h4><p>Develop: the beacon is on a high deck. The plate is <b>not</b> latched, so someone or something must hold it down while others lift.</p>
+  <svg viewBox="0 0 420 170" role="img" aria-label="Chapter 2 schematic">
+    <rect x="0" y="128" width="420" height="42" fill="#d9a566"/><line x1="0" y1="128" x2="420" y2="128" stroke="#1e2a44" stroke-width="3"/>
+    <rect x="270" y="82" width="150" height="10" fill="#c98f52" stroke="#1e2a44" stroke-width="2"/>
+    <circle cx="70" cy="110" r="15" fill="#f2b544" stroke="#1e2a44" stroke-width="3"/>
+    <rect x="146" y="121" width="38" height="7" rx="3" fill="#8b6fd4"/><rect x="222" y="66" width="8" height="62" fill="#4a5b7a"/>
+    <path d="M262 118 L318 118" stroke="#1e2a44" stroke-width="5"/><path d="M290 118 L278 140 L302 140 Z" fill="#8a5a2c"/>
+    <path d="M196 40 L196 96" stroke="#7b5b3a" stroke-width="3" stroke-dasharray="4 4"/>
+    <circle cx="360" cy="60" r="18" fill="none" stroke="#ef6f5b" stroke-width="2.5" stroke-dasharray="6 5"/>
+    <path d="M88 108 Q140 60 196 60 Q250 60 290 100 Q330 60 352 60" stroke="#3aa6a0" stroke-width="3" fill="none" stroke-dasharray="7 5"/>
+    <path d="M88 108 L160 108 L240 108 L290 112 L340 84 L352 62" stroke="#8b6fd4" stroke-width="3" fill="none" stroke-dasharray="3 6"/>
+    <text x="352" y="34" font-size="10" text-anchor="middle" fill="#1e2a44" font-weight="bold">HIGH BEACON</text>
+    <text x="196" y="34" font-size="9" fill="#6d778c">ROPE</text><text x="286" y="156" font-size="9" fill="#6d778c">SEE-SAW</text>
+  </svg></div>
+
+  <div class="map"><h4>CH.3 · THE GAP <span class="tag t3">SEMI-OPEN</span></h4><p>Twist: a chasm with water, mid-ledge, rope, wind and see-saw. Four coloured routes are all physically valid in the prototype.</p>
+  <svg viewBox="0 0 420 170" role="img" aria-label="Chapter 3 schematic">
+    <rect x="0" y="128" width="150" height="42" fill="#d9a566"/><rect x="270" y="128" width="150" height="42" fill="#d9a566"/>
+    <rect x="150" y="128" width="120" height="42" fill="#8fd0e8"/>
+    <line x1="0" y1="128" x2="150" y2="128" stroke="#1e2a44" stroke-width="3"/><line x1="270" y1="128" x2="420" y2="128" stroke="#1e2a44" stroke-width="3"/>
+    <rect x="176" y="92" width="34" height="7" fill="#c98f52" stroke="#1e2a44"/><rect x="228" y="66" width="30" height="7" fill="#c98f52" stroke="#1e2a44"/>
+    <path d="M212 18 L212 84" stroke="#7b5b3a" stroke-width="3" stroke-dasharray="4 4"/>
+    <rect x="160" y="30" width="110" height="60" fill="none" stroke="#3aa6a0" stroke-width="2" stroke-dasharray="5 5"/>
+    <text x="215" y="26" font-size="9" fill="#3aa6a0" font-weight="bold">WIND →</text>
+    <circle cx="52" cy="110" r="15" fill="#f2b544" stroke="#1e2a44" stroke-width="3"/>
+    <circle cx="372" cy="106" r="20" fill="none" stroke="#ef6f5b" stroke-width="2.5" stroke-dasharray="6 5"/>
+    <path d="M70 124 L160 124 L214 124 L278 124 L350 108" stroke="#8b6fd4" stroke-width="3" fill="none" stroke-dasharray="7 5"/>
+    <path d="M70 106 Q150 20 212 70 Q260 116 350 104" stroke="#3aa6a0" stroke-width="3" fill="none" stroke-dasharray="7 5"/>
+    <path d="M70 100 Q120 40 190 88 L280 120 L350 106" stroke="#ef6f5b" stroke-width="3" fill="none" stroke-dasharray="3 6"/>
+    <path d="M70 116 Q170 150 240 60 Q300 20 350 100" stroke="#f2b544" stroke-width="3" fill="none" stroke-dasharray="2 7"/>
+    <text x="360" y="76" font-size="9" text-anchor="middle" fill="#1e2a44" font-weight="bold">BEACON</text>
+  </svg>
+  <div class="legend"><span><i style="background:#8b6fd4"></i>plank bridge</span><span><i style="background:#3aa6a0"></i>rope swing + wind</span><span><i style="background:#ef6f5b"></i>see-saw catapult</span><span><i style="background:#f2b544"></i>human chain / stack</span></div></div>
+
+  <div class="map"><h4>CH.4 · BELL ISLAND <span class="tag t4">OPEN</span></h4><p>Conclude: one connected island, three heights, two water crossings, a slope, two ropes, a see-saw and a shared dispenser. No ordering at all.</p>
+  <svg viewBox="0 0 420 170" role="img" aria-label="Chapter 4 schematic">
+    <rect x="0" y="132" width="130" height="38" fill="#d9a566"/><rect x="170" y="106" width="90" height="12" fill="#c98f52"/>
+    <rect x="300" y="48" width="120" height="12" fill="#c98f52"/>
+    <rect x="130" y="132" width="40" height="38" fill="#8fd0e8"/><rect x="260" y="132" width="40" height="38" fill="#8fd0e8"/>
+    <path d="M262 118 L300 60" stroke="#c98f52" stroke-width="8"/>
+    <path d="M108 24 L108 88" stroke="#7b5b3a" stroke-width="3" stroke-dasharray="4 4"/>
+    <path d="M286 12 L286 66" stroke="#7b5b3a" stroke-width="3" stroke-dasharray="4 4"/>
+    <circle cx="40" cy="114" r="14" fill="#f2b544" stroke="#1e2a44" stroke-width="3"/>
+    <circle cx="368" cy="30" r="17" fill="none" stroke="#ef6f5b" stroke-width="2.5" stroke-dasharray="6 5"/>
+    <text x="366" y="12" font-size="9" text-anchor="middle" fill="#1e2a44" font-weight="bold">SUMMIT BELL</text>
+    <path d="M54 112 L120 112 L176 100 L240 100 L300 56 L356 32" stroke="#8b6fd4" stroke-width="3" fill="none" stroke-dasharray="7 5"/>
+    <path d="M54 108 Q110 20 176 92 Q230 20 286 44 Q330 20 356 30" stroke="#3aa6a0" stroke-width="3" fill="none" stroke-dasharray="3 6"/>
+    <path d="M54 120 Q150 150 210 96 Q270 120 310 52 L356 30" stroke="#ef6f5b" stroke-width="3" fill="none" stroke-dasharray="2 7"/>
+  </svg></div>
+</div>
+</section>
+
+<section id="screens"><h2><i>04</i> Screen wireframes</h2>
+<p class="sub">Two deliberately different views of <i>the same</i> authoritative world: a wide board for shared planning, a personal follow camera for each phone. These are low-fidelity layout specs; the working prototype renders them on canvas.</p>
+<div class="grid3">
+  <div class="wf"><div class="wf-t">A · BOARD LOBBY</div><div class="wf-bar"><i></i><i class="s"></i><i class="s"></i><i class="s"></i><i class="s"></i></div>
+    <div class="wf-body"><div class="wf-stage"><div class="wf-ground"></div><div class="wf-core" style="left:22%;bottom:24px"></div><div class="wf-goal" style="right:9%;bottom:24px"></div><div class="wf-dot" style="left:8%;bottom:26px;background:#ef6f5b"></div></div>
+    <div class="wf-side"><div class="wf-qr"></div><div class="wf-box"></div><div class="wf-box"></div><div class="wf-box"></div></div></div>
+    <div style="font-size:.6rem;color:#6d778c;margin-top:6px">Level tabs · QR join · tool dispenser · START · demo wobblers</div></div>
+
+  <div class="wf"><div class="wf-t">B · BOARD MID-ROUND</div><div class="wf-bar"><i></i><span class="wf-chip">⏱ 00:24</span><span class="wf-chip">👥 4</span><span class="wf-chip" style="background:#3aa6a0">💪 PUSH 3</span></div>
+    <div class="wf-body"><div class="wf-stage"><div class="wf-ground"></div><div class="wf-plate" style="left:40%"></div><div class="wf-gate" style="left:60%"></div>
+      <div class="wf-core" style="left:47%;bottom:24px"></div><div class="wf-goal" style="right:7%;bottom:24px"></div>
+      <div class="wf-dot" style="left:30%;bottom:26px;background:#ef6f5b"></div><div class="wf-dot" style="left:35%;bottom:26px;background:#3aa6a0"></div><div class="wf-dot" style="left:40%;bottom:26px;background:#8b6fd4"></div>
+      <div style="position:absolute;left:8px;bottom:6px;height:6px;width:62%;background:#3aa6a0;border-radius:9px"></div>
+    </div><div class="wf-side"><div class="wf-box"></div><div class="wf-box"></div><div class="wf-box"></div><div class="wf-box"></div></div></div>
+    <div style="font-size:.6rem;color:#6d778c;margin-top:6px">TEAM PUSH meter makes interdependence visible on the big screen.</div></div>
+
+  <div class="wf"><div class="wf-t">C · PHONE CONTROLLER</div>
+    <div class="wf-phone"><div class="wf-hud">✋ WOBBLE WORKS · 🦊 Mia</div><div class="wf-hud">✦ CORE → 340px · BEACON 850px</div>
+      <div class="wf-stage"><div class="wf-ground"></div><div class="wf-core" style="right:12%;bottom:24px"></div><div class="wf-dot" style="left:28%;bottom:26px;background:#3aa6a0"></div></div>
+      <div class="wf-pads"><div class="wf-pad">◀</div><div class="wf-pad">▶</div><div class="wf-pad jump">JUMP</div></div>
+      <div class="wf-pads"><div class="wf-pad grab">L ✊</div><div class="wf-pad grab">R ✊</div></div>
+      <div class="wf-pads"><div class="wf-pad">📍</div><div class="wf-pad">🙋</div><div class="wf-pad">💪</div><div class="wf-pad">😂</div></div>
+    </div>
+    <div style="font-size:.6rem;color:#6d778c;margin-top:6px">Follow camera · 4 verbs · quick calls · tool buttons · WIDE toggle.</div></div>
+
+  <div class="wf"><div class="wf-t">D · PHONE, WIDE + PINGS</div>
+    <div class="wf-phone"><div class="wf-hud">WIDE VIEW · whole workshop</div>
+      <div class="wf-stage"><div class="wf-ground"></div><div class="wf-core" style="left:30%;bottom:24px"></div><div class="wf-goal" style="right:10%;bottom:24px"></div>
+        <div class="wf-dot" style="left:20%;bottom:26px;background:#ef6f5b"></div><div class="wf-dot" style="left:26%;bottom:26px;background:#3aa6a0"></div>
+        <div style="position:absolute;left:18%;top:14%;background:#1e2a44;color:#fff;border-radius:9px;padding:2px 5px;font-size:8px">💪 PUSH</div>
+        <div style="position:absolute;right:12%;top:30%;background:#1e2a44;color:#fff;border-radius:9px;padding:2px 5px;font-size:8px">🙋 MINE</div>
+      </div>
+      <div class="wf-pads"><div class="wf-pad">◀</div><div class="wf-pad">▶</div><div class="wf-pad jump">JUMP</div></div>
+    </div>
+    <div style="font-size:.6rem;color:#6d778c;margin-top:6px">Pings float above the sender's head on every screen.</div></div>
+
+  <div class="wf"><div class="wf-t">E · ROUTE MEDAL / ROUND END</div>
+    <div class="wf-body"><div class="wf-stage" style="display:grid;place-items:center;background:#fff4e2">
+      <div style="text-align:center"><div style="font-size:2rem">🌉</div><b style="font-size:.8rem">BRIDGE BUILDERS</b>
+      <div style="font-size:.6rem;color:#6d778c">Planks, patience, and a lot of wobbling.</div>
+      <div style="margin-top:7px"><span class="wf-chip">⏱ 00:48</span><span class="wf-chip">✦ 3 STAMPS</span></div>
+      <div style="margin-top:8px;display:flex;gap:4px;justify-content:center"><div class="wf-box" style="width:60px;height:20px;background:#1e2a44"></div><div class="wf-box" style="width:60px;height:20px"></div></div></div>
+    </div></div>
+    <div style="font-size:.6rem;color:#6d778c;margin-top:6px">Medal is derived from mechanics used — chain, catapult, bridge, rope, carry, or chaos. No ranking.</div></div>
+
+  <div class="wf"><div class="wf-t">F · FAMILY SCRAPBOOK</div>
+    <div class="wf-body"><div class="wf-stage" style="background:#fff8ea;padding:8px;display:flex;gap:6px;align-items:flex-start;flex-wrap:wrap">
+      <div style="width:52px;height:66px;background:#fff;border:2px solid #1e2a44;border-radius:6px;text-align:center;font-size:1.2rem">🚀<div style="font-size:6px;font-weight:800">CATAPULT</div></div>
+      <div style="width:52px;height:66px;background:#fff;border:2px solid #1e2a44;border-radius:6px;text-align:center;font-size:1.2rem;transform:rotate(3deg)">🌉<div style="font-size:6px;font-weight:800">BRIDGE</div></div>
+      <div style="width:52px;height:66px;background:#fff;border:2px solid #1e2a44;border-radius:6px;text-align:center;font-size:1.2rem">🤝<div style="font-size:6px;font-weight:800">CHAIN</div></div>
+      <div style="width:52px;height:66px;background:#fff;border:2px dashed #1e2a44;border-radius:6px;text-align:center;font-size:1.1rem;color:#6d778c">?<div style="font-size:6px">NEXT</div></div>
+    </div></div>
+    <div style="font-size:.6rem;color:#6d778c;margin-top:6px">Persistent across evenings. A collection loop, not a score loop.</div></div>
+</div>
+</section>
+
+<section id="loop"><h2><i>05</i> The core loop</h2>
+<div class="flow"><div><b>1</b>SCOUT<br><small>someone looks at the wide view</small></div><div><b>2</b>PLAN<br><small>argue cheerfully; assign jobs</small></div><div><b>3</b>BUILD<br><small>place planks / grab / link hands</small></div><div><b>4</b>TRY<br><small>push, swing, lever, throw</small></div>
+<div><b>5</b>FALL<br><small>poof, instantly back at the flag</small></div><div><b>6</b>LAUGH<br><small>the failure is the story</small></div><div><b>7</b>ADJUST<br><small>try the ridiculous idea</small></div><div><b>8</b>DELIVER<br><small>beacon lights, medal, stamp</small></div></div>
+<div class="note"><b>Why "one more round" works here:</b> a 30–90 s chapter, a visible shared object, a surprise medal each time, and a scrapbook with empty slots. There is no score to optimise, so replaying is about <i>how</i>, not <i>how fast</i>.</div>
+</section>
+
+<section id="research"><h2><i>06</i> Research → design decisions</h2>
+<p class="sub">Every non-obvious choice below is tied to a source we actually retrieved. Items marked "hypothesis" are design bets, not findings.</p>
+<table>
+<tr><th>Finding</th><th>Source</th><th>Decision in Wobble Works</th></tr>
+<tr><td>HFF started as a controls prototype; playtesting with the creator's son showed he ignored the puzzles and just played with the physics engine.</td><td><a href="https://en.wikipedia.org/wiki/Human:_Fall_Flat">Wikipedia, Human: Fall Flat</a></td><td>Physics is the content. Ship a small consistent rule-set (grab anything, everything has weight) and author terrain, not triggers.</td></tr>
+<tr><td>"Countless" solutions; the only goal is the exit; co-op is "an entirely shared experience".</td><td><a href="https://gamingbolt.com/human-fall-flat-interview-what-dreams-may-come">GamingBolt, No Brakes Games interview</a></td><td>No level marks a correct route. Route Medals celebrate <i>which</i> mechanic you used instead of a par time.</td></tr>
+<tr><td>"Seemingly simple puzzles had many solutions – some even requiring a second player"; hands-on at GDC 2016.</td><td><a href="https://news.xbox.com/en-us/2016/03/17/gdc-2016-human-fall-flat-xbox-one/">Xbox Wire</a></td><td>The Core's weight transfer is tuned so one wobbler gets ~16 px/s but three get ~56 px/s. A non-latching plate in CH.2 needs someone to hold it.</td></tr>
+<tr><td>Independent control of each arm was the original prototype goal.</td><td><a href="https://www.fanatical.com/en/blog/human-fall-flat-stumbling-upon-a-physics-based-gem">Fanatical, Sakalauskas interview</a>; <a href="https://www.thegamer.com/human-fall-flat-interview-tomas-sakalauskas/">TheGamer interview</a></td><td>Two hold-to-grab buttons (L / R), not one "interact" key. Both hands on one plank = a two-player carry.</td></tr>
+<tr><td>BOTW/TOTK "chemistry engine": a few consistent rules that objects apply everywhere; "multiplicative gameplay"; GDC 2017 "Change and Constant", GDC 2024 "Tunes of the Kingdom".</td><td><a href="https://gdcvault.com/play/1024562/Change-and-Constant-Breaking-Conventions">GDC Vault 2017</a>; <a href="https://www.theverge.com/24115898/tears-of-the-kingdom-physics-gameplay-design-gdc-2024">The Verge, GDC 2024</a>; <a href="https://saschb2b.github.io/game-mechanics/games/zelda-botw/chemistry-engine">chemistry-engine write-up</a></td><td>Grab works on crates, planks, ropes, ledges, the Core and other players — the same rule everywhere. A tool dispenser supplies parts so combinatorial solutions emerge.</td></tr>
+<tr><td>Low floor / high ceiling / wide walls: easy to start, room to grow, and <i>many</i> paths rather than one.</td><td><a href="https://mres.medium.com/designing-for-wide-walls-323bdb4e7277">Resnick, Designing for Wide Walls</a>; <a href="https://web.media.mit.edu/~mres/papers/IDC-2005.pdf">MIT Media Lab IDC 2005</a></td><td>Four verbs never change; the ladder removes constraints. Open island + sandbox are the "wide walls".</td></tr>
+<tr><td>Nintendo's four-beat kishōtenketsu: introduce, develop, twist, resolve.</td><td><a href="https://mcvuk.com/business-news/publishing/video-nintendos-level-design-secrets-in-four-steps/">MCV/DEVELOP</a>; <a href="https://www.eurogamer.net/how-nintendos-best-mario-levels-were-structured-using-chinese-poetry">Eurogamer</a></td><td>CH.1 → CH.4 is literally that progression; CH.1 is kept free of loose props so the first lesson is unambiguous.</td></tr>
+<tr><td>Cooperation ≠ interdependence. Social closeness depends on shared goals <i>and</i> reliance on each other; knowledge asymmetry drives conversation; creative modes increased verbal communication in an intergenerational study.</td><td><a href="https://dl.acm.org/doi/10.1145/3116595.3116639">Depping &amp; Mandryk, CHI PLAY 2017</a>; <a href="https://dl.acm.org/doi/10.1145/3116595.3116606">CHI PLAY 2017, game patterns</a>; <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8892273/">PMC8892273</a>; <a href="https://doi.org/10.3389/fpsyg.2022.1039431">Frontiers, knowledge asymmetry</a></td><td>One shared heavy Core, split screens (board sees all / phone sees its own camera), quick-call pings, and a creative open chapter. No leaderboard, no per-player score.</td></tr>
+<tr><td>Authoritative server + dumb clients "would also work in a LAN setting, where communications are, for all practical purposes, instantaneous"; interpolate remote entities between snapshots; avoid extrapolation for rigid bodies.</td><td><a href="https://gabrielgambetta.com/client-server-game-architecture.html">Gambetta I</a>; <a href="https://www.gabrielgambetta.com/entity-interpolation.html">Gambetta III</a>; <a href="https://gafferongames.com/post/snapshot_interpolation/">Gaffer, Snapshot Interpolation</a></td><td>PC runs the only Matter.js simulation at a fixed 60 Hz; phones send 4 booleans; 20 Hz snapshots with exponential smoothing on the client. No prediction, rollback or lag compensation.</td></tr>
+<tr><td>Slapstick animation makes repeated, unfair failure fun; respawn consequences measurably affect player experience.</td><td><a href="https://www.ign.com/articles/2016/07/28/human-fall-flat-review">IGN review</a>; <a href="https://doi.org/10.1109/cog52621.2021.9618894">Die-r Consequences, IEEE CoG 2021</a>; <a href="https://www.gamedeveloper.com/design/video-game-design-insights-from-the-gdc-2019-failure-workshop">GDC 2019 Failure Workshop</a></td><td>Poof-respawn under a second, no lives, no score loss, soft checkpoints follow the Core, and a "poofs" counter on the stamp as a joke. <b>Hypothesis:</b> that this keeps mixed-age groups playing.</td></tr>
+<tr><td>Phone-as-controller, browser + room link; but Jackbox/AirConsole rely on cloud servers and we found no evidence they work fully offline. AP/client isolation can block device-to-device traffic; a plain http LAN origin is not a secure context; browser mDNS is IP privacy, not discovery.</td><td><a href="https://pma.uwo.ca/jackbox-games/">UWO on Jackbox</a>; <a href="https://forum.playcanvas.com/t/introducing-airconsole-use-smartphones-as-controllers-for-your-html5-games/1428">AirConsole / PlayCanvas</a>; <a href="https://www.tp-link.com/us/blog/2586/what-is-ap-isolation-and-when-to-enable-it-/">TP-Link AP isolation</a>; <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Secure_Contexts">MDN Secure Contexts</a>; <a href="https://bloggeek.me/webrtcglossary/mdns/">mDNS in WebRTC</a></td><td>Self-hosted HTTP + WebSocket hub on the PC; QR encodes the machine's real LAN IP from a dynamic /config.js; clipboard has a fallback because navigator.clipboard may be unavailable; README warns about guest Wi-Fi / AP isolation. No mDNS promise.</td></tr>
+<tr><td>Emergent gameplay = complex situations from relatively simple rules; puzzles feel emergent when many multi-stage plans work.</td><td><a href="https://en.wikipedia.org/wiki/Emergent_gameplay">Wikipedia, Emergent gameplay</a>; <a href="https://emshort.blog/2008/02/13/emergent-puzzle-solutions/">Emily Short, Emergent Puzzle Solutions</a>; <a href="https://adamsmith.as/papers/fdg2013_shortcuts.pdf">Constraining Undesirable Solutions, FDG 2013</a></td><td>CH.1 constrains solutions deliberately; CH.3/CH.4 remove those constraints. The ladder itself is a spectrum from constrained to emergent.</td></tr>
+</table>
+</section>
+
+<section id="mech"><h2><i>07</i> Mechanics &amp; rules</h2>
+<div class="grid2">
+<div class="card"><h3>Four verbs, five bodies</h3><ul class="tight">
+<li><b>◀ ▶ move</b> — velocity-controlled with momentum preserved through collisions.</li>
+<li><b>JUMP</b> — a short hop; while a hand is attached, jump becomes a climb assist.</li>
+<li><b>L GRAB / R GRAB</b> — hold to attach that hand to the nearest grabbable body within ~58 px; release to let go. Works on crates, planks, barrels, rope nodes, static ledges, the Core, and <i>other wobblers</i>.</li>
+<li>Two hands on one object = carry; two players on one plank = shared carry; a line of players holding hands = a human chain.</li></ul></div>
+<div class="card"><h3>Weight, not rules</h3><ul class="tight">
+<li>The Core is a heavy rolling circle. A tuned weight-transfer model gives each wobbler leaning into it a share of drive — 1 player ~16 px/s, 3 players ~56 px/s, 4 demo bots ~80 px/s in the prototype.</li>
+<li>It applies <b>only while grounded</b>, so catapult flights, slopes, wind zones and falls keep full Matter.js physics.</li>
+<li>See-saws are real pivot constraints; ropes are real constraint chains; plates, gates, water and wind are real sensors/regions.</li></ul></div>
+<div class="card"><h3>Failure &amp; progress</h3><ul class="tight">
+<li>Fall in water or off the map → poof, respawn at the last soft checkpoint in under a second. No lives, no score, no elimination.</li>
+<li>The Core is indestructible; if it falls in water it returns to the checkpoint it last passed, never to the start.</li>
+<li>Nothing is timed out. A round ends only when the Core reaches the beacon.</li></ul></div>
+<div class="card"><h3>Rewards</h3><ul class="tight">
+<li><b>Route Medal</b> derived from mechanics actually used: HUMAN CHAIN, CATAPULT CREW, BRIDGE BUILDERS, THE ACROBATS, TWO-HAND CARRY, or CHAOS GREMLINS.</li>
+<li>A stamp joins a persistent <b>Family Scrapbook</b> (chapter, medal, time, poofs). No numeric leaderboard.</li>
+<li>Quick-call pings ("HERE / MINE / PUSH / LOL") appear above the sender on <i>all</i> screens — a low-friction reason to talk.</li></ul></div>
+</div>
+</section>
+
+<section id="arch"><h2><i>08</i> Architecture &amp; LAN notes</h2>
+<div class="arch">
+<div><b>📺 PC / TV host</b><small>node server.js<br>HTTP static + /config.js + hand-rolled RFC6455 /ws<br><b>one</b> Matter.js world, 60 Hz fixed tick</small></div>
+<div class="arrow">⇄</div>
+<div><b>📱 Phone A · 📱 Phone B · 💻 PC</b><small>thin clients: send 4 booleans at 30 Hz<br>render 20 Hz snapshots with smoothing<br>board = wide camera · phone = follow camera</small></div>
+<div class="arrow">⇄</div>
+<div><b>🗂 .wobble-save.json</b><small>stamps, best times<br>fully local, no cloud</small></div>
+</div>
+<div class="grid2">
+<div class="card"><h3>Why this netcode</h3><ul class="tight">
+<li>Server-authoritative physics: nobody can desync a shared rigid-body world.</li>
+<li>60 Hz fixed simulation, 20 Hz compact snapshots (positions + angles + flags), client-side exponential smoothing. No extrapolation — Gaffer notes it fails for non-linear rigid-body motion.</li>
+<li>LAN RTT is typically 1–3 ms, so client-side prediction / reconciliation / lag compensation are unnecessary. They are the roadmap item if this ever goes online.</li>
+<li>Deterministic lockstep was rejected: it needs bit-level determinism and stalls on a phone Wi-Fi spike.</li></ul></div>
+<div class="card"><h3>Constraints we designed around</h3><ul class="tight">
+<li><b>Offline:</b> Matter.js and the QR generator are vendored. No CDN, no npm install, no account.</li>
+<li><b>Join:</b> /config.js injects the host's real LAN IPs so the QR never encodes "localhost" when the board is opened on the PC.</li>
+<li><b>AP / client isolation:</b> guest Wi-Fi can block phone↔PC traffic entirely. The README tells you to use the main SSID.</li>
+<li><b>Secure contexts:</b> a plain http LAN origin is not trustworthy, so clipboard and other privileged APIs may be unavailable — hence the copy fallback and plain ws:// (no mixed content on an http page).</li>
+<li><b>Discovery:</b> no mDNS promise; browser mDNS is a WebRTC IP-privacy mechanism, not a LAN service-discovery API. A QR/short link is the join mechanism.</li></ul></div>
+</div>
+</section>
+
+<section id="status"><h2><i>09</i> Prototype status</h2>
+<div class="grid2">
+<div class="card"><h3>Implemented &amp; verified</h3><ul class="tight">
+<li>Zero-install Node host; vendored Matter.js 0.20.0 + vendored qrcode-generator.</li>
+<li>Authoritative 60 Hz physics; 20 Hz snapshots; board + phone clients; keyboard and touch controls.</li>
+<li>Two-hand grabbing on any body, ropes, see-saws, plates, gates, water, wind, soft checkpoints, tool dispenser, bots, pings, Route Medals, persistent scrapbook.</li>
+<li>All 5 spaces (4 chapters + sandbox) with real geometry as drawn above.</li>
+<li>Automated smoke test: board + 3 phone controllers + 2 demo bots complete CH.1, press the plate, open the gate, light the beacon and write a stamp.</li>
+<li>Headless Chromium checks: zero console errors, zero failed HTTP responses on both board and phone.</li></ul></div>
+<div class="card"><h3>Deliberately out of scope (roadmap)</h3><ul class="tight">
+<li>Client-side prediction + server reconciliation (only needed for internet play).</li>
+<li>3D rendering / full ragdoll joints — this is a 2D side-view proof of the mechanics.</li>
+<li>A real level editor with saved placements beyond the sandbox dispenser.</li>
+<li>Auto-generated "best blooper" replay, local TLS for secure-context APIs, mDNS hostname.</li>
+<li>Accessibility pass: colour-blind palette, audio-only cues, one-hand control scheme.</li>
+<li>Balance pass with an actual family — bot data is not human playtest data.</li></ul></div>
+</div>
+<div class="note warn"><b>Scope note.</b> This repo hosts 学字坊 · The Character Game, whose CLAUDE.md says exploratory prototypes belong in their own repo. Wobble Works is therefore a self-contained folder that imports nothing from the product, modifies no tracked product file, and is not committed. To promote it: copy the folder out and git init there.</div>
+</section>
+
+<section id="sources"><h2><i>10</i> Sources</h2>
+<p class="sub">Retrieved during design research. Search engine availability: ddg / ddg-lite / anysearch worked; bing and searxng did not. Some publisher pages (GDC Vault, TheGamer, IGN, Valve Developer Community) were anti-bot or JS-only and are cited from search snippets rather than full text — flagged where relevant.</p>
+<ul class="src">
+<li><a href="https://en.wikipedia.org/wiki/Human:_Fall_Flat">Wikipedia — Human: Fall Flat (origin, open-ended multiple solutions)</a></li>
+<li><a href="https://gamingbolt.com/human-fall-flat-interview-what-dreams-may-come">GamingBolt — Human Fall Flat Interview: What Dreams May Come</a></li>
+<li><a href="https://news.xbox.com/en-us/2016/03/17/gdc-2016-human-fall-flat-xbox-one/">Xbox Wire — Learning How to Walk Again in Human: Fall Flat (GDC 2016)</a></li>
+<li><a href="https://www.fanatical.com/en/blog/human-fall-flat-stumbling-upon-a-physics-based-gem">Fanatical — Stumbling upon a physics-based gem (Sakalauskas)</a></li>
+<li><a href="https://www.thegamer.com/human-fall-flat-interview-tomas-sakalauskas/">TheGamer — Interview with Tomas Sakalauskas</a> (snippet only)</li>
+<li><a href="https://www.ign.com/articles/2016/07/28/human-fall-flat-review">IGN — Human: Fall Flat Review</a> (snippet only)</li>
+<li><a href="https://www.gamedeveloper.com/production/-human-fall-flat-2-is-cancelled-we-are-making-human-fall-flat-3-no-brakes-games-founder-looks-back-on-a-defining-decade">Game Developer — HFF creator looks back on a defining decade</a></li>
+<li><a href="https://www.pcgamer.com/15-ways-to-solve-human-fall-flats-ridiculous-physics-puzzles/">PC Gamer — 15 ways to solve HFF's physics puzzles</a> (snippet only)</li>
+<li><a href="https://gdcvault.com/play/1024562/Change-and-Constant-Breaking-Conventions">GDC Vault — Change and Constant: Breaking Conventions with BOTW (GDC 2017)</a></li>
+<li><a href="https://gdcvault.com/play/1034667/Tunes-of-the-Kingdom-Evolving">GDC Vault — Tunes of the Kingdom (GDC 2024)</a></li>
+<li><a href="https://www.theverge.com/24115898/tears-of-the-kingdom-physics-gameplay-design-gdc-2024">The Verge — How the team behind Zelda made physics feel like magic</a></li>
+<li><a href="https://www.gamedeveloper.com/programming/how-nintendo-did-the-impossible-with-tears-of-the-kingdom-s-physics-system">Game Developer — TOTK physics system</a></li>
+<li><a href="https://blog.kartones.net/post/gdc-game-dev-talks-about-zelda-botw-and-zelda-totk/">Kartones — GDC talks about Zelda BOTW and TOTK (date check)</a></li>
+<li><a href="https://saschb2b.github.io/game-mechanics/games/zelda-botw/chemistry-engine">Game Mechanics Wiki — BOTW chemistry engine</a></li>
+<li><a href="https://www.ign.com/articles/2017/03/01/gdc-2017-breath-of-the-wild-team-built-2d-zelda-prototype-to-test-gameplay-abandoned-zelda-concepts-revealed">IGN — GDC 2017 multiplicative gameplay</a> (snippet only)</li>
+<li><a href="https://en.wikipedia.org/wiki/Emergent_gameplay">Wikipedia — Emergent gameplay</a></li>
+<li><a href="https://emshort.blog/2008/02/13/emergent-puzzle-solutions/">Emily Short — Emergent Puzzle Solutions</a></li>
+<li><a href="https://adamsmith.as/papers/fdg2013_shortcuts.pdf">A.M. Smith et al., FDG 2013 — Constraining Undesirable Solutions in Puzzle Design</a></li>
+<li><a href="https://mres.medium.com/designing-for-wide-walls-323bdb4e7277">Mitchel Resnick — Designing for Wide Walls</a></li>
+<li><a href="https://web.media.mit.edu/~mres/papers/IDC-2005.pdf">MIT Media Lab — IDC 2005, low floor and wide walls</a></li>
+<li><a href="https://www.media.mit.edu/people/mres/overview/">MIT Media Lab — Mitchel Resnick</a></li>
+<li><a href="https://www.sciencedirect.com/science/article/abs/pii/S2212868923000387">ScratchJr design in practice: Low floor, high ceiling</a></li>
+<li><a href="https://mcvuk.com/business-news/publishing/video-nintendos-level-design-secrets-in-four-steps/">MCV/DEVELOP — Nintendo's level design secrets in four steps</a></li>
+<li><a href="https://www.eurogamer.net/how-nintendos-best-mario-levels-were-structured-using-chinese-poetry">Eurogamer — Nintendo's kishōtenketsu level design</a></li>
+<li><a href="https://www.gamedeveloper.com/design/the-structure-of-fun-learning-from-i-super-mario-3d-land-i-s-director">Game Developer — The Structure of Fun (Hayashida)</a></li>
+<li><a href="https://dl.acm.org/doi/10.1145/3116595.3116639">Depping &amp; Mandryk, CHI PLAY 2017 — Cooperation and Interdependence</a></li>
+<li><a href="https://dl.acm.org/doi/10.1145/3116595.3116606">CHI PLAY 2017 — The Impact of Game Patterns on Player Experience</a></li>
+<li><a href="https://journals.sagepub.com/doi/10.3102/0013189X09339057">Social Interdependence Theory and Cooperative Learning</a></li>
+<li><a href="https://files.eric.ed.gov/fulltext/ED437841.pdf">Johnson &amp; Johnson — five elements of cooperative learning</a></li>
+<li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8892273/">PMC8892273 — Effects of Game Mode on social interaction (intergenerational study)</a></li>
+<li><a href="https://doi.org/10.3389/fpsyg.2022.1039431">Frontiers — Conversation dynamics with knowledge asymmetry</a></li>
+<li><a href="https://doi.org/10.1093/hcr/hqab008">Human Communication Research — A Recipe for Success</a></li>
+<li><a href="https://www.gabrielgambetta.com/client-server-game-architecture.html">Gambetta — Fast-Paced Multiplayer I: Client-Server Architecture</a></li>
+<li><a href="https://www.gabrielgambetta.com/client-side-prediction-server-reconciliation.html">Gambetta — II: Client-Side Prediction</a></li>
+<li><a href="https://www.gabrielgambetta.com/entity-interpolation.html">Gambetta — III: Entity Interpolation</a></li>
+<li><a href="https://gafferongames.com/post/snapshot_interpolation/">Gaffer on Games — Snapshot Interpolation</a></li>
+<li><a href="https://gafferongames.com/post/state_synchronization/">Gaffer on Games — State Synchronization</a></li>
+<li><a href="https://gafferongames.com/post/deterministic_lockstep/">Gaffer on Games — Deterministic Lockstep</a></li>
+<li><a href="https://doi.org/10.1145/3519023">ACM — Survey and Taxonomy of Latency Compensation Techniques</a></li>
+<li><a href="https://doi.org/10.1109/cog52621.2021.9618894">IEEE CoG 2021 — Die-r Consequences (respawn design)</a></li>
+<li><a href="https://www.gamedeveloper.com/design/video-game-design-insights-from-the-gdc-2019-failure-workshop">Game Developer — GDC 2019 Failure Workshop</a></li>
+<li><a href="https://pma.uwo.ca/jackbox-games/">UWO — Jackbox Games (phone as controller)</a></li>
+<li><a href="https://forum.playcanvas.com/t/introducing-airconsole-use-smartphones-as-controllers-for-your-html5-games/1428">PlayCanvas forum — AirConsole</a></li>
+<li><a href="https://www.tp-link.com/us/blog/2586/what-is-ap-isolation-and-when-to-enable-it-/">TP-Link — What Is AP Isolation?</a></li>
+<li><a href="https://documentation.meraki.com/Wireless/Operate_and_Maintain/How_Tos/Firewall_and_Traffic_Shaping/Wireless_Client_Isolation">Cisco Meraki — Wireless Client Isolation</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Secure_Contexts">MDN — Secure contexts</a></li>
+<li><a href="https://bloggeek.me/webrtcglossary/mdns/">BlogGeek.me — mDNS in WebRTC (IP privacy, not discovery)</a></li>
+<li><a href="https://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.369.9518">MicroPlay — Networking Framework for Local Multiplayer Games</a></li>
+</ul>
+</section>
+
+<footer>WOBBLE WORKS · 搭把手 — design spec &amp; wireframes, v1.0. Built as a research-backed, fully offline LAN prototype. Companion one-button concept: Firefly Relay (separate folder).</footer>
+</div>
+</body>
+</html>

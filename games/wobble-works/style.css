@@ -1,0 +1,423 @@
+/* WOBBLE WORKS 3D Stylesheet */
+:root {
+  --bg: #12151f;
+  --panel: #1b1f2e;
+  --panel-border: #2c3349;
+  --text: #f0f3fc;
+  --muted: #8892b0;
+  --gold: #ffd700;
+  --cyan: #00e5ff;
+  --green: #2ed573;
+  --coral: #ff4757;
+  --purple: #9b59b6;
+  --blue: #1e90ff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  touch-action: none;
+}
+
+.view { position: fixed; inset: 0; display: none; width: 100%; height: 100%; }
+.view.active { display: flex; }
+
+/* Buttons */
+.btn {
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.1s, opacity 0.1s;
+}
+.btn:active { transform: scale(0.96); opacity: 0.9; }
+.btn.ghost { background: #262c3f; color: var(--text); }
+.btn.big { padding: 14px 24px; font-size: 16px; width: 100%; background: var(--green); }
+.btn.small { padding: 6px 12px; font-size: 12px; }
+.btn-row { display: flex; gap: 8px; margin-top: 8px; }
+.btn-row .btn { flex: 1; }
+
+.muted { color: var(--muted); font-size: 13px; line-height: 1.4; }
+
+/* ==================== BOARD VIEW ==================== */
+#board { flex-direction: column; }
+.b-head {
+  height: 56px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--panel-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 10;
+}
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-mark { font-size: 26px; }
+.brand-en { font-size: 16px; font-weight: 900; letter-spacing: 1px; color: var(--gold); }
+.brand-cn { font-size: 12px; color: var(--muted); }
+
+.hud { display: flex; gap: 10px; align-items: center; }
+.pill {
+  background: #252b3d;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid var(--panel-border);
+}
+.crown-pill { background: rgba(255, 215, 0, 0.15); border-color: var(--gold); color: var(--gold); }
+.target-pill { background: rgba(0, 229, 255, 0.15); border-color: var(--cyan); color: var(--cyan); }
+
+.b-main { flex: 1; display: flex; overflow: hidden; }
+.stage-wrap {
+  flex: 1;
+  position: relative;
+  background: #0a0c14;
+}
+#stage3d { width: 100%; height: 100%; }
+
+.b-side {
+  width: 340px;
+  background: var(--panel);
+  border-left: 1px solid var(--panel-border);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  overflow-y: auto;
+}
+.card {
+  background: #22283a;
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px solid var(--panel-border);
+}
+.card h3 { font-size: 14px; font-weight: 800; margin-bottom: 6px; }
+
+.qr {
+  margin: 10px auto;
+  width: 170px; height: 170px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qr img, .qr canvas { width: 100%; height: 100%; display: block; }
+.join-url {
+  font-family: monospace;
+  font-size: 13px;
+  text-align: center;
+  color: var(--cyan);
+  word-break: break-all;
+  margin-bottom: 8px;
+}
+.join-hint { font-size: 11px; margin-top: 8px; }
+.join-hint code { background: #151824; padding: 2px 4px; border-radius: 4px; color: var(--gold); }
+
+/* Leaderboard */
+.leaderboard-list { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; max-height: 180px; overflow-y: auto; }
+.lb-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #191e2c;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+.lb-name { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+.lb-dot { width: 10px; height: 10px; border-radius: 50%; }
+.lb-score { color: var(--gold); font-weight: 800; }
+
+/* Win Banner Celebration */
+.win-banner {
+  position: absolute;
+  top: 18%; left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  pointer-events: none;
+  animation: bannerPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes bannerPop {
+  0% { transform: translate(-50%, -20px) scale(0.8); opacity: 0; }
+  100% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+}
+.win-card {
+  background: rgba(27, 31, 46, 0.95);
+  backdrop-filter: blur(8px);
+  border: 2px solid var(--gold);
+  border-radius: 16px;
+  padding: 24px 36px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 30px rgba(255,215,0,0.3);
+}
+.win-crown { font-size: 48px; margin-bottom: 6px; }
+.win-kicker { font-size: 13px; font-weight: 900; letter-spacing: 2px; color: var(--gold); }
+.win-card h2 { font-size: 32px; font-weight: 900; color: #fff; margin: 4px 0 8px; }
+.win-card p { font-size: 16px; color: var(--text); }
+.win-assist { font-size: 14px; color: var(--cyan); margin-top: 6px; font-weight: 700; }
+
+/* Toasts */
+.toast {
+  position: absolute;
+  bottom: 24px; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(18, 21, 31, 0.92);
+  border: 1px solid var(--panel-border);
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  pointer-events: none;
+  z-index: 40;
+  opacity: 0;
+  transition: opacity 0.25s, transform 0.25s;
+}
+.toast.active { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+
+/* ==================== PHONE CONTROLLER ==================== */
+#controller { flex-direction: column; background: #000; }
+/* The phone toast used to land on the joystick and call bar, hiding the
+   controls mid-play. Keep it above them. */
+#phone-view .toast, #controller .toast { bottom: 232px; max-width: 78%; text-align: center; }
+#mini3d { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.c-head {
+  position: absolute;
+  top: 10px; left: 10px; right: 10px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(20, 24, 38, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 0 14px;
+  z-index: 20;
+}
+.c-me { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 15px; }
+.c-avatar-badge { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+.c-score { color: var(--gold); margin-left: 6px; font-weight: 900; }
+.c-target { font-size: 13px; font-weight: 800; color: var(--cyan); }
+
+/* Touch Area */
+.touch-container {
+  position: absolute;
+  bottom: 54px; left: 0; right: 0;
+  height: 220px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* Virtual Joystick */
+.joy-zone {
+  width: 170px; height: 170px;
+  position: relative;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.joy-base {
+  width: 130px; height: 130px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.joy-stick {
+  width: 54px; height: 54px;
+  background: radial-gradient(circle, #fff, #bbb);
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  position: absolute;
+  pointer-events: none;
+  transition: transform 0.05s ease-out;
+}
+.joy-tip {
+  position: absolute;
+  bottom: 0px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: rgba(255,255,255,0.4);
+}
+
+/* Action Buttons Cluster */
+.action-zone {
+  width: 180px; height: 180px;
+  position: relative;
+  pointer-events: auto;
+}
+.action-btn {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-weight: 900;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+  cursor: pointer;
+  transition: transform 0.08s, filter 0.08s;
+}
+.action-btn:active { transform: scale(0.92); filter: brightness(1.2); }
+.action-btn .icon { font-size: 20px; line-height: 1; }
+.action-btn .lbl { font-size: 10px; font-weight: 900; margin-top: 2px; }
+
+/* Diamond button layout */
+.btn-jump {
+  width: 68px; height: 68px;
+  background: #2ed573;
+  right: 10px; bottom: 10px;
+}
+.btn-jump .icon { font-size: 24px; }
+.btn-lift {
+  width: 58px; height: 58px;
+  background: #ffa502;
+  top: 10px; right: 15px;
+}
+.btn-throw {
+  width: 60px; height: 60px;
+  background: #ff4757;
+  top: 15px; left: 10px;
+}
+.btn-grab {
+  width: 58px; height: 58px;
+  background: #1e90ff;
+  bottom: 12px; left: 15px;
+}
+
+/* Call bar */
+.c-footer {
+  position: absolute;
+  bottom: 8px; left: 10px; right: 10px;
+  height: 40px;
+  display: flex;
+  gap: 8px;
+  z-index: 20;
+}
+.call-btn {
+  flex: 1;
+  background: rgba(26, 31, 48, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 800;
+  backdrop-filter: blur(4px);
+}
+.call-btn:active { background: rgba(255, 255, 255, 0.2); }
+
+/* Score popup on phone */
+.c-score-popup {
+  position: absolute;
+  top: 30%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 30;
+  pointer-events: none;
+  animation: scorePop 1.8s ease-out forwards;
+}
+@keyframes scorePop {
+  0% { transform: translate(-50%, -20px) scale(0.6); opacity: 0; }
+  20% { transform: translate(-50%, 0) scale(1.1); opacity: 1; }
+  80% { transform: translate(-50%, -10px) scale(1.0); opacity: 1; }
+  100% { transform: translate(-50%, -40px) scale(0.9); opacity: 0; }
+}
+.popup-box {
+  background: rgba(18, 21, 31, 0.95);
+  border: 2px solid var(--gold);
+  border-radius: 16px;
+  padding: 16px 28px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
+.popup-icon { font-size: 38px; }
+.popup-txt { font-size: 22px; font-weight: 900; color: var(--gold); }
+
+/* Sleep / Dimmed Overlay */
+.sleep-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 12, 18, 0.88);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+.sleep-card {
+  background: #1e2436;
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 30px 24px;
+  text-align: center;
+  max-width: 300px;
+}
+.sleep-icon { font-size: 48px; margin-bottom: 12px; }
+.sleep-card h2 { font-size: 22px; margin-bottom: 8px; }
+.sleep-card p { margin-bottom: 20px; font-size: 14px; }
+
+/* Join Gate Modal */
+.gate {
+  position: fixed; inset: 0;
+  background: rgba(10, 12, 18, 0.92);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 200;
+  padding: 20px;
+}
+.gate-card {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 32px 24px;
+  width: 100%; max-width: 360px;
+  text-align: center;
+}
+.gate-logo { font-size: 48px; margin-bottom: 8px; }
+.gate-card h1 { font-size: 22px; font-weight: 900; color: var(--gold); }
+.gate-cn { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+.gate-sub { font-size: 14px; margin-bottom: 14px; }
+.gate-card input {
+  width: 100%;
+  background: #141824;
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  text-align: center;
+}
+.gate-card input:focus { outline: none; border-color: var(--cyan); }
+.emoji-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 18px; font-size: 24px; }
+.emoji-btn {
+  background: #252b3d; border-radius: 8px; padding: 6px; cursor: pointer;
+  border: 2px solid transparent;
+}
+.emoji-btn.selected { border-color: var(--gold); background: #333b54; }
+
+.hidden { display: none !important; }

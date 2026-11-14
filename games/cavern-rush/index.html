@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Crystal Cavern Rush</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#000;font-family:'Segoe UI',system-ui,sans-serif;color:#fff;overflow:hidden;touch-action:none}
+  canvas{display:block}
+
+  /* ── Overlay system ─────────────────────────────── */
+  .overlay{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:rgba(0,0,0,.82);backdrop-filter:blur(6px);z-index:100;gap:16px}
+  .overlay.hidden{display:none}
+
+  h1{font-size:clamp(1.8rem,6vw,3.2rem);font-weight:900;letter-spacing:.04em;
+    background:linear-gradient(135deg,#00ffff,#ff00ff,#ffff00);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
+  h2{font-size:clamp(1.1rem,3.5vw,1.6rem);color:#ccc;text-align:center;font-weight:400}
+
+  .card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);
+    border-radius:16px;padding:24px 32px;max-width:400px;width:90%;text-align:center}
+
+  input[type=text]{width:100%;padding:10px 14px;border-radius:10px;border:1px solid #555;
+    background:#111;color:#fff;font-size:1rem;outline:none;margin-bottom:8px}
+  input[type=text]:focus{border-color:#00ffff;box-shadow:0 0 0 2px rgba(0,255,255,.2)}
+
+  button{padding:12px 28px;border-radius:12px;border:none;cursor:pointer;font-size:1rem;
+    font-weight:700;transition:.2s;width:100%;margin-top:6px}
+  .btn-primary{background:linear-gradient(135deg,#00aaff,#ff00ff);color:#fff}
+  .btn-primary:hover{filter:brightness(1.2);transform:scale(1.03)}
+  .btn-secondary{background:rgba(255,255,255,.12);color:#ccc}
+  .btn-secondary:hover{background:rgba(255,255,255,.2)}
+
+  .players-list{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}
+  .player-chip{padding:5px 12px;border-radius:20px;font-size:.85rem;font-weight:600;background:rgba(255,255,255,.1)}
+
+  /* ── HUD ────────────────────────────────────────── */
+  #hud{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:flex-start;
+    padding:12px 16px;pointer-events:none;z-index:50;gap:8px}
+  #hud.hidden{display:none}
+
+  .hud-box{background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.15);
+    border-radius:12px;padding:8px 16px;backdrop-filter:blur(4px)}
+
+  #timer-box{font-size:clamp(1.2rem,4vw,2rem);font-weight:900;min-width:70px;text-align:center}
+  #timer-box.urgent{color:#ff4444;animation:pulse .5s infinite alternate}
+  @keyframes pulse{to{text-shadow:0 0 16px #ff4444}}
+
+  #score-box{text-align:center}
+  #score-box .label{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:#aaa}
+  #score-box .value{font-size:clamp(1.1rem,3vw,1.6rem);font-weight:900;color:#ffff00}
+
+  #my-score-box{text-align:center}
+  #my-score-box .label{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:#aaa}
+  #my-score-box .value{font-size:clamp(1rem,2.5vw,1.4rem);font-weight:700}
+
+  #synergy-indicator{position:fixed;bottom:calc(env(safe-area-inset-bottom) + 160px);left:50%;
+    transform:translateX(-50%);font-size:.85rem;font-weight:700;padding:4px 14px;
+    border-radius:20px;background:rgba(255,255,0,.2);border:1px solid #ffff00;
+    color:#ffff00;opacity:0;transition:opacity .4s;z-index:51;pointer-events:none}
+  #synergy-indicator.show{opacity:1}
+
+  #floating-pts{position:fixed;top:40%;left:50%;transform:translateX(-50%);
+    font-size:1.6rem;font-weight:900;color:#ffff00;text-shadow:0 0 20px #ffff00;
+    pointer-events:none;z-index:60;opacity:0;transition:none}
+
+  /* ── Touch joystick ─────────────────────────────── */
+  #joystick-zone{position:fixed;bottom:env(safe-area-inset-bottom,0);left:0;right:0;height:160px;z-index:49;
+    display:flex;align-items:center;justify-content:center;pointer-events:none}
+  #joystick-zone.active{pointer-events:all}
+
+  #joystick-base{width:120px;height:120px;border-radius:50%;border:2px solid rgba(255,255,255,.3);
+    background:rgba(255,255,255,.07);position:relative;display:none}
+  #joystick-knob{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.5);
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    box-shadow:0 0 16px rgba(255,255,255,.4);pointer-events:none}
+  #joystick-hint{font-size:.75rem;color:rgba(255,255,255,.4);position:absolute;bottom:12px;width:100%;text-align:center}
+
+  /* ── Game over overlay ──────────────────────────── */
+  #leaderboard{list-style:none;text-align:left;width:100%;margin:8px 0}
+  #leaderboard li{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:1rem}
+  #leaderboard li:last-child{border:none}
+  .lb-rank{font-weight:900;font-size:1.2rem;min-width:28px}
+  .lb-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0}
+  .lb-name{flex:1}
+  .lb-pts{font-weight:700;color:#ffff00}
+
+  /* ── Connection banner ──────────────────────────── */
+  #conn-banner{position:fixed;top:0;left:0;right:0;text-align:center;padding:6px;
+    background:#ff4400;font-size:.85rem;z-index:200;display:none}
+</style>
+</head>
+<body>
+
+<!-- Connection banner -->
+<div id="conn-banner">⚠️ Disconnected — trying to reconnect…</div>
+
+<!-- HUD (shown during game) -->
+<div id="hud" class="hidden">
+  <div class="hud-box" id="my-score-box">
+    <div class="label">Your Score</div>
+    <div class="value" id="my-score-val">0</div>
+  </div>
+  <div class="hud-box" id="timer-box">1:30</div>
+  <div class="hud-box" id="score-box">
+    <div class="label">Team Score</div>
+    <div class="value" id="team-score-val">0</div>
+  </div>
+</div>
+
+<div id="synergy-indicator">⚡ Synergy ×<span id="syn-mult">1.5</span></div>
+<div id="floating-pts"></div>
+
+<!-- Joystick zone (mobile) -->
+<div id="joystick-zone">
+  <div id="joystick-base">
+    <div id="joystick-knob"></div>
+  </div>
+  <div id="joystick-hint">Touch anywhere to move</div>
+</div>
+
+<!-- Three.js canvas -->
+<canvas id="c"></canvas>
+
+<!-- ═══════════════ OVERLAYS ═══════════════ -->
+
+<!-- Lobby / Join screen -->
+<div id="overlay-lobby" class="overlay">
+  <h1>Crystal Cavern Rush</h1>
+  <h2>Co-op WLAN · Up to 8 players</h2>
+  <div class="card">
+    <input type="text" id="name-input" placeholder="Your name" maxlength="20">
+    <button class="btn-primary" id="btn-join">Join Game</button>
+    <div style="margin-top:16px;font-size:.85rem;color:#888">Connected players:</div>
+    <div class="players-list" id="players-list"></div>
+    <div style="margin-top:16px;font-size:.8rem;color:#666;line-height:1.5">
+      Any player can start the round.<br>
+      Collect crystals together — synergy boosts your points!
+    </div>
+  </div>
+  <button class="btn-primary" id="btn-start-lobby" style="max-width:220px">▶ Start Round</button>
+</div>
+
+<!-- Countdown overlay (brief) -->
+<div id="overlay-countdown" class="overlay hidden">
+  <div style="font-size:clamp(5rem,20vw,12rem);font-weight:900;line-height:1" id="countdown-num">3</div>
+  <div style="font-size:1.4rem;color:#aaa">Get ready!</div>
+</div>
+
+<!-- Game over overlay -->
+<div id="overlay-gameover" class="overlay hidden">
+  <h1>Round Over!</h1>
+  <div class="card">
+    <div style="font-size:.85rem;color:#aaa;margin-bottom:4px">Team Score</div>
+    <div style="font-size:2.5rem;font-weight:900;color:#ffff00;margin-bottom:16px" id="final-team-score">0</div>
+    <ul id="leaderboard"></ul>
+    <div style="font-size:.8rem;color:#666;margin-top:12px">New round starts in <span id="restart-countdown">10</span>s…</div>
+    <button class="btn-secondary" id="btn-play-again" style="margin-top:8px">Play Again Now</button>
+  </div>
+</div>
+
+<!-- ═══════════════ GAME LOGIC ═══════════════ -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+// ══════════════════════════════════════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════════════════════════════════════
+const ARENA_HALF = 18;
+const MOVE_SPEED = 7;        // units per second
+const INTERP_FACTOR = 0.18;  // smoothing for remote players
+
+// ══════════════════════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════════════════════
+let ws = null;
+let myId = null;
+let myColor = '#00ffff';
+let gameState = 'lobby';
+let myScore = 0;
+let teamScore = 0;
+let timeLeft = 90;
+
+const remotePlayers = {};  // id → { mesh, nameMesh, targetX, targetZ }
+const crystalMeshes = {};  // id → { mesh, alive, floatOffset }
+
+let myMesh = null;
+let myX = 0, myZ = 0;
+let targetX = 0, targetZ = 0;
+
+// Keyboard
+const keys = {};
+window.addEventListener('keydown', e => { keys[e.key] = true; });
+window.addEventListener('keyup',   e => { keys[e.key] = false; });
+
+// ══════════════════════════════════════════════════════════════════════════════
+// THREE.JS SCENE SETUP
+// ══════════════════════════════════════════════════════════════════════════════
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x060810);
+scene.fog = new THREE.Fog(0x060810, 25, 55);
+
+const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 100);
+camera.position.set(0, 20, 22);
+camera.lookAt(0, 0, 0);
+
+function resize() {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ── Lighting ─────────────────────────────────────────────────────────────────
+scene.add(new THREE.AmbientLight(0x334466, 1.2));
+
+const sun = new THREE.DirectionalLight(0xffeedd, 1.4);
+sun.position.set(10, 20, 10);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.near = 0.5;
+sun.shadow.camera.far = 60;
+sun.shadow.camera.left = -25;
+sun.shadow.camera.right = 25;
+sun.shadow.camera.top = 25;
+sun.shadow.camera.bottom = -25;
+scene.add(sun);
+
+// Blue rim fill
+const fill = new THREE.DirectionalLight(0x4466ff, 0.6);
+fill.position.set(-8, 10, -10);
+scene.add(fill);
+
+// ── Arena floor ───────────────────────────────────────────────────────────────
+const floorGeo = new THREE.PlaneGeometry(ARENA_HALF * 2, ARENA_HALF * 2, 36, 36);
+const floorMat = new THREE.MeshStandardMaterial({
+  color: 0x101828,
+  roughness: 0.9,
+  metalness: 0.1,
+});
+const floor = new THREE.Mesh(floorGeo, floorMat);
+floor.rotation.x = -Math.PI / 2;
+floor.receiveShadow = true;
+scene.add(floor);
+
+// Grid lines on floor
+const gridHelper = new THREE.GridHelper(ARENA_HALF * 2, 18, 0x1a2a44, 0x1a2a44);
+gridHelper.position.y = 0.01;
+scene.add(gridHelper);
+
+// ── Arena walls (crystal stalactite pillars) ──────────────────────────────────
+function makePillar(x, z) {
+  const h = 1.5 + Math.random() * 2;
+  const geo = new THREE.ConeGeometry(0.4 + Math.random() * 0.3, h, 6);
+  const mat = new THREE.MeshStandardMaterial({ color: 0x1a3a66, roughness: 0.5, metalness: 0.6 });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.set(x, h / 2, z);
+  mesh.castShadow = true;
+  scene.add(mesh);
+}
+
+// Corner pillars + edge decoration
+for (let i = -ARENA_HALF + 1; i <= ARENA_HALF; i += 4.5) {
+  makePillar(ARENA_HALF - 0.5, i);
+  makePillar(-ARENA_HALF + 0.5, i);
+  makePillar(i, ARENA_HALF - 0.5);
+  makePillar(i, -ARENA_HALF + 0.5);
+}
+
+// ── Boundary walls (invisible collision boxes) ────────────────────────────────
+// Visual glow at edges
+function makeEdgeGlow(axis, pos) {
+  const geo = axis === 'x'
+    ? new THREE.BoxGeometry(ARENA_HALF * 2, 0.08, 0.08)
+    : new THREE.BoxGeometry(0.08, 0.08, ARENA_HALF * 2);
+  const mat = new THREE.MeshBasicMaterial({ color: 0x0044ff });
+  const m = new THREE.Mesh(geo, mat);
+  m.position.set(pos[0], 0.05, pos[1]);
+  scene.add(m);
+}
+makeEdgeGlow('x', [0,  ARENA_HALF]);
+makeEdgeGlow('x', [0, -ARENA_HALF]);
+makeEdgeGlow('z', [ ARENA_HALF, 0]);
+makeEdgeGlow('z', [-ARENA_HALF, 0]);
+
+// ── Particle system (ambient sparkles) ────────────────────────────────────────
+const SPARKLE_COUNT = 200;
+const sparkleGeo = new THREE.BufferGeometry();
+const spPos = new Float32Array(SPARKLE_COUNT * 3);
+const spPhase = new Float32Array(SPARKLE_COUNT);
+for (let i = 0; i < SPARKLE_COUNT; i++) {
+  spPos[i * 3]     = (Math.random() - 0.5) * ARENA_HALF * 2;
+  spPos[i * 3 + 1] = Math.random() * 4;
+  spPos[i * 3 + 2] = (Math.random() - 0.5) * ARENA_HALF * 2;
+  spPhase[i] = Math.random() * Math.PI * 2;
+}
+sparkleGeo.setAttribute('position', new THREE.BufferAttribute(spPos, 3));
+const sparkleMat = new THREE.PointsMaterial({ color: 0x88aaff, size: 0.08, transparent: true, opacity: 0.5 });
+const sparkles = new THREE.Points(sparkleGeo, sparkleMat);
+scene.add(sparkles);
+
+// ══════════════════════════════════════════════════════════════════════════════
+// PLAYER MESH BUILDER
+// ══════════════════════════════════════════════════════════════════════════════
+function hexToThree(hex) {
+  return parseInt(hex.replace('#', ''), 16);
+}
+
+function createPlayerMesh(color, isMe) {
+  const group = new THREE.Group();
+
+  // Body: glowing orb
+  const bodyGeo = new THREE.IcosahedronGeometry(0.55, 2);
+  const bodyMat = new THREE.MeshStandardMaterial({
+    color: hexToThree(color),
+    emissive: hexToThree(color),
+    emissiveIntensity: 0.6,
+    roughness: 0.3,
+    metalness: 0.4,
+  });
+  const body = new THREE.Mesh(bodyGeo, bodyMat);
+  body.castShadow = true;
+  group.add(body);
+
+  // Inner glow core
+  const coreGeo = new THREE.SphereGeometry(0.28, 16, 16);
+  const coreMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
+  group.add(new THREE.Mesh(coreGeo, coreMat));
+
+  // Ring (equatorial)
+  const ringGeo = new THREE.TorusGeometry(0.7, 0.04, 8, 32);
+  const ringMat = new THREE.MeshBasicMaterial({ color: hexToThree(color), transparent: true, opacity: 0.7 });
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.rotation.x = Math.PI / 2;
+  group.add(ring);
+
+  // Point light for local glow
+  const pLight = new THREE.PointLight(hexToThree(color), 1.5, 5);
+  group.add(pLight);
+
+  // Name label — using a canvas texture
+  if (isMe) {
+    // We'll add the name label after joining
+  }
+
+  group.userData = { bodyMat, ringMat, pLight, ring, floatOffset: Math.random() * Math.PI * 2 };
+  return group;
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// CRYSTAL MESH BUILDER
+// ══════════════════════════════════════════════════════════════════════════════
+const CRYSTAL_SHAPES = {
+  common: { h: 0.9, r: 0.22, segs: 6, emissive: 0.5 },
+  rare:   { h: 1.2, r: 0.26, segs: 5, emissive: 0.8 },
+  epic:   { h: 1.5, r: 0.3,  segs: 4, emissive: 1.2 },
+};
+
+function createCrystalMesh(c) {
+  const shape = CRYSTAL_SHAPES[c.type];
+  const group = new THREE.Group();
+
+  // Main crystal body
+  const geo = new THREE.ConeGeometry(shape.r, shape.h, shape.segs);
+  const mat = new THREE.MeshStandardMaterial({
+    color: c.color,
+    emissive: c.color,
+    emissiveIntensity: shape.emissive,
+    roughness: 0.1,
+    metalness: 0.3,
+    transparent: true,
+    opacity: 0.9,
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.castShadow = true;
+  group.add(mesh);
+
+  // Base inverted
+  const geo2 = new THREE.ConeGeometry(shape.r * 0.6, shape.h * 0.5, shape.segs);
+  const mesh2 = new THREE.Mesh(geo2, mat.clone());
+  mesh2.rotation.x = Math.PI;
+  mesh2.position.y = -shape.h * 0.5;
+  group.add(mesh2);
+
+  // Glow point light
+  const pLight = new THREE.PointLight(c.color, 0.8, 3.5);
+  group.add(pLight);
+
+  group.position.set(c.x, shape.h / 2 + 0.1, c.z);
+  group.userData = { mat, pLight, floatOffset: Math.random() * Math.PI * 2, alive: true, type: c.type, shape };
+
+  return group;
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// NAME LABEL SPRITE
+// ══════════════════════════════════════════════════════════════════════════════
+function createNameLabel(name, color) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256; canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  ctx.font = 'bold 32px Arial';
+  ctx.fillStyle = color;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.shadowColor = 'rgba(0,0,0,0.8)';
+  ctx.shadowBlur = 8;
+  ctx.fillText(name, 128, 32);
+  const tex = new THREE.CanvasTexture(canvas);
+  const mat = new THREE.SpriteMaterial({ map: tex, transparent: true });
+  const sprite = new THREE.Sprite(mat);
+  sprite.scale.set(2.5, 0.65, 1);
+  sprite.position.y = 1.4;
+  return sprite;
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// WEBSOCKET
+// ══════════════════════════════════════════════════════════════════════════════
+const WS_URL = `ws://${location.host}`;
+const banner = document.getElementById('conn-banner');
+
+function connect() {
+  ws = new WebSocket(WS_URL);
+
+  ws.onopen = () => {
+    banner.style.display = 'none';
+    // If we have a name saved, re-send it
+    const savedName = localStorage.getItem('ccr-name');
+    if (savedName && myId) sendMsg({ type: 'setName', name: savedName });
+  };
+
+  ws.onclose = () => {
+    banner.style.display = 'block';
+    setTimeout(connect, 2000);
+  };
+
+  ws.onerror = () => {};
+
+  ws.onmessage = (e) => {
+    const msg = JSON.parse(e.data);
+    handleServerMsg(msg);
+  };
+}
+
+function sendMsg(obj) {
+  if (ws && ws.readyState === 1) ws.send(JSON.stringify(obj));
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SERVER MESSAGE HANDLING
+// ══════════════════════════════════════════════════════════════════════════════
+function handleServerMsg(msg) {
+  switch (msg.type) {
+    case 'welcome':
+      myId = msg.id;
+      myColor = msg.color;
+      gameState = msg.gameState;
+      timeLeft = msg.timeLeft;
+      teamScore = msg.teamScore || 0;
+
+      // Create my mesh
+      myMesh = createPlayerMesh(myColor, true);
+      myX = msg.players[myId]?.x ?? 0;
+      myZ = msg.players[myId]?.z ?? 0;
+      myMesh.position.set(myX, 0.6, myZ);
+      scene.add(myMesh);
+
+      // Name label
+      const savedName = localStorage.getItem('ccr-name') || myId;
+      document.getElementById('name-input').value = savedName;
+      const lbl = createNameLabel(savedName, myColor);
+      myMesh.add(lbl);
+
+      // Create remote players
+      for (const [id, p] of Object.entries(msg.players)) {
+        if (id === myId) continue;
+        addRemotePlayer(p);
+      }
+
+      // Create crystals if in game
+      if (msg.gameState === 'playing') {
+        for (const c of msg.crystals) addCrystal(c);
+        showHUD();
+        hideOverlay('overlay-lobby');
+      } else {
+        updateLobbyList(msg.players);
+      }
+      break;
+
+    case 'playerJoined':
+      addRemotePlayer(msg.player);
+      updateLobbyList(null);
+      break;
+
+    case 'playerLeft':
+      removeRemotePlayer(msg.id);
+      updateLobbyList(null);
+      break;
+
+    case 'playerUpdate':
+      if (remotePlayers[msg.id]) {
+        // Update name label
+        const rp = remotePlayers[msg.id];
+        if (rp.nameSprite) rp.mesh.remove(rp.nameSprite);
+        // find color from mesh
+        const lbl = createNameLabel(msg.name, '#ffffff');
+        rp.mesh.add(lbl);
+        rp.nameSprite = lbl;
+      }
+      updateLobbyList(null);
+      break;
+
+    case 'gameStart': {
+      gameState = 'playing';
+      teamScore = 0;
+      myScore = 0;
+      timeLeft = 90;
+
+      // Clear old crystals
+      for (const id in crystalMeshes) {
+        scene.remove(crystalMeshes[id].mesh);
+        delete crystalMeshes[id];
+      }
+
+      // Reposition players
+      for (const [id, p] of Object.entries(msg.players)) {
+        if (id === myId) {
+          myX = p.x; myZ = p.z;
+          myMesh?.position.set(myX, 0.6, myZ);
+        } else if (remotePlayers[id]) {
+          remotePlayers[id].targetX = p.x;
+          remotePlayers[id].targetZ = p.z;
+        }
+      }
+
+      for (const c of msg.crystals) addCrystal(c);
+
+      // Countdown
+      showOverlay('overlay-countdown');
+      hideOverlay('overlay-lobby');
+      hideOverlay('overlay-gameover');
+      let n = 3;
+      document.getElementById('countdown-num').textContent = n;
+      const cd = setInterval(() => {
+        n--;
+        if (n <= 0) {
+          clearInterval(cd);
+          hideOverlay('overlay-countdown');
+          showHUD();
+        } else {
+          document.getElementById('countdown-num').textContent = n;
+        }
+      }, 1000);
+      break;
+    }
+
+    case 'tick':
+      timeLeft = msg.timeLeft;
+      teamScore = msg.teamScore;
+      updateTimerDisplay();
+      document.getElementById('team-score-val').textContent = teamScore;
+      break;
+
+    case 'positions':
+      for (const [id, pos] of Object.entries(msg.players)) {
+        if (id === myId) continue;
+        const rp = remotePlayers[id];
+        if (rp) {
+          rp.targetX = pos.x;
+          rp.targetZ = pos.z;
+          rp.synergy = pos.synergy || 0;
+        }
+      }
+      break;
+
+    case 'crystalRespawn': {
+      const c = msg.crystal;
+      if (crystalMeshes[c.id]) scene.remove(crystalMeshes[c.id].mesh);
+      addCrystal(c);
+      break;
+    }
+
+    case 'crystalCollected': {
+      const cm = crystalMeshes[msg.crystalId];
+      if (cm) {
+        cm.alive = false;
+        spawnCollectParticles(cm.mesh.position.clone(), cm.mesh.userData.pLight?.color);
+        scene.remove(cm.mesh);
+        // delete crystalMeshes[msg.crystalId]; // keep ref for respawn
+        cm.mesh = null;
+      }
+      teamScore = msg.teamScore;
+      document.getElementById('team-score-val').textContent = teamScore;
+
+      if (msg.byPlayer === myId) {
+        myScore = msg.playerScore;
+        document.getElementById('my-score-val').textContent = myScore;
+        showFloatingPts('+' + msg.pts);
+      }
+      break;
+    }
+
+    case 'gameOver': {
+      gameState = 'gameover';
+      hideHUD();
+      showOverlay('overlay-gameover');
+      document.getElementById('final-team-score').textContent = msg.teamScore;
+
+      const lb = document.getElementById('leaderboard');
+      lb.innerHTML = '';
+      msg.leaderboard.forEach((p, i) => {
+        const li = document.createElement('li');
+        const medals = ['🥇','🥈','🥉'];
+        li.innerHTML = `
+          <span class="lb-rank">${medals[i] || (i+1)}</span>
+          <span class="lb-dot" style="background:${p.color}"></span>
+          <span class="lb-name">${escHtml(p.name)}</span>
+          <span class="lb-pts">${p.score} pts</span>`;
+        lb.appendChild(li);
+      });
+
+      // Countdown to auto-lobby
+      let rc = 10;
+      const rcEl = document.getElementById('restart-countdown');
+      const rcInt = setInterval(() => {
+        rc--;
+        rcEl.textContent = rc;
+        if (rc <= 0) clearInterval(rcInt);
+      }, 1000);
+      break;
+    }
+
+    case 'lobby':
+      gameState = 'lobby';
+      // Clear crystals
+      for (const id in crystalMeshes) {
+        if (crystalMeshes[id].mesh) scene.remove(crystalMeshes[id].mesh);
+        delete crystalMeshes[id];
+      }
+      hideHUD();
+      hideOverlay('overlay-gameover');
+      showOverlay('overlay-lobby');
+      updateLobbyList(msg.players);
+      break;
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SCENE HELPERS
+// ══════════════════════════════════════════════════════════════════════════════
+function addRemotePlayer(p) {
+  if (remotePlayers[p.id]) return;
+  const mesh = createPlayerMesh(p.color, false);
+  mesh.position.set(p.x, 0.6, p.z);
+  const lbl = createNameLabel(p.name, p.color);
+  mesh.add(lbl);
+  scene.add(mesh);
+  remotePlayers[p.id] = { mesh, targetX: p.x, targetZ: p.z, synergy: 0, nameSprite: lbl };
+}
+
+function removeRemotePlayer(id) {
+  const rp = remotePlayers[id];
+  if (!rp) return;
+  scene.remove(rp.mesh);
+  delete remotePlayers[id];
+}
+
+function addCrystal(c) {
+  if (!c.alive) return;
+  const mesh = createCrystalMesh(c);
+  scene.add(mesh);
+  crystalMeshes[c.id] = { mesh, alive: true };
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// PARTICLES (collect effect)
+// ══════════════════════════════════════════════════════════════════════════════
+const activeParticles = [];
+
+function spawnCollectParticles(pos, color) {
+  const count = 12;
+  const geo = new THREE.BufferGeometry();
+  const positions = new Float32Array(count * 3);
+  const velocities = [];
+  for (let i = 0; i < count; i++) {
+    positions[i*3]   = pos.x;
+    positions[i*3+1] = pos.y;
+    positions[i*3+2] = pos.z;
+    velocities.push(new THREE.Vector3(
+      (Math.random() - 0.5) * 4,
+      Math.random() * 5 + 1,
+      (Math.random() - 0.5) * 4,
+    ));
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const mat = new THREE.PointsMaterial({
+    color: color || 0xffff00,
+    size: 0.15,
+    transparent: true,
+    opacity: 1,
+  });
+  const pts = new THREE.Points(geo, mat);
+  scene.add(pts);
+  activeParticles.push({ pts, positions, velocities, life: 1.0 });
+}
+
+function updateParticles(dt) {
+  for (let i = activeParticles.length - 1; i >= 0; i--) {
+    const p = activeParticles[i];
+    p.life -= dt * 1.5;
+    if (p.life <= 0) {
+      scene.remove(p.pts);
+      activeParticles.splice(i, 1);
+      continue;
+    }
+    const pos = p.pts.geometry.attributes.position.array;
+    for (let j = 0; j < p.velocities.length; j++) {
+      pos[j*3]   += p.velocities[j].x * dt;
+      pos[j*3+1] += p.velocities[j].y * dt;
+      pos[j*3+2] += p.velocities[j].z * dt;
+      p.velocities[j].y -= 6 * dt; // gravity
+    }
+    p.pts.geometry.attributes.position.needsUpdate = true;
+    p.pts.material.opacity = p.life;
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// UI HELPERS
+// ══════════════════════════════════════════════════════════════════════════════
+function showOverlay(id) { document.getElementById(id).classList.remove('hidden'); }
+function hideOverlay(id) { document.getElementById(id).classList.add('hidden'); }
+function showHUD() { document.getElementById('hud').classList.remove('hidden'); }
+function hideHUD() { document.getElementById('hud').classList.add('hidden'); }
+
+function updateTimerDisplay() {
+  const el = document.getElementById('timer-box');
+  const mins = Math.floor(timeLeft / 60);
+  const secs = timeLeft % 60;
+  el.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+  el.classList.toggle('urgent', timeLeft <= 15);
+}
+
+function updateLobbyList(playersMap) {
+  // If null, rebuild from remotePlayers + self
+  const el = document.getElementById('players-list');
+  el.innerHTML = '';
+
+  const addChip = (name, color) => {
+    const d = document.createElement('span');
+    d.className = 'player-chip';
+    d.style.borderLeft = `4px solid ${color}`;
+    d.textContent = name;
+    el.appendChild(d);
+  };
+
+  if (myId) addChip(localStorage.getItem('ccr-name') || myId, myColor);
+  for (const rp of Object.values(remotePlayers)) {
+    // extract name from sprite canvas label is tricky; use stored
+    addChip(rp.storedName || '...', rp.storedColor || '#fff');
+  }
+
+  if (playersMap) {
+    el.innerHTML = '';
+    for (const [id, p] of Object.entries(playersMap)) {
+      addChip(p.name, p.color);
+      if (remotePlayers[id]) {
+        remotePlayers[id].storedName = p.name;
+        remotePlayers[id].storedColor = p.color;
+      }
+    }
+  }
+}
+
+let floatTimer = null;
+function showFloatingPts(text) {
+  const el = document.getElementById('floating-pts');
+  el.textContent = text;
+  el.style.opacity = 1;
+  el.style.transform = 'translateX(-50%) translateY(0)';
+  el.style.transition = 'none';
+  el.style.top = '40%';
+  clearTimeout(floatTimer);
+  requestAnimationFrame(() => {
+    el.style.transition = 'opacity 1.2s, transform 1.2s';
+    el.style.opacity = 0;
+    el.style.transform = 'translateX(-50%) translateY(-60px)';
+  });
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// TOUCH JOYSTICK
+// ══════════════════════════════════════════════════════════════════════════════
+let joystickActive = false;
+let joyStartX = 0, joyStartY = 0;
+let joyDX = 0, joyDY = 0;
+
+const joyZone = document.getElementById('joystick-zone');
+const joyBase = document.getElementById('joystick-base');
+const joyKnob = document.getElementById('joystick-knob');
+const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ||
+                 ('ontouchstart' in window && screen.width < 1024);
+
+if (isMobile) {
+  joyZone.classList.add('active');
+  joyBase.style.display = 'block';
+  document.getElementById('joystick-hint').style.display = 'block';
+}
+
+function getTouches(e) { return e.changedTouches || [e]; }
+
+function onJoyStart(e) {
+  if (gameState !== 'playing') return;
+  // Ignore if overlay is visible
+  if (!document.getElementById('overlay-lobby').classList.contains('hidden')) return;
+
+  const touch = getTouches(e)[0];
+  joystickActive = true;
+  joyStartX = touch.clientX;
+  joyStartY = touch.clientY;
+  joyBase.style.left = (touch.clientX - 60) + 'px';
+  joyBase.style.top  = (touch.clientY - 60) + 'px';
+  joyBase.style.position = 'fixed';
+  document.getElementById('joystick-hint').style.display = 'none';
+}
+
+function onJoyMove(e) {
+  if (!joystickActive) return;
+  e.preventDefault();
+  const touch = getTouches(e)[0];
+  let dx = touch.clientX - joyStartX;
+  let dy = touch.clientY - joyStartY;
+  const dist = Math.sqrt(dx*dx + dy*dy);
+  const maxDist = 44;
+  if (dist > maxDist) {
+    dx = dx / dist * maxDist;
+    dy = dy / dist * maxDist;
+  }
+  joyDX = dx / maxDist;
+  joyDY = dy / maxDist;
+  joyKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+}
+
+function onJoyEnd() {
+  joystickActive = false;
+  joyDX = 0; joyDY = 0;
+  joyKnob.style.transform = 'translate(-50%,-50%)';
+}
+
+// Listen on the whole body so user can place joystick anywhere
+document.addEventListener('touchstart', onJoyStart, { passive: true });
+document.addEventListener('touchmove',  onJoyMove,  { passive: false });
+document.addEventListener('touchend',   onJoyEnd);
+
+// ══════════════════════════════════════════════════════════════════════════════
+// BUTTON HANDLERS
+// ══════════════════════════════════════════════════════════════════════════════
+document.getElementById('btn-join').addEventListener('click', () => {
+  const name = document.getElementById('name-input').value.trim() || myId || 'Player';
+  localStorage.setItem('ccr-name', name);
+  sendMsg({ type: 'setName', name });
+});
+
+document.getElementById('btn-start-lobby').addEventListener('click', () => {
+  sendMsg({ type: 'startGame' });
+});
+
+document.getElementById('btn-play-again').addEventListener('click', () => {
+  sendMsg({ type: 'startGame' });
+});
+
+// ══════════════════════════════════════════════════════════════════════════════
+// CAMERA FOLLOW (smooth)
+// ══════════════════════════════════════════════════════════════════════════════
+const CAM_OFFSET = new THREE.Vector3(0, 20, 18);
+const CAM_LERP = 0.05;
+
+function updateCamera() {
+  const target = new THREE.Vector3(myX, 0, myZ);
+  const desired = target.clone().add(CAM_OFFSET);
+  camera.position.lerp(desired, CAM_LERP);
+  camera.lookAt(target.x, 0, target.z);
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SYNERGY INDICATOR
+// ══════════════════════════════════════════════════════════════════════════════
+let currentSynergy = 0;
+let synergyTimeout = null;
+function updateSynergyUI(syn) {
+  if (syn === currentSynergy) return;
+  currentSynergy = syn;
+  const el = document.getElementById('synergy-indicator');
+  const mult = document.getElementById('syn-mult');
+  if (syn > 0) {
+    const m = 1 + syn * 0.5;
+    mult.textContent = m.toFixed(1);
+    el.classList.add('show');
+    clearTimeout(synergyTimeout);
+  } else {
+    synergyTimeout = setTimeout(() => el.classList.remove('show'), 2000);
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// MAIN GAME LOOP
+// ══════════════════════════════════════════════════════════════════════════════
+let lastTime = performance.now();
+let sendTimer = 0;
+const SEND_INTERVAL = 1 / 20; // 20Hz position sends
+
+// Scheduled crystal rotate speed
+const CRYSTAL_SPIN = { common: 1.0, rare: 1.6, epic: 2.5 };
+
+function gameLoop() {
+  requestAnimationFrame(gameLoop);
+  const now = performance.now();
+  const dt = Math.min((now - lastTime) / 1000, 0.1);
+  lastTime = now;
+
+  // ── Input & movement ─────────────────────────────────────────────
+  if (gameState === 'playing' && myMesh) {
+    let moveX = 0, moveZ = 0;
+
+    // Keyboard
+    if (keys['ArrowLeft']  || keys['a'] || keys['A']) moveX -= 1;
+    if (keys['ArrowRight'] || keys['d'] || keys['D']) moveX += 1;
+    if (keys['ArrowUp']    || keys['w'] || keys['W']) moveZ -= 1;
+    if (keys['ArrowDown']  || keys['s'] || keys['S']) moveZ += 1;
+
+    // Touch joystick
+    if (joystickActive) {
+      moveX += joyDX;
+      moveZ += joyDY;
+    }
+
+    if (moveX !== 0 || moveZ !== 0) {
+      const len = Math.sqrt(moveX*moveX + moveZ*moveZ);
+      moveX /= len; moveZ /= len;
+    }
+
+    myX = Math.max(-ARENA_HALF + 0.6, Math.min(ARENA_HALF - 0.6, myX + moveX * MOVE_SPEED * dt));
+    myZ = Math.max(-ARENA_HALF + 0.6, Math.min(ARENA_HALF - 0.6, myZ + moveZ * MOVE_SPEED * dt));
+
+    myMesh.position.set(myX, 0.6 + Math.sin(now * 0.002 + myMesh.userData.floatOffset) * 0.12, myZ);
+
+    // Rotate orb
+    myMesh.rotation.y += dt * 0.8;
+    myMesh.userData.ring.rotation.z += dt * 1.2;
+
+    // Send position to server
+    sendTimer -= dt;
+    if (sendTimer <= 0) {
+      sendTimer = SEND_INTERVAL;
+      sendMsg({ type: 'move', x: myX, z: myZ });
+    }
+
+    updateSynergyUI(0); // actual synergy comes from server
+  }
+
+  // ── Remote player interpolation ──────────────────────────────────
+  for (const rp of Object.values(remotePlayers)) {
+    const m = rp.mesh;
+    m.position.x += (rp.targetX - m.position.x) * INTERP_FACTOR;
+    m.position.z += (rp.targetZ - m.position.z) * INTERP_FACTOR;
+    m.position.y = 0.6 + Math.sin(now * 0.002 + m.userData.floatOffset) * 0.12;
+    m.rotation.y += dt * 0.8;
+    m.userData.ring.rotation.z += dt * 1.2;
+
+    // Synergy glow
+    const syn = rp.synergy || 0;
+    m.userData.bodyMat.emissiveIntensity = 0.6 + syn * 0.3;
+    m.userData.pLight.intensity = 1.5 + syn * 0.8;
+  }
+
+  // ── Crystal animation ────────────────────────────────────────────
+  for (const cm of Object.values(crystalMeshes)) {
+    if (!cm.mesh || !cm.alive) continue;
+    const ud = cm.mesh.userData;
+    const speed = CRYSTAL_SPIN[ud.type] || 1;
+    cm.mesh.rotation.y += dt * speed;
+    const baseY = ud.shape.h / 2 + 0.1;
+    cm.mesh.position.y = baseY + Math.sin(now * 0.0015 + ud.floatOffset) * 0.18;
+    ud.pLight.intensity = 0.8 + Math.sin(now * 0.003 + ud.floatOffset) * 0.3;
+  }
+
+  // ── Sparkle ambient ──────────────────────────────────────────────
+  const spArr = sparkleGeo.attributes.position.array;
+  for (let i = 0; i < SPARKLE_COUNT; i++) {
+    spPhase[i] += dt * 0.6;
+    spArr[i*3+1] = (Math.sin(spPhase[i]) * 0.5 + 0.5) * 4;
+  }
+  sparkleGeo.attributes.position.needsUpdate = true;
+  sparkleMat.opacity = 0.3 + Math.sin(now * 0.001) * 0.15;
+
+  // ── Collect particles ────────────────────────────────────────────
+  updateParticles(dt);
+
+  // ── Camera ───────────────────────────────────────────────────────
+  updateCamera();
+
+  renderer.render(scene, camera);
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════════════════════════════════════════
+connect();
+gameLoop();
+</script>
+</body>
+</html>

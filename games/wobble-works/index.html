@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#1a1d28">
+<title>Wobble Works 3D · 搭把手</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='34' r='20' fill='%23ffd700'/%3E%3Ccircle cx='25' cy='30' r='3.5' fill='%23111'/%3E%3Ccircle cx='39' cy='30' r='3.5' fill='%23111'/%3E%3Cpolygon points='26,16 32,8 38,16 35,14 32,18 29,14' fill='%23ff9100'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ BOARD VIEW (TV / PC SPECTATOR & HOST) ============ -->
+<div id="board" class="view">
+  <header class="b-head">
+    <div class="brand">
+      <span class="brand-mark">👑</span>
+      <div>
+        <div class="brand-en">WOBBLE WORKS 3D</div>
+        <div class="brand-cn">搭把手 · 3D物理游乐场</div>
+      </div>
+    </div>
+    <div class="hud">
+      <span class="pill crown-pill" id="b-crown">👑 MVP: —</span>
+      <span class="pill target-pill" id="b-target">🎯 TARGET: SUMMIT BELL</span>
+      <span class="pill" id="b-players">👥 0 players</span>
+      <span class="pill" id="b-rtt">📶 LAN</span>
+    </div>
+  </header>
+
+  <main class="b-main">
+    <section class="stage-wrap">
+      <div id="stage3d"></div>
+      <div id="b-toast" class="toast"></div>
+
+      <!-- Scorer Celebration Banner -->
+      <div id="win-banner" class="win-banner hidden">
+        <div class="win-card">
+          <div class="win-crown">👑</div>
+          <div class="win-kicker">GOAL SCORED! · 进球得分</div>
+          <h2 id="win-title">Wobbler 1</h2>
+          <p id="win-subtitle">Slam dunked into SUMMIT BELL! (+100 PTS)</p>
+          <div class="win-assist" id="win-assist"></div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="b-side">
+      <div class="card join-card">
+        <h3>① Scan to Join</h3>
+        <p class="muted">Any phone on same Wi-Fi. No install required.</p>
+        <div id="qr" class="qr"></div>
+        <div id="join-url" class="join-url"></div>
+        <button id="copy-url" class="btn small">Copy link</button>
+        <p class="muted join-hint">Phone says <b>site can't be reached</b>? Open <span id="lan-port-num">port 3000</span> in PC firewall
+          (<code id="lan-port-cmd">sudo firewall-cmd --zone=public --add-port=3000/tcp</code>) on same Wi-Fi.</p>
+      </div>
+
+      <div class="card">
+        <h3>② Room Controls</h3>
+        <div class="btn-row">
+          <button id="btn-next-goal" class="btn">🎯 Next Goal</button>
+          <button id="btn-drop-ball" class="btn ghost">⚡ Drop Ball</button>
+        </div>
+        <div class="btn-row">
+          <button id="btn-add-bot" class="btn ghost">+ Add Bot</button>
+          <button id="btn-toggle-cam" class="btn ghost">🎥 Toggle Cam</button>
+        </div>
+      </div>
+
+      <div class="card leader-card">
+        <h3>③ Live Leaderboard</h3>
+        <div id="leaderboard" class="leaderboard-list">
+          <div class="lb-empty muted">Waiting for wobblers...</div>
+        </div>
+      </div>
+
+      <div class="card quick">
+        <h3>PC Host Controls</h3>
+        <p class="muted"><b>WASD</b> run · <b>SPACE</b> jump · <b>E</b> lift overhead · <b>F</b> throw · <b>G</b> grab · <b>Mouse</b> orbit view</p>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<!-- ============ CONTROLLER VIEW (MOBILE PHONE) ============ -->
+<div id="controller" class="view">
+  <div id="mini3d"></div>
+
+  <!-- Top Status Bar -->
+  <header class="c-head">
+    <div class="c-me" id="c-me">
+      <span class="c-avatar-badge" id="c-avatar-badge"></span>
+      <span class="c-name" id="c-name">You</span>
+      <span class="c-score" id="c-score">⭐ 0</span>
+    </div>
+    <div class="c-target" id="c-target">🎯 TARGET 25m ↗</div>
+  </header>
+
+  <div id="c-toast" class="toast"></div>
+
+  <!-- Big celebration flash on phone -->
+  <div id="c-score-popup" class="c-score-popup hidden">
+    <div class="popup-box">
+      <div class="popup-icon">👑</div>
+      <div class="popup-txt" id="c-popup-txt">+100 GOAL!</div>
+    </div>
+  </div>
+
+  <!-- Mobile On-Screen Touch Controls -->
+  <div class="touch-container">
+    <!-- Left: Virtual Joystick Zone -->
+    <div id="joy-zone" class="joy-zone">
+      <div id="joy-base" class="joy-base">
+        <div id="joy-stick" class="joy-stick"></div>
+      </div>
+      <div class="joy-tip">DRAG TO RUN</div>
+    </div>
+
+    <!-- Right: Action Buttons -->
+    <div class="action-zone">
+      <button id="btn-throw" class="action-btn btn-throw">
+        <span class="icon">🚀</span>
+        <span class="lbl">THROW</span>
+      </button>
+      <button id="btn-lift" class="action-btn btn-lift">
+        <span class="icon">🏋️</span>
+        <span class="lbl">LIFT</span>
+      </button>
+      <button id="btn-grab" class="action-btn btn-grab">
+        <span class="icon">🖐️</span>
+        <span class="lbl">GRAB</span>
+      </button>
+      <button id="btn-jump" class="action-btn btn-jump">
+        <span class="icon">⤴</span>
+        <span class="lbl">JUMP</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Bottom Quick Call Wheel -->
+  <footer class="c-footer">
+    <button class="call-btn" data-call="👑 MINE">👑 MINE</button>
+    <button class="call-btn" data-call="🚀 PASS">🚀 PASS</button>
+    <button class="call-btn" data-call="💥 TACKLE">💥 TACKLE</button>
+    <button class="call-btn" data-call="😂 LOL">😂 LOL</button>
+    <button class="call-btn" data-call="👋 HEY">👋 HEY</button>
+  </footer>
+
+  <!-- Screen Dimmed / AFK / Reconnecting Overlay -->
+  <div id="sleep-overlay" class="sleep-overlay hidden">
+    <div class="sleep-card">
+      <div class="sleep-icon">💤</div>
+      <h2>PAUSED / AFK</h2>
+      <p class="muted">Your wobbler is sleeping safely in the 3D world.<br>Friends can still bump or stack on you!</p>
+      <button id="btn-wake" class="btn big">✨ TAP TO RESUME</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ JOIN GATE MODAL ============ -->
+<div id="join-gate" class="gate hidden">
+  <div class="gate-card">
+    <div class="gate-logo">👑</div>
+    <h1>WOBBLE WORKS 3D</h1>
+    <p class="gate-cn">搭把手 · 3D物理大乱斗</p>
+    <p class="gate-sub">Enter your wobbler nickname to join:</p>
+    <input id="gate-name" maxlength="12" placeholder="Nickname..." autocomplete="off">
+    <div id="gate-emojis" class="emoji-row"></div>
+    <button id="gate-go" class="btn big">ENTER 3D PLAYGROUND →</button>
+    <p class="gate-note" id="gate-note"></p>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="config.js"></script>
+<script src="vendor/three.min.js"></script>
+<script src="vendor/qrcode.js"></script>
+<script src="levels3d.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

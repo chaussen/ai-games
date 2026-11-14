@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Firefly Relay — Wireframes &amp; Design Spec</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23070b1c'/%3E%3Ctext x='16' y='25' font-size='23' text-anchor='middle' fill='%23ffd166'%3E%E2%9C%A6%3C/text%3E%3C/svg%3E">
+<style>
+:root{--bg:#070b1c;--bg2:#0e1633;--ink:#f3f5ff;--muted:#9aa6c8;--warm:#ffd166;
+--mint:#7ae7c7;--pink:#ff8fab;--line:rgba(255,255,255,.13);--glass:rgba(255,255,255,.06);
+--font:'Avenir Next','Segoe UI',system-ui,-apple-system,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:radial-gradient(1100px 700px at 50% 0%,#182552 0%,var(--bg2) 42%,var(--bg) 100%);
+color:var(--ink);font-family:var(--font);line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:clamp(24px,5vw,64px) 22px 90px}
+a{color:var(--mint)}
+header.doc{border-bottom:1px solid var(--line);padding-bottom:28px;margin-bottom:38px}
+.kicker{font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--warm);font-weight:900}
+h1{font-size:clamp(2rem,5.5vw,3.4rem);font-weight:900;letter-spacing:-.02em;line-height:1.1;margin:10px 0 6px}
+h1 em{font-style:normal;color:var(--warm)}
+.lede{font-size:1.05rem;color:#c6cfee;max-width:760px}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.meta span{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+background:var(--glass);border:1px solid var(--line);padding:6px 12px;border-radius:20px;font-weight:800}
+h2{font-size:clamp(1.3rem,3vw,1.9rem);font-weight:900;margin:0 0 6px;letter-spacing:-.01em}
+.sec{margin:52px 0 0}
+.sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:22px}
+.sec-num{font-size:.78rem;font-weight:900;color:var(--warm);letter-spacing:.16em}
+.sec-note{color:var(--muted);font-size:.88rem}
+p.body{color:#c6cfee;max-width:820px;margin-bottom:14px;font-size:.94rem}
+.pitch{background:linear-gradient(140deg,rgba(255,209,102,.12),rgba(122,231,199,.06));
+border:1px solid rgba(255,209,102,.3);border-radius:18px;padding:22px 26px;font-size:1.1rem}
+.pitch b{color:var(--warm)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.card{background:linear-gradient(160deg,rgba(30,42,86,.55),rgba(12,18,42,.75));
+border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.card-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card-head b{font-size:.92rem;font-weight:900}
+.tag{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;font-weight:900;
+color:#0b1020;background:var(--mint);padding:4px 9px;border-radius:20px}
+.tag.tv{background:var(--blue)}.tag.phone{background:var(--pink)}.tag.state{background:var(--warm)}
+.mock{border-radius:12px;overflow:hidden;background:#080d22;border:1px solid rgba(255,255,255,.09)}
+ul.notes{list-style:none;font-size:.8rem;color:var(--muted);display:flex;flex-direction:column;gap:5px}
+ul.notes li{padding-left:14px;position:relative}
+ul.notes li:before{content:'✦';position:absolute;left:0;color:var(--warm);font-size:.65rem;top:.32em}
+ul.notes li b{color:#dfe5ff;font-weight:700}
+
+/* mini TV */
+.mini-tv{aspect-ratio:16/9;display:flex;flex-direction:column;padding:8px 10px;position:relative}
+.m-hud{display:flex;justify-content:space-between;align-items:center;font-size:.5rem;letter-spacing:.08em;
+text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:5px;font-weight:800}
+.m-hud .m-brand{color:var(--ink);font-size:.62rem;letter-spacing:0}
+.m-hud .m-cells{display:flex;gap:9px}
+.m-hud .m-cells b{color:var(--warm);font-size:.62rem;display:block}
+.m-stage{flex:1;position:relative;display:grid;place-items:center;overflow:hidden}
+.m-ring{position:absolute;inset:12% 20%;border:1px dashed rgba(255,209,102,.18);border-radius:50%}
+.m-dot{position:absolute;width:14px;height:14px;border-radius:50%;border:2px solid currentColor;
+background:rgba(255,255,255,.07);box-shadow:0 0 12px currentColor}
+.m-dot.on{background:currentColor;box-shadow:0 0 0 5px rgba(255,209,102,.15),0 0 22px currentColor;transform:scale(1.25)}
+.m-center{text-align:center;z-index:2;font-size:.66rem;font-weight:900;line-height:1.35;text-shadow:0 2px 12px #000}
+.m-center small{display:block;font-size:.5rem;color:var(--muted);font-weight:700;letter-spacing:.04em;text-transform:none}
+.m-foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);
+padding-top:5px;font-size:.48rem;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;font-weight:800}
+.m-bar{height:4px;width:52px;background:rgba(255,255,255,.1);border-radius:6px;overflow:hidden}
+.m-bar i{display:block;height:100%;width:78%;background:linear-gradient(90deg,var(--pink),var(--warm),var(--mint))}
+.m-qr{position:absolute;inset:0;background:rgba(5,8,22,.9);display:flex;align-items:center;
+justify-content:center;gap:12px;z-index:3;padding:10px}
+.m-qrbox{width:44px;height:44px;background:#fff;border-radius:5px;
+background-image:repeating-linear-gradient(0deg,#111 0 3px,#fff 3px 6px),repeating-linear-gradient(90deg,#111 0 3px,#fff 3px 6px);
+background-blend-mode:multiply}
+.m-qrtext{font-size:.56rem;font-weight:800;line-height:1.5}
+.m-qrtext code{display:block;color:var(--warm);font-size:.5rem;margin-top:3px;word-break:break-all}
+.m-chips{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+.m-chips i{font-style:normal;font-size:.46rem;padding:2px 6px;border-radius:10px;border:1px solid currentColor}
+.m-end{position:absolute;inset:0;background:rgba(5,8,22,.9);z-index:3;display:flex;flex-direction:column;
+align-items:center;justify-content:center;gap:5px;text-align:center}
+.m-end .star{color:var(--warm);font-size:1rem;text-shadow:0 0 14px var(--warm)}
+.m-end b{font-size:.68rem}.m-end small{font-size:.48rem;color:var(--muted)}
+.m-end .stats{display:flex;gap:6px;margin-top:3px}
+.m-end .stats div{background:var(--glass);border:1px solid var(--line);border-radius:5px;padding:3px 6px;font-size:.46rem}
+.m-end .stats b{display:block;color:var(--warm);font-size:.6rem}
+
+/* mini phone */
+.mini-phone{width:132px;aspect-ratio:9/18.5;margin:12px auto;border:5px solid #232c52;border-radius:20px;
+background:radial-gradient(circle at 50% 25%,#18224c,#080d22);display:flex;flex-direction:column;
+padding:9px 8px;position:relative;overflow:hidden}
+.mp-head{display:flex;align-items:center;gap:5px;border-bottom:1px solid var(--line);padding-bottom:6px}
+.mp-av{width:17px;height:17px;border-radius:50%;background:rgba(255,209,102,.25);border:1px solid var(--warm);
+display:grid;place-items:center;font-size:.5rem}
+.mp-head b{font-size:.52rem}.mp-head small{font-size:.42rem;color:var(--muted);display:block}
+.mp-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
+.mp-orb{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:.7rem;
+background:radial-gradient(circle at 35% 30%,var(--warm),rgba(255,170,80,.25));box-shadow:0 0 14px rgba(255,209,102,.7)}
+.mp-prompt{font-size:.6rem;font-weight:900;line-height:1.2}
+.mp-hint{font-size:.44rem;color:var(--muted);line-height:1.35}
+.mp-btn{width:66px;height:66px;border-radius:50%;border:2px solid rgba(255,255,255,.2);
+background:rgba(255,255,255,.05);display:grid;place-items:center;font-size:.62rem;font-weight:900;line-height:1.1}
+.mp-btn small{display:block;font-size:.36rem;color:var(--muted);font-weight:700}
+.mp-btn.ready{background:rgba(255,209,102,.28);border-color:var(--warm);color:#fff;
+box-shadow:0 0 0 6px rgba(255,209,102,.12),0 0 24px rgba(255,209,102,.6)}
+.mp-btn.idle{opacity:.5}
+.mp-bar{width:66px;height:4px;border-radius:6px;background:rgba(255,255,255,.1);overflow:hidden}
+.mp-bar i{display:block;height:100%;width:70%;background:linear-gradient(90deg,var(--pink),var(--warm),var(--mint))}
+.mp-foot{display:flex;justify-content:space-around;border-top:1px solid var(--line);padding-top:5px}
+.mp-foot div{text-align:center;font-size:.4rem;color:var(--muted);letter-spacing:.06em}
+.mp-foot b{display:block;color:var(--ink);font-size:.55rem}
+.mini-phone .gate{position:absolute;inset:0;background:rgba(8,12,30,.96);display:flex;flex-direction:column;
+align-items:center;justify-content:center;gap:7px;padding:12px;text-align:center}
+.gate .gm{font-size:1.2rem;color:var(--warm)}.gate b{font-size:.68rem}
+.gate small{font-size:.44rem;color:var(--muted);line-height:1.4}
+.gate .inp{width:100%;border:1px solid var(--line);background:rgba(255,255,255,.06);border-radius:5px;padding:5px;font-size:.45rem;color:var(--muted)}
+.gate .go{width:100%;background:var(--warm);color:#221704;border-radius:6px;padding:5px;font-size:.48rem;font-weight:900}
+.mini-phone .rend{position:absolute;inset:0;background:rgba(8,12,30,.94);display:flex;flex-direction:column;
+align-items:center;justify-content:center;gap:6px;text-align:center;padding:12px}
+.rend .rs{font-size:1.2rem;color:var(--warm)}.rend b{font-size:.68rem}.rend small{font-size:.44rem;color:var(--muted);line-height:1.4}
+
+/* flow */
+.flow{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap;margin-top:18px}
+.flow .step{flex:1;min-width:140px;background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:14px}
+.flow .step small{font-size:.6rem;color:var(--warm);font-weight:900;letter-spacing:.14em}
+.flow .step b{display:block;font-size:.9rem;margin:4px 0 5px}
+.flow .step p{font-size:.76rem;color:var(--muted)}
+.flow .arrow{display:grid;place-items:center;color:var(--warm);font-size:1.4rem;font-weight:900}
+table{width:100%;border-collapse:collapse;margin-top:16px;font-size:.84rem}
+th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--warm);font-weight:900}
+td{color:#c6cfee}td b{color:var(--ink)}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}
+.rule{background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:14px}
+.rule b{display:block;color:var(--warm);font-size:.9rem;margin-bottom:4px}
+.rule span{font-size:.8rem;color:var(--muted)}
+.arch{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:center;margin-top:16px}
+.arch .box{background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center}
+.arch .box b{display:block;font-size:.9rem}.arch .box small{font-size:.72rem;color:var(--muted)}
+.arch .link{color:var(--warm);font-size:.78rem;text-align:center;font-weight:800}
+.src{columns:2;column-gap:32px;font-size:.8rem;color:var(--muted);margin-top:12px}
+.src a{display:block;break-inside:avoid;padding:3px 0;color:#c6cfee;text-decoration:none;border-bottom:1px dotted rgba(255,255,255,.12)}
+.src a:hover{color:var(--mint)}
+footer.doc{margin-top:56px;border-top:1px solid var(--line);padding-top:18px;font-size:.78rem;color:var(--muted)}
+@media(max-width:720px){.src{columns:1}.arch{grid-template-columns:1fr}.arch .link{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+  <div class="kicker">Design spec · v0.1 · exploratory prototype</div>
+  <h1>Firefly Relay <em>✦</em><br>萤火接力</h1>
+  <p class="lede">A one-button co-op game for the living room. One screen is the night sky; every phone (or laptop) is a lantern. A single spark travels from lantern to lantern — tap when yours lights up, and the whole family keeps the chain alive.</p>
+  <div class="meta">
+    <span>2–8 players, mixed ages</span><span>PC + phones together</span><span>Home Wi-Fi only</span>
+    <span>Zero install · zero internet</span><span>60-second rounds</span>
+  </div>
+</header>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">00</span><h2>The 30-second pitch</h2></div>
+  <div class="pitch">Think <b>Spaceteam's "everyone shouts together"</b> energy crossed with <b>the one-tap simplicity of a rhythm game</b>, but with no losers, no reading, and no downloads. One shared object — the spark — belongs to the whole family. Nobody can win alone, nobody gets eliminated, and every 60-second round leaves a permanent star in your family's sky. That last part is the hook: <b>"just one more round."</b></div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Screen inventory</h2><span class="sec-note">Nine states across two device roles. Everything else is decoration.</span></div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-head"><b>① Board · Lobby</b><span class="tag tv">TV / PC</span></div>
+      <div class="mock"><div class="mini-tv">
+        <div class="m-hud"><span class="m-brand">✦ Firefly Relay</span><span class="m-cells"><span>TIME<b>60</b></span><span>SCORE<b>0</b></span><span>CHAIN<b>×0</b></span></span></div>
+        <div class="m-stage">
+          <div class="m-ring"></div>
+          <div class="m-dot" style="color:#ffd166;left:22%;top:20%"></div>
+          <div class="m-dot" style="color:#7ae7c7;left:72%;top:20%"></div>
+          <div class="m-dot" style="color:#ff8fab;left:22%;top:72%"></div>
+          <div class="m-dot" style="color:#8ab6ff;left:72%;top:72%"></div>
+          <div class="m-qr">
+            <div class="m-qrbox"></div>
+            <div class="m-qrtext">SCAN TO JOIN<code>http://10.0.0.58:3000/</code>
+              <div class="m-chips"><i style="color:#ffd166">🦊 Mia</i><i style="color:#7ae7c7">🐻 Dad</i><i style="color:#ff8fab">🌙 Nana</i></div>
+            </div>
+          </div>
+        </div>
+        <div class="m-foot"><span>SHARED GLOW <span class="m-bar"><i></i></span></span><span>4 lanterns connected</span><span>✦ 12 stars</span></div>
+      </div></div>
+      <ul class="notes"><li><b>QR + plain URL</b> — the Jackbox / AirConsole join pattern, but the code is generated locally so it works with the router unplugged.</li><li><b>Player chips</b> use each lantern's colour, so a 5-year-old can find themselves without reading.</li><li>Host controls: Start, add demo firefly, reset sky.</li></ul>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><b>② Phone · Join</b><span class="tag phone">PHONE</span></div>
+      <div class="mock" style="display:grid;place-items:center;padding:10px"><div class="mini-phone" style="margin:0">
+        <div class="mp-head"><div class="mp-av">🦊</div><div><b>…</b><small>connecting…</small></div></div>
+        <div class="mp-body"><div class="mp-orb">✦</div><div class="mp-prompt">…</div></div>
+        <div class="mp-foot"><div>CHAIN<b>×0</b></div><div>SCORE<b>0</b></div><div>PASSES<b>0</b></div></div>
+        <div class="gate"><div class="gm">✦</div><b>Firefly Relay</b><small>What should we call you?</small>
+          <div class="inp">e.g. Mia</div><div style="font-size:.7rem">🦊 🐻 🐼 🐨 🦉 🐢</div><div class="go">I'm in ✦</div>
+          <small>When <b>your</b> lantern glows, tap. That's it.</small></div>
+      </div></div>
+      <ul class="notes"><li><b>Name + one emoji, once.</b> Saved on the device — repeat visits auto-join with zero taps.</li><li>No account, no email, no age gate, no tutorial.</li><li>The entire rule set fits in one sentence under the button.</li></ul>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><b>③ Phone · Waiting</b><span class="tag state">STATE</span></div>
+      <div class="mock" style="display:grid;place-items:center;padding:10px"><div class="mini-phone" style="margin:0">
+        <div class="mp-head"><div class="mp-av">🦊</div><div><b>Mia</b><small>you are lantern 🟡</small></div></div>
+        <div class="mp-body"><div class="mp-orb">✦</div>
+          <div class="mp-prompt">Watch the big screen…</div>
+          <div class="mp-hint">Dad is up — cheer them on!</div>
+          <div class="mp-btn idle">WAIT<small>watch the big screen</small></div><div class="mp-bar"><i style="width:0"></i></div>
+        </div>
+        <div class="mp-foot"><div>CHAIN<b>×7</b></div><div>SCORE<b>2,480</b></div><div>PASSES<b>3</b></div></div>
+      </div></div>
+      <ul class="notes"><li><b>Mild information asymmetry:</b> the board shows the whole constellation; your phone shows only your lantern.</li><li>Naming who is up nudges the family to talk to each other — the social moment is the game.</li><li>Button is deliberately dim so nobody taps by accident and breaks the chain.</li></ul>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><b>④ Phone · Your turn</b><span class="tag state">STATE</span></div>
+      <div class="mock" style="display:grid;place-items:center;padding:10px"><div class="mini-phone" style="margin:0">
+        <div class="mp-head"><div class="mp-av">🦊</div><div><b>Mia</b><small>Go! · level 3</small></div></div>
+        <div class="mp-body"><div class="mp-orb">✦</div>
+          <div class="mp-prompt">YOUR LANTERN IS GLOWING</div>
+          <div class="mp-hint">Tap before the ring closes.</div>
+          <div class="mp-btn ready">TAP NOW!<small>your lantern is glowing</small></div><div class="mp-bar"><i></i></div>
+        </div>
+        <div class="mp-foot"><div>CHAIN<b>×8</b></div><div>SCORE<b>3,120</b></div><div>PASSES<b>4</b></div></div>
+      </div></div>
+      <ul class="notes"><li><b>One button. One verb.</b> No joystick, no gestures, no menus — a grandparent and a 5-year-old are equally good at it.</li><li>Haptic tap + soft chime give instant feedback; the shrinking bar is the only "timer" a player needs.</li><li>Timing is server-authoritative with clock-sync compensation, so a congested 2.4 GHz band doesn't decide who wins.</li></ul>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><b>⑤ Board · Playing</b><span class="tag tv">TV / PC</span></div>
+      <div class="mock"><div class="mini-tv">
+        <div class="m-hud"><span class="m-brand">✦ Firefly Relay</span><span class="m-cells"><span>TIME<b>38</b></span><span>SCORE<b>3,120</b></span><span>CHAIN<b>×8</b></span><span>LVL<b>3</b></span></span></div>
+        <div class="m-stage">
+          <div class="m-ring"></div>
+          <svg viewBox="0 0 100 56" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%">
+            <line x1="22" y1="16" x2="78" y2="16" stroke="rgba(255,222,150,.6)" stroke-width=".5"/>
+            <line x1="78" y1="16" x2="78" y2="44" stroke="rgba(255,222,150,.6)" stroke-width=".5"/>
+            <line x1="78" y1="44" x2="22" y2="44" stroke="rgba(255,222,150,.6)" stroke-width=".5"/>
+          </svg>
+          <div class="m-dot" style="color:#ffd166;left:19%;top:22%"></div>
+          <div class="m-dot on" style="color:#7ae7c7;left:75%;top:22%"></div>
+          <div class="m-dot" style="color:#ff8fab;left:75%;top:70%"></div>
+          <div class="m-dot" style="color:#8ab6ff;left:19%;top:70%"></div>
+          <div class="m-center">Dad, your turn!<small>tap before the ring closes</small></div>
+        </div>
+        <div class="m-foot"><span>SHARED GLOW <span class="m-bar"><i></i></span></span><span>Level 3 · 8 passes · 4 lanterns</span><span>✦ 12 stars</span></div>
+      </div></div>
+      <ul class="notes"><li><b>The constellation draws itself.</b> Every successful pass adds a glowing line — the family literally builds a picture together.</li><li>A shrinking ring on the active lantern is the shared countdown; the spark visibly flies between devices.</li><li>Chain multiplier, level and shared glow meter give three reasons to care at a glance.</li></ul>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><b>⑥ HARMONY event</b><span class="tag state">PEAK</span></div>
+      <div class="mock" style="display:grid;grid-template-columns:1fr auto;gap:8px;padding:10px;align-items:center">
+        <div class="mini-tv" style="border:1px solid var(--line);border-radius:8px">
+          <div class="m-hud"><span class="m-brand">✦ Firefly Relay</span><span class="m-cells"><span>CHAIN<b>×9</b></span><span>×2</span></span></div>
+          <div class="m-stage"><div class="m-ring"></div>
+            <div class="m-dot on" style="color:#ffd166;left:19%;top:22%"></div>
+            <div class="m-dot on" style="color:#7ae7c7;left:75%;top:22%"></div>
+            <div class="m-dot on" style="color:#ff8fab;left:75%;top:70%"></div>
+            <div class="m-dot on" style="color:#8ab6ff;left:19%;top:70%"></div>
+            <div class="m-center">HARMONY — EVERYONE TAP!<small>all lanterns at once · double points</small></div>
+          </div>
+          <div class="m-foot"><span>SHARED GLOW</span><span>bonus round</span></div>
+        </div>
+        <div class="mini-phone" style="margin:0;width:92px;border-width:4px">
+          <div class="mp-head"><div class="mp-av">🦊</div><div><b>Mia</b><small>Go!</small></div></div>
+          <div class="mp-body"><div class="mp-orb">✦</div><div class="mp-prompt" style="font-size:.52rem">HARMONY!</div>
+            <div class="mp-btn ready" style="width:52px;height:52px;font-size:.48rem">TAP<small>together!</small></div></div>
+          <div class="mp-foot"><div>CHAIN<b>×9</b></div></div>
+        </div>
+      </div>
+      <ul class="notes"><li><b>Every 9th pass, everyone taps at once.</b> This is the "scream and laugh" beat and the variable-ratio reward that makes the loop sticky.</li><li>Forgiving by design: a majority hit still counts. Nobody is the reason the family lost.</li><li>Chord chime + full-screen gold flash = a tiny shared celebration.</li></ul>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><b>⑦ Board · Round end</b><span class="tag tv">TV / PC</span></div>
+      <div class="mock"><div class="mini-tv">
+        <div class="m-hud"><span class="m-brand">✦ Firefly Relay</span><span class="m-cells"><span>TIME<b>0</b></span><span>SCORE<b>8,940</b></span></span></div>
+        <div class="m-stage"><div class="m-ring"></div>
+          <div class="m-dot" style="color:#ffd166;left:19%;top:22%"></div><div class="m-dot" style="color:#7ae7c7;left:75%;top:22%"></div>
+          <div class="m-dot" style="color:#ff8fab;left:75%;top:70%"></div><div class="m-dot" style="color:#8ab6ff;left:19%;top:70%"></div>
+          <div class="m-end"><div class="star">✦</div><b>The sky got brighter</b><small>Every round adds a star to your family sky.</small>
+            <div class="stats"><div>SCORE<b>8,940</b></div><div>CHAIN<b>×21</b></div><div>PASSES<b>31</b></div><div>STARS<b>13</b></div></div>
+            <div class="m-chips"><i style="color:#ffd166">🦊 9 passes</i><i style="color:#7ae7c7">🐻 8 passes</i><i style="color:#ff8fab">🌙 7 passes</i></div>
+            <div style="font-size:.48rem;background:var(--warm);color:#221704;padding:3px 10px;border-radius:6px;font-weight:900;margin-top:3px">✦ Play again</div>
+          </div>
+        </div>
+        <div class="m-foot"><span>SHARED GLOW</span><span>Round complete</span><span>✦ 13 stars</span></div>
+      </div></div>
+      <ul class="notes"><li><b>Only positive stats are shown.</b> No miss counts, no ranking, no MVP — deliberate for mixed-age families.</li><li>One new star is banked to disk, so the sky grows across evenings, not just rounds.</li><li>Single "Play again" button → zero friction into the next 60 seconds.</li></ul>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><b>⑧ Phone · Round end</b><span class="tag phone">PHONE</span></div>
+      <div class="mock" style="display:grid;place-items:center;padding:10px"><div class="mini-phone" style="margin:0">
+        <div class="mp-head"><div class="mp-av">🦊</div><div><b>Mia</b><small>round complete</small></div></div>
+        <div class="mp-body"><div class="mp-orb">✦</div><div class="mp-prompt">…</div></div>
+        <div class="mp-foot"><div>CHAIN<b>×21</b></div><div>SCORE<b>8,940</b></div><div>PASSES<b>9</b></div></div>
+        <div class="rend"><div class="rs">✦</div><b>Round complete!</b><small>Team score <b>8,940</b><br>best chain <b>×21</b></small>
+          <small>Look at the big screen — the host starts the next round.</small></div>
+      </div></div>
+      <ul class="notes"><li>Phones never own the "start" button, so nobody has to pass a device around.</li><li>Keeps the group oriented toward the shared screen instead of drifting into individual phones.</li></ul>
+    </div>
+
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>The core loop</h2><span class="sec-note">~1.4 s per pass at level 1, tightening to ~0.5 s at level 8.</span></div>
+  <div class="flow">
+    <div class="step"><small>01 · SPARK LANDS</small><b>One lantern lights</b><p>Server picks a target and opens a timing window. The whole room can see whose turn it is.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><small>02 · TAP</small><b>One button, one tap</b><p>That player taps before the ring closes. Everyone else watches and cheers.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><small>03 · CHAIN</small><b>Combo grows, line drawn</b><p>Score = base × chain (capped ×8). A new glowing line joins the constellation.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><small>04 · ESCALATE</small><b>Every 8 passes, faster</b><p>Window shrinks ~105 ms per level; every 9th pass is a HARMONY event.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><small>05 · BANK</small><b>60 s → a star</b><p>Round ends, a star is saved to the family sky, "Play again" is one tap away.</p></div>
+  </div>
+  <p class="body" style="margin-top:18px"><b>Failure is gentle.</b> A missed tap resets the chain, dims the shared glow slightly and quietly widens that player's personal timing window. No elimination, no "you lost", no blame. The spark simply comes back around.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Research → design decisions</h2><span class="sec-note">The idea is built from what already works, not from a hunch.</span></div>
+  <table>
+    <tr><th>Finding</th><th>Source</th><th>Design decision in Firefly Relay</th></tr>
+    <tr><td><b>Phones-as-controllers + a room code</b> is the proven zero-friction entry to local multiplayer; no app download, no hardware people don't already own.</td><td><a href="https://www.jackboxgames.com/how-to-play">Jackbox "How to Play"</a>, <a href="https://www.airconsole.com/info">AirConsole "About"</a></td><td>The host PC serves the controller page over HTTP and shows a QR code. Phones join by scanning or typing a short LAN URL. A laptop can join as a lantern too.</td></tr>
+    <tr><td><b>Local co-op works because it forces communication</b>: a shared task under a clock, split so no one can solo it, escalating each level.</td><td><a href="https://www.gamedeveloper.com/design/game-design-deep-dive-building-truly-cooperative-play-in-i-overcooked-i-">Game Developer, Overcooked deep dive</a>, <a href="https://www.superjumpmagazine.com/overcooked-how-design-creates-teamwork/">SUPERJUMP, "How Design Creates Teamwork"</a></td><td>The spark is a single shared object: only one lantern can advance it. HARMONY events require simultaneous taps, so the room has to count in together.</td></tr>
+    <tr><td><b>Asymmetric information turns talking into gameplay</b> — each player sees something the others can't.</td><td><a href="https://spaceteam.ca/faq/">Spaceteam FAQ</a>, <a href="https://playspaceteam.com/">Spaceteam</a>, <a href="https://link.springer.com/chapter/10.1007/978-3-031-81713-7_11">Reis et al., "Exploring Asymmetry of Information in Cooperative Games"</a>, <a href="https://www.gdcvault.com/play/1023471/Designing_Asymmetric_Gameplay_For_Keep">GDC: Designing Asymmetric Gameplay</a></td><td>The board owns the whole constellation and the pass order; each phone shows only its own lantern. "Dad is up — cheer them on!" is a built-in conversation prompt. (A fuller hidden-order Chaos Mode is on the roadmap.)</td></tr>
+    <tr><td><b>Positive interdependence beats competition</b> for shared attitudes and prosocial behaviour, especially with children.</td><td><a href="https://www.frontiersin.org/journals/psychiatry/articles/10.3389/fpsyt.2025.1545932/full">Frontiers, cooperative vs competitive exposure</a>, <a href="https://dl.acm.org/doi/full/10.1145/3815598.3815674">ACM, social interaction in It Takes Two / Overcooked! 2</a></td><td>No PvP, no leaderboard, no elimination. Round-end cards show only passes made, never misses. Shared glow meter is collective.</td></tr>
+    <tr><td><b>Flow needs challenge to track skill</b>; dynamic difficulty adjustment protects engagement when players have different abilities.</td><td><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7751419/">Flow experience review (PMC)</a>, <a href="https://link.springer.com/article/10.3758/s13428-023-02251-w">Skill–challenge balance &amp; urge to keep playing</a>, <a href="https://dl.acm.org/doi/full/10.1145/3803291.3803306">Hyper-casual difficulty research</a></td><td>Level rises every 8 passes (window 1150 ms → 380 ms). Independently, each player has a hidden personal window that widens ~16% after a miss and tightens after a streak — a 6-year-old and a teen stay in the same flow channel without anyone being singled out.</td></tr>
+    <tr><td><b>Short rounds + layered reward loops</b> produce the "one more round" effect; surprise bonuses and meta-progression sustain it.</td><td><a href="https://gamedesigning.org/beyond/how-reward-loops-keep-players-engaged-in-game-design/">Reward loops in game design</a>, <a href="https://pokerogue.link/blog/psychology-one-more-round-short-games">Psychology of "one more round"</a></td><td>60-second rounds, one-tap restart, chain multiplier, unpredictable HARMONY double-points, and a persistent family sky that gains a star every round (saved to disk).</td></tr>
+    <tr><td><b>LAN mode = HTTP + WebSocket served in-process</b>, no cloud, sub-5 ms latency; phones must be on the same Wi-Fi. Watch for firewall and AP-isolation issues.</td><td><a href="https://pairkit.dev/docs/lan-mode/">PairKit LAN mode docs</a>, <a href="https://forum.godotengine.org/t/hosting-a-multiplayer-web-game-for-lan-only-for-a-jackbox-like-multiplayer/47497">Godot forum: LAN-only Jackbox-style hosting</a></td><td>One zero-dependency Node process serves the board + controller bundle and speaks WebSocket. No CDN, no npm install, no internet. A <code>/config.js</code> endpoint injects the real LAN IP so the QR never points at <code>localhost</code>.</td></tr>
+  </table>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Rules in one screen</h2></div>
+  <div class="rules">
+    <div class="rule"><b>Goal</b><span>Keep the spark moving. Every successful pass grows the chain and draws a line in the sky.</span></div>
+    <div class="rule"><b>Input</b><span>Tap your big button (or press Space on a PC) when your lantern glows. That's the entire control scheme.</span></div>
+    <div class="rule"><b>Miss</b><span>Chain resets, the shared glow dips, your timing window quietly gets a little easier. The spark comes back — nobody is out.</span></div>
+    <div class="rule"><b>HARMONY</b><span>Every 9th pass, all lanterns light at once. Majority tap together = double points and a big cheer.</span></div>
+    <div class="rule"><b>Escalation</b><span>Every 8 passes the window tightens. Level 8 is roughly three times faster than level 1.</span></div>
+    <div class="rule"><b>Between rounds</b><span>One star is added to the family sky, saved on the host. The host presses Play again; everyone keeps their phone.</span></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Network architecture</h2></div>
+  <div class="arch">
+    <div class="box"><b>📺 Host PC / TV</b><small>Opens <code>/?board=1</code>. Shows the sky, QR, HUD, constellation. Runs no game logic of its own.</small></div>
+    <div class="link">HTTP + WS<br>↑↓</div>
+    <div class="box"><b>⚙️ Node server</b><small>Single process on <code>0.0.0.0:3000</code>. Authoritative turns, timing, scoring, bots, persistent sky. Zero dependencies.</small></div>
+    <div class="link">HTTP + WS<br>↑↓</div>
+    <div class="box"><b>📱 Phones / laptops</b><small>Open the LAN URL. Each becomes one lantern with one button. Works offline, on any modern browser.</small></div>
+  </div>
+  <p class="body" style="margin-top:16px">Clients are thin renderers. A small NTP-style ping/pong handshake aligns client and server clocks so a tap's timestamp can be corrected for roughly half the uplink latency — important when the family router is busy. All timing decisions are made on the server, so a slow phone never gets an unfair advantage.</p>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Roadmap (if this becomes a real product)</h2></div>
+  <div class="rules">
+    <div class="rule"><b>Chaos Mode</b><span>The pass order is hidden from the board and only revealed on phones — full Spaceteam-style information asymmetry and shouting.</span></div>
+    <div class="rule"><b>More event types</b><span>Hold-to-charge the spark, pass-left/pass-right, golden sparks worth 5×, and a "shadow" round where the constellation goes dark.</span></div>
+    <div class="rule"><b>Family sky unlocks</b><span>Stars unlock new constellations, lantern skins and ambient soundscapes — cosmetic only, never pay-to-win.</span></div>
+    <div class="rule"><b>mDNS / .local</b><span>Advertise <code>firefly.local</code> so nobody has to type an IP address at all.</span></div>
+    <div class="rule"><b>Spectator + replay</b><span>A "watch the constellation redraw" 10-second recap at round end — shareable, and a natural cliffhanger.</span></div>
+    <div class="rule"><b>Accessibility</b><span>Colour-blind-safe palettes, adjustable base window, audio-only cue mode, larger tap targets for motor needs.</span></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">07</span><h2>Sources</h2><span class="sec-note">External references used for the design rationale.</span></div>
+  <div class="src">
+    <a href="https://www.jackboxgames.com/how-to-play">Jackbox Games — How to Play (phones as controllers, room code)</a>
+    <a href="https://www.airconsole.com/info">AirConsole — About (shared screen + smartphone gamepads)</a>
+    <a href="https://spaceteam.ca/faq/">Spaceteam — FAQ (local multiplayer, dedicated offline router)</a>
+    <a href="https://playspaceteam.com/">Spaceteam — chaotic cooperative card game</a>
+    <a href="https://www.gamedeveloper.com/design/the-challenges-and-rewards-of-designing-local-multiplayer-games">Game Developer — Challenges &amp; rewards of local multiplayer</a>
+    <a href="https://www.gamedeveloper.com/design/game-design-deep-dive-building-truly-cooperative-play-in-i-overcooked-i-">Game Developer — Building truly cooperative play in Overcooked</a>
+    <a href="https://www.superjumpmagazine.com/overcooked-how-design-creates-teamwork/">SUPERJUMP — Overcooked: How Design Creates Teamwork</a>
+    <a href="https://dl.acm.org/doi/full/10.1145/3815598.3815674">ACM — Fostering Social Interaction (It Takes Two / Overcooked! 2)</a>
+    <a href="https://link.springer.com/chapter/10.1007/978-3-031-81713-7_11">Springer — Exploring Asymmetry of Information in Cooperative Games</a>
+    <a href="https://www.gdcvault.com/play/1023471/Designing_Asymmetric_Gameplay_For_Keep">GDC Vault — Designing Asymmetric Gameplay (Keep Talking…)</a>
+    <a href="https://www.frontiersin.org/journals/psychiatry/articles/10.3389/fpsyt.2025.1545932/full">Frontiers — Cooperative vs competitive exposure, positive interdependence</a>
+    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7751419/">PMC — Peripheral-physiological &amp; neural correlates of flow</a>
+    <a href="https://link.springer.com/article/10.3758/s13428-023-02251-w">Springer — Skill–challenge balance, flow, urge to keep playing</a>
+    <a href="https://dl.acm.org/doi/full/10.1145/3803291.3803306">ACM — Hyper-casual games &amp; dynamic difficulty</a>
+    <a href="https://gamedesigning.org/beyond/how-reward-loops-keep-players-engaged-in-game-design/">Game Designing — How reward loops keep players engaged</a>
+    <a href="https://pokerogue.link/blog/psychology-one-more-round-short-games">The psychology of "one more round"</a>
+    <a href="https://pairkit.dev/docs/lan-mode/">PairKit — LAN mode architecture (HTTP + WebSocket, no internet)</a>
+    <a href="https://forum.godotengine.org/t/hosting-a-multiplayer-web-game-for-lan-only-for-a-jackbox-like-multiplayer/47497">Godot Forum — LAN-only Jackbox-style web hosting</a>
+  </div>
+</section>
+
+<footer class="doc">Firefly Relay · 萤火接力 — exploratory design spec &amp; prototype. Self-contained; no product files in this repo were modified. Open <code>index.html?board=1</code> on the host and the LAN URL on phones.</footer>
+</div>
+</body>
+</html>
