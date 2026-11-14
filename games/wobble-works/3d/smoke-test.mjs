@@ -13,7 +13,7 @@ const ok = msg => { console.log('PASS ✓ ' + msg); };
 function assert(cond, msg) { if (cond) ok(msg); else fail(msg); }
 
 console.log('--- Starting Wobble Works 3D test server on port ' + PORT + ' ---');
-const proc = spawn(process.execPath, ['server.js'], {
+const proc = spawn(process.execPath, ['../server.js', '--mode=3d'], {
   cwd: __dirname,
   env: { ...process.env, PORT: String(PORT) },
   stdio: ['ignore', 'pipe', 'pipe']

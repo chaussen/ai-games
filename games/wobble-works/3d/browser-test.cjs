@@ -3,7 +3,7 @@ const { spawn } = require('child_process');
 
 async function run() {
   const PORT = 3456;
-  const server = spawn('node', ['server.js'], { cwd: __dirname, env: { ...process.env, PORT: String(PORT) } });
+  const server = spawn('node', ['../server.js', '--mode=3d'], { cwd: __dirname, env: { ...process.env, PORT: String(PORT) } });
   await new Promise(r => setTimeout(r, 1000));
 
   const browser = await chromium.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });

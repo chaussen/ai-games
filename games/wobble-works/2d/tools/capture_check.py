@@ -1,0 +1,46 @@
+import subprocess, time, os, sys, json
+import os
+os.makedirs('screenshots', exist_ok=True)
+PORT = 3450
+env = dict(os.environ); env['PORT'] = str(PORT)
+proc = subprocess.Popen([sys.executable.replace('python3','node') if False else 'node', 'server.js'],
+                        cwd=os.getcwd(), env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+time.sleep(1.0)
+from playwright.sync_api import sync_playwright
+errors, failed = [], []
+with sync_playwright() as p:
+    b = p.chromium.launch(executable_path='/usr/bin/chromium', args=['--no-sandbox','--disable-dev-shm-usage'])
+    ctx = b.new_context(viewport={'width':1440,'height':900}, device_scale_factor=1)
+    pg = ctx.new_page()
+    pg.on('console', lambda m: errors.append('CONSOLE '+m.text) if m.type == 'error' else None)
+    pg.on('pageerror', lambda e: errors.append('PAGEERROR '+str(e)))
+    pg.on('response', lambda r: failed.append(str(r.status)+' '+r.url) if r.status >= 400 else None)
+    pg.goto('http://127.0.0.1:'+str(PORT)+'/?board=1', wait_until='networkidle')
+    pg.wait_for_timeout(1000)
+    print('BOARD title:', pg.title())
+    print('BOARD qr svg:', pg.locator('#qr svg').count())
+    print('BOARD join url:', pg.locator('#join-url').inner_text())
+    print('BOARD objective:', pg.locator('#b-objective').inner_text()[:160])
+    print('BOARD stage size:', pg.locator('#stage').bounding_box())
+    pg.screenshot(path='screenshots/check-board.png', full_page=False)
+
+    mctx = b.new_context(viewport={'width':390,'height':844}, device_scale_factor=1, is_mobile=True, has_touch=True)
+    mctx.add_init_script("localStorage.setItem('ww-name','Mia'); localStorage.setItem('ww-emoji','🦊');")
+    mp = mctx.new_page()
+    mp.on('console', lambda m: errors.append('MOBILE CONSOLE '+m.text) if m.type == 'error' else None)
+    mp.on('pageerror', lambda e: errors.append('MOBILE PAGEERROR '+str(e)))
+    mp.on('response', lambda r: failed.append('MOBILE '+str(r.status)+' '+r.url) if r.status >= 400 else None)
+    mp.goto('http://127.0.0.1:'+str(PORT)+'/', wait_until='networkidle')
+    mp.wait_for_timeout(900)
+    print('PHONE gate visible:', mp.locator('#join-gate').is_visible())
+    print('PHONE me:', mp.locator('#c-me').inner_text())
+    print('PHONE objective:', mp.locator('#c-objective').inner_text()[:140])
+    print('PHONE direction:', mp.locator('#c-direction').inner_text())
+    mp.screenshot(path='screenshots/check-phone.png', full_page=False)
+    b.close()
+print('ERRORS:', json.dumps(errors, ensure_ascii=False))
+print('FAILED:', json.dumps(failed, ensure_ascii=False))
+proc.terminate()
+try: proc.wait(timeout=3)
+except: proc.kill()
+print('SERVER STDERR:', proc.stderr.read().decode()[:800])

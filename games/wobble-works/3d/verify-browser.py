@@ -5,7 +5,7 @@ from playwright.async_api import async_playwright
 
 async def main():
     port = 3457
-    server = subprocess.Popen(["node", "server.js"], cwd="wobble-works", env={"PORT": str(port), "PATH": "/usr/bin:/bin"})
+    server = subprocess.Popen(["node", "../server.js", "--mode=3d"], cwd="games/wobble-works/3d", env={"PORT": str(port), "PATH": "/usr/bin:/bin"})
     time.sleep(1.2)
     
     async with async_playwright() as p:

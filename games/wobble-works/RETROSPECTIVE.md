@@ -3,11 +3,11 @@
 | | |
 |---|---|
 | Subject | **Wobble Works** (搭把手) — two local-network family co-op builds: the **3D arena** and the **CLASSIC side-view 2D** campaign. This document covers both. |
-| Where it lives | `games/wobble-works/` (3D at the root, 2D in `classic/`) |
+| Where it lives | `games/wobble-works/` (`2d/` and `3d/`, one launcher `server.js --mode=2d|3d`) |
 | Document date | 2026-11-14 |
-| Build status | both builds playable; **18/18** assertions on the 3D contract, **34/34** on the 2D contract; 17 evidence screenshots |
+| Build status | both builds playable; 3D contract passing; 2D original passes its 17-check smoke test (the earlier 34-assertion reconstruction suite was removed with the reconstruction) |
 | Written for | external reviewers, playtesters, and whoever evaluates the design or the code |
-| Companions | [README.md](README.md) (how to run), [design-v1-2d.md](docs/design-v1-2d.md) (superseded plan), [screenshots/](screenshots/) (evidence), [wireframe.html](wireframe.html) (historical wireframes) |
+| Companions | [README.md](README.md) (how to run), [design-v1-2d.md](docs/design-v1-2d.md) (superseded plan), [3d/screenshots/](3d/screenshots/) (3D evidence), [2d/wireframe.html](2d/wireframe.html) (historical wireframes) |
 
 This document is a retrospective, not a pitch. It records what was intended,
 what was actually built, why the two diverged, what broke on the way, and what
@@ -1024,7 +1024,17 @@ Ordered by what would change the experience most per unit of work.
 
 ---
 
-## 12. The CLASSIC 2D rebuild
+## 12. The CLASSIC 2D rebuild (history; superseded by recovery)
+
+> **UPDATE 2026-11-15 — this section is superseded.** The reconstruction described
+> below was replaced by the **original** 2D code, recovered from the dsh session
+> `session-96f75102…` (Nov 11–13) by replaying its `write`/`edit` tool calls in order
+> up to the point before the 3D rewrite. It is the real build, not a rebuild. It now
+> lives in `2d/`; the `classic/` folder, its 34-assertion suite and its screenshots
+> were deleted, and both builds run from one launcher (`node server.js --mode=2d|3d`).
+> References below to `classic/`, `sim2d.js`, `net2d.js`, `/ws2d` and `/classic/`
+> describe the removed reconstruction and are kept as history. The original uses
+> `/ws` and `/` in its own mode.
 
 ### 12.1 What this section is
 

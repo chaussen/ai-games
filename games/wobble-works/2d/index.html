@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#f7f1e6">
+<title>Wobble Works · 搭把手</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='34' r='20' fill='%23f2b544'/%3E%3Ccircle cx='25' cy='30' r='3' fill='%231e2a44'/%3E%3Ccircle cx='39' cy='30' r='3' fill='%231e2a44'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ BOARD / TV ============ -->
+<div id="board" class="view">
+  <header class="b-head">
+    <div class="brand">
+      <span class="brand-mark">✋</span>
+      <div><div class="brand-en">WOBBLE WORKS</div><div class="brand-cn">搭把手 · a physics co-op workshop</div></div>
+    </div>
+    <div id="b-levels" class="level-tabs"></div>
+    <div class="hud">
+      <span class="pill" id="b-time">⏱ 00:00</span>
+      <span class="pill" id="b-players">👥 0</span>
+      <span class="pill push-pill" id="b-push">💪 TEAM PUSH 0</span>
+      <span class="pill" id="b-tools">🧰 0 / 0</span>
+      <span class="pill" id="b-rtt">📶 LAN</span>
+    </div>
+  </header>
+
+  <main class="b-main">
+    <section class="stage-wrap">
+      <canvas id="stage"></canvas>
+      <div class="stage-top">
+        <div id="b-objective" class="objective"></div>
+        <div id="b-tier" class="tier-badge">SCRIPTED</div>
+      </div>
+      <div class="push-wrap"><div id="b-pushbar" class="push-bar"></div></div>
+      <div id="b-toast" class="toast"></div>
+      <div id="b-calls" class="call-layer"></div>
+
+      <div id="win-overlay" class="win-overlay hidden">
+        <div class="win-card">
+          <div class="win-kicker">CHAPTER COMPLETE · 收集到一枚印章</div>
+          <div id="win-medal" class="win-medal">✦</div>
+          <h2 id="win-title">CHAOS GREMLINS</h2>
+          <p id="win-line">It worked. We are not sure how.</p>
+          <div class="win-stats"><span id="win-time">00:00</span><span id="win-stamps">1 stamp</span></div>
+          <div class="win-btns">
+            <button id="btn-next" class="btn big">NEXT CHAPTER →</button>
+            <button id="btn-scrap" class="btn ghost">FAMILY SCRAPBOOK</button>
+            <button id="btn-replay" class="btn ghost">PLAY AGAIN</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="b-side">
+      <div class="card join-card">
+        <h3>① Everyone joins</h3>
+        <p class="muted">Scan with a phone camera, or open the short link. Same Wi-Fi only.</p>
+        <div id="qr" class="qr"></div>
+        <div id="join-url" class="join-url"></div>
+        <button id="copy-url" class="btn small">Copy link</button>
+        <p class="muted join-hint">Phone says <b>site can't be reached</b>? Open <span id="lan-port-num">port 3000</span> in the PC firewall
+          (<code id="lan-port-cmd">sudo firewall-cmd --zone=public --add-port=3000/tcp</code>) and use the same, non-guest Wi-Fi.</p>
+      </div>
+
+      <div class="card">
+        <h3>② Run the room</h3>
+        <div class="btn-row">
+          <button id="btn-start" class="btn">▶ START</button>
+          <button id="btn-reset" class="btn ghost">↺ Reset</button>
+        </div>
+        <div class="btn-row">
+          <button id="btn-bot" class="btn ghost">+ Demo wobbler</button>
+          <button id="btn-kickbot" class="btn ghost">− Bots</button>
+        </div>
+        <div class="btn-row">
+          <button id="btn-hint" class="btn ghost">💡 Hint</button>
+          <button id="btn-wide" class="btn ghost">Toggle view</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>③ Tool dispenser <span class="muted" id="tool-count"></span></h3>
+        <p class="muted">Shared budget. Drops a part above your own wobbler.</p>
+        <div class="tool-grid">
+          <button class="tool" data-tool="crate"><span>📦</span>CRATE</button>
+          <button class="tool" data-tool="plank"><span>🪵</span>PLANK</button>
+          <button class="tool" data-tool="barrel"><span>🛢</span>BARREL</button>
+        </div>
+      </div>
+
+      <div class="card quick">
+        <h3>Controls on this PC</h3>
+        <p class="muted">A / D move · SPACE jump · J / K hold left &amp; right hand · 1-4 quick calls</p>
+        <p class="muted">Hold a grab to attach to anything. Hold both to carry. Grab a friend to chain up.</p>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<!-- ============ PHONE CONTROLLER ============ -->
+<div id="controller" class="view">
+  <header class="c-head">
+    <div class="c-brand">✋ <b>WOBBLE WORKS</b> <span>搭把手</span></div>
+    <div id="c-me" class="c-me"></div>
+  </header>
+
+  <div id="c-objective" class="c-objective"></div>
+
+  <div class="c-stage-wrap">
+    <canvas id="mini"></canvas>
+    <div id="c-direction" class="direction"></div>
+    <div id="c-toast" class="toast"></div>
+    <div id="c-win" class="c-win hidden">
+      <div class="c-win-card"><div class="win-kicker">WE DID IT</div><h2 id="c-win-title"></h2><p id="c-win-line"></p></div>
+    </div>
+    <div id="c-wontag" class="won-tag hidden">✓ BEACON LIT</div>
+  </div>
+
+  <div class="c-controls">
+    <div class="pad-row">
+      <button id="btn-left" class="pad dir">◀</button>
+      <button id="btn-right" class="pad dir">▶</button>
+      <button id="btn-jump" class="pad jump">JUMP<span>⤴</span></button>
+    </div>
+    <div class="pad-row grabs">
+      <button id="btn-grabL" class="pad grab">L · GRAB<span>✊</span></button>
+      <button id="btn-grabR" class="pad grab">R · GRAB<span>✊</span></button>
+    </div>
+    <div class="c-calls">
+      <button class="call" data-call="📍 HERE">📍 HERE</button>
+      <button class="call" data-call="🙋 MINE">🙋 MINE</button>
+      <button class="call" data-call="💪 PUSH">💪 PUSH</button>
+      <button class="call" data-call="😂 LOL">😂 LOL</button>
+    </div>
+    <div class="c-tools">
+      <button class="ctool" data-tool="crate">📦</button>
+      <button class="ctool" data-tool="plank">🪵</button>
+      <button class="ctool" data-tool="barrel">🛢</button>
+      <button id="btn-cwide" class="ctool wide">🔭 WIDE</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ JOIN GATE ============ -->
+<div id="join-gate" class="gate hidden">
+  <div class="gate-card">
+    <div class="gate-logo">✋</div>
+    <h1>WOBBLE WORKS</h1>
+    <p class="gate-cn">搭把手 · 一家人一起搬</p>
+    <p class="gate-sub">Pick a name and a face. It is saved on this device.</p>
+    <input id="gate-name" maxlength="12" placeholder="Your name" autocomplete="off">
+    <div id="gate-emojis" class="emoji-row"></div>
+    <button id="gate-go" class="btn big">JOIN THE WORKSHOP →</button>
+    <p class="gate-note" id="gate-note"></p>
+  </div>
+</div>
+
+<!-- ============ SCRAPBOOK ============ -->
+<div id="scrapbook" class="modal hidden">
+  <div class="modal-card">
+    <button id="scrap-close" class="modal-x">✕</button>
+    <h2>FAMILY SCRAPBOOK</h2>
+    <p class="muted">Every chapter adds a stamp. There is no score to beat - just routes to remember.</p>
+    <div id="scrap-grid" class="scrap-grid"></div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="vendor/qrcode.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

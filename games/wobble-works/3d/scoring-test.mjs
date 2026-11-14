@@ -12,7 +12,7 @@ const fail = m => { console.error('FAIL ✗ ' + m); failed = true; process.exitC
 const assert = (c, m) => (c ? ok(m) : fail(m));
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-const proc = spawn(process.execPath, ['server.js'], {
+const proc = spawn(process.execPath, ['../server.js', '--mode=3d'], {
   cwd: __dirname, env: { ...process.env, PORT: String(PORT) }, stdio: ['ignore', 'pipe', 'pipe']
 });
 await sleep(900);

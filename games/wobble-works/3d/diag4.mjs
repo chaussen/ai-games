@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = 3464;
 
-const proc = spawn(process.execPath, ['server.js'], {
+const proc = spawn(process.execPath, ['../server.js', '--mode=3d'], {
   cwd: __dirname, env: { ...process.env, PORT: String(PORT) },
   stdio: ['ignore', 'pipe', 'pipe']
 });

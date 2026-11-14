@@ -1,30 +1,36 @@
 # WOBBLE WORKS · 搭把手
 
-> **One heavy Glow Core. Five beacons. No referee.**
+> **One heavy Glow Core. No referee.**
 > A family co-op — and occasionally anti-co-op — game for a home WLAN. One
 > laptop is the workshop and the scoreboard; every phone is a wobbler.
 
-**Two builds ship in this folder, served by the same process:**
+Two builds live in this folder and **share one server entry point**
+(`server.js`); a `--mode` switch picks which one runs.
 
-| Mode | What it is | Board URL |
+| Mode | Folder | What it is |
 |---|---|---|
-| **3D ARENA** | free-roam physics playground. Five beacons, crates, trampolines, a chasm, tackles and a running scoreboard. | `/?board=1` |
-| **CLASSIC 2D** | the original side-view chapter campaign. Plates, gates, ropes, water, wind, see-saws and a shared tool budget. | `/classic/?board=1` |
+| **2d** (default) | [2d/](2d/) | **The original side-view game**, recovered byte-for-byte from the session that wrote it (see §8). Small cartoon wobblers with two independently grabbing hands, fixed full-level camera, chapter campaign: plates, gates, ropes, water, wind, see-saws, tool budget. Matter.js + Canvas 2D. Its own [README](2d/README.md). |
+| **3d** | [3d/](3d/) | The later **3D arena experiment**: free-roam physics playground with five beacons, crates, trampolines, tackles and a scoreboard. Cannon.js + Three.js. |
 
-Both are playable from the same QR code and the same `node server.js` — you pick
-a mode on the board, not on the server. The board header links across.
+```sh
+cd games/wobble-works
+node server.js               # 2D original (default)
+node server.js --mode=3d     # 3D arena
+WOBBLE_MODE=3d node server.js
+```
 
-**Status: both playable and verified.** 64 automated assertions (18 3D, 12
-scoring/tackles, 34 2D), 17 screenshots captured from live runs.
+One mode runs per process. To have both up at once, start two processes on
+different ports (`PORT=3001 node server.js --mode=3d`).
+
+The Matter.js, Cannon.js, Three.js and QR libraries live once in
+[vendor/](vendor/) and are served to whichever build is running.
 
 | | |
 |---|---|
-| Players | 2–16 on one Wi-Fi (3D, 7 exercised) · 2–12 (2D, 3 exercised) |
+| Players | 2–16 on one Wi-Fi |
 | Devices | Any modern browser — PC, TV, phone, tablet |
 | Install | none. No npm, no CDN, no account, no internet |
-| Host | `node server.js` on one machine |
-| Session | 3D: open-ended, goals rotate · 2D: five chapters, then free play |
-| Docs | [RETROSPECTIVE.md](RETROSPECTIVE.md) — full retrospective covering **both** builds |
+| Docs | [2d/README.md](2d/README.md) · [RETROSPECTIVE.md](RETROSPECTIVE.md) (covers both builds) |
 
 ---
 
@@ -32,28 +38,30 @@ scoring/tackles, 34 2D), 17 screenshots captured from live runs.
 
 ```sh
 cd games/wobble-works
-node server.js
+node server.js [--mode=2d|3d]
 ```
 
-Open **http://localhost:3000/?board=1** for the 3D arena, or
-**http://localhost:3000/classic/?board=1** for the classic side view. Everyone
-else scans the QR code on whichever board is up and is playing in about three
-seconds.
-
-Optional environment variables:
+Open **http://localhost:3000/?board=1** on the TV/PC. Everyone else scans the QR
+code and is playing in about three seconds.
 
 ```sh
-PORT=3000                 HTTP + WebSocket port (both modes)
+PORT=3000                 HTTP + WebSocket port
 HOST=0.0.0.0              bind address
 LAN_IP=192.168.0.196      force the IP printed in the QR code
+WOBBLE_MODE=2d|3d         same as --mode
 ```
 
-Requirements: Node 18+ (tested on Node 26). Three.js r128, Cannon.js 0.6.2 and
-Matter.js 0.20.0 are vendored in [vendor/](vendor/) — unmodified, MIT, offline.
+Requirements: Node 18+. Port 3000 is the default — use another port if a
+family server is already running.
 
-## 2. Controls
+## 2. 2D original
 
-### 3D arena
+Controls, chapter rules, architecture and home-network notes are in
+[2d/README.md](2d/README.md).
+
+## 3. 3D arena
+
+### Controls
 
 | | Phone | PC keyboard |
 |---|---|---|
@@ -67,21 +75,7 @@ Matter.js 0.20.0 are vendored in [vendor/](vendor/) — unmodified, MIT, offline
 Board-only keys: **B** adds a bot, **N** advances to the next goal, **H** toggles
 the help sheet, **C** cycles the camera.
 
-### Classic 2D
-
-| | Phone | PC keyboard |
-|---|---|---|
-| Walk | ◀ ▶ | A D or ← → |
-| Jump | JUMP | SPACE |
-| Grab left hand | ✋L (hold) | J or Q |
-| Grab right hand | ✋R (hold) | K or E |
-| Quick call | 👋 😱 | — |
-
-Both hands on the same object means **carrying**: you move it with you, slower.
-The board has chapter tabs, the tool dispenser (crate / plank / barrel), hints,
-reset and next.
-
-## 3. Rules — 3D arena
+### Rules
 
 1. **One Core.** It spawns above the plaza and only one player can carry it.
 2. **Carrying slows you down** (8.5 m/s → 6.2 m/s). Everyone can see the carrier.
@@ -95,26 +89,7 @@ reset and next.
 7. **A dormant phone is not a missing player.** Dim the screen and your wobbler
    becomes a napping statue with a 💤 tag.
 
-## 4. Rules — Classic 2D
-
-1. **The Core is too heavy for one wobbler** on flat ground: one pusher moves it
-   ~100 px/s, four move it ~190 px/s. Solo is possible, slow, and usually a bad
-   plan.
-2. **Two hands, one object.** Grabbing with both hands carries it; grabbing with
-   one drags it. Gravity still applies, so a plank on two springs is a swing.
-3. **Plates open gates.** Stand on the plate — or park a crate there — and the
-   gate slides up. Latch plates stay open, momentary ones do not.
-4. **Falling in is free.** Water poofs you back to the last checkpoint and sends
-   the Core back to the start. No lives, no score loss.
-5. **The dispenser is shared.** Chapters 2–4 give a fixed budget of crates,
-   planks and barrels for the whole room; FREE PLAY gives unlimited parts.
-6. **Route medals.** The way you finish names the medal: CATAPULT CREW,
-   HUMAN CHAIN, TWO-HAND CARRY, BRIDGE BUILDERS, or CHAOS GREMLINS if you made it
-   up as you went.
-
-## 5. The world
-
-### 3D arena
+### The world
 
 A 96 × 96 m arena with a 14 m tower, a fortress, a chasm and a trampoline pit.
 
@@ -129,71 +104,40 @@ A 96 × 96 m arena with a 14 m tower, a fortress, a chasm and a trampoline pit.
 32 static colliders, 6 movable crates (1.6 m, 18 kg), 4 bounce pads, 1 see-saw,
 16 spawn points.
 
-### Classic 2D
-
-Five spaces, all on one screen-height band (ground top y = 760):
-
-| Chapter | Space | Structure | What is in it |
-|---|---|---|---|
-| 1 THE DOOR | 1500 × 820 | scripted | one plate, one gate, the Core |
-| 2 THE SEE-SAW | 1800 × 860 | semi-scripted | high deck, momentary plate, see-saw, rope, planks, water |
-| 3 THE GAP | 2300 × 900 | semi-open | chasm, water, rope, wind zone, see-saw, barrel, two planks |
-| 4 BELL ISLAND | 2500 × 1000 | open | connected islands, water channels, wind, shared budget of 16 parts |
-| 5 FREE PLAY | 2300 × 900 | sandbox | no beacon, unlimited parts |
-
-Measured: run speed 337 px/s, jump 290 px, ~0.78 s to apex. The highest ledge
-sits 200 px above the ground, so a jump clears everything the levels ask for and
-a lot they do not.
-
-## 6. Architecture
+## 4. Architecture
 
 ```
-  laptop / TV  ──── node server.js ────┬── one authoritative Cannon.js world (3D)
-     │  board view                     │      60 Hz tick · 20 Hz snapshots
-     │                                  └── one authoritative Matter.js world (2D)
-     │                                         60 Hz tick · 20 Hz snapshots
-     │                                            ▲
-     └── /ws (3D)  /ws2d (2D) ── hand-rolled RFC 6455 ──┘
+  laptop / TV ── node server.js [--mode=2d|3d] ── one authoritative physics world
+     │ board view                                   (Matter.js in 2d, Cannon.js in 3d)
+     │                                               60 Hz tick · 20 Hz snapshots
+     └── /ws ── hand-rolled RFC 6455 ───────────────────┘
                        ▲
         phones · tablets · other laptops  (thin clients, a handful of flags)
 ```
 
 - **Server:** zero dependencies. `http` + a minimal RFC 6455 implementation +
-  Cannon.js + Matter.js. Binds 0.0.0.0, prints the real LAN IPs, self-diagnoses
-  firewalld. One upgrade route per mode (`/ws`, `/ws2d`), one process.
-- **3D client:** Three.js r128, one draw call per body, gradient sky, exponential
-  fog, floating nameplates, confetti, goal rings.
-- **2D client:** Canvas 2D, one camera per role (board follows the Core, phone
-  follows your wobbler), snapshot interpolation, warm workshop palette.
+  the vendored physics library. Binds 0.0.0.0, prints the real LAN IPs. The
+  launcher `server.js` loads `2d/server.js` or `3d/server.js`.
+- **3D client:** Three.js r128, gradient sky, fog, floating nameplates, confetti.
+- **2D client:** Canvas 2D, fixed camera over the whole level, cartoon wobblers
+  with two independent hands, ripples at the feet on every jump.
 - **Netcode:** clients send input flags; the server sends `state` at 20 Hz. No
   client-side prediction — on a LAN the round trip is 1–3 ms, so there is nothing
   to hide. See [RETROSPECTIVE.md](RETROSPECTIVE.md) section 5.
 
-## 7. Verification
+## 5. Verification
 
 ```sh
-node smoke-test.mjs       # 3D contract, real server on :3455, 18 assertions
-node scoring-test.mjs     # scoring + tackle regression, real server on :3466, 12 assertions
-node classic-smoke.mjs    # 2D contract, real server on :3457, 34 assertions
+cd 2d && node smoke-test.mjs   # 2D contract, real server on :3431, 17 checks
+cd 3d && node smoke-test.mjs   # 3D contract, real server on :3455
+cd 3d && node scoring-test.mjs # 3D scoring + tackle regression, :3466
 ```
 
-3D coverage: static files, vendored bundles, level data, board join, three
-controller joins, snapshots containing players / Core / crates / active goal,
-movement, jump, lift, throw, bot spawn, goal rotation, AFK-on-dim, instant wake.
+Both tests boot the real server through `../server.js` with the matching mode.
+None use port 3000. 3D screenshots are in [3d/screenshots/](3d/screenshots/),
+produced by [3d/capture-screens.py](3d/capture-screens.py).
 
-2D coverage: assets, `/` still serving the 3D shell, board join with level data,
-snapshot cadence, two controllers with distinct colours, jump height, movement,
-grab input, chapter switching, sandbox budget, prop drops, reset, fresh chapter
-state, survival across disconnects — plus a headless win path: plate opens gate,
-Core reaches the beacon, medal and points are awarded.
-
-Screenshots are in [screenshots/](screenshots/) (3D) and
-[screenshots/2d/](screenshots/2d/) (2D), produced by
-[capture-screens.py](capture-screens.py) and
-[capture-classic.py](capture-classic.py) — Playwright + headless Chromium driving
-real servers. Zero console errors in both.
-
-## 8. Home-network caveats
+## 6. Home-network caveats
 
 **"The site can't be reached" on Android** is almost always the firewall.
 
@@ -215,50 +159,33 @@ password prompt). Opt in with `FIREWALL_CHECK=1 node server.js`.
 Plain `http://192.168.x.x` is not a secure context, so the clipboard API may be
 unavailable — the Copy button has a fallback.
 
-## 9. Files
+## 7. Files
 
-| File | What it is |
+| Path | What it is |
 |---|---|
-| [server.js](server.js) | Zero-dep HTTP + WebSocket + authoritative Cannon.js simulation, bot AI, scoring, AFK, and the `/ws2d` route; ~870 lines |
-| [levels3d.js](levels3d.js) | 3D level data: 5 beacons, 16 spawns, 32 statics, 4 pads, 6 crates, 1 see-saw |
-| [index.html](index.html) | 3D board view (`?board=1`) and controller view in one document |
-| [app.js](app.js) | Three.js scene, cameras, nameplates, HUD, QR, confetti; 891 lines |
-| [style.css](style.css) | 3D skin: warm cardboard board + portrait phone |
-| [classic/](classic/) | **the 2D build** — see below |
-| [levels.js](levels.js) | 2D chapter geometry — still the single source of truth for the classic build |
-| [smoke-test.mjs](smoke-test.mjs) | 18 assertions, 3D |
-| [classic-smoke.mjs](classic-smoke.mjs) | 34 assertions, 2D |
-| [capture-screens.py](capture-screens.py) / [capture-classic.py](capture-classic.py) | Playwright screenshot pipelines |
-| [puppet-driver.mjs](puppet-driver.mjs) | Six scripted wobblers for 3D screenshots and load checks |
+| [server.js](server.js) | Launcher: `--mode=2d|3d` picks which build's server runs |
+| [vendor/](vendor/) | Shared offline libraries: Matter.js, Cannon.js, Three.js, qrcode |
+| [2d/](2d/) | Original 2D build: `server.js` (Matter.js authority), `app.js` (canvas client), `levels.js`, `index.html`, `style.css`, `wireframe.html`, `smoke-test.mjs`, and `tools/` (diagnostic and capture scripts from the original session) |
+| [3d/](3d/) | 3D build: `server.js` (Cannon.js authority), `app.js` (Three.js client), `levels3d.js`, `index.html`, `style.css`, tests, `screenshots/` |
 | [lan-doctor.sh](lan-doctor.sh) | Read-only LAN diagnostics |
-| [RETROSPECTIVE.md](RETROSPECTIVE.md) | Retrospective: intent vs. shipped for both builds, defect log, honest gaps |
-| [docs/design-v1-2d.md](docs/design-v1-2d.md) | The original 2D design document (now implemented in `classic/`) |
-| [wireframe.html](wireframe.html) | Historical wireframes |
+| [RETROSPECTIVE.md](RETROSPECTIVE.md) | Retrospective for both builds |
+| [docs/design-v1-2d.md](docs/design-v1-2d.md) | The original 2D design document |
 
-Inside `classic/`:
+## 8. How the two builds relate
 
-| File | What it is |
-|---|---|
-| [classic/index.html](classic/index.html) | board view + phone controller |
-| [classic/sim2d.js](classic/sim2d.js) | Matter.js world: players, hands, Core, plates, gates, ropes, wind, water, medals |
-| [classic/net2d.js](classic/net2d.js) | the `/ws2d` room and its 60 Hz / 20 Hz loops |
-| [classic/app2d.js](classic/app2d.js) | Canvas renderer, cameras, HUD, board tabs, phone deck |
-| [classic/style2d.css](classic/style2d.css) | The 2D skin |
+The 3D arena replaced the 2D game in place, and the replacement overwrote the 2D
+runtime in a folder that was not under version control. A first attempt rebuilt
+2D from the design document and level data. It did not look or play the same.
+The real 2D code was later recovered from the transcript of the session that
+wrote it, by replaying that session's file writes and edits in order up to the
+point just before the 3D rewrite. That recovered code is `2d/`. The earlier
+reconstruction has been removed. [RETROSPECTIVE.md](RETROSPECTIVE.md) section 12
+has the history.
 
-## 10. A note on the two builds
+The family's feedback was that the 2D version was friendlier and funnier; the
+3D arena is kept as an experiment.
 
-The 3D arena is not a sequel to the 2D game; it replaced it, and the replacement
-deleted the 2D runtime (the folder was untracked at the time). The family then
-asked for the side view back, so it was rebuilt from the surviving level data,
-the vendored Matter.js and the original design document — same geometry, new
-code. [RETROSPECTIVE.md](RETROSPECTIVE.md) section 12 records exactly what is
-original and what is reconstruction.
-
-The honest difference: the 3D build has more freedom, more accidents and a
-tackle button. The 2D build is easier to read, easier to laugh at, and a better
-first game — a jump is a shape you can see the end of.
-
-## 11. Licences
+## 9. Licences
 
 Three.js r128 — MIT. Cannon.js 0.6.2 — MIT. Matter.js 0.20.0 — MIT.
 qrcode-generator 1.4.4 — MIT, © 2009 Kazuhiko Arase. All vendored unmodified for

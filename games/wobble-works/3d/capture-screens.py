@@ -23,7 +23,7 @@ async def pose(page, name):
 
 async def main():
     os.makedirs(SHOTS, exist_ok=True)
-    server = subprocess.Popen(["node", "server.js"], cwd=DIR, env={**os.environ, "PORT": str(PORT)},
+    server = subprocess.Popen(["node", "../server.js", "--mode=3d"], cwd=DIR, env={**os.environ, "PORT": str(PORT)},
                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     await asyncio.sleep(1.1)
     driver = subprocess.Popen(["node", "puppet-driver.mjs", str(PORT)], cwd=DIR,
