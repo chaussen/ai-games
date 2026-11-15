@@ -231,3 +231,11 @@ Client-side prediction + reconciliation for internet play; 3D/ragdoll rendering;
 ## Licences
 
 Matter.js 0.20.0 — MIT. qrcode-generator 1.4.4 — MIT, Copyright (c) 2009 Kazuhiko Arase. Both vendored, unmodified, for offline LAN use.
+
+## Update: floppy bodies, push / pull / hoist, stage-1 wall
+
+- **Floppy wobblers.** Bodies now tip and tumble (a soft spring stands them back up); legs stride on the ground and kick in the air; elbows and knees bend.
+- **Grab mechanics.** Hold GRAB on an object, then: walk into it to **push**, walk away to **pull**, hold **JUMP** to **hoist** it upward. Hoisting something above you climbs you up to it instead.
+- **Stage 1** has a low wall after the gate. One wobbler climbs the wall and grabs the Core from above, another lifts from below; two hoisters beat the Core's weight, one cannot. `node hoist-test.mjs` proves it (port 3432).
+- A round now starts by itself the first time the Core is moved, so a stage can no longer be stuck in the lobby when nobody pressed START.
+- Jumping is deliberately still unlimited in the air (the original game's behaviour); the jump is short, so tap repeatedly to climb.

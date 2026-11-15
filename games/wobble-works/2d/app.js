@@ -411,25 +411,42 @@ function drawSeesaws(ctx, arr) {
     ctx.fillStyle = '#1e2a44'; ctx.beginPath(); ctx.arc(s.x, s.y, 5, 0, Math.PI * 2); ctx.fill();
   });
 }
+// two-segment limb: shoulder/hip -> joint -> hand/foot, bending toward `bend` (+1/-1)
+function limb(ctx, sx, sy, ex, ey, seg, bend, width, color) {
+  var dx = ex - sx, dy = ey - sy, d = Math.sqrt(dx * dx + dy * dy) || 1;
+  var reach = Math.min(d, seg * 2 - 0.5), h = Math.sqrt(Math.max(0, seg * seg - reach * reach / 4));
+  var mx = sx + dx / d * reach / 2 - dy / d * h * bend, my = sy + dy / d * reach / 2 + dx / d * h * bend;
+  ctx.strokeStyle = color; ctx.lineWidth = width; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(mx, my); ctx.lineTo(ex, ey); ctx.stroke();
+}
 function drawWobbler(ctx, p, now) {
   var r = smooth('p-' + p.id, p.x, p.y, p.a);
   var hx = smooth('h-' + p.id + '-0', p.hx[0], p.hy[0], 0);
   var hy = smooth('h-' + p.id + '-1', p.hx[1], p.hy[1], 0);
+  var f0 = smooth('f-' + p.id + '-0', p.fx[0], p.fy[0], 0);
+  var f1 = smooth('f-' + p.id + '-1', p.fx[1], p.fy[1], 0);
   var hd = smooth('head-' + p.id, p.headX, p.headY, 0);
-  var moving = Math.abs(p.vx) > 0.35;
-  var swing = moving ? Math.sin(now / 95 + p.id.length) : 0;
-  // legs
-  ctx.strokeStyle = '#1e2a44'; ctx.lineWidth = 6; ctx.lineCap = 'round';
-  ctx.beginPath(); ctx.moveTo(r.x - 8, r.y + 19); ctx.lineTo(r.x - 8 + swing * 9, r.y + 32); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(r.x + 8, r.y + 19); ctx.lineTo(r.x + 8 - swing * 9, r.y + 32); ctx.stroke();
-  // arms to hands
-  ctx.lineWidth = 7; ctx.strokeStyle = p.color;
-  ctx.beginPath(); ctx.moveTo(r.x - 13, r.y - 6); ctx.lineTo(hx.x, hx.y); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(r.x + 13, r.y - 6); ctx.lineTo(hy.x, hy.y); ctx.stroke();
-  // torso
+  var ca = Math.cos(r.a), sa = Math.sin(r.a);
+  function W(lx, ly) { return { x: r.x + lx * ca - ly * sa, y: r.y + lx * sa + ly * ca }; }
+  var face = Math.abs(p.vx) > 0.3 ? Math.sign(p.vx) : (p.face || 1);
+  p.face = face;
+  var hipL = W(-8, 19), hipR = W(8, 19), shL = W(-13, -6), shR = W(13, -6);
+  // legs (dark), arms (body colour) - elbows and knees bend like loose rubber
+  limb(ctx, hipL.x, hipL.y, f0.x, f0.y, 15, face, 7, '#1e2a44');
+  limb(ctx, hipR.x, hipR.y, f1.x, f1.y, 15, face, 7, '#1e2a44');
+  [f0, f1].forEach(function (f) {
+    ctx.fillStyle = '#1e2a44'; ctx.beginPath(); ctx.ellipse(f.x + face * 3, f.y + 1, 8, 5, 0, 0, Math.PI * 2); ctx.fill();
+  });
+  limb(ctx, shL.x, shL.y, hx.x, hx.y, 14, -1, 8, '#1e2a44');
+  limb(ctx, shR.x, shR.y, hy.x, hy.y, 14, 1, 8, '#1e2a44');
+  limb(ctx, shL.x, shL.y, hx.x, hx.y, 14, -1, 5, p.color);
+  limb(ctx, shR.x, shR.y, hy.x, hy.y, 14, 1, 5, p.color);
+  // torso (tilts with the body)
+  ctx.save(); ctx.translate(r.x, r.y); ctx.rotate(r.a);
   ctx.fillStyle = p.color; ctx.strokeStyle = '#1e2a44'; ctx.lineWidth = 3;
-  roundRect(ctx, r.x - 15, r.y - 23, 30, 46, 12); ctx.fill(); ctx.stroke();
-  ctx.fillStyle = 'rgba(255,255,255,.35)'; roundRect(ctx, r.x - 9, r.y - 16, 18, 9, 4); ctx.fill();
+  roundRect(ctx, -15, -23, 30, 46, 12); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = 'rgba(255,255,255,.35)'; roundRect(ctx, -9, -16, 18, 9, 4); ctx.fill();
+  ctx.restore();
   // hands
   [hx, hy].forEach(function (h, i) {
     ctx.fillStyle = p.grab[i] ? '#f2b544' : '#ffe0bd'; ctx.strokeStyle = '#1e2a44'; ctx.lineWidth = 2;
@@ -513,7 +530,17 @@ function drawWorld(ctx, L, now) {
     var r = smooth('b-' + b.id, b.x, b.y, b.a);
     var bb = Object.assign({}, b, { x: r.x, y: r.y, a: r.a });
     if (b.kind === 'ground' || b.kind === 'deck') drawGround(ctx, bb);
-    else if (b.kind === 'wall') { ctx.fillStyle = '#3a4761'; ctx.save(); ctx.translate(r.x, r.y); ctx.rotate(r.a); ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h); ctx.restore(); }
+    else if (b.kind === 'wall') {
+      ctx.save(); ctx.translate(r.x, r.y); ctx.rotate(r.a);
+      var low = b.w > 60 && b.h < 160;
+      ctx.fillStyle = low ? '#c9714f' : '#3a4761'; ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h);
+      if (low) {
+        ctx.strokeStyle = '#8f4a33'; ctx.lineWidth = 3; ctx.strokeRect(-b.w / 2, -b.h / 2, b.w, b.h);
+        for (var row = 1; row < 4; row++) { ctx.beginPath(); ctx.moveTo(-b.w / 2, -b.h / 2 + row * b.h / 4); ctx.lineTo(b.w / 2, -b.h / 2 + row * b.h / 4); ctx.stroke(); }
+        for (var col = 0; col < 4; col++) for (var rw = 0; rw < 4; rw++) { var bx = -b.w / 2 + (col + (rw % 2 ? 0.5 : 0)) * b.w / 4; if (bx > -b.w / 2 + 2) { ctx.beginPath(); ctx.moveTo(bx, -b.h / 2 + rw * b.h / 4); ctx.lineTo(bx, -b.h / 2 + (rw + 1) * b.h / 4); ctx.stroke(); } }
+      }
+      ctx.restore();
+    }
     else if (b.kind === 'ledge' || b.kind === 'slope') drawPlank(ctx, Object.assign({}, bb, { w: b.w, h: b.h || 22 }));
     else if (b.kind === 'sign') drawSign(ctx, bb);
     else if (b.kind === 'plate') drawPlate(ctx, bb);

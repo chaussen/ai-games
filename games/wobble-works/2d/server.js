@@ -237,23 +237,29 @@ function makeClient(ws, msg) {
     input: { left: false, right: false, jump: false, grabL: false, grabR: false },
     prevJump: false, prevGrab: [false, false], grab: [null, null], grounded: false,
     bubble: null, bubbleAt: 0, respawns: 0, pingAt: 0, rtt: 0, joinedAt: Date.now(),
-    torso: null, head: null, hands: [], arms: [], headC: null
+    torso: null, head: null, hands: [], arms: [], headC: null, feet: [], legs: [], stride: 0
   };
   S.players.set(id, p);
   spawnPlayer(p, spawnFor(p));
   send(ws, { type: 'welcome', id: id, color: p.color, name: p.name, emoji: p.emoji, board: p.board, levelId: S.levelId });
   return p;
 }
+function rigParts(p) {
+  return [p.torso, p.head, p.hands[0], p.hands[1], p.headC, p.arms[0], p.arms[1]].concat(p.feet || [], p.legs || []);
+}
 function spawnPlayer(p, at) {
   const w = S.world;
   if (p.torso) {
-    [p.torso, p.head, p.hands[0], p.hands[1], p.headC, p.arms[0], p.arms[1]].forEach(function (b) { if (b) Composite.remove(w.engine.world, b); });
+    rigParts(p).forEach(function (b) { if (b) Composite.remove(w.engine.world, b); });
   }
   releaseGrabs(p);
   const torso = Bodies.rectangle(at.x, at.y, 30, 46, {
     chamfer: { radius: 12 }, density: 0.0018, friction: 0.62, frictionStatic: 0.85,
-    frictionAir: 0.012, restitution: 0.03, inertia: Infinity, label: 'wobbler'
+    frictionAir: 0.012, restitution: 0.03, label: 'wobbler'
   });
+  // finite inertia: wobblers tip, spin and flop when hit, thrown or flailing.
+  // A soft self-righting spring (see step) stands them back up.
+  Body.setInertia(torso, torso.inertia * 3.2);
   const head = Bodies.circle(at.x, at.y - 30, 13, { collisionFilter: { mask: 0 }, frictionAir: 0.05, density: 0.0005 });
   const hands = [0, 1].map(function (i) {
     return Bodies.circle(at.x + (i ? 16 : -16), at.y - 4, 8, { isSensor: true, collisionFilter: { mask: 0 }, frictionAir: 0.2, density: 0.0004 });
@@ -262,9 +268,15 @@ function spawnPlayer(p, at) {
   const arms = hands.map(function (h, i) {
     return Constraint.create({ bodyA: torso, pointA: { x: i ? 13 : -13, y: -6 }, bodyB: h, length: 24, stiffness: 0.3, damping: 0.14 });
   });
-  Composite.add(w.engine.world, [torso, head, hands[0], hands[1], headC, arms[0], arms[1]]);
+  const feet = [0, 1].map(function (i) {
+    return Bodies.circle(at.x + (i ? 8 : -8), at.y + 28, 7, { isSensor: true, collisionFilter: { mask: 0 }, frictionAir: 0.06, density: 0.0006 });
+  });
+  const legs = feet.map(function (f, i) {
+    return Constraint.create({ bodyA: torso, pointA: { x: i ? 8 : -8, y: 18 }, bodyB: f, length: 16, stiffness: 0.22, damping: 0.12 });
+  });
+  Composite.add(w.engine.world, [torso, head, hands[0], hands[1], headC, arms[0], arms[1]].concat(feet, legs));
   if (w.solids.indexOf(torso) < 0) w.solids.push(torso);
-  p.torso = torso; p.head = head; p.hands = hands; p.headC = headC; p.arms = arms;
+  p.torso = torso; p.head = head; p.hands = hands; p.headC = headC; p.arms = arms; p.feet = feet; p.legs = legs; p.stride = 0;
   p.grounded = false; p.prevJump = false;
 }
 function addBot() {
@@ -278,7 +290,7 @@ function addBot() {
     input: { left: false, right: false, jump: false, grabL: false, grabR: false },
     prevJump: false, prevGrab: [false, false], grab: [null, null], grounded: false,
     bubble: null, bubbleAt: 0, respawns: 0, pingAt: 0, rtt: 0, joinedAt: Date.now(),
-    torso: null, head: null, hands: [], arms: [], headC: null, lane: lane, botJumpAt: 0
+    torso: null, head: null, hands: [], arms: [], headC: null, feet: [], legs: [], stride: 0, lane: lane, botJumpAt: 0
   };
   S.players.set(id, p);
   spawnPlayer(p, spawnFor(p));
@@ -291,7 +303,7 @@ function dropClient(id) {
   releaseGrabs(p);
   const w = S.world;
   if (w && p.torso) {
-    [p.torso, p.head, p.hands[0], p.hands[1], p.headC, p.arms[0], p.arms[1]].forEach(function (b) { if (b) Composite.remove(w.engine.world, b); });
+    rigParts(p).forEach(function (b) { if (b) Composite.remove(w.engine.world, b); });
     const ix = w.solids.indexOf(p.torso); if (ix >= 0) w.solids.splice(ix, 1);
   }
   S.players.delete(id);
@@ -308,7 +320,7 @@ function releaseGrabs(p) {
 function tryGrab(p, i) {
   if (p.grab[i]) return;
   const hand = p.hands[i];
-  let best = null, bestD = 58;
+  let best = null, bestD = 66;
   for (const b of S.world.list) {
     const ww = b.plugin && b.plugin.ww;
     if (!ww || ww.grabbable === false || b.isSensor) continue;
@@ -393,10 +405,12 @@ function step(dt) {
       if (!held && p.prevGrab[i]) releaseGrab(p, i);
       p.prevGrab[i] = held;
     }
-    // grounded: short ray below both feet
+    // grounded: short ray below both feet (rotated with the body)
     let grounded = false;
+    const ca = Math.cos(t.angle), sa = Math.sin(t.angle);
     for (const dx of [-10, 10]) {
-      const hits = Query.ray(w.solids, { x: t.position.x + dx, y: t.position.y + 20 }, { x: t.position.x + dx, y: t.position.y + 31 }, 5);
+      const x0 = t.position.x + dx * ca - 20 * sa, y0 = t.position.y + dx * sa + 20 * ca;
+      const hits = Query.ray(w.solids, { x: x0, y: y0 }, { x: x0 - 11 * sa, y: y0 + 11 * ca }, 5);
       if (hits.length) { grounded = true; break; }
     }
     p.grounded = grounded;
@@ -404,13 +418,59 @@ function step(dt) {
     const targetVx = dir * 3.45;
     const vx = t.velocity.x + (targetVx - t.velocity.x) * 0.24;
     Body.setVelocity(t, { x: vx, y: t.velocity.y });
+    // SILLY BALANCE: a soft spring stands the body up, leaning into the run.
+    // Weak in the air, so jumps, hits and throws tumble and flop.
+    let ang = t.angle; while (ang > Math.PI) ang -= 2 * Math.PI; while (ang < -Math.PI) ang += 2 * Math.PI;
+    const lean = grounded ? dir * 0.1 : 0;
+    const k = grounded ? 0.022 : 0.004;
+    Body.setAngularVelocity(t, t.angularVelocity * (grounded ? 0.9 : 0.985) - (ang - lean) * k);
+    if (Math.abs(ang) > 1.35) Body.setAngularVelocity(t, t.angularVelocity - Math.sign(ang) * 0.03);
     if (p.input.jump && !p.prevJump && grounded) {
       Body.setVelocity(t, { x: t.velocity.x, y: -9.2 });
+      Body.setAngularVelocity(t, t.angularVelocity + (Math.random() - 0.5) * 0.12 + dir * 0.05);
+      for (const h of p.hands) Body.setVelocity(h, { x: h.velocity.x + (Math.random() - 0.5) * 6, y: -7 });
+      for (const f of p.feet) Body.setVelocity(f, { x: f.velocity.x + (Math.random() - 0.5) * 5, y: 3 });
       pushFx('jump', { x: t.position.x, y: t.position.y, who: p.name });
     }
+    // legs: planted and striding on the ground, dangling and kicking in the air
+    if (grounded) {
+      p.stride += Math.abs(t.velocity.x) * 0.075;
+      const moving = Math.min(1, Math.abs(t.velocity.x) / 2.5);
+      for (let i = 0; i < 2; i++) {
+        const ph = p.stride + (i ? Math.PI : 0);
+        const fx = t.position.x + (i ? 7 : -7) + Math.sin(ph) * 13 * moving;
+        const fy = t.position.y + 29 - Math.max(0, Math.cos(ph)) * 7 * moving;
+        Body.setPosition(p.feet[i], { x: fx, y: fy });
+        Body.setVelocity(p.feet[i], { x: t.velocity.x, y: 0 });
+      }
+    } else if (dir) {
+      for (let i = 0; i < 2; i++) Body.applyForce(p.feet[i], p.feet[i].position, { x: Math.sin(Date.now() / 130 + i * 3) * 0.00005, y: 0 });
+    }
+    // GRAB MECHANICS. Holding an object lets you PUSH it (walk into it), PULL it
+    // (walk away) and HOIST it (hold JUMP: arms heave it upward). Hoisting something
+    // that sits above you hauls YOU up to it instead - that is how you climb.
+    const holds = [];
+    for (let i = 0; i < 2; i++) if (p.grab[i] && !p.grab[i].target.isStatic) holds.push(p.grab[i].target);
     const grabbing = !!(p.grab[0] || p.grab[1]);
     if (grabbing && p.input.jump) {
-      Body.applyForce(t, t.position, { x: 0, y: -0.0022 * t.mass });
+      const uniq = holds.filter(function (b, i) { return holds.indexOf(b) === i; });
+      const climb = !uniq.length || uniq.some(function (b) { return t.position.y - b.position.y > 40; });
+      if (climb) Body.applyForce(t, t.position, { x: 0, y: -0.0022 * t.mass });
+      else for (const b of uniq) {
+        Body.applyForce(b, b.position, { x: 0, y: -b.mass * 0.00078 });
+        Body.applyForce(t, t.position, { x: 0, y: b.mass * 0.00012 });
+        Body.setVelocity(b, { x: b.velocity.x * 0.97, y: b.velocity.y * 0.97 });
+        S.mechanics.add('hoist');
+      }
+    }
+    if (dir && holds.length) {
+      for (const b of holds.filter(function (x, i) { return holds.indexOf(x) === i; })) {
+        const kind = b.plugin.ww.kind;
+        const f = (kind === 'core' ? 0.00026 : 0.0006) * Math.min(b.mass, 14);
+        Body.applyForce(b, b.position, { x: dir * f, y: 0 });
+        const toward = Math.sign(b.position.x - t.position.x) === dir;
+        S.mechanics.add(toward ? 'push' : 'pull');
+      }
     }
     p.prevJump = p.input.jump;
   }
@@ -513,6 +573,12 @@ function postStep() {
       if (b.plugin.ww && (b.plugin.ww.kind === 'plank') && Math.abs(b.position.x - z.x) < z.w / 2 + 90 && b.position.y < z.y - 100) S.mechanics.add('bridge');
     }
   }
+  // a round that nobody pressed START on still has to be winnable: the first
+  // time the Core is grabbed or shoved away from its spawn, the round begins
+  if (S.phase === 'lobby' && S.players.size) {
+    const sp = S.spec.core;
+    if (dist(core.position, sp) > 24) { S.phase = 'playing'; S.startedAt = Date.now(); pushFx('start', {}); }
+  }
   // win
   if (S.phase === 'playing' && w.goal) {
     if (dist(core.position, w.goal) < w.goal.r + 6) {
@@ -535,6 +601,7 @@ function respawn(p) {
 }
 function medalFor() {
   const m = S.mechanics;
+  if (m.has('hoist')) return { key: 'hoist', name: 'HEAVE-HO CREW', cn: '一二三嘿咻', line: 'Somebody pulled, somebody pushed, the Core went over.' };
   if (m.has('chain')) return { key: 'chain', name: 'HUMAN CHAIN', cn: '手拉手', line: 'You used each other as equipment.' };
   if (m.has('catapult')) return { key: 'catapult', name: 'CATAPULT CREW', cn: '弹射专家', line: 'The Core flew. Nobody knows why.' };
   if (m.has('bridge')) return { key: 'bridge', name: 'BRIDGE BUILDERS', cn: '造桥队', line: 'Planks, patience, and a lot of wobbling.' };
@@ -581,6 +648,8 @@ function snapshot() {
       a: +p.torso.angle.toFixed(3), grounded: p.grounded,
       hx: [+p.hands[0].position.x.toFixed(1), +p.hands[1].position.x.toFixed(1)],
       hy: [+p.hands[0].position.y.toFixed(1), +p.hands[1].position.y.toFixed(1)],
+      fx: [+p.feet[0].position.x.toFixed(1), +p.feet[1].position.x.toFixed(1)],
+      fy: [+p.feet[0].position.y.toFixed(1), +p.feet[1].position.y.toFixed(1)],
       grab: [!!p.grab[0], !!p.grab[1]],
       headX: +p.head.position.x.toFixed(1), headY: +p.head.position.y.toFixed(1),
       bubble: p.bubble, respawns: p.respawns, rtt: p.rtt
@@ -633,6 +702,7 @@ function handleMessage(client, msg) {
     case 'reset': if (p.board) setLevel(S.levelId); break;
     case 'next': if (p.board && S.phase === 'won') setLevel(S.win ? S.win.next : 1); break;
     case 'hint': if (p.board) { const hs = S.spec.hints; broadcast({ type: 'toast', text: hs[Math.floor(Math.random() * hs.length)] }); } break;
+    case 'testCore': if (process.env.WOBBLE_TEST === '1') { Body.setPosition(S.world.core, { x: +msg.x, y: +msg.y }); Body.setVelocity(S.world.core, { x: 0, y: 0 }); } break;
     case 'clearBubble': p.bubble = null; break;
   }
 }
@@ -652,8 +722,14 @@ const sim = setInterval(function () {
   }
 }, 8);
 
-// A local firewall silently drops LAN traffic on port 3000; say so at startup.
+// A local firewall silently drops LAN traffic on port 3000. OPT-IN only (FIREWALL_CHECK=1):
+// firewall-cmd triggers a polkit password prompt on every start (including each test run),
+// and repeated failed attempts can lock the account.
 function checkFirewall(port) {
+  if (process.env.FIREWALL_CHECK !== '1') {
+    console.log('  Firewall        : not checked (run ./lan-doctor.sh, or start with FIREWALL_CHECK=1)');
+    return;
+  }
   require('child_process').execFile('firewall-cmd', ['--query-port=' + port + '/tcp'],
     { timeout: 8000 }, function (err, stdout) {   // firewalld D-Bus can take ~4 s
       const answer = String(stdout || '').trim();

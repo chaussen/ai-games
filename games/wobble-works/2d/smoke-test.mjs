@@ -14,7 +14,7 @@ const ok = function (msg) { console.log('PASS ✓ ' + msg); };
 function assert(cond, msg) { if (cond) ok(msg); else fail(msg); }
 
 try { fs.unlinkSync(SAVE); } catch (e) {}
-const proc = spawn(process.execPath, ['../server.js', '--mode=2d'], { cwd: ROOT, env: { ...process.env, PORT: String(PORT) }, stdio: ['ignore', 'pipe', 'pipe'] });
+const proc = spawn(process.execPath, ['../server.js', '--mode=2d'], { cwd: ROOT, env: { ...process.env, PORT: String(PORT), WOBBLE_TEST: '1' }, stdio: ['ignore', 'pipe', 'pipe'] });
 let serverLog = '';
 proc.stdout.on('data', function (d) { serverLog += d.toString(); });
 proc.stderr.on('data', function (d) { serverLog += d.toString(); });
@@ -84,7 +84,7 @@ const drive = setInterval(function () {
   ctrls.forEach(function (c) { const m = pushMsg(s, c); if (m) c.ws.send(m); });
 }, 45);
 
-let plateSeen = false, gateSeen = false, maxPush = 0, startX = 470, won = null, elapsed = 0;
+let hopped = false, pushedTo = 0, plateSeen = false, gateSeen = false, maxPush = 0, startX = 470, won = null, elapsed = 0;
 for (let i = 0; i < 32; i++) {
   await new Promise(function (r) { setTimeout(r, 1000); });
   const s = board.last;
@@ -94,7 +94,9 @@ for (let i = 0; i < 32; i++) {
   if (plate && plate.pressed) plateSeen = true;
   if (gate && gate.open) gateSeen = true;
   maxPush = Math.max(maxPush, s.pushCount);
-  if (i === 2) startX = core.x;
+  // Stage 1 now has a wall that needs a hoist (see hoist-test.mjs). Bots cannot climb, so once
+  // the plate and gate have been done by pushing, hop the Core over the wall to the beacon.
+  if (gateSeen && !hopped) { hopped = true; pushedTo = core.x; board.ws.send(JSON.stringify({ type: 'testCore', x: 1290, y: 726 })); }
   elapsed = i + 1;
   if (s.phase === 'won') { won = s.win; break; }
 }
@@ -102,7 +104,7 @@ clearInterval(drive);
 const s = board.last;
 const core = s.bodies.find(function (b) { return b.kind === 'core'; });
 console.log('     core travelled ' + Math.round(core.x - startX) + 'px · max team push ' + maxPush + ' · elapsed ' + elapsed + 's');
-assert(core.x - startX > 400, 'PHYSICS: the Core is pushed across the workshop');
+assert(pushedTo - startX > 200, 'PHYSICS: the Core is pushed across the workshop to the plate (' + Math.round(pushedTo - startX) + ' px)');
 assert(maxPush >= 3, 'INTERDEPENDENCE: 3+ wobblers push together (peak ' + maxPush + ')');
 assert(plateSeen, 'PUZZLE: the pressure plate is pressed by the heavy Core');
 assert(gateSeen, 'PUZZLE: the gate opens (latched)');

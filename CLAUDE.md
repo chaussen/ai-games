@@ -55,7 +55,7 @@ work" is the production site after `master` deploys.
 Each game's `smoke-test.mjs` is the contract. Run it before committing:
 
 ```sh
-cd games/wobble-works/2d && node smoke-test.mjs
+cd games/wobble-works/2d && node smoke-test.mjs && node hoist-test.mjs
 cd games/wobble-works/3d && node smoke-test.mjs
 cd games/firefly-relay && node smoke-test.mjs
 ```

@@ -7,26 +7,27 @@ const LEVELS = [
   {
     id: 1, key: 'door', tier: 'SCRIPTED', name: 'THE DOOR', cn: '第一课 · 门',
     subtitle: 'One heavy thing. One button. One door.',
-    brief: 'The Glow Core is far too heavy for one wobbler. Get it onto the pressure plate to open the gate, then roll it into the beacon together.',
+    brief: 'The Glow Core is far too heavy for one wobbler. Roll it onto the pressure plate to open the gate, then get it over the wall: one of you climbs up, grabs it and hauls, the others heave from below.',
     width: 1500, height: 820, ground: G, toolBudget: 4,
     spawn: [[80,737],[130,737],[180,737],[230,737],[280,737],[330,737],[380,737],[430,737]],
     core: { x: 470, y: G - 34 },
-    goal: { x: 1320, y: G - 60, r: 62, label: 'BEACON' },
+    goal: { x: 1340, y: G - 60, r: 62, label: 'BEACON' },
     hints: [
       'Everyone get behind the Core and push at the same time.',
       'The plate stays down only while something heavy sits on it.',
-      'Grab the Core with both hands to steer it instead of just shoving.'
+      'The wall is low enough to jump onto. Grab the Core and hold JUMP to heave it up; walk away to pull it along.',
+      'Two heavers beat one: one hauls from the top, one lifts from below.'
     ],
     statics: [
       { kind: 'ground', x: 750, y: G + 40, w: 1500, h: 80 },
       { kind: 'wall', x: -20, y: 410, w: 40, h: 820 },
       { kind: 'wall', x: 1520, y: 410, w: 40, h: 820 },
       { kind: 'ledge', x: 300, y: 560, w: 190, h: 22 },
-      { kind: 'ledge', x: 1180, y: 560, w: 190, h: 22 },
-      { kind: 'sign', x: 470, y: 600, w: 12, h: 70 }
+      { kind: 'sign', x: 470, y: 600, w: 12, h: 70 },
+      { kind: 'wall', x: 1160, y: G - 50, w: 160, h: 100 }
     ],
-    // Chapter 1 is deliberately clean: one Core, one plate, one gate, one beacon.
-    // No loose props to bulldoze into the exit - tools come from the dispenser.
+    // One Core, one plate, one gate, one low wall, one beacon.
+    // No loose props - tools come from the dispenser.
     dynamics: [],
     plates: [{ id: 'p1', x: 720, y: G - 8, w: 180, h: 16, gate: 'g1' }],
     gates: [{ id: 'g1', x: 940, y: 600, w: 28, h: 320 }],
