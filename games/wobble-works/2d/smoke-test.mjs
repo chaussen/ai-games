@@ -96,7 +96,7 @@ for (let i = 0; i < 32; i++) {
   maxPush = Math.max(maxPush, s.pushCount);
   // Stage 1 now has a wall that needs a hoist (see hoist-test.mjs). Bots cannot climb, so once
   // the plate and gate have been done by pushing, hop the Core over the wall to the beacon.
-  if (gateSeen && !hopped) { hopped = true; pushedTo = core.x; board.ws.send(JSON.stringify({ type: 'testCore', x: 1290, y: 726 })); }
+  if (gateSeen && !hopped && core.x > 900) { hopped = true; pushedTo = core.x; board.ws.send(JSON.stringify({ type: 'testCore', x: 1290, y: 726 })); }
   elapsed = i + 1;
   if (s.phase === 'won') { won = s.win; break; }
 }

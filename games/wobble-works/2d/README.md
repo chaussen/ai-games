@@ -239,3 +239,18 @@ Matter.js 0.20.0 — MIT. qrcode-generator 1.4.4 — MIT, Copyright (c) 2009 Kaz
 - **Stage 1** has a low wall after the gate. One wobbler climbs the wall and grabs the Core from above, another lifts from below; two hoisters beat the Core's weight, one cannot. `node hoist-test.mjs` proves it (port 3432).
 - A round now starts by itself the first time the Core is moved, so a stage can no longer be stuck in the lobby when nobody pressed START.
 - Jumping is deliberately still unlimited in the air (the original game's behaviour); the jump is short, so tap repeatedly to climb.
+
+## Update 2: feel fixes
+
+- **Gravity** is 1.6x the original (`GRAVITY` in `server.js`), so falls are brisk. Jump speed and
+  lift forces scale with it, so jump height and hoisting are unchanged.
+- **Calm camera** on phones: the follow camera is low-pass filtered and ignores up to 90 px of
+  vertical movement, so jumping no longer bobs the scene. The jump no longer adds random flail.
+- **Solo hoist:** a lone wobbler holding a heavy thing and JUMP winches it up slowly (0.5 px/tick);
+  two or more lift it by force, much faster. Loose objects are grabbed in preference to scenery.
+- **Pressure plate** (stage 1) is no longer latched: it stays down only while a wobbler, crate or
+  the Core is on it, and the door lingers open for 6 s afterwards (`PLATE_GRACE_MS`). A door never
+  closes on something standing in its doorway.
+- **Phone controls** are about 30% shorter; calls and tools share one row.
+- **Legs** are straight fixed-length stick-man lines.
+- `solo-test.mjs` (port 3433) covers the plate and the one-player haul over the wall.

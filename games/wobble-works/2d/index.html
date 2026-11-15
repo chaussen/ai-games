@@ -49,6 +49,7 @@
             <button id="btn-next" class="btn big">NEXT CHAPTER →</button>
             <button id="btn-scrap" class="btn ghost">FAMILY SCRAPBOOK</button>
             <button id="btn-replay" class="btn ghost">PLAY AGAIN</button>
+            <button id="btn-stages" class="btn ghost">CHOOSE STAGE</button>
           </div>
         </div>
       </div>
@@ -114,8 +115,11 @@
     <div id="c-direction" class="direction"></div>
     <div id="c-toast" class="toast"></div>
     <div id="c-win" class="c-win hidden">
-      <div class="c-win-card"><div class="win-kicker">WE DID IT</div><h2 id="c-win-title"></h2><p id="c-win-line"></p></div>
+      <div class="c-win-card"><div class="win-kicker">WE DID IT</div><h2 id="c-win-title"></h2><p id="c-win-line"></p>
+        <button id="c-next" class="btn big">NEXT CHAPTER →</button>
+        <button id="c-again" class="btn ghost">PLAY AGAIN</button></div>
     </div>
+    <div id="c-stages" class="c-win hidden"><div class="c-win-card"><div class="win-kicker">PICK A STAGE</div><div id="c-stage-list"></div><button id="c-stages-close" class="btn ghost">CLOSE</button></div></div>
     <div id="c-wontag" class="won-tag hidden">✓ BEACON LIT</div>
   </div>
 
@@ -129,6 +133,7 @@
       <button id="btn-grabL" class="pad grab">L · GRAB<span>✊</span></button>
       <button id="btn-grabR" class="pad grab">R · GRAB<span>✊</span></button>
     </div>
+    <div class="c-small">
     <div class="c-calls">
       <button class="call" data-call="📍 HERE">📍 HERE</button>
       <button class="call" data-call="🙋 MINE">🙋 MINE</button>
@@ -140,6 +145,8 @@
       <button class="ctool" data-tool="plank">🪵</button>
       <button class="ctool" data-tool="barrel">🛢</button>
       <button id="btn-cwide" class="ctool wide">🔭 WIDE</button>
+      <button id="btn-cstages" class="ctool wide">🗺 STAGES</button>
+    </div>
     </div>
   </div>
 </div>

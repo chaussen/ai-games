@@ -14,7 +14,7 @@ const LEVELS = [
     goal: { x: 1340, y: G - 60, r: 62, label: 'BEACON' },
     hints: [
       'Everyone get behind the Core and push at the same time.',
-      'The plate stays down only while something heavy sits on it.',
+      'The door stays open only while something heavy sits on the plate: a wobbler, or the Core. It closes about six seconds after you step off.',
       'The wall is low enough to jump onto. Grab the Core and hold JUMP to heave it up; walk away to pull it along.',
       'Two heavers beat one: one hauls from the top, one lifts from below.'
     ],
@@ -29,7 +29,7 @@ const LEVELS = [
     // One Core, one plate, one gate, one low wall, one beacon.
     // No loose props - tools come from the dispenser.
     dynamics: [],
-    plates: [{ id: 'p1', x: 720, y: G - 8, w: 180, h: 16, gate: 'g1' }],
+    plates: [{ id: 'p1', x: 720, y: G - 8, w: 180, h: 16, gate: 'g1', latched: false }],
     gates: [{ id: 'g1', x: 940, y: 600, w: 28, h: 320 }],
     water: [], wind: [], ropes: [], seesaws: [],
     checkpoints: [{ x: 470, y: G - 34 }]

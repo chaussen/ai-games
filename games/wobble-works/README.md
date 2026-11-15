@@ -57,7 +57,10 @@ family server is already running.
 ## 2. 2D original
 
 Controls, chapter rules, architecture and home-network notes are in
-[2d/README.md](2d/README.md).
+[2d/README.md](2d/README.md). Wobblers have stick-man legs and floppy arms; grab an object
+and walk into it to push, walk away to pull, hold JUMP to hoist. Stage 1 has a low brick
+wall: two players haul the Core over quickly, one player alone can do it slowly. The door
+opens only while something (a wobbler or the Core) stands on the plate.
 
 ## 3. 3D arena
 
@@ -129,6 +132,8 @@ A 96 × 96 m arena with a 14 m tower, a fortress, a chasm and a trampoline pit.
 
 ```sh
 cd 2d && node smoke-test.mjs   # 2D contract, real server on :3431, 17 checks
+cd 2d && node hoist-test.mjs   # 2D two-player hoist over the stage 1 wall, :3432
+cd 2d && node solo-test.mjs    # 2D one-player slow hoist + hold-down pressure plate, :3433
 cd 3d && node smoke-test.mjs   # 3D contract, real server on :3455
 cd 3d && node scoring-test.mjs # 3D scoring + tackle regression, :3466
 ```

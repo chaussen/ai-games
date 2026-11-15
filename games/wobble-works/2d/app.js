@@ -82,6 +82,7 @@ document.addEventListener('keydown', function (e) {
     var calls = ['📍 HERE','🙋 MINE','💪 PUSH','😂 LOL'];
     send({ type: 'call', text: calls[Number(e.key) - 1] });
   }
+  if (isBoard && (e.key === 'n' || e.key === 'N' || e.key === 'Enter')) send({ type: 'next' });
   if (isBoard && (e.key === 'h' || e.key === 'H')) send({ type: 'hint' });
   if (isBoard && (e.key === 'b' || e.key === 'B')) send({ type: 'addBot' });
 });
@@ -142,6 +143,7 @@ function boardBinds() {
   $('btn-wide').onclick = function () { fitView = !fitView; showToast(fitView ? 'Wide workshop view' : 'Follow your wobbler'); };
   $('btn-next').onclick = function () { send({ type: 'next' }); };
   $('btn-replay').onclick = function () { send({ type: 'setLevel', id: state ? state.level.id : 1 }); };
+  $('btn-stages').onclick = function () { $('win-overlay').classList.add('hidden'); showToast('Pick a stage from the tabs at the top'); };
   $('btn-scrap').onclick = openScrap;
   $('scrap-close').onclick = function () { $('scrapbook').classList.add('hidden'); };
   document.querySelectorAll('.tool').forEach(function (b) { b.onclick = function () { send({ type: 'spawnTool', kind: b.dataset.tool }); }; });
@@ -151,6 +153,17 @@ function controllerBinds() {
   bindHold('btn-grabL', 'grabL'); bindHold('btn-grabR', 'grabR');
   document.querySelectorAll('.call').forEach(function (b) { b.onclick = function () { send({ type: 'call', text: b.dataset.call }); }; });
   document.querySelectorAll('.ctool[data-tool]').forEach(function (b) { b.onclick = function () { send({ type: 'spawnTool', kind: b.dataset.tool }); }; });
+  $('c-next').onclick = function () { send({ type: 'next' }); };
+  $('c-again').onclick = function () { send({ type: 'reset' }); };
+  var sl = $('c-stage-list');
+  LEVEL_TABS.forEach(function (l) {
+    var b = document.createElement('button'); b.className = 'btn ghost c-stage-btn';
+    b.textContent = l.id + ' · ' + l.name;
+    b.onclick = function () { send({ type: 'setLevel', id: l.id }); $('c-stages').classList.add('hidden'); };
+    sl.appendChild(b);
+  });
+  $('btn-cstages').onclick = function () { $('c-stages').classList.remove('hidden'); };
+  $('c-stages-close').onclick = function () { $('c-stages').classList.add('hidden'); };
   $('btn-cwide').onclick = function () { fitView = !fitView; $('btn-cwide').classList.toggle('on', !fitView); showToast(fitView ? 'Wide view' : 'Follow camera'); };
 }
 
@@ -215,10 +228,11 @@ function showWin(w) {
     $('c-win').classList.remove('hidden');
     $('c-win-title').textContent = w.medal.name;
     $('c-win-line').textContent = w.medal.line;
+    $('c-next').textContent = w.next === 5 ? '→ FREE PLAY' : 'NEXT CHAPTER →';
   }
 }
 function hideWin() {
-  $('win-overlay').classList.add('hidden'); $('c-win').classList.add('hidden'); $('c-wontag').classList.add('hidden');
+  $('win-overlay').classList.add('hidden'); $('c-win').classList.add('hidden'); $('c-stages').classList.add('hidden'); $('c-wontag').classList.add('hidden');
 }
 function openScrap() {
   var grid = $('scrap-grid'); grid.innerHTML = '';
@@ -258,6 +272,7 @@ function drawBackground(ctx, cw, ch) {
   ctx.beginPath(); ctx.ellipse(cw * 0.2, ch * 0.86, cw * 0.4, ch * 0.24, 0, 0, Math.PI * 2); ctx.fill();
   ctx.beginPath(); ctx.ellipse(cw * 0.82, ch * 0.9, cw * 0.34, ch * 0.2, 0, 0, Math.PI * 2); ctx.fill();
 }
+var camSm = null;
 function camera(L, cw, ch) {
   if (fitView) {
     var s = Math.min(cw / L.width, ch / L.height) * 0.95;
@@ -265,7 +280,14 @@ function camera(L, cw, ch) {
   }
   var p = me && state ? state.players.find(function (q) { return q.id === me.id; }) : null;
   var s = Math.max(0.72, Math.min(cw / 700, ch / 520, 1.5));
-  var cx = p ? p.x : L.width / 2, cy = p ? p.y - 40 : L.height / 2;
+  // Calm follow camera: x eases toward the player, y only moves when they leave a tall dead
+  // zone (so jumping never bobs the whole scene), and both are low-pass filtered.
+  var tx = p ? p.x : L.width / 2, ty = p ? p.y - 40 : L.height / 2;
+  if (!camSm || camSm.level !== L.id) camSm = { level: L.id, x: tx, y: ty, ay: ty };
+  var dz = 90;
+  if (ty - camSm.ay > dz) camSm.ay = ty - dz; else if (camSm.ay - ty > dz) camSm.ay = ty + dz;
+  camSm.x += (tx - camSm.x) * 0.06; camSm.y += (camSm.ay - camSm.y) * 0.05;
+  var cx = camSm.x, cy = camSm.y;
   var halfW = cw / (2 * s), halfH = ch / (2 * s);
   cx = Math.max(halfW, Math.min(L.width - halfW, cx));
   cy = Math.max(halfH, Math.min(L.height - halfH, cy));
@@ -432,10 +454,11 @@ function drawWobbler(ctx, p, now) {
   p.face = face;
   var hipL = W(-8, 19), hipR = W(8, 19), shL = W(-13, -6), shR = W(13, -6);
   // legs (dark), arms (body colour) - elbows and knees bend like loose rubber
-  limb(ctx, hipL.x, hipL.y, f0.x, f0.y, 15, face, 7, '#1e2a44');
-  limb(ctx, hipR.x, hipR.y, f1.x, f1.y, 15, face, 7, '#1e2a44');
-  [f0, f1].forEach(function (f) {
-    ctx.fillStyle = '#1e2a44'; ctx.beginPath(); ctx.ellipse(f.x + face * 3, f.y + 1, 8, 5, 0, 0, Math.PI * 2); ctx.fill();
+  // stick-man legs: two straight fixed-length lines from the hips toward the feet
+  ctx.strokeStyle = '#1e2a44'; ctx.lineWidth = 6; ctx.lineCap = 'round';
+  [[hipL, f0], [hipR, f1]].forEach(function (lg) {
+    var dx = lg[1].x - lg[0].x, dy = lg[1].y - lg[0].y, d = Math.sqrt(dx * dx + dy * dy) || 1, L = 30;
+    ctx.beginPath(); ctx.moveTo(lg[0].x, lg[0].y); ctx.lineTo(lg[0].x + dx / d * L, lg[0].y + dy / d * L); ctx.stroke();
   });
   limb(ctx, shL.x, shL.y, hx.x, hx.y, 14, -1, 8, '#1e2a44');
   limb(ctx, shR.x, shR.y, hy.x, hy.y, 14, 1, 8, '#1e2a44');

@@ -19,6 +19,10 @@ const SNAP_MS = 1000 / 20;          // state broadcast to clients
 const WS_GUID = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
 const SAVE_FILE = path.join(ROOT, '.wobble-save.json');
 const CORE_DENSITY = Number(process.env.CORE_DENSITY || 0.0026);   // tuned: heavy enough to need a team
+// Earth-like fall: 1.6x the original floaty gravity. Jump speed and lift forces scale with it,
+// so jump height and hoisting feel the same, only the fall is brisk.
+const GRAVITY = 0.0016, GK = GRAVITY / 0.001;
+const PLATE_GRACE_MS = Number(process.env.PLATE_GRACE_MS || 6000);   // how long an unlatched door stays open after you step off
 const COLORS = ['#ef6f5b','#3aa6a0','#f2b544','#8b6fd4','#e06fa8','#5a9de0','#8cbf4a','#e58a3c'];
 
 const { Engine, Bodies, Body, Composite, Constraint, Query } = Matter;
@@ -141,7 +145,7 @@ function dist(a, b) { return Math.hypot(a.x - b.x, a.y - b.y); }
 
 function createWorld(spec) {
   const engine = Engine.create();
-  engine.gravity.y = 1; engine.gravity.scale = 0.001;
+  engine.gravity.y = 1; engine.gravity.scale = GRAVITY;
   engine.positionIterations = 8; engine.velocityIterations = 8; engine.constraintIterations = 4;
   const list = [], solids = [], byId = new Map();
   let n = 0;
@@ -320,7 +324,7 @@ function releaseGrabs(p) {
 function tryGrab(p, i) {
   if (p.grab[i]) return;
   const hand = p.hands[i];
-  let best = null, bestD = 66;
+  let best = null, bestD = 5000;
   for (const b of S.world.list) {
     const ww = b.plugin && b.plugin.ww;
     if (!ww || ww.grabbable === false || b.isSensor) continue;
@@ -328,13 +332,16 @@ function tryGrab(p, i) {
     const d = dist(hand.position, b.position);
     // for big bodies compare against their surface, not just centre
     const reach = Math.max(0, d - (ww.r || Math.min(ww.w || 40, ww.h || 40) / 2));
-    if (reach < bestD) { bestD = reach; best = b; }
+    // loose things win over fixed scenery, so a wobbler on the wall grabs the Core below rather than the wall
+    const score = reach + (b.isStatic ? 1000 : 0);   // any loose thing in reach beats fixed scenery
+    if (reach < 66 && score < bestD) { bestD = score; best = b; }
   }
   if (!best) return;
   const pointB = { x: hand.position.x - best.position.x, y: hand.position.y - best.position.y };
   const c = Constraint.create({ bodyA: hand, bodyB: best, pointB: pointB, length: 0, stiffness: 0.68, damping: 0.16 });
   Composite.add(S.world.engine.world, c);
   p.grab[i] = { constraint: c, target: best };
+  if (process.env.WOBBLE_DEBUG) console.log('GRAB', p.name, i, best.plugin.ww.kind, Math.round(best.position.x), Math.round(best.position.y));
   const kind = best.plugin.ww.kind;
   if (kind === 'rope') S.mechanics.add('rope');
   if (best.label === 'wobbler') S.mechanics.add('chain');
@@ -426,10 +433,9 @@ function step(dt) {
     Body.setAngularVelocity(t, t.angularVelocity * (grounded ? 0.9 : 0.985) - (ang - lean) * k);
     if (Math.abs(ang) > 1.35) Body.setAngularVelocity(t, t.angularVelocity - Math.sign(ang) * 0.03);
     if (p.input.jump && !p.prevJump && grounded) {
-      Body.setVelocity(t, { x: t.velocity.x, y: -9.2 });
-      Body.setAngularVelocity(t, t.angularVelocity + (Math.random() - 0.5) * 0.12 + dir * 0.05);
-      for (const h of p.hands) Body.setVelocity(h, { x: h.velocity.x + (Math.random() - 0.5) * 6, y: -7 });
-      for (const f of p.feet) Body.setVelocity(f, { x: f.velocity.x + (Math.random() - 0.5) * 5, y: 3 });
+      Body.setVelocity(t, { x: t.velocity.x, y: -9.2 * Math.sqrt(GK) });
+      Body.setAngularVelocity(t, t.angularVelocity + dir * 0.03);
+      for (const h of p.hands) Body.setVelocity(h, { x: h.velocity.x, y: -5 * Math.sqrt(GK) });
       pushFx('jump', { x: t.position.x, y: t.position.y, who: p.name });
     }
     // legs: planted and striding on the ground, dangling and kicking in the air
@@ -455,11 +461,16 @@ function step(dt) {
     if (grabbing && p.input.jump) {
       const uniq = holds.filter(function (b, i) { return holds.indexOf(b) === i; });
       const climb = !uniq.length || uniq.some(function (b) { return t.position.y - b.position.y > 40; });
-      if (climb) Body.applyForce(t, t.position, { x: 0, y: -0.0022 * t.mass });
+      if (climb) Body.applyForce(t, t.position, { x: 0, y: -0.0022 * GK * t.mass });
       else for (const b of uniq) {
-        Body.applyForce(b, b.position, { x: 0, y: -b.mass * 0.00078 });
-        Body.applyForce(t, t.position, { x: 0, y: b.mass * 0.00012 });
+        Body.applyForce(b, b.position, { x: 0, y: -b.mass * 0.00078 * GK });
+        Body.applyForce(t, t.position, { x: 0, y: b.mass * 0.00012 * GK });
         Body.setVelocity(b, { x: b.velocity.x * 0.97, y: b.velocity.y * 0.97 });
+        // A lone hoister is too weak to win by force, so they get a slow winch instead:
+        // heavy things still go up, just at a crawl (a team is much faster). Never a dead end.
+        let n = 0;
+        for (const q of S.players.values()) if (q.input.jump && ((q.grab[0] && q.grab[0].target === b) || (q.grab[1] && q.grab[1].target === b))) n++;
+        if (n === 1 && b.velocity.y > -0.5) Body.setVelocity(b, { x: b.velocity.x, y: -0.5 });
         S.mechanics.add('hoist');
       }
     }
@@ -529,20 +540,30 @@ function inRegion(b, r) {
 }
 function postStep() {
   const w = S.world, core = w.core;
-  // plates and gates
+  // plates and gates. A plate is held down by anything heavy standing on it (a wobbler,
+  // a crate, or the Core). Unlatched plates let go after a grace period, and a gate never
+  // closes on something standing in its doorway.
   for (const pl of w.plates) {
     let pressed = false;
-    for (const b of w.list) {
-      if (b.isStatic || b.isSensor || b.mass < 5) continue;
+    const px = pl.body.position.x, py = pl.body.position.y, pw = pl.body.plugin.ww.w;
+    const onPlate = w.list.concat(Array.from(S.players.values()).map(function (q) { return q.torso; }).filter(Boolean));
+    for (const b of onPlate) {
+      if (b.isStatic || b.isSensor || b.mass < 1) continue;   // wobblers, crates, the Core; not rope bits
       const d = b.position;
-      if (Math.abs(d.x - pl.body.position.x) < pl.body.plugin.ww.w / 2 + 8 && d.y < pl.body.position.y + 12 && d.y > pl.body.position.y - 150) { pressed = true; break; }
+      if (Math.abs(d.x - px) < pw / 2 + 8 && d.y < py + 12 && d.y > py - 70) { pressed = true; break; }
     }
     const ww = pl.body.plugin.ww;
-    if (pressed && !ww.pressed) pushFx('plate', { x: pl.body.position.x, y: pl.body.position.y });
+    if (pressed && !ww.pressed) pushFx('plate', { x: px, y: py });
     ww.pressed = pressed;
-    if (pressed) ww.opened = true;
-    const open = pl.latched ? ww.opened : pressed;
+    if (pressed) { ww.opened = true; ww.heldAt = Date.now(); }
+    let open = pl.latched ? ww.opened : (pressed || (ww.opened && Date.now() - ww.heldAt < PLATE_GRACE_MS));
+    if (!open && ww.opened && !pl.latched) ww.opened = false;
     for (const g of w.gates) {
+      if (!open && g.body.isSensor) {
+        const gb = g.body.bounds;
+        const blocked = w.list.some(function (b) { return !b.isStatic && !b.isSensor && b.bounds.max.x > gb.min.x - 4 && b.bounds.min.x < gb.max.x + 4 && b.bounds.max.y > gb.min.y && b.bounds.min.y < gb.max.y; });
+        if (blocked) open = true;
+      }
       g.body.plugin.ww.open = open;
       g.body.isSensor = open;
     }
@@ -697,10 +718,10 @@ function handleMessage(client, msg) {
     case 'spawnTool': if (spawnTool(msg.kind, p)) broadcast({ type: 'toast', text: p.name + ' dropped a ' + msg.kind }); break;
     case 'addBot': if (p.board) addBot(); break;
     case 'removeBots': if (p.board) { for (const q of [...S.players.values()]) if (q.bot) dropClient(q.id); } break;
-    case 'setLevel': if (p.board) setLevel(msg.id); break;
+    case 'setLevel': setLevel(msg.id); break;
     case 'start': if (p.board && S.phase !== 'playing') { S.phase = 'playing'; S.startedAt = Date.now(); pushFx('start', {}); } break;
-    case 'reset': if (p.board) setLevel(S.levelId); break;
-    case 'next': if (p.board && S.phase === 'won') setLevel(S.win ? S.win.next : 1); break;
+    case 'reset': setLevel(S.levelId); break;
+    case 'next': if (S.phase === 'won') setLevel(S.win ? S.win.next : 1); break;
     case 'hint': if (p.board) { const hs = S.spec.hints; broadcast({ type: 'toast', text: hs[Math.floor(Math.random() * hs.length)] }); } break;
     case 'testCore': if (process.env.WOBBLE_TEST === '1') { Body.setPosition(S.world.core, { x: +msg.x, y: +msg.y }); Body.setVelocity(S.world.core, { x: 0, y: 0 }); } break;
     case 'clearBubble': p.bubble = null; break;

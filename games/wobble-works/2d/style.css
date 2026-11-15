@@ -131,25 +131,25 @@ button{font-family:inherit;cursor:pointer}
 .c-win-card p{color:var(--muted);font-size:.8rem;margin:0}
 .won-tag{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--teal);color:#fff;
   border-radius:999px;padding:6px 14px;font-size:.72rem;font-weight:900}
-.c-controls{flex:0 0 auto;padding:8px 10px calc(10px + env(safe-area-inset-bottom));background:var(--paper2);
-  border-top:3px solid var(--ink);display:flex;flex-direction:column;gap:7px}
-.pad-row{display:flex;gap:8px;justify-content:center}
+.c-controls{flex:0 0 auto;padding:6px 8px calc(6px + env(safe-area-inset-bottom));background:var(--paper2);
+  border-top:3px solid var(--ink);display:flex;flex-direction:column;gap:5px}
+.pad-row{display:flex;gap:6px;justify-content:center}
 .pad{border:3px solid var(--ink);background:#fff;border-radius:18px;color:var(--ink);font-weight:900;
   touch-action:none;user-select:none;transition:.08s;box-shadow:0 4px 0 rgba(30,42,68,.25)}
 .pad.held{transform:translateY(3px);box-shadow:none;background:var(--amber)}
-.pad.dir{width:23%;height:60px;font-size:1.4rem}
-.pad.jump{width:38%;height:60px;font-size:.86rem;background:var(--coral);color:#fff;display:flex;
+.pad.dir{width:23%;height:46px;font-size:1.2rem}
+.pad.jump{width:38%;height:46px;font-size:.8rem;background:var(--coral);color:#fff;display:flex;
   flex-direction:column;align-items:center;justify-content:center;line-height:1.1}
-.pad.jump span{font-size:1.2rem}
-.pad.grab{width:47%;height:54px;font-size:.76rem;background:#fff6dd;display:flex;flex-direction:column;
+.pad.jump span{font-size:.95rem}
+.pad.grab{width:47%;height:40px;font-size:.7rem;background:#fff6dd;display:flex;flex-direction:column;
   align-items:center;justify-content:center;line-height:1.15}
-.pad.grab span{font-size:1.05rem}
+.pad.grab span{font-size:.85rem}
 .c-calls{display:flex;gap:5px;justify-content:center}
-.call{flex:1;border:2px solid var(--line);background:#fff;border-radius:11px;padding:7px 2px;font-size:.62rem;font-weight:800}
+.call{flex:1;border:2px solid var(--line);background:#fff;border-radius:9px;padding:4px 2px;font-size:.56rem;font-weight:800}
 .call:active{background:var(--purple);color:#fff}
 .c-tools{display:flex;gap:6px;justify-content:center}
-.ctool{flex:1;border:2px solid var(--line);background:#fff;border-radius:11px;padding:7px 2px;font-size:1.05rem}
-.ctool.wide{font-size:.62rem;font-weight:900;flex:1.6}
+.ctool{flex:1;border:2px solid var(--line);background:#fff;border-radius:9px;padding:3px 2px;font-size:.85rem}
+.ctool.wide{font-size:.56rem;font-weight:900;flex:1.6}
 .ctool.on{background:var(--teal);color:#fff}
 
 /* join gate */
@@ -178,7 +178,12 @@ button{font-family:inherit;cursor:pointer}
   .card{min-width:210px}
 }
 @media (max-width:420px){
-  .pad.dir{height:56px}.pad.jump{height:56px}.pad.grab{height:50px}
+  .pad.dir{height:44px}.pad.jump{height:44px}.pad.grab{height:38px}
   .c-objective span{display:none}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+.c-small{display:flex;gap:6px}
+.c-small .c-calls{flex:3}.c-small .c-tools{flex:2}
+.c-win-card .btn{width:100%;margin-top:8px}
+#c-stage-list{display:grid;gap:6px;margin:8px 0}
+.c-stage-btn{padding:8px;font-size:.8rem}

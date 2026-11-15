@@ -3,7 +3,7 @@
 import { spawn } from 'node:child_process';
 import { dirname } from 'node:path'; import { fileURLToPath } from 'node:url';
 const PORT = 3432, ROOT = dirname(fileURLToPath(import.meta.url));
-const proc = spawn(process.execPath, ['../server.js', '--mode=2d'], { cwd: ROOT, env: { ...process.env, PORT: String(PORT), WOBBLE_TEST: '1' }, stdio: 'ignore' });
+const proc = spawn(process.execPath, ['../server.js', '--mode=2d'], { cwd: ROOT, env: { ...process.env, PORT: String(PORT), WOBBLE_TEST: '1', PLATE_GRACE_MS: '600000' }, stdio: 'ignore' });
 let bad = 0;
 const check = (c, m) => { console.log((c ? 'PASS ✓ ' : 'FAIL ✗ ') + m); if (!c) bad = 1; };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
