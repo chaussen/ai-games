@@ -81,3 +81,31 @@ fire `#c22f1c`, water `#1b5aa6`, light `#b06f06`, earth `#7a4a22`. The brush fon
 
 `phone-6in-landscape-3-leap.jpg`, `phone-6in-portrait-1-boat.jpg`, `ipad-landscape-7-dawn-high.jpg`
 (the current greybox: the look to leave behind, and where everything sits).
+
+---
+
+## Addendum (2026-11-19): paste this as a follow-up message
+
+John's answers after the first brief:
+
+1. **Make both styles**, as a comparison: the ink jianghu frames above, and the same scene in
+   **一笔 One Stroke** (two inks, black 墨 and vermilion 朱, on warm 宣纸 paper; flat cut-paper
+   mountains of stacked triangles and arcs; no gradients, no texture; the hero drawn like the
+   character 大 with a head dot, bending into 人 when leaping and 天 when carrying).
+2. **No sword or weapon** on the hero.
+3. **Two kinds of glyph piece**: movable stones (the type blocks above) and **fixed glyph tiles carved
+   into the rock** (the glyph cut into a dark face, inked in its element colour). They must never be
+   confused: show one of each side by side.
+4. **A stone shows the thing it means while it is doing something.** At rest it is always the square
+   block. In your hands, in the air and when it acts, it becomes its thing, with the glyph kept on a
+   small vermilion tag. Please add a **字/物 sheet**, in both styles:
+
+| Glyph | Carried by the hero | Thrown | Acting |
+|---|---|---|---|
+| 木 wood | a small tree over the shoulder | a log turning end over end | a rope-tied plank bridge across a gap |
+| 火 fire | a torch held out | a fireball | a thorn hedge burning away |
+| 日 sun | a bright disc held up, lighting the night around the hero | a sun arcing over | shade melting |
+| 月 moon | a crescent lantern | a spinning crescent | a soft glow where it lands |
+
+   Limits: a carried thing sticks out at most about half a stone beyond the hero and never hides the
+   landing shadow under them; it must still read at a 30 px hero.

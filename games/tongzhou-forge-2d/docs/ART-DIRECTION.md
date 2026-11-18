@@ -1,7 +1,9 @@
 # Art direction plan: 水墨江湖 · ink jianghu
 
-Status: **plan, nothing built** (2026-11-19). Proposed decision FG-D020. Stop for John's review before
-any code (the plan-first rule). A paste-ready brief for Claude Design is `docs/ART-BRIEF.md`.
+Status: **plan, nothing built** (2026-11-19). Decision FG-D020. John answered §7 the same day (see
+§7): both styles as a comparison, no sword, and Claude Design goes first, so **code waits for
+Design's frames**. He added one idea: stones show the thing they mean (§3.7). A paste-ready brief for
+Claude Design is `docs/ART-BRIEF.md` (with an addendum for §3.7).
 
 John's ask: more unique Chinese traditional styling, a martial-artist feel, Chinese landscape terrain
 (mountains and rivers, Liyue in Genshin as the bar). **Either extremely simple (a stick man on
@@ -49,7 +51,9 @@ Not middle ground, because B takes A's best idea: in real shan-shui the people (
 strokes inside a rich landscape. **A rich world with a figure of very few strokes is how the
 tradition itself does it.**
 
-The rest of this plan is B. A stays the fallback if the style frames (§6, step V1) disappoint.
+The rest of this plan is B. **John wants both built as a comparison** (§7), so A is drawn too and
+both stay behind the art switch; every part below (the hero, the stones, §3.7's objects) is made in
+both styles.
 
 ## 3. Direction B in detail
 
@@ -98,8 +102,21 @@ lanterns for wind.
   palms), land (crouch, then robe settles), fall in the river (hat floats a moment).
 - **Telling which one is you** stays: a thin gold (藤黄) rim on the silhouette. Later, friends get
   their own sash colours.
+- **No sword, no weapon** (John: the children already ask for weapons; maybe later). Hands stay
+  free for carrying.
 
-### 3.3 The stones: movable type (活字)
+### 3.3 The stones: movable type (活字), and fixed tiles
+
+John: **some are movable and some are tiles**, like other platform games. Two looks, never confused:
+
+- **Movable stones** are type blocks (below): light, raised glyph, a paper slip with the pinyin. You
+  can carry them.
+- **Fixed glyph tiles** are carved into the rock itself (阴刻, the glyph cut into a dark face, inked in
+  its element colour): part of a wall, a step or a tower top. You cannot lift them, but you can set a
+  movable stone beside or on top of one to forge. This is a **rules change** (today every stone is
+  movable): a fixed piece in the stage data, the forge check accepting it as a partner, and a puzzle
+  shape that comes from it (the 日 carved high on a cliff: bring 月 up to it). It goes through
+  `sim.js` and `sim-test.mjs` like any rule, and is planned in its own short note before code.
 
 Placing pieces next to each other to make a character is what 毕昇's movable type does. So **stones
 become type blocks**: square blocks of fired clay (or pale wood), the glyph raised on the face in the
@@ -135,6 +152,47 @@ blue-green noon, snow, rain.
 Stay calm and stay in the same places. Cards become silk mounted on a darker border (装裱), with no
 rounded app bubbles. JUMP and GRAB become round ink-stone discs with the brush character in white
 (白文). ☰ becomes a small seal. The message line becomes a strip of paper. No new HUD elements.
+
+### 3.7 字 and 物: a stone shows the thing it means
+
+John: *"mu is a tree. see a person carrying a tree … or throwing a wood away. this mimics the
+original 2d version that i can summon planks and objects to block road."* In the earlier isles game a
+character became its thing (木 grew a plank bridge). Here the stone keeps its glyph and **shows its
+thing whenever it is doing something**. It is the same rule as "visible characters first": the
+meaning is seen, not only read.
+
+**The rule that keeps it readable: at rest it is always the block.** Lying on the ground, beside or on
+top of another stone, it is a square block, because BESIDE and ON TOP are read from squares and
+nothing may look bigger or more walkable than it is. Its thing appears only **in your hands, in the
+air, and when it acts**. The glyph never disappears: on the object it sits on a small vermilion tag
+(like a seal on a scroll), big enough to read at 30 px.
+
+Two levels; build the first, then the second:
+
+| Level | When | What you see | Cost |
+|---|---|---|---|
+| 1 · moments (easy) | thrown, dropped, acting | Leaving your hands, the block **opens into its thing** in the air (a spinning log, a ball of fire, a splash of water, a little sun) and **folds back** into the block as it lands. Acting, it becomes the thing for real: 木 in a gap grows into a plank bridge, 土 into a mound, 火 burns the hedge, 水 puts out flames, 日 lights the shade | Renderer only. The sim already sends `throw`, `bridge`, `place`, `thud` and the wall events |
+| 2 · carried (harder, more fun) | while you carry it | **You carry the thing**: a whole small tree on your shoulder, a torch held out in front, a water jar hugged to the chest, a sun disc held up (lighting the night around you), a moon lantern. The hero gets one carry pose per kind of thing instead of the single overhead pose | One pose per kind on the hero's skeleton, and the size limit below |
+
+**The things, by element** (current stones in bold, forged ones too):
+
+| Glyph | Carried | Thrown | Acting |
+|---|---|---|---|
+| **木** wood | a small tree over the shoulder (roots and leaves) | a log turning end over end | planks laid across the gap, rope-tied (the bridge) |
+| **火** fire | a torch held out | a fireball with a short tail | the hedge catches and burns away |
+| **日** light | a bright disc held up, warming the colours nearby | a sun arcing over | the shade melts back |
+| **月** moon | a crescent lantern | a crescent spinning | (no action yet) a soft glow where it lands |
+| 水 water | a jar hugged to the chest | a splash in the shape of the glyph | the flames hiss out |
+| 土 earth | a basket of earth on the back | a clod | a mound rises in the gap |
+| 明 / 杲 / 杳 (forged) | 明 a bright lamp; 杲 a sun caught in branches; 杳 a dark tree with the sun under it | as carried | carried to the pavilion, it is offered as the thing, then printed (§3.3) |
+
+**Size limit**: a carried thing may stick out at most about half a stone beyond the hero, so it never
+hides the landing shadow, a ledge you are aiming for, or the HUD. The collision box stays the stone's
+square: the tree on your shoulder does not hit walls.
+
+**Not in this plan**: throwing 木 to **build a wall that blocks a road**, as in the earlier game. That is
+a new rule (a thrown stone becoming terrain), so it is a game idea for after the art, with its own
+plan.
 
 ## 4. Readability rules (these win over style every time)
 
@@ -173,7 +231,8 @@ These become **automatic checks** (§6): contrast probes in the page, not taste.
 | V1 | **Style frames**: a `lookdev.html` page draws one scene (Sun and Moon: boat, gap, thorns, the 日 tower, pavilion) in A and in B, at phone landscape and portrait; screenshots taken from the running page | **Gate V1: John picks A or B** (or sends Claude Design's frames as the target) |
 | V2 | The brush primitive; sky, far, middle, mist and play layer; the river; the pavilion and the boat, behind `?art=ink` | Both isles playable in ink; contrast probes pass |
 | V3 | The hero: skeleton, poses, ribbons; the gold rim | Every pose seen in screenshots on all eleven screens |
-| V4 | Type-block stones, frames, effects, the forge print and the win scroll; HUD skin | Screen budget check passes unchanged |
+| V4 | Type-block stones, frames, effects, the forge print and the win scroll; HUD skin; **字/物 level 1** (things in the air and when acting) | Screen budget check passes unchanged |
+| V4b | **字/物 level 2**: carry poses per kind of thing (tree, torch, jar, disc, lantern) | Each carried thing seen in screenshots on the phone sizes; landing shadow never hidden |
 | V5 | Performance and readability pass, then playtest on John's phone (gate P2 questions plus: does it feel 江湖? can you still see where you are?) | **Gate V5**: ink becomes the default, or goes back to the drawing board |
 
 **Checks added to `screen-test.mjs`**, run for both arts:
@@ -181,13 +240,16 @@ These become **automatic checks** (§6): contrast probes in the page, not taste.
 - **Contrast probe**: for each visible walkable top, sample just above and just below it; it fails
   under 3:1. The same probe runs on you against what is behind you.
 - **FPS floor**: ink may not be more than 10% slower than the greybox on any of the eleven screens.
-- **Pose coverage**: a screenshot of each hero pose on the phone sizes.
+- **Pose coverage**: a screenshot of each hero pose, and each carried thing, on the phone sizes.
 
 Rough size: V1 is one session; V2 to V4 are two to three; V5 is one, plus John's playtest.
 
-## 7. Open questions for John
+## 7. Questions and John's answers (2026-11-19)
 
-1. A or B? (Recommended: B, with the hero in a few strokes.)
-2. Stones as movable type blocks (活字): yes, or keep plain tiles?
-3. A sword on the hero's back (pure look, there is no combat), or none?
-4. Claude Design first (style frames as the target), or V1 in code first?
+1. A or B? **Both, as a comparison.** Both get built and stay switchable (`?art=cut | ink | greybox`).
+2. Stones as movable type blocks? **Some movable, some fixed tiles like other games** (§3.3: movable
+   = type blocks, fixed = glyphs carved in the rock; the fixed ones need a rules change).
+3. A sword? **No.** The children already ask for more weapons; maybe in the future.
+4. Claude Design first, or V1 in code? **Design first: John has handed the brief over. Code waits
+   for Design's frames**, then V1 draws them in canvas.
+5. (New) Stones show their thing: §3.7. Level 1 with V4, level 2 right after.
