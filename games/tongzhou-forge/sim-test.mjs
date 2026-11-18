@@ -5,6 +5,7 @@
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { Game } = require('./sim.js');
+const { checkRecipes, pairs } = await import('./tools/recipes.mjs');
 
 const DT = 1 / 60;
 let failed = 0;
@@ -346,5 +347,9 @@ solo(2, 'Lean on a Tree', (g, d) => {
   check(LV.mirrors('月', '日').length === 1 && LV.mirrors('日', '日')[0][3] === '昌' && LV.mirrors('日', '木').length === 0, 'mirrors() finds a pair in any order and op');
   check(LV.form('水', '⿰', 1) === '氵' && LV.form('水', '⿰', 2) === '水' && LV.form('水', '⿱', 1) === '水' && LV.form('木', '⿰', 1) === '木', 'variant forms: 水 draws as 氵 only on the left of ⿰');
   check(LV.LEVELS.every(L => LV.GLYPHS[L.want]), 'every shrine waits for a known character');
+  check(checkRecipes(LV.RECIPE_LIST).length === 0, 'every recipe matches its MMAH dictionary IDS (variants and aliases normalised)');
+  const wrong = checkRecipes([['⿰', '月', '日', '明'], ['⿱', '木', '木', '林']]);
+  check(wrong.length === 2 && wrong[0].includes('⿰日月'), 'a wrong order or op is caught, and the message gives the dictionary IDS');
+  check(pairs('日木').some(([k, l]) => k === '日木' && l.map(e => e.ch).sort().join('') === '杲杳'), '--pairs finds the minimal pair 杲 / 杳 from 日 and 木');
 }
 console.log(failed ? `--- ${failed} CHECK(S) FAILED ---` : '--- ALL SIM CHECKS PASSED ---');
