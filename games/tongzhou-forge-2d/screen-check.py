@@ -17,13 +17,18 @@ PORT, OUT = int(sys.argv[1]), sys.argv[2]
 os.makedirs(OUT, exist_ok=True)
 URL = f"http://localhost:{PORT}/?mute=1"
 DEVICES = [
-    # name, w, h, dpr, touch
+    # name, w, h, dpr, touch. Sizes are the page area left by the browser (bars and tabs taken off)
     ("phone-6in-portrait", 390, 844, 3, True),
     ("phone-small-portrait", 360, 740, 3, True),
     ("phone-6in-landscape", 844, 390, 3, True),
     ("phone-small-landscape", 740, 360, 3, True),
-    ("tablet-portrait", 820, 1180, 2, True),
-    ("laptop", 1366, 768, 1, False),
+    ("ipad-portrait", 820, 1106, 2, True),       # 10.9" iPad, Safari with its tab bar
+    ("ipad-landscape", 1180, 746, 2, True),
+    ("ipad-mini-portrait", 744, 1059, 2, True),
+    ("ipad-pro-landscape", 1366, 950, 2, True),  # 12.9"
+    ("laptop-small", 1366, 657, 1, False),       # 1366x768 screen, Chrome bars
+    ("laptop-mac", 1440, 790, 2, False),         # 13" MacBook
+    ("laptop-hd", 1920, 960, 1, False),          # 1080p screen
 ]
 TOP = {"goal", "card", "msg", "menu", "title"}
 ALLOWED = TOP | {"stick", "grab", "jump", "win", "drawer"}
@@ -113,9 +118,12 @@ def run_device(pw_browser, dev):
     errors = []
     page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
     page.on("pageerror", lambda e: errors.append(str(e)))
-    page.goto(URL + ("&touch=1" if touch else ""))
+    page.goto(URL)
     page.evaluate("localStorage.clear()")
-    page.goto(URL + ("&touch=1&isle=sun-and-moon" if touch else "&isle=sun-and-moon"))
+    page.goto(URL + "&isle=sun-and-moon")
+    shows_pad = page.evaluate("document.documentElement.classList.contains('touch')")
+    if shows_pad != touch:
+        fails.append(f"{name}: the pad {'is missing' if touch else 'shows'} without ?touch=1 (pointer detection)")
     page.wait_for_function("window.WF2D && WF2D.frames() > 10")
     page.evaluate("""(() => { window._trace = []; const w = WF2D.world, o = w.press.bind(w), d = w.drain.bind(w);
       w.press = (id, what) => { _trace.push('press ' + what); o(id, what); };
@@ -123,13 +131,20 @@ def run_device(pw_browser, dev):
     page.evaluate("document.fonts.ready")
     # timing-critical taps (a leap at the top of a rise) are fired inside the page on the exact frame,
     # through the JUMP button's own pointer handlers; the Python round trip on a DPR-3 page is 0.2-0.3 s
-    page.evaluate("""window._tapJump = (ms) => { const el = document.querySelector('#jump'), r = el.getBoundingClientRect();
+    # on a laptop the same taps are Space key presses (a touch would switch the page to touch mode)
+    page.evaluate("""window._tapJump = (ms) => { if (!document.documentElement.classList.contains('touch')) {
+        dispatchEvent(new KeyboardEvent('keydown', { code: 'Space', key: ' ' }));
+        setTimeout(() => dispatchEvent(new KeyboardEvent('keyup', { code: 'Space', key: ' ' })), ms || 60); return; }
+      const el = document.querySelector('#jump'), r = el.getBoundingClientRect();
       const o = { pointerId: 77, pointerType: 'touch', isPrimary: false, bubbles: true, clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 };
       el.dispatchEvent(new PointerEvent('pointerdown', o)); setTimeout(() => el.dispatchEvent(new PointerEvent('pointerup', o)), ms || 60); };
       window._atTop = (then) => { (function f() { const p = WF2D.me(); if (p.grounded) return then(false); if (p.vy < 0.4) return then(true); requestAnimationFrame(f); })(); };
       undefined""")
     wait_frames(page, 10)
     seen = {}
+    f0 = page.evaluate("WF2D.frames()"); page.wait_for_timeout(1000)
+    seen["fps"] = page.evaluate("WF2D.frames()") - f0
+    seen["canvas"] = page.evaluate("[document.querySelector('canvas').width, document.querySelector('canvas').height]")
     seen["boat"] = check(page, dev, "on the boat")
     page.screenshot(path=f"{OUT}/{name}-1-boat.jpg", type="jpeg", quality=70)
 
@@ -268,6 +283,8 @@ def run_device(pw_browser, dev):
     elif drawer["y"] + drawer["h"] > h + 1:
         fails.append(f"{name}: the menu runs off the bottom ({drawer['y'] + drawer['h']:.0f} > {h})")
 
+    if not touch and page.evaluate("document.documentElement.classList.contains('touch')"):
+        fails.append(f"{name}: the pad appeared on a laptop played with keys")
     if errors:
         fails.append(f"{name}: console errors {errors[:3]}")
     ctx.close()

@@ -50,7 +50,7 @@ else kicks you off it. Carrying a stone you get one leap.
 ```sh
 node sim-test.mjs        # rules, 轻功, forging, elements, two scripted wins per isle (pure node)
 node smoke-test.mjs      # real server on port 3481: what a phone may fetch, font coverage
-node screen-test.mjs     # real server on 3482 + screen-check.py: six screens, real touch, budget, screenshots
+node screen-test.mjs     # real server on 3482 + screen-check.py: eleven screens (phones, iPads, laptops), real touch, budget, screenshots
 ```
 
 `screen-test.mjs` needs Python Playwright and `/usr/bin/chromium`; it writes

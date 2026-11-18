@@ -12,7 +12,7 @@ obvious, and does 轻功 feel like flying? Then: play this and the 3D side by si
 | # | Finding (playtests 1 and 2, G1) | In the greybox |
 |---|---|---|
 | 1 | Toasts sit over the stick, stay 4 to 16 s, stack | **One message line** at the top, newest replaces older, 2.5 s (3.5 s for a dud). `UI.msg`, `UI.msgDud` knobs. Never over the pad (checked) |
-| 2 | Labels everywhere, too many layers | **Screen budget**: goal, word card, message line, ☰, stick, two buttons. Nothing else shows (checked on six screens). Pinyin kept: under every stone on the ground, in bare paper; knob `labels: all / near / card` in ☰ |
+| 2 | Labels everywhere, too many layers | **Screen budget**: goal, word card, message line, ☰, stick, two buttons. Nothing else shows (checked on eleven screens). Pinyin kept: under every stone on the ground, in bare paper; knob `labels: all / near / card` in ☰ |
 | 3 | The goal is a small chip | **Big goal glyph** top-left (52 px, element colour) with pinyin and meaning; a **beam** over the pavilion and the want glyph ghosted in it |
 | 4 | Hard to see where you are, gaps vs steps, slipping into water | **Side view**: a gap is a gap. Bare-paper **edge lines** on every walkable top and cliff face; **石青 river** one unit below every ground, darker; **landing shadow** + dotted drop line while in the air (red when it falls on water); gold outline on your body; edge arrow when off screen; **coyote** time, **jump buffer**, **ledge nudge** (`ASSIST` knobs); respawn well back from the edge |
 | 5 | 轻功 lost "flying higher and higher" | **The chain**: one leap per charge; the ground gives a charge and resets the chain; touching something **new** in the air (a wall face, a stone's side, a gem, a **cloud**) gives another. Apex float, ink trail, gold ring under your feet while you can still leap. Pushing into a wall climbs it; anything else kicks you off it. Camera climbs with you. `QI` knobs |
@@ -58,7 +58,15 @@ seconds, card seconds, win delay, sound, voice.
 | screen-check | Respawn on the lip of a gap; with the stick still held you walked straight back in (5 times) | Safe ground needs rock 0.7 either side |
 | screen-check | Upright phone: 70% sky, small stones; tablet zoomed in far too much | Upright scale `min(W/7.2, H/14)` |
 | screen-check | Dud message squeezed to three lines (CSS width) ; buttons low-contrast on dark ground; seams in edge lines; dusk veil greyed your outline | `fit-content` line; opaque paper buttons; overlapping rims; veil under stones and you |
+| screen-check (iPad, Mac) | A 12.9" iPad and a 13" Mac drew 4.6 to 5.2 million canvas pixels: half a phone's frame rate (headless), and a held JUMP came out short when frames stalled | Canvas capped at a phone's worth of pixels (`UI.maxPx` 3.2 M): big screens draw a little softer, iPad Pro 30 → 45 fps, Mac 28 → 39 (headless) |
+| screen-check (laptop) | The check's in-page leap tapped JUMP as a touch, which (rightly) switched a laptop to the touch pad | Laptops are driven by Space in the check; it now fails if the pad ever shows on a keys-only laptop. Touch screens are detected by `pointer: coarse`, no `?touch=1` |
 | screen-check | Brush font lacked 跳 拿 旁 扔 放 献 落 | `tools/font.py` re-subset (257 characters, 69 KB) |
+
+Screens checked (page area after the browser's bars): phones 390×844, 360×740 and both on their side;
+iPad 10.9" 820×1106 and 1180×746, iPad mini 744×1059, iPad Pro 12.9" 1366×950; laptops 1366×657,
+13" Mac 1440×790, 1080p 1920×960. Judged from the screenshots: iPad landscape is the roomiest view;
+iPad portrait shows ten units across, so two thirds of it is sky (room for 轻功, but the ground band is
+small); on the 1366×657 laptop 日 on its tower sits just under the goal box.
 
 Harness notes (not game defects): Chrome's DevTools `touchEnd` lists the fingers lifted; Python→page
 round trips on a DPR-3 page cost 0.2 to 0.3 s, so the screen check fires timing-critical leaps inside

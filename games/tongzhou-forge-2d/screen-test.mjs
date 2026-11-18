@@ -1,5 +1,5 @@
 // Boots the real server on a test port (3482, never 3000) and runs screen-check.py against it:
-// six screens (phones upright and on their side, a tablet, a laptop), real multi-touch input, the
+// eleven screens (phones upright and on their side, four iPads, three laptops), real multi-touch input, the
 // screen budget, and screenshots. Needs Python Playwright and /usr/bin/chromium.
 // Usage: node screen-test.mjs [outdir]   (default: screenshots/greybox)
 import { spawn, spawnSync } from 'child_process';

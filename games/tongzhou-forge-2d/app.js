@@ -19,6 +19,7 @@
     msg: 2.5, msgDud: 3.5,                                    // seconds a message line stays
     cardForge: 5,                                             // seconds a new character keeps the card
     winDelay: 1.4,                                            // see the world's answer before the card
+    maxPx: 3.2e6,                                             // canvas pixels at most (a phone's worth): big iPads and Macs draw a little softer, not slower
     sound: qs.get('mute') === '1' ? false : store.get('sound', true),
     voice: qs.get('mute') === '1' ? false : store.get('voice', true),
   };
@@ -66,7 +67,7 @@
     return [...document.querySelectorAll('[data-pad]')].map(e => e.getBoundingClientRect()).filter(r => r.width > 0);
   }
   function layout() {
-    W = innerWidth; H = innerHeight; DPR = Math.min(3, devicePixelRatio || 1);
+    W = innerWidth; H = innerHeight; DPR = Math.min(3, devicePixelRatio || 1, Math.sqrt(UI.maxPx / (W * H)));
     cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
     touch = document.documentElement.classList.contains('touch');
     portrait = H > W;
