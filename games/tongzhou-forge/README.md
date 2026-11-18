@@ -12,7 +12,26 @@ This brings back the 同舟 charter's spatial forge (TZ-D044), which was lost wh
 Wobble Works physics. It makes the game pass the reskin test: with sprites instead of characters,
 the rules would be arbitrary; with characters, what you build is what you read.
 
-**Status (2026-11-18):** the fork and the docs are done and approved; Phase 2 (sim core) is under way. Start at **`docs/forge/ROADMAP.md`**.
+**Status (2026-11-18):** playable. Phases 2 to 4 are built (ground forging, the board, body forging),
+with nine isles in order. The gates G1 and G2 (playtests with people) have not run yet. Start at
+**`docs/forge/ROADMAP.md`**.
+
+## The isles
+
+| # | Isle | Make | What it teaches |
+|---|---|---|---|
+| 1 | Two Trees | 林 = 木 beside 木 | Beside; 木 thrown into water grows a bridge |
+| 2 | Sun and Moon | 明 = 日 left of 月 | Order on screen (月 left of 日 makes nothing); 火 burns thorns |
+| 3 | Rest | 休 = 人 left of 木 | Variant forms (人 drawn 亻 on the left); 水 douses flames |
+| 4 | Dawn | 杲 = 日 on 木 | Stacking. 木 on 日 makes 杳 (dim): dusk falls and a glow-gem shows |
+| 5 | Old Leaf | 古 = 十 on 口 | Same pieces, other placement: 口 beside 十 is 叶 (a leaf, which bridges) |
+| 6 | Early Light | 早 = 日 on 十 | Light stones dispel walls of shade |
+| 7 | Fruit Field | 果 = 田 on 木 | Earth: 田 thrown into water comes up as a field |
+| 8 | Red Earth | 赤 = 土 on 火 | 火 beside 土 is a stove (灶); 土 raises a mound in the water |
+| 9 | On My Shoulders | 炎 = 火 on 火 | Body forging: stand on a friend's head, both holding 火, either presses |
+
+Every isle has at least two ways through, proven by the judge's bots in the real sim
+(`node tools/judge.mjs content/stages/<id>.json`), and a body-forge route as well.
 
 | Doc | What |
 |---|---|
@@ -43,15 +62,22 @@ Open `http://localhost:3200/?board=1` on the TV or laptop. Phones scan the QR co
 ## Run tests
 
 ```sh
-node sim-test.mjs && node smoke-test.mjs && node judge-test.mjs && node conjure-test.mjs
+node sim-test.mjs && node smoke-test.mjs && node judge-test.mjs && node conjure-test.mjs && node forge-test.mjs
+node tasks/checks/t04.mjs && node tasks/checks/t08.mjs && node tasks/checks/t09.mjs   # real board in headless chromium
 ```
 
-`forge-test.mjs` is added in Phase 2. Ports: smoke 3460, conjure 3461, forge 3462. No test uses 3000.
+The board checks need Python Playwright and `/usr/bin/chromium`. Ports: smoke 3460, conjure 3461,
+forge 3462, board checks 3474 to 3476. No test uses 3000.
+`node lab/playlog.mjs logs/playtest-<date>.jsonl` prints the playtest numbers after `node server.js --log`.
 
-## Controls (today; forge changes are in DESIGN.md §4.3 and §5.2)
+## Controls
 
-Phone: stick to walk, JUMP (twice in mid-air to leap), GRAB (pick up / throw / join / boost /
-later FORGE), DRAW (the dormant Conjure pad).
+Phone: stick to walk, JUMP (twice in mid-air to leap), GRAB, DRAW (the dormant Conjure pad).
+GRAB says what it will do: **GRAB 木** near a stone; holding one, **BESIDE** (you stand screen-left
+or screen-right of another stone), **ON TOP** (you stand in front of or behind it), **FORGE** (you and
+a friend both hold stones, side by side or one on the other's head), **PASS**, **OFFER** (at the
+pavilion), **THROW** or **SET DOWN**; with empty hands next to a friend, **BOOST**.
+The label names the placement, never what it will make.
 Board (TV / laptop): N / P / Backspace for next stage, previous stage, restart.
 
 ## Home-network caveats
