@@ -46,8 +46,19 @@
     fire: { a: '#f0714f', b: '#c22f1c', glow: '#ffb066' },
     water: { a: '#5aa3e0', b: '#1b5aa6', glow: '#a8e0ff' },
     light: { a: '#f2c14e', b: '#b06f06', glow: '#fff2b0' },
-    folk: { a: '#8f7bb0', b: '#3a2c52', glow: '#e6d0ff' }
+    folk: { a: '#8f7bb0', b: '#3a2c52', glow: '#e6d0ff' },
+    dusk: { a: '#5b4a8a', b: '#2a1f4a', glow: '#b9a6ff' }
   };
+  // ---------- the positional forge (ROADMAP F3.2) ----------
+  // Labels name the placement, never the result (P9).
+  const AIM_LABEL = { join: 'BESIDE', stack: 'ON TOP', forge: 'FORGE', pass: 'PASS', dunk: 'OFFER', toss: 'THROW', place: 'SET DOWN' };
+  let fz = { profile: 'standard', assist: 0, forms: true };   // the latest forge knobs from the server
+  // what a piece looks like where it sits: 水 in the left slot of ⿰ is drawn 氵 (display only)
+  function glyphFor(ch, rel) {
+    if (fz.forms === false || !Array.isArray(rel)) return ch;
+    return LV.form(ch, rel[0], rel[1]);
+  }
+  const forgeUI = { dusk: false, duskF: 0, ticks: 0, bursts: 0 };
   const KAI = '"Tongzhou Brush","Kaiti SC","STKaiti","KaiTi","LXGW WenKai","AR PL UKai CN","Noto Serif CJK SC","Songti SC","PingFang SC","Microsoft YaHei",serif';
   const glyph = ch => LV.GLYPHS[ch] || { py: '', en: '', el: 'folk' };
   const elOf = ch => EL[glyph(ch).el] || EL.folk;
@@ -133,10 +144,11 @@
   // A character is written with a brush, in the mineral ink of what it does, with a
   // rim of bare paper so it reads on dark water and pale rock alike.
   const brushCache = {}, inkCache = {};
-  function brushTex(ch) {
-    if (brushCache[ch]) return brushCache[ch];
-    const el = elOf(ch);
-    return brushCache[ch] = canvasTex(256, 256, (g) => {
+  function brushTex(ch, base) {
+    const key = ch + (base && base !== ch ? '|' + base : '');
+    if (brushCache[key]) return brushCache[key];
+    const el = elOf(base || ch);   // a variant form (氵) is written in its base piece's ink (水)
+    return brushCache[key] = canvasTex(256, 256, (g) => {
       g.font = '208px ' + KAI; g.textAlign = 'center'; g.textBaseline = 'middle';
       g.lineJoin = 'round'; g.lineCap = 'round';
       g.shadowColor = 'rgba(20,16,30,0.35)'; g.shadowBlur = 10; g.shadowOffsetY = 4;
@@ -486,6 +498,21 @@
       root.add(g);
       S.gems.push({ g, m, y, got: false });
     }
+    // glow-gems: only there while the isle is dim (dusk); the sim keeps them after the gems in s.g
+    for (const gm of L.glow || []) {
+      const y = gm[2] != null ? gm[2] : floorAt(gm[0], gm[1]) + 0.7;
+      const g = new THREE.Group();
+      g.position.set(gm[0], y, gm[1]);
+      const col = C(EL.dusk.glow);
+      const m = shade(new THREE.Mesh(new THREE.OctahedronGeometry(0.22), lam(col, { emissive: col.clone().multiplyScalar(0.9), flatShading: true })), true, false);
+      m.scale.y = 1.35;
+      const halo = sprite(TEX.glow, col, 0.9, true);
+      halo.scale.set(1.6, 1.6, 1);
+      g.add(m, halo);
+      g.visible = false;
+      root.add(g);
+      S.gems.push({ g, m, y, got: false, glow: true });
+    }
 
     // --- the shrine: a small pavilion that shows the character it is waiting for ---
     {
@@ -680,7 +707,7 @@
     tc.classList.remove('show'); void tc.offsetWidth; tc.classList.add('show');
     clearGoal(); note('goal', L.hint);
     $('want').textContent = L.want;
-    $('gems').innerHTML = (L.gems || []).map(() => '<span class="gem"></span>').join('');
+    $('gems').innerHTML = (L.gems || []).map(() => '<span class="gem"></span>').join('') + (L.glow || []).map(() => '<span class="gem glow"></span>').join('');
     $('result').classList.add('hidden');
     const veil = $('veil');
     veil.classList.remove('mist');
@@ -929,6 +956,78 @@
     glyphFx.push({ sp, life: 0, max: big ? 2.6 : 1.5, x, y, z, s0: big ? 1.4 : 0.8, s1: big ? 11 : 4.5 });
   }
 
+  // ---------- forge: placement marks and the slide-together burst (F3.2) ----------
+  // One neutral mark between two stones that rest in a placement: an upright bar between a
+  // side-by-side pair, a flat bar under a top stone. Same colour whether or not they make anything (P9).
+  const markTex = canvasTex(64, 64, (g) => {
+    g.fillStyle = '#ffffff'; g.beginPath(); g.arc(32, 32, 28, 0, 7); g.fill();
+  });
+  const markPool = [];
+  function drawMarks() {
+    let n = 0;
+    for (const st of stones.values()) {
+      const r = st.rel;
+      if (!r || r[1] !== 1 || !st.g.visible) continue;
+      const o = stones.get(r[2]);
+      if (!o || !o.g.visible) continue;
+      let m = markPool[n];
+      if (!m) {
+        m = sprite(markTex, '#3a3350', 0.55, false);
+        m.material.depthTest = false; m.renderOrder = 4;
+        scene.add(m); markPool.push(m);
+      }
+      const side = r[0] === '⿰';
+      m.position.set((st.g.position.x + o.g.position.x) / 2, (st.g.position.y + o.g.position.y) / 2 + (side ? 0 : 0.0), (st.g.position.z + o.g.position.z) / 2);
+      m.scale.set(side ? 0.09 : 0.75, side ? 0.75 : 0.09, 1);
+      m.visible = true;
+      n++;
+    }
+    for (let j = n; j < markPool.length; j++) markPool[j].visible = false;
+    forgeUI.ticks = n;
+  }
+  // a forge: the two pieces slide together (side by side for ⿰, one above the other for ⿱)
+  // into the new stone, then it bursts. A rescued forge starts them the other way round.
+  const forgeSlides = [];
+  const SLIDE_MS = 320;
+  function forgeSlide(e) {
+    const now = performance.now();
+    const side = e.op === '⿰', sw = e.rescued ? -1 : 1;
+    const y0 = e.y + 0.7;
+    const mk = (ch, k) => {
+      const sp = sprite(brushTex(glyphFor(ch, [e.op, k]), ch), '#ffffff', 1, false);
+      sp.scale.set(1.1, 1.1, 1); sp.renderOrder = 6;
+      scene.add(sp);
+      // first piece: left (⿰) or top (⿱)
+      const sgn = (k === 1 ? -1 : 1) * sw;
+      const from = side ? new THREE.Vector3(e.x, y0, e.z).addScaledVector(cRight, sgn * 0.7)
+                        : new THREE.Vector3(e.x, y0, e.z).addScaledVector(cUp, -sgn * 0.7);
+      return { sp, from };
+    };
+    forgeSlides.push({ s: e.s, at: now, until: now + SLIDE_MS, to: new THREE.Vector3(e.x, y0, e.z), pieces: [mk(e.a, 1), mk(e.b, 2)], ch: e.ch, done: false });
+    forgeUI.bursts++;
+  }
+  function stepForgeSlides() {
+    const now = performance.now();
+    for (let j = forgeSlides.length - 1; j >= 0; j--) {
+      const f = forgeSlides[j], u = clamp((now - f.at) / SLIDE_MS, 0, 1), e2 = u * u * (3 - 2 * u);
+      for (const p of f.pieces) {
+        p.sp.position.lerpVectors(p.from, f.to, e2);
+        p.sp.scale.setScalar(1.1 * (1 - e2 * 0.35));
+        p.sp.material.opacity = 1 - Math.max(0, (u - 0.75) * 4);
+      }
+      if (u >= 1 && !f.done) {
+        f.done = true;
+        burst(f.to.x, f.to.y, f.to.z, 26, elOf(f.ch).glow, 3.4, true);
+        for (const p of f.pieces) { scene.remove(p.sp); p.sp.material.dispose(); }
+      }
+      if (now - f.at > SLIDE_MS + 2000) forgeSlides.splice(j, 1);
+    }
+  }
+  // dusk: a violet veil over the stage while the snapshot says dk > 0
+  const duskVeil = document.createElement('div');
+  duskVeil.className = 'dusk-veil';
+  stageEl.appendChild(duskVeil);
+
   // aim marker: a ring where the Core will land and a dotted arc to it
   const aim = (() => {
     const ring = new THREE.Mesh(new THREE.RingGeometry(0.3, 0.4, 32), new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.9, depthTest: false, side: THREE.DoubleSide }));
@@ -1044,6 +1143,7 @@
     bonk: () => tone(190, 0.1, 'square', 0.04, 120),
     pop: () => tone(300, 0.12, 'sine', 0.09, 620),
     win: () => [523, 659, 784, 1047, 1319].forEach((f, k) => tone(f, 0.28, 'triangle', 0.1, null, k * 0.11)),
+    dusk: () => { tone(330, 0.9, 'sine', 0.07, 196); tone(247, 1.1, 'triangle', 0.05, 147, 0.2); },
     fuse: () => { tone(392, 0.5, 'sine', 0.09); tone(587, 0.5, 'sine', 0.08, null, 0.06); tone(880, 0.7, 'triangle', 0.08, null, 0.14); },
     grow: () => [262, 330, 392, 523].forEach((f, k) => tone(f, 0.22, 'triangle', 0.08, f * 1.5, k * 0.07)),
     burn: () => { tone(220, 0.7, 'sawtooth', 0.05, 60); tone(900, 0.5, 'square', 0.02, 200, 0.05); },
@@ -1140,7 +1240,7 @@
   Conn.prototype.open = function () {
     const ws = this.ws = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws');
     ws.onopen = () => {
-      if (this.asBoard) { this.send({ type: 'join', board: true }); return; }
+      if (this.asBoard) { this.send({ type: 'join', board: true, strict: new URLSearchParams(location.search).get('strict') || undefined }); return; }
       let pid = null;
       try { pid = localStorage.getItem(this.pidKey); } catch (e) {}
       if (!pid) { pid = 'p-' + Math.random().toString(36).slice(2, 12); try { localStorage.setItem(this.pidKey, pid); } catch (e) {} }
@@ -1151,6 +1251,7 @@
   };
   Conn.prototype.send = function (m) { if (this.ws && this.ws.readyState === 1) this.ws.send(JSON.stringify(m)); };
   Conn.prototype.onMessage = function (m) {
+    if (m.type === 'joined' && m.fz) fz = m.fz;
     if (m.type === 'joined' && m.id) {
       myId = m.id;
       if (m.conjure) onConjureSet(m.conjure);
@@ -1204,6 +1305,8 @@
     if (!ready) return;
     if (!S || s.st !== S.i) buildStage(s.st);
     snap = s;
+    if (s.fz) fz = s.fz;
+    forgeUI.dusk = s.dk > 0;
     for (const p of s.p) {
       const wob = wobblers.get(p[0]) || makeWobbler(p[0]);
       wob.tx = p[1]; wob.ty = p[2]; wob.tz = p[3]; wob.trot = p[4]; wob.flags = p[5]; wob.gy = p[6];
@@ -1287,6 +1390,8 @@
         // a base character met for the first time (made characters get the bigger card from 'fuse')
         if (addCodex(e.ch) && !e.made) { showCard(e.ch); note('char', 'found', { ch: e.ch }); if (isBoard || e.id === myId) speak(e.ch); }
         break;
+      case 'forge': forgeSlide(e); break;
+      case 'dusk': if (e.on) { sfx.dusk(); note('char', 'Dusk: the isle grows dim', { ch: '杳', secs: 6 }); } break;
       case 'fuse': {
         const el = elOf(e.ch);
         addCodex(e.ch);
@@ -1623,7 +1728,7 @@
       }
       for (let j = 0; j < S.gems.length; j++) {
         const g = S.gems[j], got = !!snap.g[j];
-        g.g.visible = !got;
+        g.g.visible = !got && (!g.glow || forgeUI.dusk);
         g.m.rotation.y = t * 1.8 + j;
         g.g.position.y = g.y + Math.sin(t * 2 + j * 1.7) * 0.08;
       }
@@ -1662,7 +1767,16 @@
       for (const c of snap.k) {
         live.add(c[0]);
         let st = stones.get(c[0]);
-        if (!st) { st = makeStone(c[0], c[1]); burst(c[3], c[4] + 0.4, c[5], 10, elOf(c[1]).glow, 1.8, true); }
+        if (!st) {
+          st = makeStone(c[0], c[1]);
+          const slide = forgeSlides.find(f => f.s === c[0]);
+          if (slide) st.born = slide.until;   // the forged stone pops once its two pieces have slid together
+          else burst(c[3], c[4] + 0.4, c[5], 10, elOf(c[1]).glow, 1.8, true);
+        }
+        const gl = glyphFor(c[1], c[8]);
+        if (st.gl !== gl) { st.gl = gl; st.sp.material.map = brushTex(gl, c[1]); st.sp.material.needsUpdate = true; }
+        st.rel = Array.isArray(c[8]) ? c[8] : null;
+        st.g.visible = performance.now() >= st.born;
         const holder = c[6] ? wobblers.get(c[6]) : null;
         let tx = c[3], ty = c[4], tz = c[5];
         if (holder) { tx = holder.x; ty = holder.y + 1.15 + holder.body.position.y; tz = holder.z; }
@@ -1692,6 +1806,7 @@
         if (!holder && !scored) place(st.tag, st.x, st.y + 1.5 + bob, st.z);
       }
       for (const st of [...stones.values()]) if (!live.has(st.id)) removeStone(st);
+      drawMarks();
 
       // aim marker: mine on a phone, the first carrier's on the board
       const aims = snap.aim || {};
@@ -1701,11 +1816,11 @@
       aim.ring.visible = showAim;
       for (const d of aim.dots) d.visible = showAim;
       if (showAim) {
-        const colr = a[3] === 'pass' ? '#7ef0d0' : a[3] === 'dunk' ? GOLD : a[3] === 'join' ? '#ff9ad5' : '#ffffff';
+        const colr = a[3] === 'pass' ? '#7ef0d0' : a[3] === 'dunk' ? GOLD : a[3] === 'join' || a[3] === 'stack' ? '#ff9ad5' : '#ffffff';
         aim.ring.material.color.set(colr); aim.mat.color.set(colr);
         aim.ring.position.set(a[0], a[1] + (a[3] === 'pass' ? 1.5 : 0.04), a[2]);
         aim.ring.scale.setScalar(1 + Math.sin(t * 6) * 0.07);
-        const arc = a[3] === 'place' ? 0.15 : a[3] === 'toss' ? 0.3 : a[3] === 'join' ? 0.4 : 1.0;
+        const arc = a[3] === 'place' ? 0.15 : a[3] === 'toss' ? 0.3 : a[3] === 'join' || a[3] === 'stack' ? 0.4 : 1.0;
         const ey = a[3] === 'pass' ? a[1] + 1.4 : a[1] + 0.3;
         const ox = thrower.x, oy = thrower.y + 1.45, oz = thrower.z;
         aim.dots.forEach((d, j) => {
@@ -1719,7 +1834,7 @@
         const btn = $('btn-grab'), mine = wobblers.get(myId);
         let label = 'GRAB', dim = true, hot = false;
         const am = aims[myId];
-        if (am) { label = am[3] === 'pass' ? 'PASS' : am[3] === 'dunk' ? 'OFFER' : am[3] === 'toss' ? 'THROW' : am[3] === 'join' ? 'JOIN' : 'SET DOWN'; dim = false; }
+        if (am) { label = AIM_LABEL[am[3]] || 'SET DOWN'; dim = false; }
         else if (mine) {
           let bd = 1.25, near = null;
           for (const c of snap.k) {
@@ -1761,6 +1876,15 @@
       water.u.uColor.value.set(C(S.pal.water).lerp(C(S.day.pal.water), e2));
       water.u.uLite.value.set(C(S.pal.lite).lerp(C(S.day.pal.lite), e2));
     }
+    stepForgeSlides();
+    // dusk dims every light to about a third and lays a violet veil over the isle
+    forgeUI.duskF += ((forgeUI.dusk ? 1 : 0) - forgeUI.duskF) * Math.min(1, fdt * 2.5);
+    if (forgeUI.duskF > 0.002) {
+      const dimK = 1 - forgeUI.duskF * 0.67;
+      if (!S.day) { hemi.intensity = 0.7; sun.intensity = 0.36; }
+      hemi.intensity *= dimK; sun.intensity *= dimK;
+    } else if (!S.day) { hemi.intensity = 0.7; sun.intensity = 0.36; }
+    duskVeil.style.opacity = (forgeUI.duskF * 0.5).toFixed(3);
     for (const m of ringPool) m.visible = false;
     for (let j = rings.length - 1, used = 0; j >= 0; j--) {
       const r = rings[j];
@@ -2394,6 +2518,18 @@
 
   // Characters are drawn with the bundled brush face, so wait for it (briefly) before the first stroke.
   let ready = false;
+  window.WForgeUI = {
+    AIM_LABEL,
+    glyphFor,
+    state: () => ({
+      profile: fz.profile,
+      dusk: forgeUI.dusk,
+      glowShown: S ? S.gems.filter(g => g.glow && g.g.visible).length : 0,
+      gemSlots: $('gems').children.length,
+      ticks: forgeUI.ticks,
+      bursts: forgeUI.bursts
+    })
+  };
   const start = () => { if (ready) return; ready = true; buildStage(0); frame(); };
   try { document.fonts.load('64px "Tongzhou Brush"', '同舟木').then(start, start); } catch (e) { start(); }
   setTimeout(start, 2500);
