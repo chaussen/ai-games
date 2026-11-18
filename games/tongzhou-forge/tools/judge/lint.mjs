@@ -7,10 +7,11 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const LV = require('../../levels.js');
+const { FORGE } = require('../../sim.js');
 
 export const PALETTES = ['dawn', 'mint', 'dusk', 'citrus', 'night'];
 export const LIMITS = { rows: [3, 14], cols: [6, 26], stones: [1, 8], hint: [20, 200], par: [20, 600] };
-const KEYS = ['id', 'name', 'cn', 'par', 'pal', 'dawn', 'want', 'hint', 'map', 'spawn', 'beacon', 'boat', 'plates', 'movers', 'crates', 'stones', 'gems', 'trees', 'conjure', 'regrow'];
+const KEYS = ['id', 'name', 'cn', 'par', 'pal', 'dawn', 'want', 'hint', 'map', 'spawn', 'beacon', 'boat', 'plates', 'movers', 'crates', 'stones', 'gems', 'trees', 'conjure', 'regrow', 'strict'];
 const REQUIRED = ['id', 'name', 'cn', 'par', 'pal', 'want', 'hint', 'map', 'spawn', 'beacon', 'boat', 'stones'];
 
 const isNum = v => typeof v === 'number' && Number.isFinite(v);
@@ -88,6 +89,7 @@ function shape(L, add) {
     }
   }
   if (L.regrow !== undefined && typeof L.regrow !== 'boolean') bad('regrow', 'regrow is true or false. Leave it out for the default (false: stones are used up).');
+  if (L.strict !== undefined && !Object.keys(FORGE.profiles).includes(L.strict)) bad('strict', `strict is one of ${Object.keys(FORGE.profiles).map(k => '"' + k + '"').join(', ')}. Leave it out for "standard".`);
   list('plates', (v, w) => {
     if (!(v && typeof v === 'object' && isStr(v.id) && Array.isArray(v.at) && v.at.length === 2 && v.at.every(isInt))) bad(w, 'a plate is { "id": "A", "at": [cellX, cellZ], "c": 0-3 }.');
     else if (v.c !== undefined && ![0, 1, 2, 3].includes(v.c)) bad(w + '.c', 'c is a colour number 0-3.');

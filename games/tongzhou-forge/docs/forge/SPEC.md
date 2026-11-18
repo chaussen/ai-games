@@ -98,6 +98,8 @@ const FORGE = {
   bodyD: 0.55, bodyStill: Infinity,                                  // (tune)
   // forgiveness (K4-K7)
   snap: 0.15, rescue: 'off', dudCd: 0, wrongLife: Infinity,         // (tune)
+  // client (K9, K10): sent to the board once per stage
+  assist: 'label+snap', forms: true,
   // bodies
   holdLow: 0.55,          // arm hold while a friend stands on your head
   // enclosure (phase 7)
@@ -105,12 +107,15 @@ const FORGE = {
   profiles: {
     relaxed:  { besideD: 0.55, besideR: [0.35, 1.5], besideY: 0.6, bodyD: 0.7, snap: 0.2, rescue: 'unique', wrongLife: 12 },
     standard: {},
-    strict:   { besideD: 0.25, besideR: [0.5, 1.1], besideY: 0.25, bodyD: 0.35, bodyStill: 0.5, snap: 0, dudCd: 1.5 },
+    strict:   { besideD: 0.25, besideR: [0.5, 1.1], besideY: 0.25, bodyD: 0.35, bodyStill: 0.5, snap: 0, dudCd: 1.5, assist: 'none', forms: false },
   },
 };
 ```
 
-`loadStage` resolves `this.fz = Object.assign({}, FORGE, FORGE.profiles[L.strict || 'standard'])`.
+`loadStage` sets `this.fz = forgeKnobs(L.strict || 'standard')`: `FORGE` merged with the profile,
+frozen, without `profiles`, plus `fz.profile` (the name). An unknown name falls back to `standard`
+in the sim; the judge rejects it (`bad-value` at `strict`). `sim.js` exports `FORGE`, `PROFILE`
+and `forgeKnobs`.
 Every rule reads `this.fz`, never `FORGE` directly. K9 and K10 (client) read `snap.fz`
 (§6).
 

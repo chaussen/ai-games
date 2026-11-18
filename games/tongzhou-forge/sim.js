@@ -46,6 +46,37 @@ const STONES = {
   regrow: false,   // default for stages without a "regrow" field
 };
 
+// FORGE: every knob where strict grammar meets relaxed play (docs/forge/DESIGN.md §2, SPEC §4).
+// A stage picks a profile with its "strict" field; it never carries its own numbers. loadStage
+// resolves this.fz = FORGE + the profile, and every rule reads this.fz, never FORGE directly.
+// Values marked (tune) are moved by playtests (PLAYTEST.md), one knob at a time.
+const FORGE = {
+  // classifier (K1-K3, K8)
+  besideD: 0.4, besideR: [0.4, 1.3], besideY: 0.45, ideal: 0.62,   // (tune)
+  bodyD: 0.55, bodyStill: Infinity,                                  // (tune)
+  // forgiveness (K4-K7)
+  snap: 0.15, rescue: 'off', dudCd: 0, wrongLife: Infinity,         // (tune)
+  // client (K9, K10): sent to the board once per stage
+  assist: 'label+snap', forms: true,
+  // bodies
+  holdLow: 0.55,          // arm hold while a friend stands on your head
+  // enclosure (phase 7)
+  inR: 0.3,
+  profiles: {
+    relaxed:  { besideD: 0.55, besideR: [0.35, 1.5], besideY: 0.6, bodyD: 0.7, snap: 0.2, rescue: 'unique', wrongLife: 12 },
+    standard: {},
+    strict:   { besideD: 0.25, besideR: [0.5, 1.1], besideY: 0.25, bodyD: 0.35, bodyStill: 0.5, snap: 0, dudCd: 1.5, assist: 'none', forms: false },
+  },
+};
+const PROFILE = 'standard';   // default for stages without a "strict" field
+// The knobs for one profile. An unknown name falls back to the default (the judge rejects it).
+function forgeKnobs(name) {
+  const fz = Object.assign({}, FORGE, FORGE.profiles[name] || FORGE.profiles[PROFILE]);
+  delete fz.profiles;
+  fz.profile = FORGE.profiles[name] ? name : PROFILE;
+  return Object.freeze(fz);
+}
+
 // Conjure constants — single place for the designer to tune.
 // All values in SPEC.md section 3; marked (tune) means change after playtesting.
 // Ink is ONE pool shared by the whole crew. Its cap grows with the crew:
@@ -114,6 +145,7 @@ class Game {
     this.stones = [];
     this.sid = 0;
     this.regrow = L.regrow != null ? !!L.regrow : STONES.regrow;
+    this.fz = forgeKnobs(L.strict || PROFILE);
     this.springs = (L.stones || []).map(d => ({ ch: d[0], x: d[1], z: d[2], y: this.floor(d[1], d[2]), stone: null, wait: 0 }));
     for (const sp of this.springs) sp.stone = this.addStone(sp.ch, sp.x, sp.y, sp.z, sp);
     for (const p of this.players.values()) p.hold = null;
@@ -1015,4 +1047,4 @@ class Game {
 
 const STATIC = { kind: 's' };
 
-module.exports = { Game, CONJURE, STONES, CONST: { FUSE_R, REGROW, G, SPEED, CARRY_SPEED, JUMP_V, KILL, PR, PH, CR, CH, HOLD_Y, WIN_HOLD, WIN_MIN, BOARD_WAIT, ARRIVE, LEAVE, QI_CD, ROW_MAX, BOOST_R } };
+module.exports = { Game, CONJURE, STONES, FORGE, PROFILE, forgeKnobs, CONST: { FUSE_R, REGROW, G, SPEED, CARRY_SPEED, JUMP_V, KILL, PR, PH, CR, CH, HOLD_Y, WIN_HOLD, WIN_MIN, BOARD_WAIT, ARRIVE, LEAVE, QI_CD, ROW_MAX, BOOST_R } };
