@@ -34,7 +34,8 @@ node server.js --log          # playtest: logs/playtest-<date>.jsonl (ids, never
 ```
 
 For a playtest the board can force one forge profile on every stage: open
-`http://localhost:3200/?board=1&strict=relaxed` (or `standard`, `strict`). Phones cannot.
+`http://localhost:3200/?board=1&strict=relaxed` (or `standard`, `strict`). Phones cannot. (The
+board page passes `?strict=` once task 04 is done; the server already accepts it from boards.)
 
 Open `http://localhost:3200/?board=1` on the TV or laptop. Phones scan the QR code or go to
 `http://<LAN-IP>:3200/`.
