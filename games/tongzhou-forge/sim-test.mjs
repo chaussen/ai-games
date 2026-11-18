@@ -131,7 +131,8 @@ solo(1, 'Sun and Moon', (g, d) => {
   d.go('a', 13.3, 1.5); d.grab('a');
   d.go('a', 11.0, 2.5); d.wait(1.2);
   check(hedge.done && hedge.top === 1 && seen(g, 'burn').length === 1, 'carrying 火 up to the hedge burns it down');
-  d.go('a', 11.5, 2.5); d.grab('a'); d.wait(0.6);
+  // set 火 down facing away from 木 (facing 木 from the front would stack 火 on top of it)
+  d.go('a', 12, 2.5); d.go('a', 11.5, 2.5); d.grab('a'); d.wait(0.6);
   d.go('a', 13.3, 3.5); d.grab('a');
   check(d.P('a').hold.ch === '木', 'the nearest stone is the one picked up');
   d.go('a', 11, 2.5); d.go('a', 6.6, 2.5);

@@ -12,7 +12,7 @@ Last updated: **2026-11-18**.
 |---|---|---|
 | 0 | Fork `tongzhou-conjure` → `tongzhou-forge`; ports 3200 / 3460 / 3461 / 3462; game id | **Done** 2026-11-18. Baseline suites green |
 | 1 | Documentation package (`docs/forge/*`, README, AGENTS) | **Approved** 2026-11-18 |
-| 2 | Sim core: op-aware recipes, classifier, stones on stones, ground forging, placement aims | **In progress**: F2.1–F2.5 done; next F2.6 |
+| 2 | Sim core: op-aware recipes, classifier, stones on stones, ground forging, placement aims | **In progress**: F2.1–F2.5, F2.7 done; next F2.8, then F2.6 (FG-D014) |
 | 3 | Minimal playable `dawn` + client + playtest log → **G1** | Not started |
 | 4 | Body forging → **G2** | Not started |
 | 5 | Judge and lint: op closure, placement and body actions, `order-trap`, `--sloppy` | Not started |
@@ -74,6 +74,7 @@ font re-subset, stages 5, 7 and 9 → G3. 7: pyramid and frames. 8: `RETROSPECTI
 | 2026-11-18 | **F2.3 done.** `FORGE` table in `sim.js` (K1–K10 knobs plus `holdLow`, `inR`) with profiles relaxed / standard / strict; `assist` and `forms` (K9, K10) added to the table so the client knobs live there too. `loadStage` sets a frozen `this.fz` via `forgeKnobs()`; unknown names fall back to standard. Lint accepts the `strict` field and rejects unknown profiles. New `forge-test.mjs` with the Profiles group (15 checks). No rule reads `this.fz` yet (F2.4 on). All suites green. |
 | 2026-11-18 | **F2.4 done.** `relate(a, b, mode, fz)` and `bestRelation()` in `sim.js` (pure, exported, not yet called by the sim). Screen axes R=(1,0,−1)/√2, D=(1,0,1)/√2; depth-only offsets give no relation; ⿱ comes from `support` only (ground: the stone's, body: the holders'); `bodyD` widens depth for bodies; `bodyStill` (strict) rejects moving holders. Partner choice: ⿱, then err, then lowest id. Classifier group: 20 checks. All suites green. |
 | 2026-11-18 | **F2.5 done.** Stones rest on stones: `ground(…, stones)` has a stones pass used only by stone bodies (and the aim prediction); `support` points at the stone below. Two findings: (1) stone-on-stone uses **round** footprints, because the beside spot is a world diagonal (0.44, −0.44) where square boxes still overlap and would stack; (2) a stone lands on any loose stone, not only grounded ones, because a support falling 0.56 bounces (> 5 u/s) and the stone above fell through it. A stack rides a moving deck through the support chain. Picking a stone up clears its `support`. Stacking group: 10 checks. All suites green, `sim-test` determinism holds. |
+| 2026-11-18 | **F2.7 done (before F2.6, FG-D014).** `launch()`: facing a loose stone, standing mostly along R (|r| ≥ |q|) gives `join` = BESIDE, landing on the `ideal` spot on your side; mostly along D gives the new `stack` = ON TOP (lands on the stone's top; on a stack, the top stone). The launch carries `on` (target id). Finding: the old `join` landed 0.45 short of the target, which with F2.5's round footprints would now *stack*; the bridge hid it. `sim-test` stage 2 relied on that accident (set 火 down facing 木 from the front) and now faces away. Client labels (`ON TOP`) wait for F3.2; `stack` shows the default label until then. Placement group: 11 checks. All suites green. |
 
 ## 4. Decision log
 
@@ -92,6 +93,7 @@ font re-subset, stages 5, 7 and 9 → G3. 7: pyramid and frames. 8: `RETROSPECTI
 | FG-D011 | 2026-11-18 | The character set is closed; rare mirror characters (炏 仌 吅) are duds | Honest mirrors without obscure characters |
 | FG-D012 | 2026-11-18 | Forge stages default to `"regrow": true` until a split verb exists | Used-up stones make a wrong-but-real result a soft-lock otherwise |
 | FG-D013 | 2026-11-18 | `levels.js`, `tools/judge/*` and the `vendor/` font may change in this folder (unlike in conjure) | The forge changes the core rules on purpose |
+| FG-D014 | 2026-11-18 | Card order in Phase 2 is F2.7 → F2.8 → F2.6 (not 2.6 → 2.7 → 2.8) | Removing the sim's order-free bridge (F2.6) before joins land beside on the approach side (F2.7) and before the solver picks that side (F2.8) would leave suites red between cards; this order keeps every commit green |
 
 ## 5. Commands
 

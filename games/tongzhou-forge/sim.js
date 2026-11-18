@@ -817,18 +817,26 @@ class Game {
       if (s < bs) { bs = s; best = o; bd = d; bx = dx; bz = dz; }
     }
     const y0 = p.y + HOLD_Y;
-    // Facing another stone close by: put this one right beside it. That is how
-    // characters are joined, so it wins over a pass to a friend standing behind it.
+    // Facing another stone close by: place this one against it. That is how characters
+    // are made, so it wins over a pass to a friend standing behind it. Where you stand
+    // decides the placement (DESIGN §4.3): screen-left or screen-right of the stone sets
+    // yours BESIDE it on your side ('join'); in front of it or behind it sets yours ON TOP
+    // ('stack'). The rule only helps the hand: what the stones make is decided where they land.
     let jt = null, jd = 1.7;
     for (const k of this.stones) {
       if (k === p.hold || k.state !== 'loose' || !k.grounded) continue;
       const dx = k.x - p.x, dz = k.z - p.z, d = Math.hypot(dx, dz);
-      if (d < 0.25 || d >= jd || Math.abs(k.y - p.y) > 0.6 || (dx * fx + dz * fz) / d < 0.4) continue;
-      jd = d; jt = k;
+      if (d < 0.25 || Math.abs(k.y - p.y) > 0.6 || (dx * fx + dz * fz) / d < 0.4) continue;
+      // the nearest stone; on a stack (same spot), the top one
+      if (d < jd - 1e-6 || (jt && d < jd + 1e-6 && k.y > jt.y)) { jd = Math.min(d, jd); jt = k; }
     }
     if (jt) {
-      const dx = jt.x - p.x, dz = jt.z - p.z, r = Math.max(0, jd - 0.45) / jd, T = 0.38;
-      return { mode: 'join', x: p.x, y: y0, z: p.z, vx: dx * r / T, vz: dz * r / T, vy: (jt.y - y0 + 0.5 * G * T * T) / T };
+      const ox = p.x - jt.x, oz = p.z - jt.z;
+      const r = ox * AX_R[0] + oz * AX_R[1], q = ox * AX_D[0] + oz * AX_D[1], T = 0.38;
+      const beside = Math.abs(r) >= Math.abs(q), side = r < 0 ? -1 : 1, ideal = this.fz.ideal;
+      const tx = beside ? jt.x + side * ideal * AX_R[0] : jt.x, tz = beside ? jt.z + side * ideal * AX_R[1] : jt.z;
+      const ty = beside ? jt.y : jt.y + OH;
+      return { mode: beside ? 'join' : 'stack', on: jt.id, x: p.x, y: y0, z: p.z, vx: (tx - p.x) / T, vz: (tz - p.z) / T, vy: (ty - y0 + 0.5 * G * T * T) / T };
     }
     if (best) {
       // a pass: lobbed straight into a friend's hands, up to one step higher

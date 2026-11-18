@@ -130,7 +130,7 @@ Every rule reads `this.fz`, never `FORGE` directly. K9 and K10 (client) read `sn
 | `stepFusion()` | op-aware; keeps the "two stones still where they grew" rule | Uses `relate()`, then `fuse()`, then rescue |
 | `tryForge(a, b, rel, by)` | `→ result stone \| null` | The single path for ground and body forges. Emits `forge` or `dud` |
 | `formation(p)` | `→ {partner, rel} \| null` | Both holding; `relate(…, 'body')`; above uses holder support |
-| `launch(p)` | new modes `forge` and `stack`; the `join` mode now means beside | Priority: dunk > forge > join/stack > pass > toss/place |
+| `launch(p)` | new modes `forge` and `stack`; the `join` mode now means beside | Priority: dunk > forge > join/stack > pass > toss/place. Facing a loose stone within 1.7: |r| ≥ |q| of your offset from it → `join` to the `ideal` spot on your side; else `stack` onto its top (top stone of a stack). Returns `on` = target id |
 | `forgeHeld(p)` | on GRAB in `forge` mode | Result into `p`'s hands; dud keeps both |
 | `ground(..., heads)` | a holder may now be stood on | Their stone uses `holdLow` while their head is occupied |
 | `stepWrong(dt)` | K7: counts down unwanted results and splits them back | Only when `wrongLife` is finite |

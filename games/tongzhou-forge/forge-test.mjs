@@ -150,4 +150,57 @@ group('Stacking');
   check(b0.support === deck && b1.support === b0 && Math.abs(b0.x - 5.1) < 1e-6 && Math.abs(b1.x - 5.1) < 1e-6, `a stone on a stone on a moving deck rides with it (bottom x ${b0.x.toFixed(2)}, top x ${b1.x.toFixed(2)})`);
 }
 
+// ---------------------------------------------------------------- Placement (F2.7)
+group('Placement');
+{
+  // Hold 女, stand 1.0 away from a 木 in a screen direction, face it, press GRAB. (女 and 木 make nothing.)
+  const place = (dirR, dirQ) => {
+    const g = new Game([yard()]);
+    const t = g.addStone('木', 6, 1, 4, null), h = g.addStone('女', 2, 1, 2, null);
+    const p = g.addPlayer('a', 'A');
+    p.x = t.x + dirR * AX_R[0] + dirQ * AX_D[0]; p.z = t.z + dirR * AX_R[1] + dirQ * AX_D[1]; p.y = 1;
+    p.rot = Math.atan2(t.x - p.x, t.z - p.z);
+    g.holdStone(p, h, 'grab');
+    g.step(1 / 60);
+    const aim = g.aim(p);
+    g.act('a', 'grab');
+    settle(g, 90);
+    return { g, t, h, aim, rel: relate(t, h, 'ground', g.fz) };
+  };
+  const ideal = forgeKnobs('standard').ideal;
+  {
+    const { t, h, aim, rel } = place(-1, 0);
+    check(aim[3] === 'join', 'standing screen-left of a stone, the aim says BESIDE (mode join)');
+    const r = (h.x - t.x) * AX_R[0] + (h.z - t.z) * AX_R[1];
+    check(rel && rel.op === '⿰' && rel.first === h && Math.abs(r + ideal) < 0.15, `the stone lands beside it on the left (r ${r.toFixed(2)}), so it is first in ⿰`);
+    check(Math.hypot(aim[0] - h.x, aim[2] - h.z) < 0.15, 'the aim marker shows where it lands');
+  }
+  {
+    const { t, h, aim, rel } = place(1, 0);
+    check(aim[3] === 'join' && rel && rel.op === '⿰' && rel.second === h, 'from screen-right: beside on the right, second in ⿰');
+  }
+  for (const [q, name] of [[1, 'in front of'], [-1, 'behind']]) {
+    const { t, h, aim, rel } = place(0, q);
+    check(aim[3] === 'stack', `standing ${name} a stone, the aim says ON TOP (mode stack)`);
+    check(h.support === t && rel && rel.op === '⿱' && rel.first === h, `the stone lands on top of it (support 木), first in ⿱`);
+  }
+  {
+    const { aim } = place(-0.8, 0.6);
+    check(aim[3] === 'join', 'mostly screen-left, a little in front: still BESIDE');
+    const { aim: a2 } = place(-0.5, 0.8);
+    check(a2[3] === 'stack', 'mostly in front, a little left: ON TOP');
+  }
+  {
+    // A stack of two: facing it from the front puts the stone on the top one.
+    const g = new Game([yard()]);
+    const t = g.addStone('木', 6, 1, 4, null), t2 = g.addStone('日', 6, 3, 4, null); t2.grounded = false;
+    settle(g);
+    const h = g.addStone('女', 2, 1, 2, null), p = g.addPlayer('a', 'A');
+    p.x = t.x + AX_D[0]; p.z = t.z + AX_D[1]; p.y = 1; p.rot = Math.atan2(t.x - p.x, t.z - p.z);
+    g.holdStone(p, h, 'grab'); g.step(1 / 60);
+    g.act('a', 'grab'); settle(g, 90);
+    check(t2.support === t && h.support === t2, 'facing a stack from the front sets the stone on its top stone');
+  }
+}
+
 console.log(failed ? `\n${failed} FORGE CHECK(S) FAILED` : '\nALL FORGE CHECKS PASSED');
