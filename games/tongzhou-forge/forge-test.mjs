@@ -4,7 +4,7 @@
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { Game, FORGE, PROFILE, forgeKnobs, relate, bestRelation, AX_R, AX_D } = require('./sim.js');
+const { Game, CONST, FORGE, PROFILE, forgeKnobs, relate, bestRelation, AX_R, AX_D } = require('./sim.js');
 const LV = require('./levels.js');
 const { lint } = await import('./tools/judge/lint.mjs');
 
@@ -104,6 +104,50 @@ group('Classifier');
   check(relate(ha, hs, 'body', fz) !== null && relate(ha, hs, 'body', strict) === null, // standard: no stillness rule
     `strict profile: a holder moving faster than bodyStill (${strict.bodyStill}) forms no pair`);
   check(relate(ha, hs, 'body', forgeKnobs('relaxed')) !== null, 'relaxed profile ignores how still the bodies are');
+}
+
+// ---------------------------------------------------------------- Stacking (F2.5)
+// A flat test yard, no boat: 12 x 8 floor at height 1.
+const yard = (extra = {}) => Object.assign({ id: 'yard', name: 'Yard', cn: '院', par: 60, pal: 'dawn', want: '林', hint: 'test yard',
+  map: Array(8).fill('111111111111'), spawn: [1.5, 1.5], beacon: [10.5, 6.5], stones: [] }, extra);
+const settle = (g, n = 120) => { for (let i = 0; i < n; i++) g.step(1 / 60); };
+const OH = 0.56;
+group('Stacking');
+{
+  // 木 日 火 女: no recipe joins any two of them, so nothing fuses mid-test.
+  const g = new Game([yard()]);
+  const wood = g.addStone('木', 5.5, 1, 4.5, null);
+  const sun = g.addStone('日', 5.55, 3, 4.5, null); sun.grounded = false;
+  settle(g);
+  check(sun.grounded && sun.support === wood && Math.abs(sun.y - (1 + OH)) < 1e-6, `a dropped stone rests on the stone below it (y ${sun.y.toFixed(3)}, support 木)`);
+  check(wood.support && wood.support.kind === 's', 'the bottom stone rests on the floor');
+  const fire = g.addStone('火', 5.5, 4, 4.5, null); fire.grounded = false;
+  settle(g);
+  check(fire.support === sun && Math.abs(fire.y - (1 + 2 * OH)) < 1e-6, 'a third stone stacks on the second');
+  const side = g.addStone('女', 5.5 + 0.62 * Math.SQRT1_2, 3, 4.5 - 0.62 * Math.SQRT1_2, null); side.grounded = false;
+  settle(g);
+  check(side.support && side.support.kind === 's' && Math.abs(side.y - 1) < 1e-6, 'a stone landing on the ideal beside spot rests on the floor, not on its neighbour');
+  check(g.ground(5.5, 4.5, CONST.PR, 9, null, true).y === 1, 'players never stand on stones (ground without the stones pass)');
+  check(g.ground(5.5, 4.5, 0.28, 9, null, false, true).y === 1 + 3 * OH, 'a stone body (and the aim prediction) lands on top of the stack');
+
+  // Lift the bottom stone out: everything above falls one level.
+  const p = g.addPlayer('a', 'A');
+  g.holdStone(p, wood, 'grab');
+  settle(g);
+  check(sun.support && sun.support.kind === 's' && Math.abs(sun.y - 1) < 1e-6, 'lifting the bottom stone drops the one on it to the floor');
+  check(fire.support === sun && Math.abs(fire.y - (1 + OH)) < 1e-6, 'and the one above that comes down with it, still stacked');
+  check(wood.support === null, 'a held stone rests on nothing');
+
+  // A stack on a deck that moves: every stone rides along, not only the bottom one.
+  const h = new Game([yard()]);
+  const deck = { kind: 'm', id: 'deck', boat: true, dyn: true, done: true, wall: null, when: [], x0: 3, z0: 2, x1: 8, z1: 6, top: 1.3, from: 1.3, to: 1.3, a: 1, speed: 1, dx: 0, dz: 0 };
+  h.movers.push(deck);
+  const b0 = h.addStone('木', 4.5, 1.3, 4, null), b1 = h.addStone('日', 4.5, 2.5, 4, null); b1.grounded = false;
+  settle(h);
+  deck.dx = 0.02;
+  for (let i = 0; i < 30; i++) { deck.x0 += 0.02; deck.x1 += 0.02; h.step(1 / 60); }
+  deck.dx = 0;
+  check(b0.support === deck && b1.support === b0 && Math.abs(b0.x - 5.1) < 1e-6 && Math.abs(b1.x - 5.1) < 1e-6, `a stone on a stone on a moving deck rides with it (bottom x ${b0.x.toFixed(2)}, top x ${b1.x.toFixed(2)})`);
 }
 
 console.log(failed ? `\n${failed} FORGE CHECK(S) FAILED` : '\nALL FORGE CHECKS PASSED');

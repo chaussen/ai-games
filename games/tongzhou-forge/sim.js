@@ -444,7 +444,8 @@ class Game {
   }
 
   // Highest surface under the footprint that is not above maxY.
-  ground(x, z, r, maxY, self, heads) {
+  // `stones`: a stone body also lands on loose stones (players never do). DESIGN §4.1.
+  ground(x, z, r, maxY, self, heads, stones) {
     const g = this.grid;
     let y = -Infinity, ref = null;
     for (let cz = Math.floor(z - r), ez = Math.floor(z + r - 1e-9); cz <= ez; cz++) {
@@ -462,6 +463,14 @@ class Game {
       if (c === self) continue;
       const t = c.y + CH;
       if (Math.abs(x - c.x) < r + CR && Math.abs(z - c.z) < r + CR && t <= maxY && t > y) { y = t; ref = c; }
+    }
+    if (stones) {
+      for (const o of this.stones) {
+        if (o === self || o.state !== 'loose' || o.support === self) continue;   // a bouncing stone still carries what falls with it
+        const t = o.y + OH;
+        // round footprints: screen-beside is a world diagonal, where square boxes would still overlap
+        if (Math.hypot(x - o.x, z - o.z) < r + OR && t <= maxY && t > y) { y = t; ref = o; }
+      }
     }
     if (heads) {
       // a friend's head is a step: stand on it to reach a 2-high ledge
@@ -768,7 +777,7 @@ class Game {
   }
 
   holdStone(p, k, how) {
-    k.state = 'held'; k.holder = p; p.hold = k; k.grounded = false; k.vx = k.vy = k.vz = 0; k.lonely = 0;
+    k.state = 'held'; k.holder = p; p.hold = k; k.grounded = false; k.support = null; k.vx = k.vy = k.vz = 0; k.lonely = 0;
     this.started = true;
     this.note(k.ch, p.id);
     this.ev(how, { id: p.id, s: k.id, ch: k.ch });
@@ -866,7 +875,7 @@ class Game {
     const prevY = b.y;
     b.vy -= G * dt;
     b.y += b.vy * dt;
-    const g = this.ground(b.x, b.z, OR, prevY + SOFT, null, false);
+    const g = this.ground(b.x, b.z, OR, prevY + SOFT, b, false, true);
     if (b.vy <= 0 && b.y <= g.y) {
       b.y = g.y;
       if (g.ref && g.ref.wall && !g.ref.done) {
@@ -875,7 +884,7 @@ class Game {
         b.vy = 4.5; hit = 2;
       } else if (b.vy < -5) { b.vy *= -0.22; hit = 2; b.vx *= 0.5; b.vz *= 0.5; }
       else { b.vy = 0; b.grounded = true; b.support = g.ref; b.vx *= 0.7; b.vz *= 0.7; }
-    } else b.grounded = false;
+    } else { b.grounded = false; b.support = null; }
     return hit;
   }
 
@@ -888,7 +897,10 @@ class Game {
     }
     if (k.state !== 'loose') return;
     const wasGrounded = k.grounded;
-    if (wasGrounded && k.support && k.support.boat) { k.x += k.support.dx; k.z += k.support.dz; }
+    // ride the boat, also when resting on a stone that rests on the boat
+    let base = wasGrounded ? k.support : null;
+    for (let n = 0; base && base.ch !== undefined && n < MAX_STONES; n++) base = base.support;
+    if (base && base.boat) { k.x += base.dx; k.z += base.dz; }
     const hit = this.moveStoneBody(k, dt);
     if (hit === 2 || (k.grounded && !wasGrounded)) this.ev('thud', { s: k.id });
     if (k.grounded && !wasGrounded && !k.pop) {
