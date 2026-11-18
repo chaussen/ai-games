@@ -1,5 +1,10 @@
 # Plan: fix the 3D view, then a side view (approved direction, 2026-11-18)
 
+**Update 2026-11-19:** John asked for the side view directly. Part 1 (fix the 3D) is **not done**;
+§4 is done (tag `forge-3d-2026-11-19`); §5 step 1, the greybox, is built in `games/tongzhou-forge-2d`
+(see its `docs/GREYBOX.md`: every finding below and what the greybox does about it). Next: gate P2
+on John's phone.
+
 **Start here next session.** This is the handover for the work after John's second phone playtest.
 Nothing in here is built yet. Order: **Part 1 (fix 3D) → gate → Part 2 (side view)**. Part 2 starts
 whatever the gate says, because John wants both tried; the gate only decides which one we keep going

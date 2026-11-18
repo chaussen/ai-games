@@ -1,6 +1,9 @@
 # 同舟 · Glyph Isles — Positional Forge
 
 > A copy of `tongzhou-conjure`. Never import from it, or from any other game. Backport by hand.
+>
+> **The 3D view.** Its side-view sibling is `games/tongzhou-forge-2d` (greybox, 2026-11-19; plan in
+> `docs/forge/SIDE-VIEW.md`). This build is kept as tag `forge-3d-2026-11-19`.
 
 **Where a piece sits decides what it means.** 日 stacked on 木 makes 杲 (sunrise, bright). 木
 stacked on 日 makes 杳 (sunset, dim). In this game the crew builds characters **in the world**,

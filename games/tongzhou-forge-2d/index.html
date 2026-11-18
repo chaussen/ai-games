@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#efe7d4">
+<title>Glyph Isles 2D</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="world" aria-label="The isle, seen from the side"></canvas>
+
+<!-- The phone budget (SIDE-VIEW §2): one goal, one word card, one message line, the menu,
+     the stick and two buttons. screen-check.py fails if anything else shows or overlaps the pad. -->
+<div id="hud">
+  <div id="goal" data-hud="goal" title="The pavilion wants this character">
+    <b class="g"></b><span class="py"></span><span class="en"></span>
+  </div>
+  <button id="card" data-hud="card" hidden title="Tap to hear it">
+    <svg class="picto" viewBox="0 0 100 100" aria-hidden="true"><path></path></svg>
+    <b class="g"></b><span class="words"><span class="py"></span><span class="en"></span></span>
+  </button>
+  <button id="menu" data-hud="menu" aria-label="Menu">☰</button>
+  <div id="msg" data-hud="msg" role="status" aria-live="polite"></div>
+</div>
+
+<div id="pad">
+  <div id="stick" data-hud="stick" data-pad><i></i></div>
+  <button id="grab" data-hud="grab" data-pad>GRAB</button>
+  <button id="jump" data-hud="jump" data-pad>JUMP</button>
+</div>
+
+<div id="title" class="sheet" data-hud="title" hidden>
+  <div class="cn"></div><div class="name"></div><p class="tip"></p>
+</div>
+
+<div id="win" class="sheet" data-hud="win" hidden>
+  <div class="g"></div><div class="words"><span class="py"></span> · <span class="en"></span></div>
+  <p class="line">The mist lifts.</p><p class="stats"></p>
+  <div class="row"><button data-act="again">Again</button><button data-act="next" class="main">Next isle</button></div>
+</div>
+
+<div id="drawer" class="sheet" data-hud="drawer" hidden>
+  <h2>Glyph Isles 2D <small>greybox</small></h2>
+  <div class="row"><button data-act="restart" class="main">Restart isle</button><button data-act="close">Back to the isle</button></div>
+  <label>Isle <select data-k="isle"></select></label>
+  <label>Play <select data-k="profile"><option>relaxed</option><option>standard</option><option>strict</option></select></label>
+  <label>Pinyin on stones <select data-k="labels"><option value="all">every stone</option><option value="near">stones near you</option><option value="card">only the card</option></select></label>
+  <label><input type="checkbox" data-k="sound"> Sound</label>
+  <label><input type="checkbox" data-k="voice"> Say each new character</label>
+  <p class="keys">Keys: ← → walk · Space / ↑ jump (again in the air: 轻功) · X grab · R restart · N / P isle · Esc menu</p>
+</div>
+
+<script src="content.js"></script>
+<script src="rules.js"></script>
+<script src="isles.js"></script>
+<script src="sim.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
