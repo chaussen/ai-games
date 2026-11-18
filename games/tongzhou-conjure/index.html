@@ -100,10 +100,20 @@
     <button id="cp-clear-btn" class="cp-btn-clear">Clear</button>
     <div id="cp-status" class="cp-status">Draw a character...</div>
   </div>
+  <!-- D1: choosing a character never spends ink; this is the explicit way to conjure one
+       without writing it (the accessibility fallback). -->
+  <div class="cp-actions">
+    <button id="cp-use-btn" class="cp-btn-use">Use without drawing</button>
+  </div>
   <div id="cp-tiles" class="cp-tiles"></div>
   <div id="cp-palette" class="cp-palette hidden">
-    <div class="cp-pal-head">Or pick a character:</div>
+    <div class="cp-pal-head">Pick a character to trace:</div>
     <div id="cp-pal-items" class="cp-pal-items"></div>
+  </div>
+  <!-- D8: what this phone should practise again (local only, never sent) -->
+  <div id="cp-practice" class="cp-practice hidden">
+    <div class="cp-prac-head">Practice next:</div>
+    <div id="cp-prac-items" class="cp-prac-items"></div>
   </div>
 </div>
 

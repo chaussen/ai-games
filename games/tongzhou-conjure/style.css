@@ -397,7 +397,8 @@ html.pad #codex span { width: 26px; height: 26px; font-size: 19px; }
   background: #f7f1e6; display: flex; flex-direction: column;
   align-items: center; justify-content: space-between;
   padding: calc(12px + var(--safe-t)) calc(14px + var(--safe-r)) calc(16px + var(--safe-b)) calc(14px + var(--safe-l));
-  touch-action: none; -webkit-user-select: none; user-select: none;
+  touch-action: pan-y; -webkit-user-select: none; user-select: none;
+  overflow-y: auto;
 }
 .cp-header {
   width: min(340px, 100%); display: flex; align-items: center; justify-content: space-between;
@@ -424,7 +425,10 @@ html.pad #codex span { width: 26px; height: 26px; font-size: 19px; }
 .cp-btn-close { background: #e57373; color: #fff; }
 
 #cp-canvas-wrap {
-  position: relative; width: min(320px, 80vw); height: min(320px, 80vw);
+  /* D4: the character square is square on every phone. The stroke mapping uses the
+     shorter side and centres it, so the pad and the board replay keep the drawing's shape. */
+  position: relative; width: min(320px, 80vw, 80vh); aspect-ratio: 1 / 1; height: auto;
+  flex: 0 0 auto;
   background: #fffdf9; border: 2.5px solid #8c7355; border-radius: 12px;
   box-shadow: 0 6px 20px rgba(43, 37, 64, 0.12); touch-action: none;
 }
@@ -448,6 +452,19 @@ html.pad #codex span { width: 26px; height: 26px; font-size: 19px; }
 }
 .cp-status { font-size: 13px; font-weight: 700; color: var(--ink-soft); }
 
+/* D1: conjuring without a drawing is its own, explicit action */
+.cp-actions {
+  width: min(340px, 100%); display: flex; justify-content: center;
+  margin: 2px 0 6px; flex: 0 0 auto;
+}
+.cp-btn-use {
+  padding: 8px 16px; border-radius: 999px; border: none; font: inherit;
+  font-size: 13px; font-weight: 800; cursor: pointer;
+  background: #2b2540; color: #fff8ec; box-shadow: 0 4px 10px rgba(43, 37, 64, 0.18);
+}
+.cp-btn-use:active { transform: scale(0.97); }
+.cp-btn-use:disabled, .cp-btn-use.sending { opacity: 0.55; cursor: default; }
+
 .cp-tiles {
   width: min(340px, 100%); display: flex; gap: 8px; min-height: 72px;
 }
@@ -470,6 +487,41 @@ html.pad #codex span { width: 26px; height: 26px; font-size: 19px; }
 .cp-pal-btn {
   padding: 4px 8px; border-radius: 6px; border: 1px solid #d4c5b3;
   background: #fbf7f0; cursor: pointer; font-family: var(--kai); font-size: 18px;
+}
+.cp-pal-btn.selected {
+  border-color: #d98a14; background: #fdf1d9;
+  box-shadow: 0 0 0 2px rgba(217, 138, 20, 0.22);
+}
+
+/* D8: what this phone should practise again (local only) */
+.cp-practice {
+  width: min(340px, 100%); background: #fff; border: 1.5px solid #d4c5b3;
+  border-radius: 10px; padding: 6px 8px; margin-top: 4px; flex: 0 0 auto;
+}
+.cp-prac-head {
+  font-size: 11px; font-weight: 800; color: var(--ink-soft);
+  text-transform: uppercase; margin-bottom: 5px;
+}
+.cp-prac-items { display: flex; gap: 6px; }
+.cp-prac-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 1px;
+  padding: 4px 6px; border-radius: 8px; border: 1px solid #d4c5b3;
+  background: #fbf7f0; cursor: pointer; font: inherit;
+}
+.cp-prac-btn b { font-family: var(--kai); font-size: 22px; font-weight: 900; line-height: 1.1; color: var(--ink); }
+.cp-prac-btn span { font-size: 10px; font-weight: 700; color: var(--ink-soft); }
+.cp-prac-btn i { font-size: 9px; font-style: normal; color: var(--ink-soft); }
+.cp-prac-btn.selected { border-color: #d98a14; background: #fdf1d9; }
+
+/* short screens (landscape phones): keep the pad, its buttons and the practice row usable */
+@media (max-height: 620px) {
+  #cp-canvas-wrap { width: min(320px, 80vw, 46vh); }
+  .cp-guide { font-size: clamp(72px, 38vh, 180px); }
+  .cp-bar { margin: 2px 0; }
+  .cp-actions { margin: 0 0 4px; }
+  .cp-tiles { min-height: 52px; }
+  .cp-tile .ch { font-size: 26px; }
+  .cp-pal-btn { font-size: 16px; }
 }
 
 /* ---------- Board Replay Overlay ---------- */

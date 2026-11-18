@@ -328,7 +328,14 @@ try {
   for (let i = 0; i < 20 && !refuseUnknown; i++) await sleep(50);
   check(refuseUnknown && refuseUnknown.why === 'unknown', 'character outside allowed set receives conjureNo unknown');
 
-  // 4.3 Malformed / oversize messages ignored
+  // 4.3 Malformed / oversize messages are refused with why 'strokes', never silence (D5)
+  const strokeNos = [];
+  mia.ws.addEventListener('message', ev => {
+    try {
+      const m = JSON.parse(ev.data);
+      if (m.type === 'conjureNo' && m.why === 'strokes') strokeNos.push(m);
+    } catch (e) {}
+  });
   let beforeSnaps = board.snaps;
   // Oversize: > 12 strokes
   mia.send({ type: 'conjure', ch: '木', strokes: Array(15).fill([[0.1, 0.1], [0.2, 0.2]]) });
@@ -338,6 +345,20 @@ try {
   mia.send({ type: 'conjure', ch: '木', strokes: [Array(50).fill([0.5, 0.5])] });
   await sleep(200);
   check(board.snaps > beforeSnaps, 'server continues processing normally after malformed conjure messages');
+  check(strokeNos.length === 3, 'each malformed conjure gets conjureNo strokes (D5), got ' + strokeNos.length);
+
+  // 4.4 A pick (empty strokes, "Use without drawing", CJ-08) is a real conjure, not a stroke error
+  let bobAnswer = null;
+  bob.ws.addEventListener('message', ev => {
+    try {
+      const m = JSON.parse(ev.data);
+      if ((m.type === 'conjured' && m.id === 'p-conj-bob') || m.type === 'conjureNo') bobAnswer = m;
+    } catch (e) {}
+  });
+  bob.send({ type: 'conjure', ch: '木', strokes: [] });
+  for (let i = 0; i < 20 && !bobAnswer; i++) await sleep(50);
+  check(bobAnswer && bobAnswer.type === 'conjured' && Array.isArray(bobAnswer.strokes) && bobAnswer.strokes.length === 0,
+    'empty-stroke pick is conjured with no strokes to replay, got ' + JSON.stringify(bobAnswer && { type: bobAnswer.type, why: bobAnswer.why }));
 
   for (const c of [board, mia, bob]) c.close();
 } catch (e) {

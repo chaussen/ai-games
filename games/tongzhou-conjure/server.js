@@ -214,8 +214,13 @@ function onMessage(client, msg) {
         break;
       }
       // Stroke validation: list of strokes; each stroke a list of [x, y] in 0..1
-      // at most 12 strokes, at most 40 points per stroke, at most 300 points total
-      if (!Array.isArray(msg.strokes) || msg.strokes.length === 0 || msg.strokes.length > 12) break;
+      // at most 12 strokes, at most 40 points per stroke, at most 300 points total.
+      // An empty list is a pick ("Use without drawing", the accessibility fallback, CJ-08).
+      // Anything malformed gets an answer, never silence (D5).
+      if (!Array.isArray(msg.strokes) || msg.strokes.length > 12) {
+        send(client.socket, { type: 'conjureNo', why: 'strokes' });
+        break;
+      }
       let totalPts = 0, valid = true;
       const cleanStrokes = [];
       for (const st of msg.strokes) {
@@ -233,7 +238,10 @@ function onMessage(client, msg) {
         if (!valid) break;
         cleanStrokes.push(cst);
       }
-      if (!valid || totalPts > 300) break;
+      if (!valid || totalPts > 300) {
+        send(client.socket, { type: 'conjureNo', why: 'strokes' });
+        break;
+      }
       const res = game.conjure(p.id, msg.ch);
       if (!res.ok) {
         send(client.socket, { type: 'conjureNo', why: res.why });

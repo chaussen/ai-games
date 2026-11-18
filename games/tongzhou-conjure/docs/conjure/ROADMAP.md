@@ -16,13 +16,13 @@ code, **the code and the tests win**: fix this page, do not "fix" the code to ma
 |---|---|---|---|
 | 0 | Conjure base: draw a character, a stone appears (phases 0–3 of `TASKS.md`) | `PLAN.md`, `SPEC.md` | **Done** 2026-11-17 (see `RETROSPECTIVE.md`). Recogniser accuracy **not proven** (see B). |
 | A | Idea 1: stones are used up, shared crew ink | `CONSUMABLE.md` | **Done** 2026-11-18. Tests green. Not playtested. |
-| B | Honest recognition: real samples, stroke-data templates, order-tolerant matcher | `OPEN-SET.md` §2 | **Not started.** Blocks C. |
+| B | Honest recognition: real samples, stroke-data templates, order-tolerant matcher | `OPEN-SET.md` §2 | B1 **done** 2026-11-18. B2 (human samples) open; B3/B4 next. Blocks C. |
 | C | Idea 2: open character set, radical decides the element, font gap | `OPEN-SET.md` §3–5 | **Not started.** Needs B. |
-| D | Phone pad fixes D1–D6 and the hint ladder | `OPEN-SET.md` §6–7 | **Not started.** D1–D5 can start now. |
+| D | Phone pad fixes D1–D6 and the hint ladder | `OPEN-SET.md` §6–7 | D1–D6, D8 **done** 2026-11-18 (`tools/pad-check.py`). D7 waits for C. |
 | E | Idea 3: function words as seals (不 吗 和 first) | `PARTICLES.md` | **Design only.** Needs John's review. |
 | F | Playtest with real people, then tune `CONJURE` numbers | this page §5 | **Not started.** |
 
-Test suite at 2026-11-18: `sim-test` 74 ✓, `smoke-test` 43 ✓, `judge-test` 30 ✓, `conjure-test` 47 ✓.
+Test suite at 2026-11-18: `sim-test` 74 ✓, `smoke-test` 43 ✓, `judge-test` 30 ✓, `conjure-test` 49 ✓, `tools/pad-check.py` 12 ✓.
 All three stages pass the judge with stones used up, each with two routes.
 
 Committed and pushed to `master` on 2026-11-18. Work trunk-based on `master` (repo rule):
@@ -44,8 +44,18 @@ commit each finished card with its tests green, and update sections 1–3 of thi
    `tools/judge/lint.mjs`, `sim-test.mjs`, `smoke-test.mjs`, `conjure-test.mjs`, `judge-test.mjs`,
    `docs/STAGES.md`, `docs/conjure/SPEC.md`.
 3. **Design written** for idea 2 + hints (`OPEN-SET.md`) and idea 3 function words (`PARTICLES.md`).
-4. **Correction recorded:** two hint ideas from the review (board describes the need by meaning;
+4. **Correction recorded (b):** two hint ideas from the review (board describes the need by meaning;
    "who can write 木?" nudge) break charter P8/P9 and TZ-D025. Dropped. See `OPEN-SET.md` §6.
+5. **Stream D pad cards** (W built, S reviewed): B1 (`accuracy.mjs` exits 2 without real samples),
+   D1 palette only sets the trace target + "Use … without drawing" button, D2 resample to ≤40 points
+   keeping both ends (and fit the 12-stroke / 300-point budget), D3 pad stays open until the isle
+   answers, D4 one scale for x and y, D8 practice memory in `localStorage`. Files: `app.js`,
+   `index.html`, `style.css`, `lab/accuracy.mjs`.
+6. **D5 (S), changed from the card:** the card said empty strokes → `conjureNo strokes`, but that
+   would refuse every D1 "Use without drawing". Instead: empty `strokes` is a pick (CJ-08); malformed
+   or oversize strokes get `conjureNo {why:'strokes'}` instead of silence. Board skips the replay for
+   a pick. Review fix: sending a conjure cancels the pending recogniser run, which was overwriting
+   the refusal reason. Headless acceptance checks for D1–D5 in `tools/pad-check.py`.
 
 ---
 
@@ -53,6 +63,7 @@ commit each finished card with its tests green, and update sections 1–3 of thi
 
 | ID | Date | Decision | Why | Status |
 |---|---|---|---|---|
+| CJ-08 | 11-18 | A conjure with no strokes is a pick (accessibility fallback); only malformed strokes are refused (`why: 'strokes'`) | D1's "Use without drawing" must work; D5 as first written would have refused it | DONE (price 1 drop until D7) |
 | CJ-07 | 11-18 | Function words are only ever written, never found; they become seals that modify stones | Gives writing a job no found stone can do | LEAN (John to review) |
 | CJ-06 | 11-18 | The pavilion's `want` character can never be conjured | Otherwise the puzzle is skipped | LEAN (applies from stream C) |
 | CJ-05 | 11-18 | A character's semantic radical decides its element | Hundreds of characters with no hand authoring; radicals become physics | LEAN |
@@ -98,7 +109,7 @@ Files for D1–D4: `app.js`, `index.html`, `style.css` only. Each must keep all 
 **D2.** Thin long strokes instead of truncating: keep collecting points, then on pointer-up resample to at most 40 points (keep both end points). Done when: a 100-point synthetic stroke reaches the server with its last point equal to the drawn last point (±0.01).
 **D3.** Keep the pad open until `conjured` (close) or `conjureNo` (stay open, show the reason, keep the drawing). Done when: headless — force `ink` refusal, the pad stays open and strokes are still drawn.
 **D4.** Use one scale for x and y (the pad's shorter side) and centre it. Done when: a square drawn on a 390×844 pad arrives with equal width and height (±0.02).
-**D5 (S: server).** A conjure with no strokes gets `conjureNo {why: 'strokes'}` instead of silence; add the English text in `REFUSAL_TEXTS`; test in `conjure-test.mjs`.
+**D5 (S: server). DONE.** Malformed strokes get `conjureNo {why: 'strokes'}` instead of silence; empty strokes are a pick (CJ-08); English text in `REFUSAL_TEXTS`; tests in `conjure-test.mjs`.
 **D6.** = B1.
 **D7 (W, after C).** Hint ladder levels Free / Clue / Start / Show / Pick (`OPEN-SET.md` §6). Ink prices are sent by the server; the sim charges them (S adds `conjure(id, ch, level)`).
 **D8 (W).** Practice memory in `localStorage` (try/catch around every access): count clean free writes per character; suggest due characters on the pad. Never sent to the server.
@@ -137,6 +148,7 @@ node sim-test.mjs      # ALL SIM CHECKS PASSED
 node smoke-test.mjs    # ALL SMOKE CHECKS PASSED   (boots the server on 3456)
 node judge-test.mjs    # ALL JUDGE CHECKS PASSED
 node conjure-test.mjs  # ALL CONJURE CHECKS PASSED (boots the server on 3457)
+python3 tools/pad-check.py  # ALL PAD CHECKS PASSED (server on 3481 + headless chromium; D1–D5)
 for f in content/stages/*.json; do node tools/judge.mjs $f | head -1; done   # three PASS lines
 ```
 

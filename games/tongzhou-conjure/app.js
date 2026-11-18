@@ -1837,6 +1837,13 @@
   let padPauseTimer = null;
   let padCanvas, padCtx;
 
+  // D3: the pad stays open until the isle answers (conjured / conjureNo), so we hold what
+  // the request was for: a refusal can then be explained and the drawing kept, and a
+  // success can be credited to this phone's practice memory (D8).
+  let conjurePending = null;       // { ch, from, rank, free, strokes }
+  let conjurePendingTimer = null;
+  let lastMatches = [];            // best-first match list from the last recogniser run
+
   function onConjureSet(list) {
     if (!Array.isArray(list)) return;
     conjureAllowed = list;
@@ -1845,6 +1852,7 @@
     }
     renderPalette();
     updateGuide();
+    renderPractice();
     if (window.WRecog) {
       window.WRecog.load(conjureAllowed.map(item => item.ch));
     }
@@ -1880,14 +1888,31 @@
     ink: 'Out of ink. Wait for drops to gather.',
     cooldown: 'Wait a moment before drawing again.',
     cap: 'Too many conjured stones already on the isle.',
-    away: 'You cannot conjure while resting.'
+    away: 'You cannot conjure while resting.',
+    strokes: 'That drawing could not be read. Clear and try again.'
   };
 
+  function setPadStatus(text) {
+    const statusEl = $('cp-status');
+    if (statusEl) statusEl.textContent = text;
+  }
+
+  function updateUseBtn() {
+    const btn = $('cp-use-btn');
+    if (!btn) return;
+    btn.disabled = !!conjurePending;
+    btn.classList.toggle('sending', !!conjurePending);
+  }
+
   function onConjureRefusal(why) {
+    conjurePending = null;
+    clearTimeout(conjurePendingTimer);
+    updateUseBtn();
     const msg = REFUSAL_TEXTS[why] || 'Could not conjure that character.';
     toast(msg);
-    const statusEl = $('cp-status');
-    if (statusEl) statusEl.textContent = msg;
+    // D3: a refusal never costs the drawing. The pad stays open with its strokes; the
+    // reason replaces the status line so the crew can see why nothing appeared.
+    setPadStatus(msg);
   }
 
   function toggleConjurePad() {
@@ -1898,6 +1923,8 @@
       pad.classList.remove('hidden');
       initPadCanvas();
       clearPad();
+      renderPractice();
+      updateUseBtn();
     } else {
       pad.classList.add('hidden');
     }
@@ -1939,14 +1966,83 @@
           updateGuide();
         });
       }
+
+      // D1: picking a character only sets the Trace target. Conjuring one without a
+      // drawing is this separate, explicit action (1 drop for now, ladder price later).
+      const btnUse = $('cp-use-btn');
+      if (btnUse) {
+        btnUse.addEventListener('click', () => sendConjure(targetChar, { from: 'pick' }));
+      }
     }
   }
 
   function updateGuide() {
     const guide = $('cp-guide');
-    if (!guide) return;
-    guide.textContent = targetChar;
-    guide.classList.toggle('hidden', !traceMode);
+    if (guide) {
+      guide.textContent = targetChar;
+      guide.classList.toggle('hidden', !traceMode);
+    }
+    const btnUse = $('cp-use-btn');
+    if (btnUse) btnUse.textContent = 'Use ' + targetChar + ' without drawing';
+  }
+
+  // D4: one scale for both axes — the pad's shorter side — and centred, so a square drawn
+  // on a tall phone arrives square (x and y used to be scaled separately).
+  function padNorm(e) {
+    const r = padCanvas.getBoundingClientRect();
+    const s = Math.min(r.width, r.height) || 1;
+    const ox = (r.width - s) / 2, oy = (r.height - s) / 2;
+    // clamp: keep the stroke inside the server's accepted 0..1 box (SPEC §4)
+    return [
+      clamp((e.clientX - r.left - ox) / s, 0, 1),
+      clamp((e.clientY - r.top - oy) / s, 0, 1)
+    ];
+  }
+
+  // Same single scale, in canvas pixels, for drawing what was collected.
+  function padToPx(x, y) {
+    const s = Math.min(padCanvas.width, padCanvas.height);
+    const ox = (padCanvas.width - s) / 2, oy = (padCanvas.height - s) / 2;
+    return [ox + x * s, oy + y * s];
+  }
+
+  const PAD_MAX_POINTS = 40;   // server limit per stroke (SPEC §4)
+  const roundPt = p => [Math.round(p[0] * 100) / 100, Math.round(p[1] * 100) / 100];
+
+  // Resample a polyline to at most maxPts points, evenly spaced along its length.
+  // First and last points are always kept exactly, so the end of a long stroke survives.
+  function resampleStroke(pts, maxPts) {
+    if (!Array.isArray(pts) || pts.length <= maxPts) return pts.slice();
+    const n = pts.length;
+    const cum = [0];
+    for (let i = 1; i < n; i++) {
+      cum[i] = cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+    }
+    const total = cum[n - 1];
+    if (!(total > 0)) return [pts[0], pts[n - 1]];
+    const out = [pts[0]];
+    let seg = 1;
+    for (let k = 1; k < maxPts - 1; k++) {
+      const d = (total * k) / (maxPts - 1);
+      while (seg < n - 1 && cum[seg] < d) seg++;
+      const a = pts[seg - 1], b = pts[seg];
+      const span = cum[seg] - cum[seg - 1];
+      const t = span > 0 ? (d - cum[seg - 1]) / span : 0;
+      out.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]);
+    }
+    out.push(pts[n - 1]);
+    return out;
+  }
+
+  // The server caps a conjure at 12 strokes and 300 points in total (SPEC §4). Thin the
+  // strokes to fit rather than let one long drawing be dropped whole.
+  function padPayload() {
+    const n = Math.min(12, padStrokes.length);
+    if (n === 0) return [];
+    const per = Math.max(2, Math.min(PAD_MAX_POINTS, Math.floor(300 / n)));
+    const out = [];
+    for (let i = 0; i < n; i++) out.push(resampleStroke(padStrokes[i], per).map(roundPt));
+    return out;
   }
 
   function redrawPad() {
@@ -1955,9 +2051,11 @@
     padCtx.beginPath();
     for (const st of padStrokes) {
       if (st.length < 1) continue;
-      padCtx.moveTo(st[0][0] * padCanvas.width, st[0][1] * padCanvas.height);
+      const p0 = padToPx(st[0][0], st[0][1]);
+      padCtx.moveTo(p0[0], p0[1]);
       for (let i = 1; i < st.length; i++) {
-        padCtx.lineTo(st[i][0] * padCanvas.width, st[i][1] * padCanvas.height);
+        const p = padToPx(st[i][0], st[i][1]);
+        padCtx.lineTo(p[0], p[1]);
       }
     }
     padCtx.stroke();
@@ -1965,8 +2063,7 @@
 
   function onPadDown(e) {
     clearTimeout(padPauseTimer);
-    const r = padCanvas.getBoundingClientRect();
-    const pt = [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height];
+    const pt = padNorm(e);
     currentStroke = [pt];
     padStrokes.push(currentStroke);
     redrawPad();
@@ -1975,12 +2072,11 @@
 
   function onPadMove(e) {
     if (!currentStroke) return;
-    const r = padCanvas.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width;
-    const y = (e.clientY - r.top) / r.height;
+    const [x, y] = padNorm(e);
     const prev = currentStroke[currentStroke.length - 1];
-    // Thinning: drop points closer than 1.5%
-    if (Math.hypot(x - prev[0], y - prev[1]) >= 0.015 && currentStroke.length < 40) {
+    // Thinning while the finger moves keeps the stored stroke small; the real limit is
+    // applied once on pointer-up (D2), so a long stroke is resampled, never cut short.
+    if (Math.hypot(x - prev[0], y - prev[1]) >= 0.015 && currentStroke.length < 400) {
       currentStroke.push([x, y]);
       redrawPad();
     }
@@ -1988,10 +2084,8 @@
 
   function onPadUp(e) {
     if (currentStroke) {
-      currentStroke = currentStroke.map(([x, y]) => [
-        Math.round(x * 100) / 100,
-        Math.round(y * 100) / 100
-      ]);
+      // D2: a long stroke is thinned to the server's 40 points, keeping both ends.
+      currentStroke = resampleStroke(currentStroke, PAD_MAX_POINTS).map(roundPt);
       padStrokes[padStrokes.length - 1] = currentStroke;
       currentStroke = null;
       redrawPad();
@@ -2003,14 +2097,14 @@
   function clearPad() {
     padStrokes = [];
     currentStroke = null;
+    lastMatches = [];
     clearTimeout(padPauseTimer);
     redrawPad();
     const tilesEl = $('cp-tiles');
     if (tilesEl) tilesEl.innerHTML = '';
     const palEl = $('cp-palette');
     if (palEl) palEl.classList.add('hidden');
-    const statusEl = $('cp-status');
-    if (statusEl) statusEl.textContent = 'Draw a character...';
+    setPadStatus('Draw a character...');
   }
 
   function runPadRecogniser() {
@@ -2024,11 +2118,12 @@
     const palEl = $('cp-palette');
     const statusEl = $('cp-status');
     if (!tilesEl) return;
+    lastMatches = matches;
     tilesEl.innerHTML = '';
 
     const top = matches.slice(0, 3).filter(m => m.score >= 0.15);
     if (top.length === 0) {
-      if (statusEl) statusEl.textContent = 'Not sure. Try again or pick:';
+      if (statusEl) statusEl.textContent = 'Not sure. Write it again, or use it without drawing:';
       if (palEl) palEl.classList.remove('hidden');
       return;
     }
@@ -2045,7 +2140,7 @@
         <div class="sub">${g.py || ''}</div>
         <div class="en">${g.en || ''}</div>
       `;
-      tile.addEventListener('click', () => sendConjure(m.ch));
+      tile.addEventListener('click', () => sendConjure(m.ch, { from: 'match', rank: matches.indexOf(m) }));
       tilesEl.appendChild(tile);
     }
   }
@@ -2056,28 +2151,148 @@
     itemsEl.innerHTML = '';
     for (const item of conjureAllowed) {
       const btn = document.createElement('button');
-      btn.className = 'cp-pal-btn';
+      btn.className = 'cp-pal-btn' + (item.ch === targetChar ? ' selected' : '');
+      btn.dataset.ch = item.ch;
       btn.textContent = `${item.ch} ${item.py || ''}`;
       btn.title = item.en || '';
-      btn.addEventListener('click', () => {
-        targetChar = item.ch;
-        updateGuide();
-        sendConjure(item.ch);
-      });
+      // D1: choosing from the palette never spends ink. It only chooses what to trace;
+      // "Use … without drawing" is the explicit way to conjure it.
+      btn.addEventListener('click', () => setTargetChar(item.ch));
       itemsEl.appendChild(btn);
     }
   }
 
-  function sendConjure(ch) {
-    if (!me) return;
-    me.send({
-      type: 'conjure',
+  function markTargets() {
+    for (const b of document.querySelectorAll('#cp-pal-items .cp-pal-btn')) {
+      b.classList.toggle('selected', b.dataset.ch === targetChar);
+    }
+    for (const b of document.querySelectorAll('.cp-prac-btn')) {
+      b.classList.toggle('selected', b.dataset.ch === targetChar);
+    }
+  }
+
+  function setTargetChar(ch, quiet) {
+    if (!ch) return;
+    targetChar = ch;
+    updateGuide();
+    markTargets();
+    if (quiet) return;
+    const g = (LV.GLYPHS && LV.GLYPHS[ch]) || {};
+    const label = ch + (g.py ? ' ' + g.py : '') + (g.en ? ' ' + g.en : '');
+    setPadStatus(traceMode
+      ? 'Trace ' + label + ' — or use it without drawing.'
+      : 'Write ' + label + ' from memory, or use it without drawing.');
+  }
+
+  // ---------- D8: practice memory, on this phone only (localStorage, never sent) ----------
+  const PRACTICE_KEY = 'tjc-practice-v1';
+  const PRACTICE_MASTER = 3;                     // clean free writes before "mastered"
+  const PRACTICE_DAY = 24 * 60 * 60 * 1000;
+  const PRACTICE_SHOW = 3;
+
+  function loadPractice() {
+    try {
+      const raw = window.localStorage.getItem(PRACTICE_KEY);
+      if (!raw) return {};
+      const data = JSON.parse(raw);
+      if (!data || typeof data !== 'object' || Array.isArray(data)) return {};
+      const out = {};
+      for (const ch of Object.keys(data)) {
+        const rec = data[ch];
+        if (!rec || typeof rec !== 'object') continue;
+        const clean = Math.max(0, Math.min(999, Math.floor(Number(rec.clean) || 0)));
+        const last = Math.max(0, Number(rec.last) || 0);
+        out[ch] = { clean, last };
+      }
+      return out;
+    } catch (e) { return {}; }
+  }
+
+  let practice = loadPractice();
+
+  function savePractice() {
+    try { window.localStorage.setItem(PRACTICE_KEY, JSON.stringify(practice)); } catch (e) {}
+  }
+
+  function notePractice(ch) {
+    if (!ch) return;
+    let rec = practice[ch];
+    if (!rec) rec = practice[ch] = { clean: 0, last: 0 };
+    rec.clean = Math.min(999, rec.clean + 1);
+    rec.last = Date.now();
+    savePractice();
+    renderPractice();
+  }
+
+  // Characters worth writing again: never-practised first, then the stalest. A mastered
+  // character (PRACTICE_MASTER clean free writes) comes back after a few days, the rest
+  // after one.
+  function practiceDue() {
+    const now = Date.now();
+    const rows = [];
+    for (const item of conjureAllowed) {
+      const rec = practice[item.ch];
+      const clean = rec ? rec.clean : 0;
+      const last = rec ? rec.last : 0;
+      const mastered = clean >= PRACTICE_MASTER;
+      const gap = mastered ? 3 * PRACTICE_DAY : PRACTICE_DAY;
+      if (!last || now - last >= gap) rows.push({ item, clean, mastered });
+    }
+    rows.sort((a, b) => (a.mastered - b.mastered) || (a.clean - b.clean));
+    return rows.slice(0, PRACTICE_SHOW);
+  }
+
+  function renderPractice() {
+    const box = $('cp-practice');
+    const itemsEl = $('cp-prac-items');
+    if (!box || !itemsEl) return;
+    const rows = practiceDue();
+    itemsEl.innerHTML = '';
+    if (rows.length === 0) {
+      box.classList.add('hidden');
+      return;
+    }
+    for (const row of rows) {
+      const ch = row.item.ch;
+      const g = (LV.GLYPHS && LV.GLYPHS[ch]) || {};
+      const py = g.py || row.item.py || '';
+      const en = g.en || row.item.en || '';
+      const btn = document.createElement('button');
+      btn.className = 'cp-prac-btn' + (ch === targetChar ? ' selected' : '');
+      btn.dataset.ch = ch;
+      btn.innerHTML = `<b>${ch}</b><span>${py}</span><i>${row.clean}/${PRACTICE_MASTER}</i>`;
+      btn.title = (en ? en + ' — ' : '') + 'written ' + row.clean + ' time(s) on this phone';
+      btn.addEventListener('click', () => setTargetChar(ch));
+      itemsEl.appendChild(btn);
+    }
+    box.classList.remove('hidden');
+  }
+
+  function sendConjure(ch, opts) {
+    if (!me || conjurePending) return;
+    const o = opts || {};
+    const strokes = padPayload();
+    // A pending recogniser run would overwrite the isle's answer (e.g. a refusal reason).
+    clearTimeout(padPauseTimer);
+    // D3: do not close the pad here. It closes only when the isle says yes.
+    conjurePending = {
       ch,
-      strokes: padStrokes.slice(0, 12)
-    });
-    // Close pad immediately
-    const pad = $('conjure-pad');
-    if (pad) pad.classList.add('hidden');
+      from: o.from || 'pick',
+      rank: o.rank || 0,
+      free: !traceMode,
+      strokes: strokes.length
+    };
+    me.send({ type: 'conjure', ch, strokes });
+    setPadStatus('Sending…');
+    updateUseBtn();
+    clearTimeout(conjurePendingTimer);
+    conjurePendingTimer = setTimeout(() => {
+      conjurePending = null;
+      updateUseBtn();
+      // Network fallback only: the server answers every conjure (D5). Keep the pad open
+      // and the drawing rather than pretend it worked.
+      setPadStatus('No answer from the isle. Try again.');
+    }, 4000);
   }
 
   // Board replay of ink strokes above player
@@ -2089,7 +2304,24 @@
     say(msg.id, `${name} conjured ${msg.ch}!`, 2500);
     sfx.pop();
 
-    if (!isBoard) return;
+    if (msg.id === myId) {
+      const done = conjurePending;
+      conjurePending = null;
+      clearTimeout(conjurePendingTimer);
+      updateUseBtn();
+      // D8: a clean free write is one the player wrote from memory (Free mode), that the
+      // recogniser put first, and that the isle accepted.
+      if (done && done.free && done.from === 'match' && done.rank === 0 && done.strokes > 0) {
+        notePractice(msg.ch);
+      }
+      // D3: the isle said yes — only now does the pad close.
+      const pad = $('conjure-pad');
+      if (pad) pad.classList.add('hidden');
+      clearPad();
+    }
+
+    // A pick (no drawing, CJ-08) has nothing to replay.
+    if (!isBoard || !Array.isArray(msg.strokes) || msg.strokes.length === 0) return;
     const overlay = $('board-replay');
     const rcv = $('replay-canvas');
     if (!overlay || !rcv) return;
