@@ -98,7 +98,7 @@ function shape(L, add) {
   list('movers', (v, w) => {
     if (!(v && typeof v === 'object' && isStr(v.id) && Array.isArray(v.rect) && v.rect.length === 4 && v.rect.every(isInt) && isNum(v.from) && isNum(v.to))) return bad(w, 'a mover is { "id", "rect": [x, z, w, d] (whole numbers), "from", "to", then either "kind": "thorn"|"flame" or "when": ["plateId"] }.');
     for (const k of Object.keys(v)) if (!['id', 'kind', 'rect', 'from', 'to', 'when', 'all', 'c', 'speed'].includes(k)) add('unknown-field', w + '.' + k, `Remove "${k}" from this mover.`);
-    if (v.kind !== undefined && !['thorn', 'flame'].includes(v.kind)) bad(w + '.kind', 'kind is "thorn" or "flame" (or leave it out for a lift).');
+    if (v.kind !== undefined && !Object.keys(LV.WALLS).includes(v.kind)) bad(w + '.kind', 'kind is "thorn", "flame" or "shade" (or leave it out for a lift).');
     if (v.when !== undefined && !(Array.isArray(v.when) && v.when.every(isStr))) bad(w + '.when', 'when is an array of plate ids.');
     if (v.speed !== undefined && !(isNum(v.speed) && v.speed >= 0.5 && v.speed <= 6)) bad(w + '.speed', 'speed is 0.5-6.');
     if (v.c !== undefined && ![0, 1, 2, 3].includes(v.c)) bad(w + '.c', 'c is a colour number 0-3.');
@@ -171,7 +171,7 @@ function meaning(L, add) {
     if (m.kind) {
       if (m.when && m.when.length) add('wall-with-plate', w, 'a thorn or flame wall has no "when": only a fire or water stone opens it.');
       if (!(m.from - m.to >= 2.4)) add('low-wall', w, 'a wall stands at least 2.4 above the floor it sinks to, e.g. "from": 3.6, "to": 1.');
-      const need = m.kind === 'thorn' ? 'fire' : 'water';
+      const need = LV.WALLS[m.kind].el;
       if (!(L.stones || []).some(s => LV.GLYPHS[s[0]] && LV.GLYPHS[s[0]].el === need)) add('wall-without-key', w, `this ${m.kind} wall needs a ${need} stone (${Object.keys(LV.GLYPHS).filter(g => LV.GLYPHS[g].el === need).join(' ')}) somewhere in "stones".`);
     } else {
       if (!m.when || !m.when.length) add('lift-without-plate', w, `lift "${m.id}" needs "when": ["plateId"].`);

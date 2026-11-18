@@ -14,7 +14,7 @@ export const DT = 1 / 60;
 const IDS = ['a', 'b'];
 const DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1]];
 // The mechanics that tell one route from another.
-export const MECHANICS = ['bridge', 'burn', 'douse', 'boost', 'leap', 'plate', 'row', 'ground', 'body'];
+export const MECHANICS = ['bridge', 'burn', 'douse', 'dispel', 'boost', 'leap', 'plate', 'row', 'ground', 'body'];
 // How a character was made: on the ground (a stone set beside or on top of another) or in hand (body forge).
 export const FORGING = ['ground', 'body'];
 const r2 = v => Math.round(v * 100) / 100;
@@ -396,7 +396,7 @@ function options(run, ban) {
     if (!p.hold) {
       for (const k of loose) {
         const el = k.g.el;
-        const useful = need.has(k.ch) || (el === 'wood' && !ban.bridge) || walls.some(m => (m.wall === 'thorn' ? 'fire' : 'water') === el && !ban[m.wall === 'thorn' ? 'burn' : 'douse']);
+        const useful = need.has(k.ch) || (LV.FILLS.includes(el) && !ban.bridge) || walls.some(m => LV.WALLS[m.wall].el === el && !ban[LV.WALLS[m.wall].verb]);
         if (!useful) continue;
         const cells = near(nav, k.x, k.z, 0, 0.95, k.y, 1.0);
         if (!reachable(sp[i], cells)) continue;
@@ -440,25 +440,25 @@ function options(run, ban) {
         }
       }
       for (const m of walls) {
-        const mech = m.wall === 'thorn' ? 'burn' : 'douse';
-        if (ban[mech] || el !== (m.wall === 'thorn' ? 'fire' : 'water')) continue;
+        const W = LV.WALLS[m.wall], mech = W.verb;
+        if (ban[mech] || el !== W.el) continue;
         const cells = [];
         for (let cz = Math.floor(m.z0) - 3; cz <= m.z1 + 3; cz++) for (let cx = Math.floor(m.x0) - 3; cx <= m.x1 + 3; cx++) {
           const n = nav.stand(cx, cz);
           if (!n) continue;
           const ddx = cx + 0.5 - Math.max(m.x0, Math.min(m.x1, cx + 0.5)), ddz = cz + 0.5 - Math.max(m.z0, Math.min(m.z1, cz + 0.5));
-          if (Math.hypot(ddx, ddz) < h.g.reach - 0.2 && Math.abs(n.h - m.to) < 2.3) cells.push([cx, cz]);
+          if (Math.hypot(ddx, ddz) < LV.reachOf(h.g) - 0.2 && Math.abs(n.h - m.to) < 2.3) cells.push([cx, cz]);
         }
         if (!reachable(sp[i], cells)) continue;
-        add(`${id} brings ${h.ch} to the ${m.wall === 'thorn' ? 'thorns' : 'flames'} (${m.id})`, r => { walkTo(r, id, cells, ban); r.tick(10); return r.saw(mech); });
+        add(`${id} brings ${h.ch} to the ${W.name} (${m.id})`, r => { walkTo(r, id, cells, ban); r.tick(10); return r.saw(mech); });
       }
-      if (el === 'wood' && !ban.bridge) {
+      if (LV.FILLS.includes(el) && !ban.bridge) {
         const done = new Set();
         const sites = bridgeSites(g, nav, h.g.span).filter(s => sp[i].dist.has(key(...s.cell))).sort((a, b) => sp[i].dist.get(key(...a.cell)) - sp[i].dist.get(key(...b.cell)));
         for (const s of sites) {
           if (done.has(s.run)) continue;
           done.add(s.run);
-          add(`${id} throws ${h.ch} into the gap at ${s.cell} to grow a bridge`, r => {
+          add(`${id} throws ${h.ch} into the gap at ${s.cell} to ${el === 'earth' ? 'raise a mound' : 'grow a bridge'}`, r => {
             if (!walkTo(r, id, [s.cell], ban)) return false;
             face(r, id, s.dir[0], s.dir[1]);
             r.act(id, 'grab');

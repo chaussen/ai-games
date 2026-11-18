@@ -85,7 +85,18 @@
     return c.low + t;
   }
 
-  const api = { LEVELS, GLYPHS, OPS, RECIPES, RECIPE_LIST, fuse, mirrors, form, parse, cellTop };
+  // Walls that stand until the right kind of stone comes near (carried or lying there), and what
+  // that is called: 火 burns thorns, 水 douses flames, a light stone dispels shade.
+  const WALLS = {
+    thorn: { el: 'fire', verb: 'burn', name: 'thorns' },
+    flame: { el: 'water', verb: 'douse', name: 'flames' },
+    shade: { el: 'light', verb: 'dispel', name: 'shade' }
+  };
+  // Stones that fill a gap they fall into: wood grows a bridge, earth raises a mound.
+  const FILLS = ['wood', 'earth'];
+  const reachOf = g => (g && g.reach) || 1.3;
+
+  const api = { LEVELS, GLYPHS, OPS, RECIPES, RECIPE_LIST, WALLS, FILLS, reachOf, fuse, mirrors, form, parse, cellTop };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.WLevels = api;
 })(typeof window !== 'undefined' ? window : globalThis);

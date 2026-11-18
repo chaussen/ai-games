@@ -47,7 +47,8 @@
     water: { a: '#5aa3e0', b: '#1b5aa6', glow: '#a8e0ff' },
     light: { a: '#f2c14e', b: '#b06f06', glow: '#fff2b0' },
     folk: { a: '#8f7bb0', b: '#3a2c52', glow: '#e6d0ff' },
-    dusk: { a: '#5b4a8a', b: '#2a1f4a', glow: '#b9a6ff' }
+    dusk: { a: '#5b4a8a', b: '#2a1f4a', glow: '#b9a6ff' },
+    earth: { a: '#c08a4e', b: '#7a4a22', glow: '#ffd29a' }
   };
   // ---------- the positional forge (ROADMAP F3.2) ----------
   // Labels name the placement, never the result (P9).
@@ -411,7 +412,7 @@
         g.position.set(mx + mw / 2, m.to, mz + md / 2);
         const body = shade(new THREE.Mesh(new THREE.BoxGeometry(mw - 0.02, 9, md - 0.02), lam(pal._a.clone().lerp(pal._b, 0.5))));
         body.position.y = -4.5;
-        const scorch = new THREE.Mesh(new THREE.PlaneGeometry(mw - 0.1, md - 0.1), new THREE.MeshBasicMaterial({ color: m.kind === 'thorn' ? '#5d4a66' : '#6a7fa0', transparent: true, opacity: 0.35 }));
+        const scorch = new THREE.Mesh(new THREE.PlaneGeometry(mw - 0.1, md - 0.1), new THREE.MeshBasicMaterial({ color: m.kind === 'thorn' ? '#5d4a66' : m.kind === 'shade' ? '#3a3350' : '#6a7fa0', transparent: true, opacity: 0.35 }));
         scorch.rotation.x = -Math.PI / 2; scorch.position.y = 0.008;
         const deco = new THREE.Group();
         const flames = [];
@@ -440,6 +441,21 @@
             }
             if (k % 7 === 0) { const br = new THREE.Mesh(new THREE.SphereGeometry(0.05, 8, 6), berry); br.position.copy(sp.position).addScaledVector(dir, 0.1); deco.add(br); }
           }
+        } else if (m.kind === 'shade') {
+          // shade: a wall of ink cloud that light breaks up
+          const ink = new THREE.MeshLambertMaterial({ color: '#2a2440', transparent: true, opacity: 0.86, flatShading: true });
+          const ink2 = new THREE.MeshLambertMaterial({ color: '#433a66', transparent: true, opacity: 0.7, flatShading: true });
+          const n = Math.round(10 * mw * md + 6);
+          for (let k = 0; k < n; k++) {
+            const r = 0.32 + rnd(k, 1) * 0.3;
+            const puffM = new THREE.Mesh(new THREE.IcosahedronGeometry(r, 1), k % 3 ? ink : ink2);
+            puffM.position.set((rnd(k, 3) - 0.5) * (mw - 0.35), r + rnd(k, 2) * (H - r * 1.6), (rnd(k, 4) - 0.5) * (md - 0.35));
+            deco.add(puffM);
+            flames.push({ m: puffM, h: 0, seed: rnd(k, 5) * 9, cloud: true, y0: puffM.position.y });
+          }
+          const gl = sprite(TEX.glow, '#6a5aa0', 0.35, false);
+          gl.scale.set(Math.max(mw, md) * 2.4, H * 2.4, 1); gl.position.y = H * 0.5;
+          deco.add(gl);
         } else {
           const cols = ['#ff5a2a', '#ff8a2e', '#ffc94a', '#fff0a0'];
           const n = Math.round(9 * mw * md);
@@ -1041,6 +1057,7 @@
 
   // a log bridge that grew out of a 木 stone
   function makeBridge(b) {
+    if (glyph(b[5]).el === 'earth') return makeMound(b);
     const x0 = b[0], z0 = b[1], w = b[2], d = b[3];
     const g = new THREE.Group();
     g.position.set(x0 + w / 2, b[4], z0 + d / 2);
@@ -1068,6 +1085,40 @@
       const lf = shade(new THREE.Mesh(new THREE.IcosahedronGeometry(0.17 + hash(k, z0, 42) * 0.1, 1), k % 3 ? leafA : leafB));
       lf.position.set(alongX ? o : side, 0.12, alongX ? side : o);
       g.add(lf);
+    }
+    S.root.add(g);
+    return { g, y: b[4] };
+  }
+  // a mound of earth that rose out of the water where 土 or 田 fell in; 田 comes up ploughed
+  function makeMound(b) {
+    const x0 = b[0], z0 = b[1], w = b[2], d = b[3];
+    const g = new THREE.Group();
+    g.position.set(x0 + w / 2, b[4], z0 + d / 2);
+    const body = shade(new THREE.Mesh(new THREE.BoxGeometry(w - 0.04, 3.2, d - 0.04), lam('#a8743e', { flatShading: true })));
+    body.position.y = -1.6;
+    const top = shade(new THREE.Mesh(new THREE.BoxGeometry(w - 0.02, 0.08, d - 0.02), lam(b[5] === '田' ? '#8a5a2e' : '#c99a5c')));
+    top.position.y = -0.04;
+    g.add(body, top);
+    if (b[5] === '田') {
+      // furrows and green shoots: a field
+      const alongX = w >= d, len = alongX ? w : d, shoot = lam(S.pal.leaf, { flatShading: true });
+      for (const s of [-0.25, 0, 0.25]) {
+        const row = new THREE.Mesh(new THREE.BoxGeometry(alongX ? len - 0.2 : 0.07, 0.05, alongX ? 0.07 : len - 0.2), lam('#5e3a1c'));
+        row.position.set(alongX ? 0 : s, 0.02, alongX ? s : 0);
+        g.add(row);
+        for (let k = 0; k < len * 3; k++) {
+          const sh = shade(new THREE.Mesh(new THREE.ConeGeometry(0.05, 0.22, 4), shoot), true, false);
+          const o = -len / 2 + 0.2 + k * (len - 0.4) / Math.max(1, len * 3 - 1);
+          sh.position.set(alongX ? o : s + 0.08, 0.11, alongX ? s + 0.08 : o);
+          g.add(sh);
+        }
+      }
+    } else {
+      for (let k = 0; k < 5; k++) {
+        const pb = shade(new THREE.Mesh(new THREE.DodecahedronGeometry(0.07 + hash(k, x0, 44) * 0.06, 0), lam('#8b6a4a', { flatShading: true })), true, false);
+        pb.position.set((hash(k, z0, 45) - 0.5) * (w - 0.3), 0.04, (hash(k, x0, 46) - 0.5) * (d - 0.3));
+        g.add(pb);
+      }
     }
     S.root.add(g);
     return { g, y: b[4] };
@@ -1143,6 +1194,7 @@
     bonk: () => tone(190, 0.1, 'square', 0.04, 120),
     pop: () => tone(300, 0.12, 'sine', 0.09, 620),
     win: () => [523, 659, 784, 1047, 1319].forEach((f, k) => tone(f, 0.28, 'triangle', 0.1, null, k * 0.11)),
+    dawn: () => [392, 523, 659, 784].forEach((f, k) => tone(f, 0.35, 'sine', 0.07, null, k * 0.06)),
     dusk: () => { tone(330, 0.9, 'sine', 0.07, 196); tone(247, 1.1, 'triangle', 0.05, 147, 0.2); },
     fuse: () => { tone(392, 0.5, 'sine', 0.09); tone(587, 0.5, 'sine', 0.08, null, 0.06); tone(880, 0.7, 'triangle', 0.08, null, 0.14); },
     grow: () => [262, 330, 392, 523].forEach((f, k) => tone(f, 0.22, 'triangle', 0.08, f * 1.5, k * 0.07)),
@@ -1405,28 +1457,31 @@
         break;
       }
       case 'bridge': {
-        const leaf = S ? S.pal.leaf : '#62cdb0';
+        const leaf = glyph(e.ch).el === 'earth' ? '#a8743e' : S ? S.pal.leaf : '#62cdb0';
         burst(e.x, e.y + 0.3, e.z, 44, leaf, 4.5, false);
         burst(e.x, e.y + 0.3, e.z, 18, '#8dffd0', 3, true);
         glyphBurst(e.ch, e.x, e.y + 1.4, e.z, '#8dffd0');
-        note('char', 'grows a bridge across the gap', { ch: e.ch });
+        note('char', glyph(e.ch).el === 'earth' ? 'raises a mound of earth in the water' : 'grows a bridge across the gap', { ch: e.ch });
         sfx.grow();
         if (isBoard || e.by === myId) speak(e.ch);
         break;
       }
-      case 'burn': case 'douse': {
+      case 'burn': case 'douse': case 'dispel': {
+        const lite = e.t === 'dispel';
         const mv = S && S.movers.find((m, j) => m.wall && (S.L.movers[j] || {}).id === e.id);
         if (mv) {
           const w = mv.wall, fire = e.t === 'burn';
           for (let k = 0; k < 60; k++) {
             const x = w.x + (Math.random() - 0.5) * w.w, z = w.z + (Math.random() - 0.5) * w.d, y = w.to + Math.random() * (w.from - w.to);
-            if (fire) puff(x, y, z, { tex: TEX.glow, color: k % 2 ? '#ff8a2e' : '#ffd36e', add: true, life: 0.7 + Math.random() * 0.9, vx: (Math.random() - 0.5) * 1.5, vy: 1.5 + Math.random() * 3, vz: (Math.random() - 0.5) * 1.5, s0: 0.3, s1: 0.03 });
+            if (lite) puff(x, y, z, { tex: k % 3 ? TEX.cloud : TEX.glow, color: k % 3 ? '#4a4070' : '#fff2b0', add: !(k % 3), life: 0.8 + Math.random() * 0.9, vx: (x - w.x) * 2.2, vy: 0.6 + Math.random() * 1.5, vz: (z - w.z) * 2.2, s0: 0.6, s1: 1.8, a: 0.75 });
+            else if (fire) puff(x, y, z, { tex: TEX.glow, color: k % 2 ? '#ff8a2e' : '#ffd36e', add: true, life: 0.7 + Math.random() * 0.9, vx: (Math.random() - 0.5) * 1.5, vy: 1.5 + Math.random() * 3, vz: (Math.random() - 0.5) * 1.5, s0: 0.3, s1: 0.03 });
             else puff(x, y, z, { tex: TEX.cloud, color: '#ffffff', life: 0.9 + Math.random() * 0.9, vx: (Math.random() - 0.5) * 1.2, vy: 1 + Math.random() * 2, vz: (Math.random() - 0.5) * 1.2, s0: 0.5, s1: 1.6, a: 0.7 });
           }
-          glyphBurst(e.ch, w.x, w.from + 0.6, w.z, fire ? '#ffb066' : '#a8e0ff');
+          glyphBurst(e.ch, w.x, w.from + 0.6, w.z, fire ? '#ffb066' : lite ? '#fff2b0' : '#a8e0ff');
+          if (lite) burst(w.x, w.to + 1.2, w.z, 40, '#fff2b0', 4.5, true);
         }
-        note('char', e.t === 'burn' ? 'burns the thorns away' : 'puts the flames out', { ch: e.ch });
-        (e.t === 'burn' ? sfx.burn : sfx.douse)();
+        note('char', e.t === 'burn' ? 'burns the thorns away' : lite ? 'lights up the shade, and it is gone' : 'puts the flames out', { ch: e.ch });
+        (e.t === 'burn' ? sfx.burn : lite ? sfx.dawn : sfx.douse)();
         if (isBoard || e.by === myId) speak(e.ch);
         break;
       }
@@ -1742,6 +1797,14 @@
         w.deco.visible = f > 0.02;
         w.deco.scale.set(0.6 + f * 0.4, Math.max(0.01, f), 0.6 + f * 0.4);
         for (const fl of w.flames) {
+          if (fl.cloud) {
+            // shade churns slowly
+            const b = 1 + Math.sin(t * 1.7 + fl.seed) * 0.08;
+            fl.m.scale.setScalar(b);
+            fl.m.position.y = fl.y0 + Math.sin(t * 1.1 + fl.seed) * 0.08;
+            fl.m.rotation.y = t * 0.3 + fl.seed;
+            continue;
+          }
           const a = 0.8 + Math.sin(t * 9 + fl.seed) * 0.16 + Math.sin(t * 15.3 + fl.seed * 2) * 0.1;
           fl.m.scale.set(1.05 - (a - 0.8) * 0.5, a, 1.05 - (a - 0.8) * 0.5);
           fl.m.position.y = fl.h * a / 2;

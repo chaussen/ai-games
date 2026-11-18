@@ -970,7 +970,7 @@ class Game {
     if (!k.grounded) {
       k.flight += dt;
       // 木 does what it means: dropped into a gap, it grows across it
-      if (k.g.el === 'wood' && k.vy < 0 && this.phase === 'play') {
+      if (LV.FILLS.includes(k.g.el) && k.vy < 0 && this.phase === 'play') {
         const run = this.gapRun(Math.floor(k.x), Math.floor(k.z), k.g.span);
         if (run && k.y < run.h - 0.45) { this.growBridge(k, run); return; }
       }
@@ -1187,14 +1187,14 @@ class Game {
   stepWalls() {
     for (const m of this.movers) {
       if (!m.wall || m.done) continue;
-      const need = m.wall === 'thorn' ? 'fire' : 'water';
+      const W = LV.WALLS[m.wall], need = W.el;
       for (const k of this.stones) {
         if (k.state === 'gone' || k.g.el !== need) continue;
         const dx = k.x - clamp(k.x, m.x0, m.x1), dz = k.z - clamp(k.z, m.z0, m.z1);
         const feet = k.holder ? k.holder.y : k.y;
-        if (Math.hypot(dx, dz) < k.g.reach && Math.abs(feet - m.to) < 2.5) {
+        if (Math.hypot(dx, dz) < LV.reachOf(k.g) && Math.abs(feet - m.to) < 2.5) {
           m.done = true;
-          this.ev(m.wall === 'thorn' ? 'burn' : 'douse', { id: m.id, ch: k.ch, by: k.holder ? k.holder.id : null });
+          this.ev(W.verb, { id: m.id, ch: k.ch, by: k.holder ? k.holder.id : null });
           break;
         }
       }

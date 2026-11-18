@@ -415,6 +415,34 @@ group('Body (F4.1, F4.2)');
   }
 }
 
+group('Elements: light dispels shade, earth fills gaps');
+{
+  const L = yard({ map: ['1111.11..111', '1111.11..111', '1111.11..111', '1111.11..111'], movers: [{ id: 'veil', kind: 'shade', rect: [4, 0, 1, 2], from: 3.6, to: 1 }] });
+  L.map = L.map.map((r, z) => z < 2 ? r : r.slice(0, 4) + '1' + r.slice(5));
+  const g = new Game([L]);
+  const sun = g.addStone('日', 2.5, 1, 2.5, null);
+  g.drainEvents();
+  settle(g, 10);
+  check(!g.drainEvents().some(e => e.t === 'dispel'), 'a light stone 2 cells away does not dispel the shade (reach 1.3)');
+  sun.x = 3.5; sun.z = 0.9; settle(g, 10);
+  const ev = g.drainEvents();
+  check(ev.some(e => e.t === 'dispel' && e.ch === '日') && g.movers.find(m => m.id === 'veil').done, '日 next to a shade wall dispels it (event dispel)');
+  check(LV.WALLS.shade.el === 'light' && LV.reachOf(LV.GLYPHS['明']) === 2.6 && LV.reachOf(LV.GLYPHS['日']) === 1.3 && LV.GLYPHS['土'].span === 2 && LV.GLYPHS['田'].span === 3, 'light stones reach 1.3; 明 杲 昌 reach 2.6; 土 fills 2 cells, 田 3');
+  // earth: 土 dropped into a 1-cell gap raises a mound; 田 fills a 2-cell gap
+  for (const [ch, x, len] of [['土', 7.5, 2], ['田', 7.5, 2]]) {
+    const g2 = new Game([yard({ map: ['1111.11..111', '1111.11..111', '1111.11..111'] })]);
+    const k = g2.addStone(ch, x, 2.5, 1.5, null); k.grounded = false; k.vy = -1; g2.phase = 'play';
+    g2.drainEvents();
+    settle(g2, 60);
+    const b = g2.drainEvents().find(e => e.t === 'bridge');
+    const m = g2.bridges[0];
+    check(b && b.ch === ch && m && (m.x1 - m.x0) === len && k.state === 'gone', `${ch} dropped into a ${len}-cell gap raises a mound of earth across it`);
+  }
+  const lintOf = async L2 => (await lint(L2)).map(p => p.code);
+  const bad = JSON.parse(JSON.stringify(load('two-trees'))); bad.movers = [{ id: 'veil', kind: 'shade', rect: [5, 1, 1, 3], from: 3.6, to: 1 }];
+  check((await lintOf(bad)).includes('wall-without-key'), 'lint: a shade wall on an isle with no light stone is rejected');
+}
+
 group('Determinism');
 {
   // The same placements give bit-identical snapshots: snap, forge, pop, rescue and split included.

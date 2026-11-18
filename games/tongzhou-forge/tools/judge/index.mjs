@@ -8,6 +8,7 @@ const WAY_ROUND = {
   bridge: 'a gap of 1-5 cells that a friend can be boosted over or the boat can reach round',
   burn: 'another way past the thorns, e.g. water the boat can row along to the far side',
   douse: 'another way past the flames, e.g. water the boat can row along to the far side',
+  dispel: 'another way past the shade, e.g. water the boat can row along to the far side',
   boost: 'a 木 stone so the gap can be bridged instead',
   leap: 'a 木 stone so the gap can be bridged instead',
   plate: 'steps of height 1 beside the lift',

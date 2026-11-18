@@ -23,9 +23,10 @@ try {
   const watch = await connect(PORT, { board: true });
   const mia = new Bot(await connect(PORT, { name: 'Mia', playerId: 'p-t08-mia' }));
   const leo = new Bot(await connect(PORT, { name: 'Leo', playerId: 'p-t08-leo' }));
-  watch.send({ type: 'admin', cmd: 'goto', i: 4 });
+  const STAGE = JSON.parse(fs.readFileSync('content/order.json', 'utf8')).indexOf('on-my-shoulders');
+  watch.send({ type: 'admin', cmd: 'goto', i: STAGE });
   await sleep(3600);
-  check(watch.snap.st === 4 && watch.snap.k.filter(k => k[1] === '火').length === 2, 'on-my-shoulders is loaded (two 火)');
+  check(watch.snap.st === STAGE && watch.snap.k.filter(k => k[1] === '火').length === 2, 'on-my-shoulders is loaded (two 火)');
   const fires = watch.snap.k.filter(k => k[1] === '火').sort((a, b) => a[5] - b[5]);
   await mia.go(fires[0][3] + 0.7, fires[0][5]); await mia.grab();
   await leo.go(fires[1][3] + 0.7, fires[1][5]); await leo.grab();

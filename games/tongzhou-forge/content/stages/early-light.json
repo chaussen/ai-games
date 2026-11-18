@@ -1,0 +1,32 @@
+{
+  "id": "early-light",
+  "name": "Early Light",
+  "cn": "早",
+  "par": 80,
+  "pal": "night",
+  "dawn": "citrus",
+  "want": "早",
+  "hint": "A wall of shade blocks the way, and shade fears any light. The pavilion wants 早, early: the sun 日 rising over a cross 十. Set 日 on top.",
+  "map": [
+    "...............",
+    "111.11111111111",
+    "111.11111111111",
+    "111.11111111111",
+    "111......1111..",
+    "111......1111..",
+    "111......1111..",
+    "11111..11111...",
+    "11111..11111...",
+    "..............."
+  ],
+  "spawn": [12.5,2.5],
+  "beacon": [1.5,6.5],
+  "boat": {"rect":[15,1,3,3],"from":[0,11],"to":[0,-15]},
+  "movers": [
+    {"id":"veil","kind":"shade","rect":[3,1,1,3],"from":3.6,"to":1,"speed":2.4}
+  ],
+  "stones": [["日",10.5,1.5],["十",9.5,3.5]],
+  "gems": [[3.5,5.5,2.4],[6.0,7.5,2.4],[13.5,1.5]],
+  "trees": [[0.5,1.5],[11.5,8.5],[4.5,8.5]],
+  "regrow": true
+}

@@ -63,6 +63,8 @@ Existing elements: **wood** (bridges), **fire** (burns thorns), **water** (douse
 | wood | 果 李 杏 集 | Fruit and bird stones are wood too: they bridge (short span) | 6 |
 | water | 江 | A long-reach douse; thrown into a gap, it becomes a stream you can't cross (an anti-bridge: wrong-but-real with teeth) | 6 |
 | fire | 赤 灶 | Fire with reach | 6 |
+| **light** (2026-11-18) | 日 月 明 昌 朋 好 杲 早 | **Dispels shade**: a new wall kind (`"kind": "shade"`, an ink cloud) clears when a light stone comes within its reach (1.3; 明 杲 昌 2.6), carried or lying. Mechanic `dispel` | built |
+| **earth** (new, 2026-11-18) | 土 (span 2), 田 (span 3) | Thrown into water, it raises a mound across a gap (田 comes up as a ploughed field). Same rule as wood's bridge (`LV.FILLS`), mechanic `bridge` | built |
 | **frame** (new) | 囗 门 | Hollow; things go inside. 门 thrown at a wall stands up as a gate you walk through | 7 |
 | **bind** (new) | 困 囚 | Thrown at a moving thing (a lift, the boat), it holds it still while the stone lasts | 7 |
 | **mind** (new) | 忘 忙 念 思 | 忙 (busy): the crew moves faster for a while. 忘 (forget): the isle forgets one closed wall or gate. 念 / 思: a ghost shows where a used-up stone was | 6+ |
