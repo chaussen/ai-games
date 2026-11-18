@@ -1,0 +1,5 @@
+# Lab bench data: 1 MB, rebuilt by tools/strokes.mjs (see lab/bench.mjs)
+lab/bench-strokes.json
+# Handwriting samples are people's data: commit one only with that person's agreement
+# (SPEC.md §8), using git add -f.
+lab/samples/*.json

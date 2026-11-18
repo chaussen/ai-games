@@ -23,3 +23,41 @@ Author: Lead Model (S)
 
 3. **Pick Palette (Fallback)**:
    - Always available. If handwriting recognition fails the gate on real devices, the pad presents the allowed characters as big brush tiles with pinyin and meaning.
+
+## 2. B4 order-tolerant matcher (2026-11-18)
+
+`vendor/recogniser.js` now builds templates from Make Me a Hanzi medians (`vendor/strokes.json`,
+built by `tools/strokes.mjs`; licences in `vendor/MMAH-LICENSE.txt`, `ARPHICPL.TXT`, `MMAH-LGPL.txt`).
+The 12 hand-made templates remain only as a fallback. Interface unchanged (SPEC §7).
+
+Matching: whole drawing normalised to a square box; each stroke resampled to 12 points; drawn and
+template strokes paired by optimal assignment (Hungarian), so order does not matter; a reversed
+stroke costs 0.04; an unmatched stroke costs 0.10 + 0.10 × its length; textbook order is worth at
+most 0.03. Constants at the top of the file.
+
+### Synthetic bench: NOT A GATE RESULT
+
+`node lab/bench.mjs --per 10`: 22 game glyphs drawn from MMAH medians with child-like mistakes,
+distractors from `lab/common.txt`. Cells are top-1 % / top-3 %.
+
+| candidates | clean | order | reverse | join | slant | shaky | all | ms/match (dev PC) |
+|---|---|---|---|---|---|---|---|---|
+| 30  | 100/100 | 100/100 | 100/100 | 95/100 | 100/100 | 100/100 | 81/96 | 0.42 |
+| 100 | 100/100 | 100/100 | 100/100 | 94/100 | 100/100 | 100/100 | 81/91 | 1.28 |
+| 300 | 100/100 | 100/100 | 100/100 | 89/98  | 99/100  | 100/100 | 73/84 | 4.23 |
+
+Reading: stroke order, reversed strokes and slant no longer matter. Joined strokes and all mistakes
+at once are where it degrades, and that worsens with set size. The drawings come from the same
+data as the templates, so real children will do worse. Speed is not the problem (a phone at 10×
+slower is still ~40 ms at 300).
+
+### Real samples: not measured yet
+
+Waiting on card B2. When samples exist, run
+`node lab/accuracy.mjs --candidates 30`, `… 100`, `… 300` and fill in:
+
+| candidates | top-1 | top-3 | samples / people |
+|---|---|---|---|
+| 30  | — | — | — |
+| 100 | — | — | — |
+| 300 | — | — | — |

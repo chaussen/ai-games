@@ -45,6 +45,8 @@ async def main():
             await ctx.add_init_script(SPY)
             page = await ctx.new_page()
             page.on("pageerror", lambda e: errors.append(str(e)))
+            stroke_data = []
+            page.on("response", lambda r: stroke_data.append(r.status) if r.url.endswith("/vendor/strokes.json") else None)
             page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
             await page.goto(BASE + "/?name=Tess", wait_until="domcontentloaded")
             await page.wait_for_timeout(2500)
@@ -121,6 +123,9 @@ async def main():
             await page.wait_for_timeout(700)
             ins = await page.evaluate("window.__in")
             check(ins[-1]['type'] == 'conjured' and ins[-1]['strokes'] == [], f'empty pick answered: {ins[-1]["type"]} {ins[-1].get("why","")}')
+            check(stroke_data == [200], f'B4: phone loaded vendor/strokes.json once ({stroke_data})')
+            srcs = await page.evaluate("['木','人','水'].map(c => (window.WRecog.template(c) || {}).src)")
+            check(srcs == ['mmah'] * 3, f'B4: recogniser uses MMAH templates for the stage set ({srcs})')
             check(not errors, 'no console errors: ' + '; '.join(errors[:3]))
             await b.close()
     finally:

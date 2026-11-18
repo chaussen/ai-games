@@ -4,6 +4,11 @@
 //                                      print a gate result without them (exit code 2)
 //   node lab/accuracy.mjs --synthetic  jittered copies of the templates, for a quick
 //                                      smoke test of the matcher (never a gate result)
+//   node lab/accuracy.mjs --candidates 100
+//                                      real samples against a bigger set: the samples'
+//                                      characters padded with the game glyphs and lab/common.txt
+//                                      (needs lab/bench-strokes.json, see lab/bench.mjs). Run at
+//                                      30, 100 and 300 for card B4 and record them in lab/NOTES.md.
 //
 // Why the refusal: with an empty lab/samples/ this file used to report 100% by testing
 // the templates against jittered copies of themselves. That number said nothing about
@@ -80,6 +85,32 @@ if (SYNTHETIC) {
     process.exit(2);
   }
   samples = realSamples;
+}
+
+// Templates: Make Me a Hanzi medians (vendor/strokes.json, or the lab bench file for --candidates),
+// the same ones the phone pad loads. The synthetic mode keeps the hand-made set it is built from.
+const ci = process.argv.indexOf('--candidates');
+const CANDIDATES = ci >= 0 ? Number(process.argv[ci + 1]) : 0;
+if (!SYNTHETIC) {
+  const set = [];
+  for (const s of samples) if (!set.includes(s.ch)) set.push(s.ch);
+  if (CANDIDATES > 0) {
+    const bench = path.join(__dirname, 'bench-strokes.json');
+    if (!fs.existsSync(bench)) {
+      console.log('--candidates needs lab/bench-strokes.json (see the top of lab/bench.mjs)');
+      process.exit(2);
+    }
+    const data = JSON.parse(fs.readFileSync(bench, 'utf8')).chars;
+    WRecog.setData(data);
+    const glyphs = Object.keys(JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'glyphs.json'), 'utf8')).glyphs);
+    const common = fs.readFileSync(path.join(__dirname, 'common.txt'), 'utf8').split('\n').filter(l => !l.startsWith('#')).join('');
+    for (const ch of [...glyphs, ...Array.from(common)]) {
+      if (set.length >= CANDIDATES) break;
+      if (data[ch] && !set.includes(ch)) set.push(ch);
+    }
+  }
+  await WRecog.load(set);
+  console.log(`Candidate set: ${set.length} characters`);
 }
 
 console.log(`Running accuracy test across ${samples.length} ${SYNTHETIC ? 'synthetic' : 'real'} sample drawings...`);

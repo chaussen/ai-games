@@ -16,7 +16,7 @@ code, **the code and the tests win**: fix this page, do not "fix" the code to ma
 |---|---|---|---|
 | 0 | Conjure base: draw a character, a stone appears (phases 0–3 of `TASKS.md`) | `PLAN.md`, `SPEC.md` | **Done** 2026-11-17 (see `RETROSPECTIVE.md`). Recogniser accuracy **not proven** (see B). |
 | A | Idea 1: stones are used up, shared crew ink | `CONSUMABLE.md` | **Done** 2026-11-18. Tests green. Not playtested. |
-| B | Honest recognition: real samples, stroke-data templates, order-tolerant matcher | `OPEN-SET.md` §2 | B1 **done** 2026-11-18. B2 (human samples) open; B3/B4 next. Blocks C. |
+| B | Honest recognition: real samples, stroke-data templates, order-tolerant matcher | `OPEN-SET.md` §2 | B1, B3, B4 **done** 2026-11-18 (B4 synthetic only, `lab/NOTES.md` §2). **Waiting on B2 real samples** for the gate. Blocks C. |
 | C | Idea 2: open character set, radical decides the element, font gap | `OPEN-SET.md` §3–5 | **Not started.** Needs B. |
 | D | Phone pad fixes D1–D6 and the hint ladder | `OPEN-SET.md` §6–7 | D1–D6, D8 **done** 2026-11-18 (`tools/pad-check.py`). D7 waits for C. |
 | E | Idea 3: function words as seals (不 吗 和 first) | `PARTICLES.md` | **Design only.** Needs John's review. |
@@ -56,6 +56,16 @@ commit each finished card with its tests green, and update sections 1–3 of thi
    or oversize strokes get `conjureNo {why:'strokes'}` instead of silence. Board skips the replay for
    a pick. Review fix: sending a conjure cancels the pending recogniser run, which was overwriting
    the refusal reason. Headless acceptance checks for D1–D5 in `tools/pad-check.py`.
+7. **B3:** `tools/strokes.mjs` vendors MMAH medians, outlines, radical, pinyin, meaning into
+   `vendor/strokes.json` (now the 22 glyphs + 不 吗 和, 45 KB). Licences checked against upstream:
+   graphics = Arphic PL (shipped unaltered as `vendor/ARPHICPL.TXT`, notice of change inside the
+   JSON), dictionary = LGPL 3 (`vendor/MMAH-LGPL.txt`); overview `vendor/MMAH-LICENSE.txt`.
+   Licence sources kept in `tools/mmah-licence/`.
+8. **B4:** order-tolerant matcher (Hungarian stroke pairing) on MMAH templates; phone loads
+   `vendor/strokes.json` next to the script. Synthetic bench `lab/bench.mjs`: order / reversal /
+   slant ≈100% at 300 candidates; joined strokes 89/98; all mistakes at once 73/84; 4 ms per match.
+   `accuracy.mjs` now loads the same templates and takes `--candidates N` for the real measurement.
+   **Not a gate result**: the gate needs B2 samples.
 
 ---
 
@@ -89,11 +99,11 @@ and say so; do not widen the card yourself.
 
 **B2 (human). Collect samples.** At least 3 people, 5 drawings per character, on phones, with `lab/draw.html`. Save to `lab/samples/<ch>.<who>.json`. Only with each person's agreement (`SPEC.md` §8). Not committed unless they agree.
 
-**B3 (S). `tools/strokes.mjs`: vendor stroke data for a character list.**
+**B3 (S). DONE. `tools/strokes.mjs`: vendor stroke data for a character list.**
 - Reads `../../build-pipeline/data/graphics.txt` and `dictionary.txt` **at build time only**, writes `vendor/strokes.json` `{ch: {m: medians, s: outlines, rad, py, en}}` for the list given, and `vendor/MMAH-LICENSE.txt`. Check the licence text before shipping (graphics: Arphic Public License).
 - Done when: `node tools/strokes.mjs 木 火 水` writes three entries; runtime code never reads outside the game folder.
 
-**B4 (S). Order-tolerant matcher** in `vendor/recogniser.js`, templates from `vendor/strokes.json`. Same `WRecog.load / match` interface (`SPEC.md` §7). Measure on B2 samples at 30 / 100 / 300 candidates; write numbers into `lab/NOTES.md`. Gate in `PLAN.md` §5.
+**B4 (S). DONE except the real measurement (needs B2). Order-tolerant matcher** in `vendor/recogniser.js`, templates from `vendor/strokes.json`. Same `WRecog.load / match` interface (`SPEC.md` §7). Measure on B2 samples at 30 / 100 / 300 candidates; write numbers into `lab/NOTES.md`. Gate in `PLAN.md` §5.
 
 ### Stream C — open set (S), after B4 passes
 
@@ -132,8 +142,9 @@ Then tune only the numbers in `CONJURE` in `sim.js` and write the reason in sect
 
 | Gap | Effect | Stream |
 |---|---|---|
-| Recogniser accuracy unmeasured on real writing | The whole feature may not work for children | B |
-| Recogniser templates exist for only 12 characters | Any other character can only be picked from the palette | B, C |
+| Recogniser accuracy unmeasured on real writing (synthetic bench only) | The whole feature may not work for children | B2 |
+| Matcher weakest on joined strokes and combined mistakes at 300 candidates (73% top-1 synthetic) | Open set may need to stay near 100 | B2, C |
+| `vendor/strokes.json` holds 25 characters | Re-run `tools/strokes.mjs` with the open-set list in C | C |
 | Brush font has 231 glyphs | New characters render in a fallback font or not at all | C3 |
 | Ink regen does not scale with crew size | Big crews may starve or never feel scarcity | F |
 | No playtest of used-up stones | The "aha" on Two Trees (bridge needs a conjured 木) is untested | F |
@@ -148,7 +159,9 @@ node sim-test.mjs      # ALL SIM CHECKS PASSED
 node smoke-test.mjs    # ALL SMOKE CHECKS PASSED   (boots the server on 3456)
 node judge-test.mjs    # ALL JUDGE CHECKS PASSED
 node conjure-test.mjs  # ALL CONJURE CHECKS PASSED (boots the server on 3457)
-python3 tools/pad-check.py  # ALL PAD CHECKS PASSED (server on 3481 + headless chromium; D1–D5)
+python3 tools/pad-check.py  # ALL PAD CHECKS PASSED (server on 3481 + headless chromium; D1–D5, B4 load)
+node lab/accuracy.mjs      # exit 2 until real samples exist (B2); then the gate
+node lab/bench.mjs         # synthetic matcher bench, needs lab/bench-strokes.json (not a gate)
 for f in content/stages/*.json; do node tools/judge.mjs $f | head -1; done   # three PASS lines
 ```
 
