@@ -373,7 +373,7 @@ solo(2, 'Lean on a Tree', (g, d) => {
   check(LV.fuse('⿱', '林', '火') === '焚' && LV.fuse('⿱', '火', '林') === null, '焚 is 林 on top of 火, not the other way');
   let threw = false; try { LV.fuse('日', '月'); } catch (e) { threw = true; }
   check(threw, 'the old two-argument fuse is gone: calling it throws');
-  check(LV.mirrors('月', '日').length === 1 && LV.mirrors('日', '日')[0][3] === '昌' && LV.mirrors('日', '木').length === 0, 'mirrors() finds a pair in any order and op');
+  check(LV.mirrors('月', '日').length === 1 && LV.mirrors('日', '日')[0][3] === '昌' && LV.mirrors('日', '木').map(r => r[3]).sort().join('') === '杲杳' && LV.mirrors('女', '木').length === 0, 'mirrors() finds a pair in any order and op (日 木: 杲 and 杳)');
   check(LV.form('水', '⿰', 1) === '氵' && LV.form('水', '⿰', 2) === '水' && LV.form('水', '⿱', 1) === '水' && LV.form('木', '⿰', 1) === '木', 'variant forms: 水 draws as 氵 only on the left of ⿰');
   check(LV.LEVELS.every(L => LV.GLYPHS[L.want]), 'every shrine waits for a known character');
   check(checkRecipes(LV.RECIPE_LIST).length === 0, 'every recipe matches its MMAH dictionary IDS (variants and aliases normalised)');

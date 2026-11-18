@@ -32,6 +32,9 @@ const ROW_ACC = 5, ROW_MAX = 2.6, ROW_DRAG = 2, RAIL = 0.14, SEA = 4;
 const BOOST_V = 9, BOOST_SPEED = 7.2, FLING = 0.55, BOOST_CD = 0.8, BOOST_R = 1.15;
 const REGROW = 3.5;                     // seconds before a used-up stone grows back (only when the stage regrows)
 const MAX_STONES = 14;
+// dusk (杳 and any later dusk stone): the isle dims for this long; glow-gems can be taken only
+// while it is dim; a light stone set down ends it early (docs/forge/CONTENT.md §3)
+const DUSK_TIME = 20;                   // (tune)
 
 // Stones are used up. A stone that fuses or grows into a bridge is gone for good:
 // the only way to bring a character back is to conjure (write) it. A stage can opt
@@ -184,6 +187,9 @@ class Game {
       return { kind: 'c', i: k, x: c[0], z: c[1], y, vy: 0, dx: 0, dz: 0, home: [c[0], y, c[1]] };
     });
     this.gems = (L.gems || []).map(g => ({ x: g[0], z: g[1], y: g[2] != null ? g[2] : this.floor(g[0], g[1]) + 0.7, got: false }));
+    // glow-gems come after the gems: they show, and can be taken, only while the isle is dim
+    for (const g of L.glow || []) this.gems.push({ x: g[0], z: g[1], y: g[2] != null ? g[2] : this.floor(g[0], g[1]) + 0.7, got: false, glow: true });
+    this.dusk = 0;
     this.beacon = { x: L.beacon[0], z: L.beacon[1], y: this.floor(L.beacon[0], L.beacon[1]) };
     this.stones = [];
     this.sid = 0;
@@ -536,6 +542,7 @@ class Game {
     for (const k of this.stones.slice()) if (k.state !== 'gone') this.stepStone(k, dt);
     this.stepFusion();
     this.stepWrong(dt);
+    if (this.dusk > 0 && this.phase === 'play') { if (this.dusk > dt) this.dusk -= dt; else this.setDusk(0, null); }
     this.stepWalls();
     this.stepSprings(dt);
     this.stones = this.stones.filter(k => k.state !== 'gone');
@@ -997,6 +1004,7 @@ class Game {
   // forge when the snap ends; otherwise forge (or dud) now. Near misses are logged as `try` norel.
   settle(k) {
     if (this.phase !== 'play') return;
+    if (this.dusk > 0 && k.g.el === 'light' && !k.pop) this.setDusk(0, k.placer || null);
     const fz = this.fz, rel = bestRelation(k, this.partners(k), 'ground', fz);
     k.ready = k.pop ? 2 : 1;   // 2: a stone that popped out of a forge does not dud on landing
     if (!rel) {
@@ -1078,11 +1086,29 @@ class Game {
       if (wrong && fz.wrongLife !== Infinity) k.life = fz.wrongLife;
     }
     this.note(ch, by, true);
+    if (k && k.g.el === 'dusk') this.setDusk(DUSK_TIME, by);
     this.ev('try', { op, a: first.ch, b: second.ch, why: wrong ? 'wrong' : 'ok', err: rel.err, by, mode, rescued });
     this.ev('forge', { op, a: first.ch, b: second.ch, ch, x, y, z, s: k ? k.id : 0, by, held: false, rescued });
     // alias for one phase (SPEC §7): the board's effects still listen for `fuse`
     this.ev('fuse', { op, a: first.ch, b: second.ch, ch, x, y, z, s: k ? k.id : 0 });
     return k;
+  }
+
+  // The knobs the client reads (K9 assist, K10 forms), sent once per stage. SPEC §6.
+  clientKnobs() { return { profile: this.fz.profile, assist: this.fz.assist, forms: this.fz.forms }; }
+
+  // The relation a resting stone is in, for the snapshot: [op, slot, partnerId] or 0.
+  relOf(c) {
+    if (c.state !== 'loose' || !c.grounded || c.snap) return 0;
+    const rel = bestRelation(c, this.partners(c), 'ground', this.fz);
+    return rel ? [rel.op, rel.first === c ? 1 : 2, rel.partner.id] : 0;
+  }
+
+  // Dusk: the isle dims (t seconds) or lights up again (t = 0).
+  setDusk(t, by) {
+    const was = this.dusk > 0;
+    this.dusk = t;
+    if (was !== t > 0) this.ev('dusk', { on: t > 0, by: by || null });
   }
 
   // K7: a wrong-but-real character splits back into its two pieces after fz.wrongLife seconds.
@@ -1140,7 +1166,7 @@ class Game {
   stepGems() {
     for (let i = 0; i < this.gems.length; i++) {
       const g = this.gems[i];
-      if (g.got) continue;
+      if (g.got || (g.glow && !(this.dusk > 0))) continue;
       for (const p of this.players.values()) {
         if (Math.hypot(p.x - g.x, p.y + 0.5 - g.y, p.z - g.z) < 0.8) { g.got = true; p.qi = 0; this.ev('gem', { i, id: p.id }); break; }
       }
@@ -1179,12 +1205,15 @@ class Game {
     const snap = {
       type: 's', st: this.stage, ph: this.phase, t: Math.round(this.time * 10) / 10,
       p: players,
-      // stones: id, character, state letter, x, y, z, holder, ground under it
+      // stones: id, character, state letter, x, y, z, holder, ground under it,
+      // rel = [op, slot (1 first, 2 second), partner id] for a resting stone in a relation (else 0),
+      // low = 1 in an arm hold (Phase 4). SPEC §6. The client draws placement ticks and variant forms from rel.
       k: this.stones.map(c => {
         let gy = c.state === 'loose' && !c.grounded ? this.ground(c.x, c.z, OR, c.y + 0.05, null, false).y : c.y;
         if (c.holder) gy = c.holder.y;
-        return [c.id, c.ch, c.state[0], r(c.x), r(c.y), r(c.z), c.holder ? c.holder.id : null, gy > -50 ? r(gy) : -99];
+        return [c.id, c.ch, c.state[0], r(c.x), r(c.y), r(c.z), c.holder ? c.holder.id : null, gy > -50 ? r(gy) : -99, this.relOf(c), 0];
       }),
+      dk: this.dusk > 0 ? r(this.dusk) : 0,
       cr: this.crates.map(k => [r(k.x), r(k.y), r(k.z)]),
       m: this.movers.filter(m => !m.dyn).map(m => r(m.top)),
       // bridges grown from 木: x, z, width, depth, top, character

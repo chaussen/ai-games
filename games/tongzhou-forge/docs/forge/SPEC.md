@@ -146,7 +146,8 @@ Snapshot additions:
 - Stone tuple gains index 8 `rel`: `[op, slot, partnerId]` when the stone is settled or held in a
   relation, else `0`. The client uses it for relation ticks and variant forms.
 - Stone state letter `h` stays. Index 9 `low`: `1` when the stone is in an arm hold.
-- `fz`: `{ assist, forms }` once per stage in the `stage` message (not every snapshot).
+- `fz`: `{ profile, assist, forms }` (`game.clientKnobs()`) once per stage: on the snapshot that carries the `stage` event, and in `joined`.
+- `dk`: seconds of dusk left (0 = daylight). Events `dusk { on, by }`. Gem indices after `L.gems.length` are glow-gems (`L.glow`).
 - Aim mode strings gain `'stack'` and `'forge'`. The client labels are `ON TOP`, `FORGE`, and
   `BESIDE` for the old `join`.
 

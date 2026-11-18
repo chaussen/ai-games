@@ -11,7 +11,7 @@ const { FORGE } = require('../../sim.js');
 
 export const PALETTES = ['dawn', 'mint', 'dusk', 'citrus', 'night'];
 export const LIMITS = { rows: [3, 14], cols: [6, 26], stones: [1, 8], hint: [20, 200], par: [20, 600] };
-const KEYS = ['id', 'name', 'cn', 'par', 'pal', 'dawn', 'want', 'hint', 'map', 'spawn', 'beacon', 'boat', 'plates', 'movers', 'crates', 'stones', 'gems', 'trees', 'conjure', 'regrow', 'strict'];
+const KEYS = ['id', 'name', 'cn', 'par', 'pal', 'dawn', 'want', 'hint', 'map', 'spawn', 'beacon', 'boat', 'plates', 'movers', 'crates', 'stones', 'gems', 'trees', 'conjure', 'regrow', 'strict', 'glow'];
 const REQUIRED = ['id', 'name', 'cn', 'par', 'pal', 'want', 'hint', 'map', 'spawn', 'beacon', 'boat', 'stones'];
 
 const isNum = v => typeof v === 'number' && Number.isFinite(v);
@@ -76,6 +76,7 @@ function shape(L, add) {
   list('crates', (v, w) => { if (!nums(v, 2)) bad(w, 'a crate is [x, z].'); });
   list('trees', (v, w) => { if (!nums(v, 2)) bad(w, 'a tree is [x, z].'); });
   list('gems', (v, w) => { if (!(nums(v, 2) || nums(v, 3))) bad(w, 'a gem is [x, z] or [x, z, y].'); });
+  list('glow', (v, w) => { if (!(nums(v, 2) || nums(v, 3))) bad(w, 'a glow-gem is [x, z] or [x, z, y]. It shows only while the isle is dim (a dusk stone).'); });
   if (L.conjure !== undefined) {
     if (!Array.isArray(L.conjure) || !L.conjure.every(isStr)) bad('conjure', 'conjure is an array of character strings, e.g. ["木", "火"].');
     else {
@@ -148,6 +149,8 @@ function meaning(L, add) {
   (L.trees || []).forEach((t, i) => { if (onFloor(`trees[${i}]`, t[0], t[1], 'a tree')) claim(`trees[${i}]`, t, 'a tree'); });
   if (spawnOk && used.has(cellOf(L.spawn))) add('crowded', 'spawn', `the spawn cell also holds ${used.get(cellOf(L.spawn))}. Keep the spawn cell empty.`);
   (L.gems || []).forEach((g, i) => { if (!grid.at(Math.floor(g[0]), Math.floor(g[1])) && g[2] === undefined) add('off-floor', `gems[${i}]`, 'a gem over water needs a height: [x, z, y].'); });
+  (L.glow || []).forEach((g, i) => { if (!grid.at(Math.floor(g[0]), Math.floor(g[1])) && g[2] === undefined) add('off-floor', `glow[${i}]`, 'a glow-gem over water needs a height: [x, z, y].'); });
+  if (L.glow && L.glow.length && ![...makeable((L.stones || []).map(v => v[0]))].some(ch => LV.GLYPHS[ch] && LV.GLYPHS[ch].el === 'dusk')) add('glow-without-dusk', 'glow', 'glow-gems show only while the isle is dim, and nothing on this isle makes a dusk stone (such as 杳). Remove "glow" or add the pieces of a dusk character.');
 
   const ids = new Set();
   plates.forEach((p, i) => {

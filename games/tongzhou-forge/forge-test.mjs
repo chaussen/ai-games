@@ -114,10 +114,10 @@ const settle = (g, n = 120) => { for (let i = 0; i < n; i++) g.step(1 / 60); };
 const OH = 0.56;
 group('Stacking');
 {
-  // 木 日 火 女: no recipe joins any two of them, so nothing fuses mid-test.
+  // 木 月 火 女: no recipe joins any two of them, so nothing fuses mid-test.
   const g = new Game([yard()]);
   const wood = g.addStone('木', 5.5, 1, 4.5, null);
-  const sun = g.addStone('日', 5.55, 3, 4.5, null); sun.grounded = false;
+  const sun = g.addStone('月', 5.55, 3, 4.5, null); sun.grounded = false;
   settle(g);
   check(sun.grounded && sun.support === wood && Math.abs(sun.y - (1 + OH)) < 1e-6, `a dropped stone rests on the stone below it (y ${sun.y.toFixed(3)}, support 木)`);
   check(wood.support && wood.support.kind === 's', 'the bottom stone rests on the floor');
@@ -142,7 +142,7 @@ group('Stacking');
   const h = new Game([yard()]);
   const deck = { kind: 'm', id: 'deck', boat: true, dyn: true, done: true, wall: null, when: [], x0: 3, z0: 2, x1: 8, z1: 6, top: 1.3, from: 1.3, to: 1.3, a: 1, speed: 1, dx: 0, dz: 0 };
   h.movers.push(deck);
-  const b0 = h.addStone('木', 4.5, 1.3, 4, null), b1 = h.addStone('日', 4.5, 2.5, 4, null); b1.grounded = false;
+  const b0 = h.addStone('木', 4.5, 1.3, 4, null), b1 = h.addStone('月', 4.5, 2.5, 4, null); b1.grounded = false;
   settle(h);
   deck.dx = 0.02;
   for (let i = 0; i < 30; i++) { deck.x0 += 0.02; deck.x1 += 0.02; h.step(1 / 60); }
@@ -193,7 +193,7 @@ group('Placement');
   {
     // A stack of two: facing it from the front puts the stone on the top one.
     const g = new Game([yard()]);
-    const t = g.addStone('木', 6, 1, 4, null), t2 = g.addStone('日', 6, 3, 4, null); t2.grounded = false;
+    const t = g.addStone('木', 6, 1, 4, null), t2 = g.addStone('月', 6, 3, 4, null); t2.grounded = false;
     settle(g);
     const h = g.addStone('女', 2, 1, 2, null), p = g.addPlayer('a', 'A');
     p.x = t.x + AX_D[0]; p.z = t.z + AX_D[1]; p.y = 1; p.rot = Math.atan2(t.x - p.x, t.z - p.z);
@@ -303,6 +303,49 @@ group('Forgiveness');
   check(lin && lin.life === undefined && keep.of('try').some(e => e.why === 'ok'), 'relaxed: 林 on an isle that wants 森 is on the way, not wrong: it keeps');
   const stdW = pairUp('火', '火', 'top', { ticks: 30 });
   check(stdW.g.stones.find(k => k.ch === '炎').life === undefined, 'standard: wrong characters keep (wrongLife ∞)');
+}
+
+group('Dawn and dusk (F3.1)');
+{
+  const sun = pairUp('木', '日', 'top', { stage: { want: '杲' } });
+  check(sun.of('forge')[0] && sun.of('forge')[0].ch === '杲' && sun.of('try').some(e => e.why === 'ok'), '日 set on top of 木 forges 杲 (sunrise)');
+  const dim = pairUp('日', '木', 'top', { stage: { want: '杲', glow: [[3.5, 3.5]] } });
+  const g = dim.g;
+  check(dim.of('forge')[0] && dim.of('forge')[0].ch === '杳' && dim.of('try').some(e => e.why === 'wrong'), '木 set on top of 日 forges 杳 instead (wrong but real)');
+  check(dim.of('dusk')[0] && dim.of('dusk')[0].on === true && g.dusk > 19 && g.snapshot().dk > 19, '杳 dims the isle: dusk event, and the snapshot carries dk');
+  const p = g.addPlayer('a', 'A');
+  const gem = g.gems.find(x => x.glow);
+  p.x = gem.x; p.z = gem.z; p.y = 1; g.step(1 / 60);
+  check(gem.got && g.drainEvents().some(e => e.t === 'gem'), 'a glow-gem can be taken while the isle is dim');
+  // A light stone set down lights the isle again.
+  const light = g.addStone('日', 3, 2.2, 6.5, null); light.grounded = false; light.placer = 'a';
+  for (let i = 0; i < 40; i++) g.step(1 / 60);
+  const ev = g.drainEvents();
+  check(g.dusk === 0 && ev.some(e => e.t === 'dusk' && e.on === false) && g.snapshot().dk === 0, 'a light stone set down ends the dusk');
+  const dark = pairUp('日', '木', 'top', { stage: { want: '杲', glow: [[3.5, 3.5]] } });
+  const q = dark.g.addPlayer('a', 'A');
+  for (let i = 0; i < 21 * 60; i++) dark.g.step(1 / 60);
+  const g2 = dark.g.gems.find(x => x.glow);
+  check(dark.g.dusk <= 0 && dark.g.drainEvents().some(e => e.t === 'dusk' && e.on === false), 'dusk ends by itself after DUSK_TIME');
+  q.x = g2.x; q.z = g2.z; q.y = 1; dark.g.step(1 / 60);
+  check(!g2.got, 'in daylight a glow-gem cannot be taken');
+  const nodusk = pairUp('日', '月', [0.62, 0], { stage: { glow: [[3.5, 3.5]] } });
+  const g3 = nodusk.g.gems.find(x => x.glow), r3 = nodusk.g.addPlayer('a', 'A');
+  r3.x = g3.x; r3.z = g3.z; r3.y = 1; nodusk.g.step(1 / 60);
+  check(!g3.got, 'without dusk the glow-gem stays hidden');
+  // K5 rescue never turns one real character into another: 日 木 have two recipes (杲 and 杳).
+  const rs = pairUp('日', '木', [0.62, 0], { stage: { strict: 'relaxed', want: '杲' } });
+  check(!rs.of('forge').length && rs.of('dud').length === 1 && rs.of('try')[0].why === 'mirror', 'relaxed: 日 beside 木 is not rescued (two arrangements are real): a dud');
+  // snapshot rel: the client reads placements from it
+  const pr = pairUp('女', '木', [0.62, 0]);
+  const tup = id => pr.g.snapshot().k.find(t => t[0] === id);
+  check(JSON.stringify(tup(pr.A.id)[8]) === JSON.stringify(['⿰', 1, pr.B.id]) && JSON.stringify(tup(pr.B.id)[8]) === JSON.stringify(['⿰', 2, pr.A.id]) && tup(pr.A.id)[9] === 0, 'the snapshot tells each resting stone its placement: [op, slot, partner]');
+  check(JSON.stringify(new Game([yard({ strict: 'strict' })]).clientKnobs()) === JSON.stringify({ profile: 'strict', assist: 'none', forms: false }), 'clientKnobs() gives the board the K9/K10 knobs of the stage profile');
+  const L = load('dawn');
+  check(L.want === '杲' && L.regrow === true && L.stones.map(v => v[0]).sort().join('') === '日木' && (L.glow || []).length === 1, 'the dawn isle: one 日, one 木, stones grow back, one glow-gem');
+  check((await lint(L)).length === 0, 'dawn passes lint');
+  const nog = JSON.parse(JSON.stringify(load('two-trees'))); nog.glow = [[10.5, 2.5]];
+  check((await lint(nog)).some(p => p.code === 'glow-without-dusk'), 'lint: glow-gems on an isle that cannot make a dusk stone are rejected');
 }
 
 group('Determinism');

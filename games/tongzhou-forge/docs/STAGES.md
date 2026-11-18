@@ -54,6 +54,7 @@ lies in cell `[floor(x), floor(z)]`; use `.5` to stand in the middle of a cell.
 | `crates`, `gems`, `trees` | `[x, z]` each (a gem over water is `[x, z, y]`). |
 | `conjure` | optional: `["木", "火", ...]` characters players may conjure on this isle; each must exist in `content/glyphs.json`. If absent, defaults to the stage's own stone characters. When present it must include every character in `stones` (lint `conjure-recover`), so a wasted stone can always be written back. The judge's solver ignores this field: a stage must be solvable with conjuring off. |
 | `regrow` | optional `true`/`false`, default `false`. `true` brings back the old rule: a used-up stone grows back where it started after 3.5 s. Use only for a stage that is meant to be played without conjuring. |
+| `glow` | optional `[[x, z], ...]` (or `[x, z, y]` over water): glow-gems. They show, and can be taken, only while the isle is dim (a dusk stone such as 杳 was forged). They count toward the gem star. Lint `glow-without-dusk` rejects them on an isle that cannot make a dusk stone. |
 | `strict` | optional `"relaxed"`, `"standard"` or `"strict"`, default `"standard"`. Picks the forge profile: how forgiving placement is and what a wrong arrangement costs (docs/forge/DESIGN.md §2). A stage never carries its own numbers. |
 
 ## What players can do (measured by the judge in the real game)

@@ -69,7 +69,7 @@ setInterval(() => {
       const ev = game.drainEvents().filter(e => e.t !== 'try').map(e => e.t === 'dud' && 'why' in e ? Object.assign({}, e, { why: undefined }) : e);
       if (ev.length) {
         snap.e = ev;
-        if (ev.some(e => e.t === 'stage')) snap.conjure = stageConjure(game.stage);
+        if (ev.some(e => e.t === 'stage')) { snap.conjure = stageConjure(game.stage); snap.fz = game.clientKnobs(); }
       }
       if (clients.size) sendAll(snap);
     }
@@ -193,7 +193,8 @@ function onMessage(client, msg) {
       send(client.socket, {
         type: 'joined', id: p.id, name: p.name, ci: p.ci, stage: game.stage,
         ink: Math.round(game.ink * 100) / 100, inkMax: game.inkMax(),
-        conjure: stageConjure(game.stage)
+        conjure: stageConjure(game.stage),
+        fz: game.clientKnobs()
       });
     }
     sendRoster();
