@@ -7,7 +7,7 @@
 // never be wrong. A fail can be: the bots do not know every trick (see README).
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { Game } = require('../../sim.js');
+const { Game, AX_R, AX_D } = require('../../sim.js');
 const LV = require('../../levels.js');
 
 export const DT = 1 / 60;
@@ -191,6 +191,22 @@ function walkTo(run, id, cells, ban) {
   return true;
 }
 
+// Screen directions (r along R, q along D) of the four standing spots around a stone.
+const PLACE = { left: [-1, 0], right: [1, 0], front: [0, 1], behind: [0, -1] };
+
+// Fine steering onto an exact point inside the current cell (walkTo stops at cell centres).
+function steer(run, id, x, z) {
+  for (let i = 0; i < 120; i++) {
+    const p = run.p(id), dx = x - p.x, dz = z - p.z, d = Math.hypot(dx, dz);
+    if (d < 0.06) { run.input(id, 0, 0); run.tick(4); return true; }
+    const m = Math.max(0.3, Math.min(1, d / 0.35));
+    run.input(id, dx / d * m, dz / d * m);
+    run.tick();
+  }
+  run.input(id, 0, 0);
+  return false;
+}
+
 function face(run, id, dx, dz) {
   const l = Math.hypot(dx, dz) || 1;
   run.input(id, dx / l * 0.2, dz / l * 0.2); run.tick(1);
@@ -371,21 +387,34 @@ function options(run, ban) {
         if (reachable(sp[i], [cell])) add(`${id} carries ${h.ch} to the pavilion`, r => { walkTo(r, id, [cell], ban); r.tick(5); return r.g.phase === 'won'; });
       }
       for (const k of loose) {
-        // F2.1 bridge (F2.8 makes joins placement-aware): the sim still fuses in any op and order
-        const rec = LV.mirrors(h.ch, k.ch)[0], made = rec && rec[3];
-        if (!made || !need.has(made)) continue;
-        const cells = near(nav, k.x, k.z, 0.6, 1.3, k.y, 0.5);
-        if (!reachable(sp[i], cells)) continue;
-        const sid = k.id;
-        add(`${id} joins ${h.ch} to ${k.ch}, making ${made}`, r => {
-          if (!walkTo(r, id, cells, ban)) return false;
-          const t = stoneBy(r.g, sid), q = r.p(id);
-          if (!t) return false;
-          face(r, id, t.x - q.x, t.z - q.z);
-          r.act(id, 'grab');
-          for (let n = 0; n < 120 && !r.saw('fuse'); n++) r.tick();
-          return r.saw('fuse');
-        });
+        // Every arrangement of h and k that makes something this stage needs, and where to stand for it
+        // (DESIGN §4.3): screen-left of k sets h beside it as first, screen-right as second, in front or
+        // behind sets h on top. A recipe with h at the bottom is found from the other stone's side.
+        for (const rec of LV.mirrors(h.ch, k.ch)) {
+          const made = rec[3];
+          if (!need.has(made) || rec[0] === '⿱⿰') continue;
+          const how = rec[0] === '⿰' ? [rec[1] === h.ch ? 'left' : null, rec[2] === h.ch ? 'right' : null]
+                    : rec[0] === '⿱' && rec[1] === h.ch ? ['front', 'behind'] : [];
+          for (const side of how.filter(Boolean)) {
+            const [ur, uq] = PLACE[side], spot = [k.x + 0.95 * (ur * AX_R[0] + uq * AX_D[0]), k.z + 0.95 * (ur * AX_R[1] + uq * AX_D[1])];
+            const cell = [Math.floor(spot[0]), Math.floor(spot[1])], n = nav.stand(...cell);
+            if (!n || Math.abs(n.h - k.y) > 0.5 || !reachable(sp[i], [cell])) continue;
+            const sid = k.id, mode = side === 'left' || side === 'right' ? 'join' : 'stack';
+            const verb = mode === 'join' ? `sets ${h.ch} ${side} of ${k.ch}` : `sets ${h.ch} on top of ${k.ch}`;
+            add(`${id} ${verb}, making ${made}`, r => {
+              if (!walkTo(r, id, [cell], ban) || !steer(r, id, spot[0], spot[1])) return false;
+              const t = stoneBy(r.g, sid), q = r.p(id);
+              if (!t || t.state !== 'loose') return false;
+              face(r, id, t.x - q.x, t.z - q.z);
+              const l = r.g.launch(r.p(id));
+              if (l.mode !== mode || l.on !== sid) return false;
+              r.act(id, 'grab');
+              for (let n = 0; n < 120 && !r.saw('fuse'); n++) r.tick();
+              return r.seen.some(e => e.t === 'fuse' && e.ch === made);
+            });
+            break;   // one standing spot per arrangement is enough
+          }
+        }
       }
       for (const m of walls) {
         const mech = m.wall === 'thorn' ? 'burn' : 'douse';
