@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>Conjure Lab — Draw & Test</title>
+  <style>
+    body {
+      margin: 0; padding: 16px; font-family: system-ui, sans-serif;
+      background: #f4ede1; color: #332b24; touch-action: none;
+    }
+    h1 { font-size: 20px; margin: 0 0 12px; }
+    #pad-wrap {
+      position: relative; width: 320px; height: 320px;
+      margin: 0 auto; background: #fffdf9;
+      border: 2px solid #8c7355; border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    canvas {
+      position: absolute; top: 0; left: 0;
+      width: 320px; height: 320px; touch-action: none;
+    }
+    .grid-line {
+      stroke: #e6dbcd; stroke-width: 1.5; stroke-dasharray: 4 4;
+    }
+    .bar {
+      width: 320px; margin: 12px auto; display: flex; gap: 8px;
+    }
+    button {
+      flex: 1; padding: 10px; font-size: 15px; font-weight: bold;
+      background: #8c7355; color: #fff; border: none; border-radius: 6px;
+      cursor: pointer;
+    }
+    button.clear { background: #b33927; }
+    #results {
+      width: 320px; margin: 12px auto; display: flex; gap: 8px;
+    }
+    .tile {
+      flex: 1; background: #fff; border: 2px solid #d4c5b3; border-radius: 6px;
+      padding: 8px; text-align: center;
+    }
+    .tile .char { font-size: 32px; font-weight: bold; color: #b33927; }
+    .tile .py { font-size: 13px; color: #665; }
+    .tile .score { font-size: 11px; color: #998; }
+    pre {
+      width: 320px; margin: 12px auto; background: #fff;
+      padding: 8px; border-radius: 4px; border: 1px solid #ccc;
+      font-size: 11px; max-height: 120px; overflow: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Conjure Lab · Stroke Pad</h1>
+  <div id="pad-wrap">
+    <svg id="grid" width="320" height="320" style="position:absolute;top:0;left:0;pointer-events:none;">
+      <line x1="160" y1="0" x2="160" y2="320" class="grid-line" />
+      <line x1="0" y1="160" x2="320" y2="160" class="grid-line" />
+      <line x1="0" y1="0" x2="320" y2="320" class="grid-line" />
+      <line x1="320" y1="0" x2="0" y2="320" class="grid-line" />
+    </svg>
+    <canvas id="cv" width="320" height="320"></canvas>
+  </div>
+
+  <div class="bar">
+    <button class="clear" id="btnClear">Clear</button>
+    <button id="btnExport">Export JSON</button>
+  </div>
+
+  <div id="results"></div>
+  <pre id="output">JSON will appear here...</pre>
+
+  <script src="../vendor/recogniser.js"></script>
+  <script>
+    const cv = document.getElementById('cv');
+    const ctx = cv.getContext('2d');
+    const btnClear = document.getElementById('btnClear');
+    const btnExport = document.getElementById('btnExport');
+    const out = document.getElementById('output');
+    const resDiv = document.getElementById('results');
+
+    let strokes = [];
+    let current = null;
+    let pauseTimer = null;
+
+    ctx.lineWidth = 6;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = '#2b2118';
+
+    function redraw() {
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      ctx.beginPath();
+      for (const st of strokes) {
+        if (st.length < 1) continue;
+        ctx.moveTo(st[0][0] * cv.width, st[0][1] * cv.height);
+        for (let i = 1; i < st.length; i++) {
+          ctx.lineTo(st[i][0] * cv.width, st[i][1] * cv.height);
+        }
+      }
+      ctx.stroke();
+    }
+
+    cv.addEventListener('pointerdown', e => {
+      clearTimeout(pauseTimer);
+      const r = cv.getBoundingClientRect();
+      const pt = [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height];
+      current = [pt];
+      strokes.push(current);
+      redraw();
+      cv.setPointerCapture(e.pointerId);
+    });
+
+    cv.addEventListener('pointermove', e => {
+      if (!current) return;
+      const r = cv.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top) / r.height;
+      const prev = current[current.length - 1];
+      // Thinning: drop points closer than 1.5% (0.015)
+      if (Math.hypot(x - prev[0], y - prev[1]) >= 0.015) {
+        current.push([x, y]);
+        redraw();
+      }
+    });
+
+    cv.addEventListener('pointerup', e => {
+      if (current) {
+        // Round to 2 decimals
+        current = current.map(([x, y]) => [Math.round(x * 100) / 100, Math.round(y * 100) / 100]);
+        strokes[strokes.length - 1] = current;
+        current = null;
+        redraw();
+        // Pause detection: 600ms
+        clearTimeout(pauseTimer);
+        pauseTimer = setTimeout(recognise, 600);
+      }
+    });
+
+    function recognise() {
+      if (!window.WRecog) return;
+      const matches = WRecog.match(strokes);
+      resDiv.innerHTML = '';
+      for (const m of matches.slice(0, 3)) {
+        const d = document.createElement('div');
+        d.className = 'tile';
+        d.innerHTML = `<div class="char">${m.ch}</div><div class="score">${Math.round(m.score * 100)}%</div>`;
+        resDiv.appendChild(d);
+      }
+    }
+
+    btnClear.addEventListener('click', () => {
+      strokes = [];
+      redraw();
+      resDiv.innerHTML = '';
+      out.textContent = 'Cleared.';
+    });
+
+    btnExport.addEventListener('click', () => {
+      out.textContent = JSON.stringify({ strokes }, null, 2);
+    });
+  </script>
+</body>
+</html>
