@@ -123,7 +123,8 @@ Every rule reads `this.fz`, never `FORGE` directly. K9 and K10 (client) read `sn
 
 | Function | Signature | Notes |
 |---|---|---|
-| `relate(a, b, mode)` | `(stone, stone, 'ground'\|'body') → {op, first, second, err} \| null` | Pure. Uses R, D, Y and `support`. `DESIGN.md` §3 |
+| `relate(a, b, mode, fz)` | `(stone, stone, 'ground'\|'body', knobs) → {op, first, second, err} \| null` | Pure, module level (exported). Uses R, D, Y and `support` (body: the holders' `support` and, when `bodyStill` is finite, their speed). `err` = ‖(r err, q/maxD, y/besideY)‖/√3, where r err is 0 at `ideal` and 1 at a `besideR` edge; ⿱ `err` is the horizontal offset. `DESIGN.md` §3 |
+| `bestRelation(k, others, mode, fz)` | `→ {op, first, second, err, partner} \| null` | Pure. ⿱ first, then smaller `err`, then lower partner id |
 | `ground()` | adds a stones pass when `self` is a stone body | Sets `b.support` to the stone below |
 | `settle(k)` | runs when a loose stone becomes grounded | Snap (K4) and then a forge or dud attempt |
 | `stepFusion()` | op-aware; keeps the "two stones still where they grew" rule | Uses `relate()`, then `fuse()`, then rescue |

@@ -4,7 +4,7 @@
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { Game, FORGE, PROFILE, forgeKnobs } = require('./sim.js');
+const { Game, FORGE, PROFILE, forgeKnobs, relate, bestRelation, AX_R, AX_D } = require('./sim.js');
 const LV = require('./levels.js');
 const { lint } = await import('./tools/judge/lint.mjs');
 
@@ -46,6 +46,64 @@ group('Profiles');
   check((await codes(withStrict(base, 2))).includes('bad-value:strict'), 'lint rejects a non-string profile');
   check(order.every(id => load(id).strict === undefined || FORGE.profiles[load(id).strict]), 'every shipped stage names a known profile or none');
   check(LV.OPS.length === 5, 'levels.js still has the five ops');
+}
+
+// ---------------------------------------------------------------- Classifier (F2.4)
+group('Classifier');
+{
+  const fz = forgeKnobs('standard'), S = Math.SQRT1_2;
+  // A stone at screen offset (r right, q toward the viewer, y up) from the origin.
+  let nid = 0;
+  const at = (r, q = 0, y = 0, extra = {}) => Object.assign({ id: ++nid, x: 5 + r * AX_R[0] + q * AX_D[0], y: 1 + y, z: 5 + r * AX_R[1] + q * AX_D[1] }, extra);
+  const name = rel => rel ? rel.op + ' ' + rel.first.n + rel.second.n : 'null';
+  const tag = (k, n) => (k.n = n, k);
+
+  check(Math.abs(AX_R[0] - S) < 1e-12 && Math.abs(AX_R[1] + S) < 1e-12, 'screen-right R is (1,0,-1)/√2, as the camera in app.js');
+  const L = tag(at(0), 'L'), Rt = tag(at(0.62), 'R');
+  check(name(relate(L, Rt, 'ground', fz)) === '⿰ LR' && name(relate(Rt, L, 'ground', fz)) === '⿰ LR', 'beside: the screen-left stone is first, whichever is asked about first');
+  check(relate(L, Rt, 'ground', fz).err < 1e-9, 'err is 0 on the ideal spot (r = ideal, no depth or height offset)');
+  // An offset along world X alone is half screen-right, half depth.
+  const wx = tag({ id: ++nid, x: 5 + 0.62 * S * 2 * S, y: 1, z: 5 }, 'X');
+  check(name(relate(L, wx, 'ground', fz)) === 'null', 'world +X alone is a diagonal on screen (r = q = 0.44): outside the depth cone, no relation');
+  check(relate(L, tag(at(0, 0.8), 'F'), 'ground', fz) === null && relate(L, tag(at(0, -0.8), 'B'), 'ground', fz) === null, 'depth-only offset (in front, behind) is no relation at all');
+  check(relate(L, at(0.62, 0.3), 'ground', fz) !== null && relate(L, at(0.62, 0.45), 'ground', fz) === null, 'besideD: depth 0.3 is beside, 0.45 is not');
+  const [r0, r1] = fz.besideR;
+  check(relate(L, at(r0), 'ground', fz) && relate(L, at(r1), 'ground', fz) && !relate(L, at(r0 - 0.01), 'ground', fz) && !relate(L, at(r1 + 0.01), 'ground', fz), `besideR edges: ${r0} and ${r1} are in, just past them is out`);
+  check(relate(L, at(0.62, 0, 0.4), 'ground', fz) && !relate(L, at(0.62, 0, 0.5), 'ground', fz), 'besideY: 0.4 higher is still beside, 0.5 is not');
+  const edge = relate(L, at(r1), 'ground', fz).err, mid = relate(L, at(0.8), 'ground', fz).err;
+  check(mid > 0 && mid < edge && edge <= 1, `err grows toward the cone edge (0.8 → ${mid.toFixed(2)}, ${r1} → ${edge.toFixed(2)})`);
+
+  // Above is physical support only.
+  const bot = tag(at(0), 'b'), topk = tag(at(0.1, 0, 0.56, { support: bot }), 't');
+  check(name(relate(bot, topk, 'ground', fz)) === '⿱ tb' && name(relate(topk, bot, 'ground', fz)) === '⿱ tb', 'above: the stone resting on the other is first (top), whichever is asked about first');
+  check(relate(bot, tag(at(0.05, 0, 0.56), 'h'), 'ground', fz) === null, 'a stone hovering over another without resting on it is not above');
+  const side = tag(at(0.62, 0, 0.3, { support: L }), 's');
+  check(relate(L, side, 'ground', fz).op === '⿱', 'support beats beside when a pair fits both');
+
+  // Choosing a partner: support first, then err, then the lowest id.
+  const k = tag(at(0), 'k');
+  const far = tag(at(0.9), 'far'), near = tag(at(0.62), 'near');
+  check(bestRelation(k, [far, near], 'ground', fz).partner === near, 'with two beside partners, the one nearer the ideal spot wins');
+  const under = tag(at(0, 0, -0.56), 'u'); k.support = under;
+  check(bestRelation(k, [near, under], 'ground', fz).partner === under, 'a supporting stone wins over a better beside partner');
+  delete k.support;
+  const twinA = tag({ id: 50, x: k.x + 0.62 * AX_R[0], y: k.y, z: k.z + 0.62 * AX_R[1] }, 'A');
+  const twinB = tag({ id: 40, x: k.x - 0.62 * AX_R[0], y: k.y, z: k.z - 0.62 * AX_R[1] }, 'B');
+  check(bestRelation(k, [twinA, twinB], 'ground', fz).partner === twinB && bestRelation(k, [twinB, twinA], 'ground', fz).partner === twinB, 'an err tie goes to the lower id, whatever the list order');
+  check(bestRelation(k, [tag(at(0, 1), 'z')], 'ground', fz) === null, 'no partner in any relation gives null');
+
+  // Body mode: held stones, holders' support, wider depth cone, stillness.
+  const pa = { vx: 0, vz: 0 }, pb = { vx: 0, vz: 0 };
+  const ha = Object.assign(at(0), { holder: pa }), hb = Object.assign(at(0.62, 0.5), { holder: pb });
+  check(relate(ha, hb, 'ground', fz) === null && relate(ha, hb, 'body', fz).op === '⿰', `body beside uses bodyD (${fz.bodyD}): depth 0.5 forms a pair only for bodies`);
+  const hc = Object.assign(at(0.1, 0, 1.0), { holder: { vx: 0, vz: 0, support: pa } });
+  check(relate(ha, hc, 'body', fz).op === '⿱' && relate(ha, hc, 'body', fz).first === hc, 'body above: the holder standing on the other holder has the top stone');
+  const strict = forgeKnobs('strict');
+  pb.vx = 1;
+  const hs = Object.assign(at(0.62, 0.2), { holder: pb });
+  check(relate(ha, hs, 'body', fz) !== null && relate(ha, hs, 'body', strict) === null, // standard: no stillness rule
+    `strict profile: a holder moving faster than bodyStill (${strict.bodyStill}) forms no pair`);
+  check(relate(ha, hs, 'body', forgeKnobs('relaxed')) !== null, 'relaxed profile ignores how still the bodies are');
 }
 
 console.log(failed ? `\n${failed} FORGE CHECK(S) FAILED` : '\nALL FORGE CHECKS PASSED');

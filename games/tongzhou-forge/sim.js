@@ -92,6 +92,54 @@ const CONJURE = {
 
 const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
 
+// ---------- the classifier (docs/forge/DESIGN.md §3, SPEC §5) ----------
+// Screen axes of the fixed camera (app.js): R points screen-right, D points toward the viewer.
+// Left/right means R only; depth (D) never means anything.
+const SQ = Math.SQRT1_2;
+const AX_R = [SQ, -SQ], AX_D = [SQ, SQ];
+// relate(a, b, mode, fz): the placement of two stones, or null.
+//   mode 'ground': a stone resting on another (k.support) is ⿱ with the top stone first.
+//   mode 'body':   held stones; ⿱ when one holder stands on the other (p.support).
+//   Otherwise ⿰ when the pair sits side by side on screen, the screen-left stone first.
+// Returns { op, first, second, err }: err 0 is the ideal spot, 1 is the edge of a cone.
+// Pure: reads positions, support and the knobs, changes nothing.
+function relate(a, b, mode, fz) {
+  if (!a || !b || a === b) return null;
+  const body = mode === 'body';
+  const top = body ? (a.holder && b.holder && a.holder.support === b.holder ? a : b.holder && a.holder && b.holder.support === a.holder ? b : null)
+                   : (a.support === b ? a : b.support === a ? b : null);
+  if (top) {
+    if (body && fz.bodyStill !== Infinity && (speed(a.holder) > fz.bodyStill || speed(b.holder) > fz.bodyStill)) return null;
+    const bot = top === a ? b : a;
+    return { op: '⿱', first: top, second: bot, err: Math.hypot(top.x - bot.x, top.z - bot.z) };
+  }
+  const dx = b.x - a.x, dz = b.z - a.z, y = b.y - a.y;
+  const r = dx * AX_R[0] + dz * AX_R[1], q = dx * AX_D[0] + dz * AX_D[1], ar = Math.abs(r);
+  const maxD = body ? fz.bodyD : fz.besideD, [r0, r1] = fz.besideR;
+  if (Math.abs(y) > fz.besideY || Math.abs(q) > maxD || ar < r0 || ar > r1) return null;
+  if (body && fz.bodyStill !== Infinity && (speed(a.holder) > fz.bodyStill || speed(b.holder) > fz.bodyStill)) return null;
+  const er = ar >= fz.ideal ? (ar - fz.ideal) / Math.max(1e-9, r1 - fz.ideal) : (fz.ideal - ar) / Math.max(1e-9, fz.ideal - r0);
+  const err = Math.hypot(er, q / maxD, y / fz.besideY) / Math.sqrt(3);
+  return r >= 0 ? { op: '⿰', first: a, second: b, err } : { op: '⿰', first: b, second: a, err };
+}
+const speed = p => p ? Math.hypot(p.vx || 0, p.vz || 0) : 0;
+// The relation k should forge through among `others`: support (⿱) first, then the smallest err,
+// then the partner with the lowest id. Deterministic for a given set of stones.
+function bestRelation(k, others, mode, fz) {
+  let best = null, bestP = null;
+  for (const o of others) {
+    const rel = relate(k, o, mode, fz);
+    if (!rel) continue;
+    let better;
+    if (!best) better = true;
+    else if ((rel.op === '⿱') !== (best.op === '⿱')) better = rel.op === '⿱';
+    else if (rel.err !== best.err) better = rel.err < best.err;
+    else better = o.id < bestP.id;
+    if (better) { best = rel; bestP = o; }
+  }
+  return best && Object.assign({ partner: bestP }, best);
+}
+
 class Game {
   constructor(levels) {
     this.levels = levels || LV.LEVELS;
@@ -1047,4 +1095,4 @@ class Game {
 
 const STATIC = { kind: 's' };
 
-module.exports = { Game, CONJURE, STONES, FORGE, PROFILE, forgeKnobs, CONST: { FUSE_R, REGROW, G, SPEED, CARRY_SPEED, JUMP_V, KILL, PR, PH, CR, CH, HOLD_Y, WIN_HOLD, WIN_MIN, BOARD_WAIT, ARRIVE, LEAVE, QI_CD, ROW_MAX, BOOST_R } };
+module.exports = { Game, CONJURE, STONES, FORGE, PROFILE, forgeKnobs, relate, bestRelation, AX_R, AX_D, CONST: { FUSE_R, REGROW, G, SPEED, CARRY_SPEED, JUMP_V, KILL, PR, PH, CR, CH, HOLD_Y, WIN_HOLD, WIN_MIN, BOARD_WAIT, ARRIVE, LEAVE, QI_CD, ROW_MAX, BOOST_R } };

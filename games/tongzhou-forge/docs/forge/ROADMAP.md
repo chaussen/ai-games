@@ -12,7 +12,7 @@ Last updated: **2026-11-18**.
 |---|---|---|
 | 0 | Fork `tongzhou-conjure` → `tongzhou-forge`; ports 3200 / 3460 / 3461 / 3462; game id | **Done** 2026-11-18. Baseline suites green |
 | 1 | Documentation package (`docs/forge/*`, README, AGENTS) | **Approved** 2026-11-18 |
-| 2 | Sim core: op-aware recipes, classifier, stones on stones, ground forging, placement aims | **In progress**: F2.1–F2.3 done; next F2.4 |
+| 2 | Sim core: op-aware recipes, classifier, stones on stones, ground forging, placement aims | **In progress**: F2.1–F2.4 done; next F2.5 |
 | 3 | Minimal playable `dawn` + client + playtest log → **G1** | Not started |
 | 4 | Body forging → **G2** | Not started |
 | 5 | Judge and lint: op closure, placement and body actions, `order-trap`, `--sloppy` | Not started |
@@ -72,6 +72,7 @@ font re-subset, stages 5, 7 and 9 → G3. 7: pyramid and frames. 8: `RETROSPECTI
 | 2026-11-18 | **F2.1 done.** Recipes are `[op, first, second, result]` (14 ported; 焚 森 众 昌 are ⿱). `levels.js` has `fuse(op,a,b)` (throws on a bad op), `mirrors`, `form`, `RECIPE_LIST`, `OPS`; `content/forms.json` packed. Every caller fixed. The sim and the judge's join still fuse order-free through the marked `F2.1 bridge` (removed in F2.6 and F2.8). All suites green; the 3 stages PASS. Already failing before F2.1 and left alone: `tasks/checks/t03.mjs` expects 好 to be `folk`, but glyphs has `light`. |
 | 2026-11-18 | **F2.2 done.** `tools/recipes.mjs` checks every recipe against the MMAH IDS (variants 忄氵亻 → 心水人; alias 曰→日 for 昌; a nested IDS such as ⿱木⿰木木 matches a piece that is itself a recipe result). `pack.mjs` refuses to write `content.js` on a mismatch. `--pairs <pieces>` lists two-piece characters by piece set and marks minimal pairs (日木 → 杲/杳, 口木 → 呆/杏, 人人 → 从/仌, 火火 → 炎/炏). `sim-test` covers the check, a wrong recipe, and `--pairs`. All 14 recipes match; all suites green. |
 | 2026-11-18 | **F2.3 done.** `FORGE` table in `sim.js` (K1–K10 knobs plus `holdLow`, `inR`) with profiles relaxed / standard / strict; `assist` and `forms` (K9, K10) added to the table so the client knobs live there too. `loadStage` sets a frozen `this.fz` via `forgeKnobs()`; unknown names fall back to standard. Lint accepts the `strict` field and rejects unknown profiles. New `forge-test.mjs` with the Profiles group (15 checks). No rule reads `this.fz` yet (F2.4 on). All suites green. |
+| 2026-11-18 | **F2.4 done.** `relate(a, b, mode, fz)` and `bestRelation()` in `sim.js` (pure, exported, not yet called by the sim). Screen axes R=(1,0,−1)/√2, D=(1,0,1)/√2; depth-only offsets give no relation; ⿱ comes from `support` only (ground: the stone's, body: the holders'); `bodyD` widens depth for bodies; `bodyStill` (strict) rejects moving holders. Partner choice: ⿱, then err, then lowest id. Classifier group: 20 checks. All suites green. |
 
 ## 4. Decision log
 
