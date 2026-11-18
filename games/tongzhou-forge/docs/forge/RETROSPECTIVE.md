@@ -61,6 +61,9 @@ the goal note covers the quick-call buttons.
 
 ## 5. Next, in priority order
 
+**Superseded for now by `SIDE-VIEW.md`** (second playtest, 2026-11-18): the screen diet, the 3D fixes and the side view come first.
+
+
 1. Run G1 on `dawn` with all three profiles, then G2 on `on-my-shoulders`; read the numbers with
    `lab/playlog.mjs` and retune one knob group at a time (PLAYTEST.md §3).
 2. Effects for the folk characters. These are new mechanics, so they need a design and a review first.
