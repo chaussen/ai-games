@@ -13,6 +13,9 @@ upward off walls, stones, gems and clouds.
 P2 (`docs/GREYBOX.md` §6). Start with **`docs/GREYBOX.md`**: every earlier finding and what this
 build does about it, the knobs, the defect log and the known gaps.
 
+**Next (planned, not built):** the art direction, `docs/ART-DIRECTION.md` (水墨江湖, ink jianghu), with a
+paste-ready brief for Claude Design in `docs/ART-BRIEF.md`.
+
 | Isle | Make | Ways |
 |---|---|---|
 | Sun and Moon · 日月同明 | 明 = 日 left of 月 | 木 bridges the gap and 火 burns the thorns, or leap both; 日 waits on a tower you climb with 轻功 |
