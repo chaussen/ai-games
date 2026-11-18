@@ -348,6 +348,73 @@ group('Dawn and dusk (F3.1)');
   check((await lint(nog)).some(p => p.code === 'glow-without-dusk'), 'lint: glow-gems on an isle that cannot make a dusk stone are rejected');
 }
 
+group('Body (F4.1, F4.2)');
+{
+  // Two players, each holding a stone. Beside: a stands screen-left of b. Above: a stands on b's head.
+  const crew = (ca, cb, how, extra = {}) => {
+    const g = new Game([yard(extra)]);
+    const a = g.addPlayer('a', 'A'), b = g.addPlayer('b', 'B');
+    g.phase = 'play';
+    const ka = g.addStone(ca, 2, 1, 2, null), kb = g.addStone(cb, 3, 1, 2, null);
+    b.x = 6; b.z = 4; b.y = 1;
+    if (how === 'top') { a.x = 6; a.z = 4; a.y = 2.2; a.vy = 0; a.grounded = false; }
+    else { a.x = 6 - 0.62 * AX_R[0]; a.z = 4 - 0.62 * AX_R[1]; a.y = 1; }
+    a.rot = b.rot = 0;
+    g.holdStone(a, ka, 'grab'); g.holdStone(b, kb, 'grab');
+    settle(g, 40);
+    g.drainEvents();
+    return { g, a, b, ka, kb };
+  };
+  const press = (g, id) => { g.act(id, 'grab'); g.step(1 / 60); return g.drainEvents(); };
+  {
+    const { g, a, b, kb } = crew('月', '日', 'top');
+    check(a.support === b && b.hold === kb, 'a player can stand on the head of a friend who holds a stone');
+    check(Math.abs(kb.y - (b.y + g.fz.holdLow)) < 0.02, `the bottom stone moves to the arm hold (y ${(kb.y - b.y).toFixed(2)} above the feet)`);
+    const tup = g.snapshot().k.find(t => t[0] === kb.id);
+    check(tup[9] === 1 && JSON.stringify(tup[8]) === JSON.stringify(['⿱', 2, a.hold.id]), 'the snapshot marks the arm hold (low 1) and the held placement [⿱, 2, top]');
+    check(g.aim(a)[3] === 'forge' && g.aim(b)[3] === 'forge', 'both players in the formation see FORGE');
+  }
+  {
+    // 日 ⿱ 木 = 杲: the bottom player (holding 木) presses
+    const { g, a, b } = crew('日', '木', 'top', { want: '杲' });
+    const ev = press(g, 'b');
+    const f = ev.find(e => e.t === 'forge');
+    check(f && f.ch === '杲' && f.held === true && f.by === 'b', 'the bottom player can trigger: 日 on 木 forges 杲 (held)');
+    check(b.hold && b.hold.ch === '杲' && !a.hold, 'the result goes into the bottom player\'s hands; the top player\'s hands are empty');
+  }
+  {
+    const { g, a, b } = crew('日', '木', 'top', { want: '杲' });
+    press(g, 'a');
+    check(a.hold && a.hold.ch === '杲' && !b.hold, 'the top player can trigger too, and receives 杲');
+  }
+  {
+    // beside: 日 left of 月 = 明
+    const { g, a, b } = crew('日', '月', 'beside', { want: '明' });
+    check(g.aim(b)[3] === 'forge', 'side by side on screen, holding stones: FORGE');
+    const ev = press(g, 'b');
+    check(ev.some(e => e.t === 'forge' && e.ch === '明' && e.op === '⿰') && b.hold && b.hold.ch === '明', 'a beside formation forges 明, into the presser\'s hands');
+  }
+  {
+    // invalid: 月 left of 日 is a dud, both keep their stones
+    const { g, a, b, ka, kb } = crew('月', '日', 'beside');
+    const ev = press(g, 'a');
+    check(ev.some(e => e.t === 'dud') && !ev.some(e => e.t === 'forge') && a.hold === ka && b.hold === kb, 'an invalid FORGE is a dud: both keep their stones');
+  }
+  {
+    // a pass to an empty-handed friend still works next to a formation-less pair
+    const { g, a, b } = crew('日', '月', 'beside');
+    b.hold.state = 'gone'; b.hold = null;
+    check(g.aim(a)[3] !== 'forge', 'with one hand empty there is no formation (no FORGE)');
+  }
+  {
+    // formation() names the friend whose stone completes the placement
+    const { g, a } = crew('日', '月', 'beside');
+    const tooFar = g.addPlayer('c', 'C'); tooFar.x = 11; tooFar.z = 7; tooFar.y = 1;
+    const fz = g.formation(a);
+    check(fz && fz.partner.id === 'b', 'formation() finds the partner holder');
+  }
+}
+
 group('Determinism');
 {
   // The same placements give bit-identical snapshots: snap, forge, pop, rescue and split included.

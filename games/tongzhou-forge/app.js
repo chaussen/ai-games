@@ -1779,7 +1779,11 @@
         st.g.visible = performance.now() >= st.born;
         const holder = c[6] ? wobblers.get(c[6]) : null;
         let tx = c[3], ty = c[4], tz = c[5];
-        if (holder) { tx = holder.x; ty = holder.y + 1.15 + holder.body.position.y; tz = holder.z; }
+        if (holder) {
+          // arm hold (F4.1): a friend stands on this head, so the stone sits in front of the chest
+          const low = c[9] === 1;
+          tx = holder.x + (low ? Math.sin(holder.rot || 0) * 0.32 : 0); ty = holder.y + (low ? 0.55 : 1.15) + holder.body.position.y; tz = holder.z + (low ? Math.cos(holder.rot || 0) * 0.32 : 0);
+        }
         if (st.fresh || holder || Math.hypot(tx - st.x, ty - st.y, tz - st.z) > 4) { st.x = tx; st.y = ty; st.z = tz; st.fresh = false; }
         else { const kc = 1 - Math.exp(-dt * 26); st.x += (tx - st.x) * kc; st.y += (ty - st.y) * kc; st.z += (tz - st.z) * kc; }
         const scored = c[2] === 's';
@@ -1816,7 +1820,7 @@
       aim.ring.visible = showAim;
       for (const d of aim.dots) d.visible = showAim;
       if (showAim) {
-        const colr = a[3] === 'pass' ? '#7ef0d0' : a[3] === 'dunk' ? GOLD : a[3] === 'join' || a[3] === 'stack' ? '#ff9ad5' : '#ffffff';
+        const colr = a[3] === 'pass' ? '#7ef0d0' : a[3] === 'dunk' ? GOLD : a[3] === 'join' || a[3] === 'stack' ? '#ff9ad5' : a[3] === 'forge' ? '#ffe08a' : '#ffffff';
         aim.ring.material.color.set(colr); aim.mat.color.set(colr);
         aim.ring.position.set(a[0], a[1] + (a[3] === 'pass' ? 1.5 : 0.04), a[2]);
         aim.ring.scale.setScalar(1 + Math.sin(t * 6) * 0.07);

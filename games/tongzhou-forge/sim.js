@@ -484,9 +484,10 @@ class Game {
       }
     }
     if (heads) {
-      // a friend's head is a step: stand on it to reach a 2-high ledge
+      // a friend's head is a step: stand on it to reach a 2-high ledge. A friend who holds a
+      // stone can be stood on too (F4.1): their stone moves to the arm hold (fz.holdLow).
       for (const o of this.players.values()) {
-        if (o === self || o.hold) continue;
+        if (o === self) continue;
         const t = o.y + PH;
         if (Math.abs(x - o.x) < r + PR && Math.abs(z - o.z) < r + PR && t <= maxY && t > y) { y = t; ref = o; }
       }
@@ -831,6 +832,14 @@ class Game {
       if (s < bs) { bs = s; best = o; bd = d; bx = dx; bz = dz; }
     }
     const y0 = p.y + HOLD_Y;
+    const b0 = this.beacon, ddx = b0.x - p.x, ddz = b0.z - p.z, dd = Math.hypot(ddx, ddz);
+    const canDunk = !!(p.hold && p.hold.ch === this.L.want && dd > 0.5 && dd < 3.4 && Math.abs(b0.y - p.y) < 0.4 && (ddx * fx + ddz * fz) / dd > 0.5);
+    // In a formation (F4.2) GRAB forges the two held stones; only an offer at the pavilion beats it.
+    const f = canDunk ? null : this.formation(p);
+    if (f) {
+      const o = f.partner.hold;
+      return { mode: 'forge', f, on: o.id, x: (p.hold.x + o.x) / 2, y: Math.max(p.hold.y, o.y), z: (p.hold.z + o.z) / 2, vx: 0, vy: 0, vz: 0 };
+    }
     // Facing another stone close by: place this one against it. That is how characters
     // are made, so it wins over a pass to a friend standing behind it. Where you stand
     // decides the placement (DESIGN §4.3): screen-left or screen-right of the stone sets
@@ -867,8 +876,37 @@ class Game {
     return { mode: 'place', x: p.x + fx * 0.35, y: p.y + 0.7, z: p.z + fz * 0.35, vx: fx * 2.6, vy: 2, vz: fz * 2.6 };
   }
 
+  // Somebody stands on p's head (F4.1): p's stone sits in the arm hold, so the head is free.
+  headTaken(p) {
+    for (const o of this.players.values()) if (o !== p && o.support === p) return true;
+    return false;
+  }
+
+  // F4.2: p and a friend both hold a stone, and the two held stones are in a placement
+  // (relate(…, 'body')): side by side on screen, or one standing on the other. Any formation counts,
+  // valid recipe or not; showing FORGE only for valid ones would preview the outcome (P9).
+  formation(p) {
+    if (!p.hold || p.afk || this.phase !== 'play') return null;
+    const others = [];
+    for (const o of this.players.values()) if (o !== p && !o.afk && o.hold && o.hold.state === 'held') others.push(o.hold);
+    const rel = bestRelation(p.hold, others, 'body', this.fz);
+    return rel ? { partner: rel.partner.holder, rel } : null;
+  }
+
+  // GRAB in a formation: the two held stones forge, and the result goes into the presser's hands.
+  // A dud keeps both stones where they are.
+  forgeHeld(p, f) {
+    const mate = f.partner;
+    const k = this.tryForge(f.rel, p.id, { mode: 'body', held: true });
+    if (!k) { p.cd = Math.max(p.cd, 0.35); this.ev('wobble', { id: p.id, to: mate.id }); return null; }
+    k.pop = false; k.grounded = false; k.vy = 0;
+    this.holdStone(p, k, 'take');
+    return k;
+  }
+
   throwStone(p) {
     const k = p.hold, l = this.launch(p);
+    if (l.mode === 'forge') { this.forgeHeld(p, l.f); return; }
     p.hold = null;
     k.state = 'loose'; k.holder = null; k.thrower = p; k.flight = 0; k.grounded = false; k.lonely = 0;
     k.x = l.x; k.y = l.y; k.z = l.z; k.vx = l.vx; k.vy = l.vy; k.vz = l.vz;
@@ -880,6 +918,7 @@ class Game {
   // Predicted landing spot for a carrier's aim marker.
   aim(p) {
     const l = this.launch(p);
+    if (l.mode === 'forge') return [l.x, l.y, l.z, 'forge'];
     if (l.mode === 'pass') {
       const o = this.players.get(l.to);
       return [o.x, o.y, o.z, 'pass'];
@@ -914,7 +953,7 @@ class Game {
   stepStone(k, dt) {
     if (k.state === 'held') {
       const p = k.holder;
-      k.x = p.x; k.y = p.y + HOLD_Y; k.z = p.z;
+      k.x = p.x; k.y = p.y + (this.headTaken(p) ? this.fz.holdLow : HOLD_Y); k.z = p.z;
       k.from = p.safe.slice();
       return;
     }
@@ -1088,7 +1127,7 @@ class Game {
     this.note(ch, by, true);
     if (k && k.g.el === 'dusk') this.setDusk(DUSK_TIME, by);
     this.ev('try', { op, a: first.ch, b: second.ch, why: wrong ? 'wrong' : 'ok', err: rel.err, by, mode, rescued });
-    this.ev('forge', { op, a: first.ch, b: second.ch, ch, x, y, z, s: k ? k.id : 0, by, held: false, rescued });
+    this.ev('forge', { op, a: first.ch, b: second.ch, ch, x, y, z, s: k ? k.id : 0, by, held: !!opt.held, rescued });
     // alias for one phase (SPEC §7): the board's effects still listen for `fuse`
     this.ev('fuse', { op, a: first.ch, b: second.ch, ch, x, y, z, s: k ? k.id : 0 });
     return k;
@@ -1107,6 +1146,10 @@ class Game {
 
   // The relation a resting stone is in, for the snapshot: [op, slot, partnerId] or 0.
   relOf(c) {
+    if (c.state === 'held') {
+      const f = this.formation(c.holder);
+      return f ? [f.rel.op, f.rel.first === c ? 1 : 2, f.partner.hold.id] : 0;
+    }
     if (c.state !== 'loose' || !c.grounded || c.snap) return 0;
     const rel = bestRelation(c, this.partners(c), 'ground', this.fz);
     return rel ? [rel.op, rel.first === c ? 1 : 2, rel.partner.id] : 0;
@@ -1219,7 +1262,7 @@ class Game {
       k: this.stones.map(c => {
         let gy = c.state === 'loose' && !c.grounded ? this.ground(c.x, c.z, OR, c.y + 0.05, null, false).y : c.y;
         if (c.holder) gy = c.holder.y;
-        return [c.id, c.ch, c.state[0], r(c.x), r(c.y), r(c.z), c.holder ? c.holder.id : null, gy > -50 ? r(gy) : -99, this.relOf(c), 0];
+        return [c.id, c.ch, c.state[0], r(c.x), r(c.y), r(c.z), c.holder ? c.holder.id : null, gy > -50 ? r(gy) : -99, this.relOf(c), c.holder && this.headTaken(c.holder) ? 1 : 0];
       }),
       dk: this.dusk > 0 ? r(this.dusk) : 0,
       cr: this.crates.map(k => [r(k.x), r(k.y), r(k.z)]),

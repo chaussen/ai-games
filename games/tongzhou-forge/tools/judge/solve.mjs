@@ -14,7 +14,9 @@ export const DT = 1 / 60;
 const IDS = ['a', 'b'];
 const DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1]];
 // The mechanics that tell one route from another.
-export const MECHANICS = ['bridge', 'burn', 'douse', 'boost', 'leap', 'plate', 'row'];
+export const MECHANICS = ['bridge', 'burn', 'douse', 'boost', 'leap', 'plate', 'row', 'ground', 'body'];
+// How a character was made: on the ground (a stone set beside or on top of another) or in hand (body forge).
+export const FORGING = ['ground', 'body'];
 const r2 = v => Math.round(v * 100) / 100;
 
 // ---------- a game plus the log of everything done to it ----------
@@ -207,6 +209,27 @@ function steer(run, id, x, z) {
   return false;
 }
 
+// Jump onto a friend's head and stay there (they keep still).
+function climb(run, top, bot) {
+  run.act(top, 'jump');
+  for (let n = 0; n < 70; n++) {
+    const t = run.p(top), b = run.p(bot), dx = b.x - t.x, dz = b.z - t.z, d = Math.hypot(dx, dz);
+    if (t.grounded && t.support === b) break;
+    run.input(top, d > 0.04 ? dx / d * Math.min(1, d / 0.3) : 0, d > 0.04 ? dz / d * Math.min(1, d / 0.3) : 0);
+    run.tick();
+  }
+  run.input(top, 0, 0); run.tick(6);
+  return run.p(top).support === run.p(bot);
+}
+// In a formation, press GRAB; success is the wanted character in the presser's hands.
+function bodyPress(run, presser, made) {
+  const l = run.g.launch(run.p(presser));
+  if (l.mode !== 'forge') return false;
+  run.act(presser, 'grab'); run.tick(3);
+  const h = run.p(presser).hold;
+  return !!(h && h.ch === made);
+}
+
 function face(run, id, dx, dz) {
   const l = Math.hypot(dx, dz) || 1;
   run.input(id, dx / l * 0.2, dz / l * 0.2); run.tick(1);
@@ -386,7 +409,7 @@ function options(run, ban) {
         const cell = [Math.floor(g.beacon.x), Math.floor(g.beacon.z)];
         if (reachable(sp[i], [cell])) add(`${id} carries ${h.ch} to the pavilion`, r => { walkTo(r, id, [cell], ban); r.tick(5); return r.g.phase === 'won'; });
       }
-      for (const k of loose) {
+      for (const k of ban.ground ? [] : loose) {
         // Every arrangement of h and k that makes something this stage needs, and where to stand for it
         // (DESIGN §4.3): screen-left of k sets h beside it as first, screen-right as second, in front or
         // behind sets h on top. A recipe with h at the bottom is found from the other stone's side.
@@ -442,6 +465,34 @@ function options(run, ban) {
             for (let n = 0; n < 90 && !r.saw('bridge'); n++) r.tick();
             return r.saw('bridge');
           });
+        }
+      }
+      // Body forge (F4.2): both bots hold, take the formation, and this bot presses GRAB.
+      // ⿰: this bot stands screen-left (first) or screen-right (second) of the friend; ⿱: this bot
+      // (first) climbs onto the friend's head. The friend stays put; either bot may be the presser.
+      if (o.hold && !ban.body) {
+        for (const rec of LV.mirrors(h.ch, o.hold.ch)) {
+          if (!need.has(rec[3]) || rec[0] === '⿱⿰') continue;
+          for (const presser of [id, o.id]) {
+            if (rec[0] === '⿰') {
+              const side = rec[1] === h.ch ? -1 : 1;
+              const spot = [o.x + side * g.fz.ideal * AX_R[0], o.z + side * g.fz.ideal * AX_R[1]];
+              const cell = [Math.floor(spot[0]), Math.floor(spot[1])], n = nav.stand(...cell);
+              if (!n || Math.abs(n.h - o.y) > 0.3 || !reachable(sp[i], [cell])) continue;
+              add(`${id} stands ${side < 0 ? 'left' : 'right'} of ${o.id} and ${presser} forges ${rec[3]} in hand`, r => {
+                if (!walkTo(r, id, [cell], ban) || !steer(r, id, spot[0], spot[1])) return false;
+                return bodyPress(r, presser, rec[3]);
+              });
+            } else if (rec[0] === '⿱' && rec[1] === h.ch) {
+              const oc = cellOf(o), on = nav.stand(...oc);
+              const cells = DIRS.map(([dx, dz]) => [oc[0] + dx, oc[1] + dz]).filter(c => { const n = nav.stand(...c); return n && on && Math.abs(n.h - on.h) < 0.3; });
+              if (!reachable(sp[i], cells)) continue;
+              add(`${id} climbs onto ${o.id} and ${presser} forges ${rec[3]} in hand`, r => {
+                if (!walkTo(r, id, cells, ban) || !climb(r, id, o.id)) return false;
+                return bodyPress(r, presser, rec[3]);
+              });
+            }
+          }
         }
       }
       add(`${id} puts ${h.ch} down`, r => { r.act(id, 'grab'); r.tick(3); return !r.p(id).hold; });
@@ -545,6 +596,7 @@ function search1(stage, ban, budget) {
       log.unshift(...q.run.log);
       for (const e of q.run.seen) if (MECHANICS.includes(e.t) && e.t !== 'plate') used.add(e.t);
       if (q.name && /stands on plate/.test(q.name)) used.add('plate');
+      for (const e of q.run.seen) if (e.t === 'forge') used.add(e.held ? 'body' : 'ground');
     }
     // merge neighbouring tick entries left by the joins between moves
     const flat = [];
@@ -563,7 +615,7 @@ function search1(stage, ban, budget) {
         if (process.env.JUDGE_TRACE) console.log((ok ? '  ok  ' : '  FAIL ') + opt.name + '  [' + [...new Set(run.seen.map(e => e.t))].join(' ') + ']');
         if (!ok) continue;
         if (run.g.phase !== 'won') settle(run);
-        if (run.seen.some(e => ban[e.t] && e.t !== 'plate')) continue;   // a banned mechanic that happened by accident still counts
+        if (run.seen.some(e => (ban[e.t] && e.t !== 'plate') || (e.t === 'forge' && ban[e.held ? 'body' : 'ground']))) continue;   // a banned mechanic that happened by accident still counts
         const child = { run, parent: node, name: opt.name };
         if (run.g.phase === 'won') return finish(child);
         const k = stateKey(run.g);
@@ -642,11 +694,17 @@ export function routes(stage, budget = {}) {
   // is there a way round each thing it needs?
   for (const m of first.used) {
     if (out.length >= enough) break;
+    if (FORGING.includes(m)) continue;   // forging in hand instead of on the ground is not a way round an obstacle
     let s = solve({ [m]: true });
     if (!s) continue;
     s = lean(s, { [m]: true });
     if (out.some(r => r.needs.join() === s.used.join())) continue;
     out.push({ needs: s.used, steps: s.steps, seconds: s.seconds, log: s.log, avoids: m });
+  }
+  // A body-forge route (F4.4), reported for information: it never counts as the second way.
+  if (!out.some(r => r.needs.includes('body')) && !budget.noBody) {
+    const s = solve({ ground: true });
+    if (s) out.push({ needs: s.used, steps: s.steps, seconds: s.seconds, log: s.log, avoids: 'ground', extra: true });
   }
   return { solved: true, routes: out };
 }

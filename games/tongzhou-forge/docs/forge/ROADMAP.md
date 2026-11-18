@@ -14,7 +14,7 @@ Last updated: **2026-11-18**.
 | 1 | Documentation package (`docs/forge/*`, README, AGENTS) | **Approved** 2026-11-18 |
 | 2 | Sim core: op-aware recipes, classifier, stones on stones, ground forging, placement aims | **Done** (F2.1–F2.8) |
 | 3 | Minimal playable `dawn` + client + playtest log → **G1** | **Built**: F3.1, F3.2 (`tasks/04`), F3.3 and the log reader (`tasks/05`) done. **G1 (F3.4) needs people** |
-| 4 | Body forging → **G2** | Not started |
+| 4 | Body forging → **G2** | **Built**: F4.1–F4.4 done (`on-my-shoulders` is stage 5). **G2 (F4.5) needs people** |
 | 5 | Judge and lint: op closure, placement and body actions, `order-trap`, `--sloppy` | Not started |
 | 6 | Content: glyphs, elements, font, 4 to 6 stages → G3 | Character batch 1 (`tasks/06`) done; candidate `old-leaf` (`tasks/07`) |
 | 7 | Pyramid and enclosure | Not started |
@@ -85,6 +85,7 @@ font re-subset, stages 5, 7 and 9 → G3. 7: pyramid and frames. 8: `RETROSPECTI
 | 2026-11-18 | **Task 05 done.** `lab/playlog.mjs <log> [--json]`: groups per stage and profile, tries per forge, hand and grammar shares, seconds to first forge, wins and win time, and the PLAYTEST §4 flags; bad lines counted, player ids never printed. `t05` DONE. |
 | 2026-11-18 | **Task 06 done.** Character batch 1: 口 十 田 土 + 呆 杏 果 叶 古 早 赤 灶; 8 recipes (minimal pairs 口/木 → 呆/杏, 十/口 → 古 vs 叶). MMAH 24/24; `content.js` and `strokes.json` regenerated; font check clean. `t06` DONE, all suites green. |
 | 2026-11-18 | **Task 07 done.** Candidate `content/candidates/old-leaf.json` (citrus): 十 and 口 on the east isle, the pavilion across a 3-cell gap; judge PASS with boost and row. `t07` DONE. |
+| 2026-11-18 | **Phase 4 built (F4.1–F4.4), at John's go-ahead to make the fork playable before G1.** Sim: a holder can be stood on; their stone moves to the arm hold (`fz.holdLow`, snapshot `low` 1); `formation(p)` = both holding and the held stones in a `relate(…,'body')` placement (any formation, valid or not: P9); `launch()` gives `forge` (beaten only by an offer at the pavilion); `forgeHeld()` runs through `tryForge` with `held: true`, the result goes to the presser, a dud keeps both stones; held stones in a formation carry `rel` in the snapshot. Client: FORGE label and aim colour, arm-hold pose, placement marks between held stones. Judge: new solver moves "stands left/right of" and "climbs onto … forges X in hand", with either bot pressing; `ground` and `body` are route mechanics (classified from `forge.held`), but forging in hand never counts as the **second way** (otherwise every isle would be two-way); a body route is reported as `also:`. Every shipped stage now shows a body route (sun-and-moon forges 明 in hand on the boat). Stage `on-my-shoulders` (炎): a hedge one 火 cannot reach from the shore but 炎 (reach 2.6) can; second way: boost over the south gap with 炎 in hand. Finding: the first draft failed because the pavilion and every boat path sat inside 炎's reach, so the hedge always burned; the pavilion moved south. Forge-test Body group (12 checks); `tasks/checks/t08.mjs` plays it on the real board (screenshots `G2-2026-11-18-formation.png`, `…-blaze.png`). All suites green. |
 
 ## 4. Decision log
 

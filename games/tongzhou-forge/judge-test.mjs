@@ -52,7 +52,9 @@ const plateau = { id: 'plateau', name: 'High Shrine', cn: '高台', par: 90, pal
   plates: [{ id: 'P', at: [6, 1], c: 0 }], movers: [{ id: 'lift', rect: [3, 1, 1, 1], from: 1, to: 3, when: ['P'], c: 0 }],
   stones: [['木', 7.5, 0.5], ['木', 7.5, 2.5]] };
 const one = await expect('a cliff with only a lift', plateau, 'one-way');
-check(one.routes.length === 1 && one.routes[0].needs.join() === 'plate', 'the bots ride a lift while a friend holds the plate');
+const main = one.routes.filter(r => !r.extra);
+check(main.length === 1 && main[0].needs.filter(m => m !== 'ground' && m !== 'body').join() === 'plate', 'the bots ride a lift while a friend holds the plate');
+check(one.routes.some(r => r.extra && r.needs.includes('body')), 'and the judge also reports a body-forge route (two bots forge in hand), which never counts as a second way');
 await expect('a cliff with no lift at all', Object.assign({}, plateau, { plates: [], movers: [] }), 'unsolved');
 
 // ---- the generate → judge → repair loop, against a stand-in for the local model ----
