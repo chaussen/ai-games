@@ -98,7 +98,9 @@ Each new element gets three interactions before it ships (the Toy Test).
 ## 6. Font and stroke data
 
 - `vendor/MaShanZheng-subset.woff2` must contain every glyph in `glyphs.json`, plus the variant forms
-  in `forms.json`. Re-subset with `pyftsubset` from the full OFL font (one-time download kept out of
-  the repo, see `docs/conjure/OPEN-SET.md` §5). The smoke test checks coverage.
+  in `forms.json`. `~/.venv/bin/python tools/font.py --check` says whether it does; the smoke test
+  checks the same through `vendor/MaShanZheng-subset.chars.txt`. To add characters, download the full
+  OFL font once, outside the repo (the URL is in the header of `tools/font.py`), and run
+  `tools/font.py <path to MaShanZheng-Regular.ttf>`. It keeps every glyph the subset already has.
 - `vendor/strokes.json` (MMAH, via `tools/strokes.mjs --glyphs`) is kept up to date for the dormant
   Conjure pad and for a stroke-outline fallback.

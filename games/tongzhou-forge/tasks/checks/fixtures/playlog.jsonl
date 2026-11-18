@@ -1,0 +1,19 @@
+{"ts": 1000, "sess": "a1b2c3d4", "stage": "dawn", "profile": "relaxed", "st": 0.5, "t": "join", "id": "p-x1"}
+{"ts": 2000, "sess": "a1b2c3d4", "stage": "dawn", "profile": "relaxed", "st": 0, "t": "stage", "i": 3}
+{"ts": 10000, "sess": "a1b2c3d4", "stage": "dawn", "profile": "relaxed", "st": 8, "t": "try", "op": "⿰", "a": "木", "b": "日", "why": "norel", "err": 1.4, "by": "p-x1", "mode": "ground"}
+{"ts": 15000, "sess": "a1b2c3d4", "stage": "dawn", "profile": "relaxed", "st": 13, "t": "try", "op": "⿰", "a": "木", "b": "日", "why": "mirror", "err": 0.1, "by": "p-x1", "mode": "ground"}
+{"ts": 15000, "sess": "a1b2c3d4", "stage": "dawn", "profile": "relaxed", "st": 13, "t": "dud", "op": "⿰", "why": "mirror", "a": "木", "b": "日", "x": 9.5, "y": 1, "z": 2.5}
+{"ts": 20000, "sess": "a1b2c3d4", "stage": "dawn", "profile": "relaxed", "st": 18, "t": "try", "op": "⿱", "a": "日", "b": "木", "why": "norel", "err": 1.2, "by": "p-x1", "mode": "ground"}
+{"ts": 30000, "sess": "a1b2c3d4", "stage": "dawn", "profile": "relaxed", "st": 28, "t": "try", "op": "⿱", "a": "日", "b": "木", "why": "ok", "err": 0.05, "by": "p-x1", "mode": "ground", "rescued": false}
+{"ts": 30000, "sess": "a1b2c3d4", "stage": "dawn", "profile": "relaxed", "st": 28, "t": "forge", "op": "⿱", "a": "日", "b": "木", "ch": "杲", "x": 9.5, "y": 1, "z": 2.5, "s": 7, "by": "p-x1", "held": false, "rescued": false}
+{"ts": 50000, "sess": "a1b2c3d4", "stage": "dawn", "profile": "relaxed", "st": 48, "t": "win", "time": 48}
+{not json
+
+{"ts": 100000, "sess": "a1b2c3d4", "stage": "two-trees", "profile": "standard", "st": 0, "t": "stage", "i": 0}
+{"ts": 112000, "sess": "a1b2c3d4", "stage": "two-trees", "profile": "standard", "st": 12, "t": "try", "op": "⿰", "a": "木", "b": "木", "why": "ok", "err": 0.1, "by": "p-x1", "mode": "ground", "rescued": false}
+{"ts": 112000, "sess": "a1b2c3d4", "stage": "two-trees", "profile": "standard", "st": 12, "t": "forge", "op": "⿰", "a": "木", "b": "木", "ch": "林", "x": 4.5, "y": 1, "z": 2.5, "s": 4, "by": "p-x1", "held": false, "rescued": false}
+{"ts": 120000, "sess": "a1b2c3d4", "stage": "two-trees", "profile": "standard", "st": 20, "t": "try", "op": "⿱", "a": "木", "b": "林", "why": "wrong", "err": 0.1, "by": "p-x1", "mode": "ground", "rescued": false}
+{"ts": 120000, "sess": "a1b2c3d4", "stage": "two-trees", "profile": "standard", "st": 20, "t": "forge", "op": "⿱", "a": "木", "b": "林", "ch": "森", "x": 4.5, "y": 1, "z": 2.5, "s": 5, "by": "p-x1", "held": false, "rescued": false}
+{"ts": 125000, "sess": "a1b2c3d4", "stage": "two-trees", "profile": "standard", "st": 25, "t": "try", "op": "⿰", "a": "火", "b": "木", "why": "cooldown", "err": 0.2, "by": "p-x1", "mode": "ground"}
+{"ts": 126000, "sess": "a1b2c3d4", "stage": "two-trees", "profile": "standard", "st": 26, "t": "try", "op": "⿰", "a": "火", "b": "木", "why": "dud", "err": 0.2, "by": "p-x1", "mode": "ground"}
+{"ts": 126000, "sess": "a1b2c3d4", "stage": "two-trees", "profile": "standard", "st": 26, "t": "dud", "op": "⿰", "why": "dud", "a": "火", "b": "木", "x": 4.5, "y": 1, "z": 2.5}

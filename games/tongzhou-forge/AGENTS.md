@@ -7,6 +7,9 @@ rule changes from "two stones touch" to "where the piece sits decides the charac
 **Read `docs/forge/ROADMAP.md` first** (status, cards, decisions). Then `docs/forge/CONCEPT.md`,
 then the `DESIGN.md` / `SPEC.md` sections your card names. Do one card at a time.
 
+**Weak model?** You get one card from `tasks/` (see `tasks/README.md`). The card's file list beats the
+owner table below.
+
 **Phase 1 gate:** passed. John approved the docs on 2026-11-18. Code follows the cards in ROADMAP §2.
 
 ## Owner model: Strong (S) vs Weak (W)
@@ -20,7 +23,7 @@ then the `DESIGN.md` / `SPEC.md` sections your card names. Do one card at a time
 ## Never change (regardless of task)
 
 - `tasks/checks/`, except for the call-site fix in card F2.1
-- `vendor/three.min.js`, `vendor/qrcode.js`, licence files. The font subset and `strokes.json` may be
+- `vendor/three.min.js`, `vendor/qrcode.js`, licence files. The font subset (`tools/font.py`) and `strokes.json` may be
   regenerated with their tools (CONTENT §6), never hand-edited.
 - `content.js`: generated. Run `node tools/pack.mjs` after any `content/` change.
 - Knob values outside `FORGE` in `sim.js`. A stage chooses a profile; it never carries its own numbers.

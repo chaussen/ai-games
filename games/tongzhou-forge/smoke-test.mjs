@@ -39,6 +39,10 @@ try {
   check(three.status === 200 && three.text.length > 500000, 'GET /vendor/three.min.js serves the vendored renderer (no CDN)');
   check((await get('/vendor/qrcode.js')).status === 200, 'GET /vendor/qrcode.js');
   { const r = await fetch(BASE + '/vendor/MaShanZheng-subset.woff2'); check(r.status === 200 && r.headers.get('content-type') === 'font/woff2', 'GET the bundled brush font (no system font needed)'); }
+  { const held = new Set(fs.readFileSync(path.join(__dirname, 'vendor/MaShanZheng-subset.chars.txt'), 'utf8'));
+    const txt = ['content/glyphs.json', 'content/forms.json'].map(f => fs.readFileSync(path.join(__dirname, f), 'utf8')).join('');
+    const miss = [...new Set(txt.match(/[\u3400-\u9fff]/g))].filter(c => !held.has(c));
+    check(miss.length === 0, 'the brush font holds every glyph and variant form' + (miss.length ? ' (missing ' + miss.join('') + ': run tools/font.py)' : '')); }
   check((await get('/server.js')).status === 404 && (await get('/sim.js')).status === 404, 'server source is not served');
   check((await get('/vendor/..%2fserver.js')).status === 404, 'path traversal is refused');
   check(!/https?:\/\/(?!www\.w3\.org)/.test(idx.text), 'the page loads nothing from the internet');
