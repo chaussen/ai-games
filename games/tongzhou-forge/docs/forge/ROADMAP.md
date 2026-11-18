@@ -16,7 +16,7 @@ Last updated: **2026-11-18**.
 | 3 | Minimal playable `dawn` + client + playtest log → **G1** | **Built**: F3.1, F3.2 (`tasks/04`), F3.3 and the log reader (`tasks/05`) done. **G1 (F3.4) needs people** |
 | 4 | Body forging → **G2** | Not started |
 | 5 | Judge and lint: op closure, placement and body actions, `order-trap`, `--sloppy` | Not started |
-| 6 | Content: glyphs, elements, font, 4 to 6 stages → G3 | W cards ready: `tasks/06` (character batch 1), `tasks/07` (candidate `old-leaf`) |
+| 6 | Content: glyphs, elements, font, 4 to 6 stages → G3 | Character batch 1 (`tasks/06`) done; candidate `old-leaf` (`tasks/07`) |
 | 7 | Pyramid and enclosure | Not started |
 | 8 | Retrospective | Not started |
 
@@ -83,6 +83,7 @@ font re-subset, stages 5, 7 and 9 → G3. 7: pyramid and frames. 8: `RETROSPECTI
 | 2026-11-18 | **Font and weak-model handover.** Downloaded the full Ma Shan Zheng (OFL, google/fonts; licence identical to `vendor/MaShanZheng-OFL.txt`; kept out of the repo). New `tools/font.py` re-subsets it to what the subset held plus every Han character in `content/`, `levels.js`, `app.js` and `index.html`, and writes `vendor/MaShanZheng-subset.chars.txt`; `--check` exits 1 on a gap. The subset grows from 231 to 250 characters (杲 杳 氵 忄 亻, card 06's batch, and 斗 朱 砂 笠 绿 藤 青 黄 already named in content); 64 KB. The smoke test now fails if a glyph or variant form is missing from the font. New W cards, each with a check proven to pass in a scratch run and then thrown away: `tasks/05` (`lab/playlog.mjs`: the G1 numbers from a log, fixture in `tasks/checks/fixtures/`), `tasks/06` (口 十 田 土 + 呆 杏 果 叶 古 早 赤 灶, 8 recipes; MMAH 24/24, all suites and the 4 stages stay green), `tasks/07` (candidate `old-leaf`, needs 06; a dawn-shaped draft PASSes with boost and row). `tasks/README.md` now says how to hand a card out, what is ready, and what a weak model cannot take yet. `t03` is marked do-not-hand-out. |
 | 2026-11-18 | **F3.2 done (task 04).** Board: `AIM_LABEL` table (BESIDE, ON TOP, FORGE, PASS, OFFER, THROW, SET DOWN) for the phone label; `stack` aims draw like `join`. `glyphFor(ch, rel)` draws variant forms (氵 in the left slot of ⿰) with the base piece's ink, swapping the stone texture when its `rel` changes. One neutral ink-dot bar per placement (upright between a ⿰ pair, flat under a ⿱ top stone), never coloured by outcome (P9). On `forge` the two pieces slide together over 0.32 s (swapped start when `rescued`) and the new stone pops after them. Dusk: lights to a third and a violet multiply veil while `dk > 0`; glow-gems built after the gems, shown only at dusk, with their own counter slots. `dusk` element colour; `?strict=` from the board URL; `window.WForgeUI`. `t04` DONE; screenshots `screenshots/forge/G1-2026-11-18-dawn-dusk.png`, `…-dawn-sunrise.png`. |
 | 2026-11-18 | **Task 05 done.** `lab/playlog.mjs <log> [--json]`: groups per stage and profile, tries per forge, hand and grammar shares, seconds to first forge, wins and win time, and the PLAYTEST §4 flags; bad lines counted, player ids never printed. `t05` DONE. |
+| 2026-11-18 | **Task 06 done.** Character batch 1: 口 十 田 土 + 呆 杏 果 叶 古 早 赤 灶; 8 recipes (minimal pairs 口/木 → 呆/杏, 十/口 → 古 vs 叶). MMAH 24/24; `content.js` and `strokes.json` regenerated; font check clean. `t06` DONE, all suites green. |
 
 ## 4. Decision log
 
