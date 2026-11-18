@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>同舟 · Same Boat</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <div id="river"></div>
+
+  <div id="hud">
+    <span class="hud-qi"><b>气</b> <span id="qi"></span></span>
+    <span id="speed"></span>
+    <span id="dist"></span>
+    <span id="time"></span>
+  </div>
+
+  <div id="say"></div>
+
+  <div id="things">
+    <div class="row"><span class="tag">ABOARD</span><span id="aboard"></span></div>
+    <div class="row"><span class="tag">AHEAD</span><span id="ahead"></span></div>
+  </div>
+
+  <div id="holdRow">
+    <span class="tag">HOLD</span>
+    <div id="hold"></div>
+    <button id="overboard" hidden>overboard</button>
+  </div>
+
+  <div id="work">
+    <div id="square">
+      <div class="ghost" data-pos="above"></div>
+      <div class="ghost" data-pos="left"></div>
+      <div id="first"></div>
+      <div class="ghost" data-pos="right"></div>
+      <div class="ghost" data-pos="below"></div>
+    </div>
+    <div id="tray"></div>
+  </div>
+
+  <div id="reveal" hidden>
+    <div id="revParts"></div>
+    <div id="revChar"></div>
+    <div id="revPinyin"></div>
+    <div id="revMeaning"></div>
+  </div>
+
+  <div id="hand" hidden>👆</div>
+
+  <div id="end" hidden>
+    <h1>The river goes on</h1>
+    <p id="endStats"></p>
+    <div id="endList"></div>
+    <button id="again">Another river</button>
+  </div>
+
+  <button id="dbgBtn" title="toggles">⚙</button>
+  <div id="debug" hidden>
+    <label><input type="checkbox" id="dForgive" checked> forgiving placement</label>
+    <label><input type="checkbox" id="dHitAll"> a spent character hits every trouble aboard</label>
+    <label><input type="checkbox" id="dProvide" checked> the river provides</label>
+    <label><input type="checkbox" id="dRecord"> record this run</label>
+    <button id="dSave">save recording</button>
+    <label class="file">replay a recording <input type="file" id="dReplay" accept=".json"></label>
+  </div>
+  <div id="ver"></div>
+</div>
+
+<script type="module">
+  import { start } from './controls.js';
+  // The river view is chosen here, so engine.js and controls.js never name a renderer.
+  //   ?renderer=text  swaps in the text-only renderer.
+  const name = new URLSearchParams(location.search).get('renderer') || 'canvas';
+  import('./renderer-' + name + '.js').then(function (mod) { start(mod.createRenderer); });
+</script>
+</body>
+</html>

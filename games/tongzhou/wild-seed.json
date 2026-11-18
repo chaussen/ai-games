@@ -1,0 +1,1824 @@
+{
+ "note": "Every real two-part character the 27 seed tiles can make. Source: Make Me a Hanzi dictionary.txt (check that repository's licence before shipping). Traditional and Japanese-only forms removed. parts are tile ids in slot order: LR=[left,right], TB=[top,bottom], ENC=[outside,inside].",
+ "chars": [
+  {
+   "char": "仂",
+   "pinyin": [
+    "lè"
+   ],
+   "def": "excess, remainder, surplus",
+   "structure": "LR",
+   "parts": [
+    "ren",
+    "li"
+   ],
+   "glyphs": "人力",
+   "decomp": "⿰亻力",
+   "semantic": null,
+   "phonetic": "力",
+   "inSeed": false
+  },
+  {
+   "char": "仃",
+   "pinyin": [
+    "dīng"
+   ],
+   "def": "lonely, solitary",
+   "structure": "LR",
+   "parts": [
+    "ren",
+    "ding"
+   ],
+   "glyphs": "人丁",
+   "decomp": "⿰亻丁",
+   "semantic": "亻",
+   "phonetic": "丁",
+   "inSeed": false
+  },
+  {
+   "char": "仌",
+   "pinyin": [
+    "bīng"
+   ],
+   "def": "frozen; ice-cold",
+   "structure": "TB",
+   "parts": [
+    "ren",
+    "ren"
+   ],
+   "glyphs": "人人",
+   "decomp": "⿱人人",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "从",
+   "pinyin": [
+    "cóng"
+   ],
+   "def": "from, by, since, whence, through",
+   "structure": "LR",
+   "parts": [
+    "ren",
+    "ren"
+   ],
+   "glyphs": "人人",
+   "decomp": "⿰人人",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": true
+  },
+  {
+   "char": "仔",
+   "pinyin": [
+    "zǐ"
+   ],
+   "def": "small thing, child; young animal",
+   "structure": "LR",
+   "parts": [
+    "ren",
+    "zi"
+   ],
+   "glyphs": "人子",
+   "decomp": "⿰亻子",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "仙",
+   "pinyin": [
+    "xiān"
+   ],
+   "def": "god; fairy; immortal, transcendent",
+   "structure": "LR",
+   "parts": [
+    "ren",
+    "shan"
+   ],
+   "glyphs": "人山",
+   "decomp": "⿰亻山",
+   "semantic": "亻",
+   "phonetic": "山",
+   "inSeed": false
+  },
+  {
+   "char": "们",
+   "pinyin": [
+    "men"
+   ],
+   "def": "plural marker for pronouns and some nouns",
+   "structure": "LR",
+   "parts": [
+    "ren",
+    "men"
+   ],
+   "glyphs": "人门",
+   "decomp": "⿰亻门",
+   "semantic": "亻",
+   "phonetic": "门",
+   "inSeed": false
+  },
+  {
+   "char": "休",
+   "pinyin": [
+    "xiū"
+   ],
+   "def": "to rest; to stop; to retire",
+   "structure": "LR",
+   "parts": [
+    "ren",
+    "mu"
+   ],
+   "glyphs": "人木",
+   "decomp": "⿰亻木",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": true
+  },
+  {
+   "char": "伙",
+   "pinyin": [
+    "huǒ"
+   ],
+   "def": "companion, colleague; utensils",
+   "structure": "LR",
+   "parts": [
+    "ren",
+    "huo"
+   ],
+   "glyphs": "人火",
+   "decomp": "⿰亻火",
+   "semantic": "亻",
+   "phonetic": "火",
+   "inSeed": false
+  },
+  {
+   "char": "佃",
+   "pinyin": [
+    "diàn"
+   ],
+   "def": "tenant farmer; to be a tenant farmer",
+   "structure": "LR",
+   "parts": [
+    "ren",
+    "tian"
+   ],
+   "glyphs": "人田",
+   "decomp": "⿰亻田",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "何",
+   "pinyin": [
+    "hé"
+   ],
+   "def": "what, why, where, which, how",
+   "structure": "LR",
+   "parts": [
+    "ren",
+    "ke"
+   ],
+   "glyphs": "人可",
+   "decomp": "⿰亻可",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "促",
+   "pinyin": [
+    "cù"
+   ],
+   "def": "to urge, to rush, to hurry; hasty; near, close",
+   "structure": "LR",
+   "parts": [
+    "ren",
+    "zu"
+   ],
+   "glyphs": "人足",
+   "decomp": "⿰亻足",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "信",
+   "pinyin": [
+    "xìn"
+   ],
+   "def": "to trust, to believe; letter, sign",
+   "structure": "LR",
+   "parts": [
+    "ren",
+    "yan"
+   ],
+   "glyphs": "人言",
+   "decomp": "⿰亻言",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "倩",
+   "pinyin": [
+    "qiàn"
+   ],
+   "def": "beautiful, lovely; son-in-law",
+   "structure": "LR",
+   "parts": [
+    "ren",
+    "qing"
+   ],
+   "glyphs": "人青",
+   "decomp": "⿰亻青",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "冒",
+   "pinyin": [
+    "mào"
+   ],
+   "def": "to risk, to brave, to dare",
+   "structure": "TB",
+   "parts": [
+    "ri",
+    "mu4"
+   ],
+   "glyphs": "日目",
+   "decomp": "⿱日目",
+   "semantic": "目",
+   "phonetic": "冃",
+   "inSeed": false
+  },
+  {
+   "char": "加",
+   "pinyin": [
+    "jiā"
+   ],
+   "def": "to add to, to increase, to augment",
+   "structure": "LR",
+   "parts": [
+    "li",
+    "kou"
+   ],
+   "glyphs": "力口",
+   "decomp": "⿰力口",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "另",
+   "pinyin": [
+    "lìng"
+   ],
+   "def": "another; separate, other",
+   "structure": "TB",
+   "parts": [
+    "kou",
+    "li"
+   ],
+   "glyphs": "口力",
+   "decomp": "⿱口力",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "叮",
+   "pinyin": [
+    "dīng"
+   ],
+   "def": "to persistently exhort or urge; sting (as of an insect)",
+   "structure": "LR",
+   "parts": [
+    "kou",
+    "ding"
+   ],
+   "glyphs": "口丁",
+   "decomp": "⿰口丁",
+   "semantic": "口",
+   "phonetic": "丁",
+   "inSeed": true
+  },
+  {
+   "char": "叻",
+   "pinyin": [
+    "lè"
+   ],
+   "def": "used in transliterations",
+   "structure": "LR",
+   "parts": [
+    "kou",
+    "li"
+   ],
+   "glyphs": "口力",
+   "decomp": "⿰口力",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "吕",
+   "pinyin": [
+    "lǚ"
+   ],
+   "def": "a musical note; surname",
+   "structure": "TB",
+   "parts": [
+    "kou",
+    "kou"
+   ],
+   "glyphs": "口口",
+   "decomp": "⿱口口",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "吣",
+   "pinyin": [
+    "qìn"
+   ],
+   "def": "to vomit",
+   "structure": "LR",
+   "parts": [
+    "kou",
+    "xin"
+   ],
+   "glyphs": "口心",
+   "decomp": "⿰口心",
+   "semantic": "口",
+   "phonetic": "心",
+   "inSeed": false
+  },
+  {
+   "char": "呆",
+   "pinyin": [
+    "dāi"
+   ],
+   "def": "dull, simple, stupid",
+   "structure": "TB",
+   "parts": [
+    "kou",
+    "mu"
+   ],
+   "glyphs": "口木",
+   "decomp": "⿱口木",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": true
+  },
+  {
+   "char": "呵",
+   "pinyin": [
+    "hē"
+   ],
+   "def": "to scold; to yawn; the sound of someone laughing (when repea",
+   "structure": "LR",
+   "parts": [
+    "kou",
+    "ke"
+   ],
+   "glyphs": "口可",
+   "decomp": "⿰口可",
+   "semantic": "口",
+   "phonetic": "可",
+   "inSeed": false
+  },
+  {
+   "char": "咆",
+   "pinyin": [
+    "páo"
+   ],
+   "def": "to roar",
+   "structure": "LR",
+   "parts": [
+    "kou",
+    "bao"
+   ],
+   "glyphs": "口包",
+   "decomp": "⿰口包",
+   "semantic": "口",
+   "phonetic": "包",
+   "inSeed": false
+  },
+  {
+   "char": "哥",
+   "pinyin": [
+    "gē"
+   ],
+   "def": "elder brother",
+   "structure": "TB",
+   "parts": [
+    "ke",
+    "ke"
+   ],
+   "glyphs": "可可",
+   "decomp": "⿱可可",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "唁",
+   "pinyin": [
+    "yàn"
+   ],
+   "def": "to offer condolences",
+   "structure": "LR",
+   "parts": [
+    "kou",
+    "yan"
+   ],
+   "glyphs": "口言",
+   "decomp": "⿰口言",
+   "semantic": "口",
+   "phonetic": "言",
+   "inSeed": false
+  },
+  {
+   "char": "夯",
+   "pinyin": [
+    "hāng"
+   ],
+   "def": "burden, load; to lift up; to tamp down",
+   "structure": "TB",
+   "parts": [
+    "da",
+    "li"
+   ],
+   "glyphs": "大力",
+   "decomp": "⿱大力",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "奇",
+   "pinyin": [
+    "qí"
+   ],
+   "def": "strange, unusual, odd; uncanny, occult",
+   "structure": "TB",
+   "parts": [
+    "da",
+    "ke"
+   ],
+   "glyphs": "大可",
+   "decomp": "⿱大可",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "奋",
+   "pinyin": [
+    "fèn"
+   ],
+   "def": "to strive, to exert effort; to arouse",
+   "structure": "TB",
+   "parts": [
+    "da",
+    "tian"
+   ],
+   "glyphs": "大田",
+   "decomp": "⿱大田",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "好",
+   "pinyin": [
+    "hǎo"
+   ],
+   "def": "good, excellent, fine; proper, suitable; well",
+   "structure": "LR",
+   "parts": [
+    "nv",
+    "zi"
+   ],
+   "glyphs": "女子",
+   "decomp": "⿰女子",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": true
+  },
+  {
+   "char": "如",
+   "pinyin": [
+    "rú"
+   ],
+   "def": "as, as if, like, such as, supposing",
+   "structure": "LR",
+   "parts": [
+    "nv",
+    "kou"
+   ],
+   "glyphs": "女口",
+   "decomp": "⿰女口",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "妟",
+   "pinyin": [
+    "yàn"
+   ],
+   "def": "banquet, feast; to entertain",
+   "structure": "TB",
+   "parts": [
+    "ri",
+    "nv"
+   ],
+   "glyphs": "日女",
+   "decomp": "⿱日女",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "姓",
+   "pinyin": [
+    "xìng"
+   ],
+   "def": "name, family name, surname; clan, people",
+   "structure": "LR",
+   "parts": [
+    "nv",
+    "sheng"
+   ],
+   "glyphs": "女生",
+   "decomp": "⿰女生",
+   "semantic": "女",
+   "phonetic": "生",
+   "inSeed": false
+  },
+  {
+   "char": "婧",
+   "pinyin": [
+    "jìng"
+   ],
+   "def": "modest; supple",
+   "structure": "LR",
+   "parts": [
+    "nv",
+    "qing"
+   ],
+   "glyphs": "女青",
+   "decomp": "⿰女青",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "孙",
+   "pinyin": [
+    "sūn"
+   ],
+   "def": "grandchild, descendent; surname",
+   "structure": "LR",
+   "parts": [
+    "zi",
+    "xiao"
+   ],
+   "glyphs": "子小",
+   "decomp": "⿰子小",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "孢",
+   "pinyin": [
+    "bāo"
+   ],
+   "def": "spore",
+   "structure": "LR",
+   "parts": [
+    "zi",
+    "bao"
+   ],
+   "glyphs": "子包",
+   "decomp": "⿰子包",
+   "semantic": "子",
+   "phonetic": "包",
+   "inSeed": false
+  },
+  {
+   "char": "尖",
+   "pinyin": [
+    "jiān"
+   ],
+   "def": "sharp, pointed, acute; keen, shrewd",
+   "structure": "TB",
+   "parts": [
+    "xiao",
+    "da"
+   ],
+   "glyphs": "小大",
+   "decomp": "⿱小大",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": true
+  },
+  {
+   "char": "屾",
+   "pinyin": [
+    "shēn"
+   ],
+   "def": "mountain range",
+   "structure": "LR",
+   "parts": [
+    "shan",
+    "shan"
+   ],
+   "glyphs": "山山",
+   "decomp": "⿰山山",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "岢",
+   "pinyin": [
+    "kě"
+   ],
+   "def": "the name of a mountain",
+   "structure": "TB",
+   "parts": [
+    "shan",
+    "ke"
+   ],
+   "glyphs": "山可",
+   "decomp": "⿱山可",
+   "semantic": "山",
+   "phonetic": "可",
+   "inSeed": false
+  },
+  {
+   "char": "岩",
+   "pinyin": [
+    "yán"
+   ],
+   "def": "cliff; rocks; mountain",
+   "structure": "TB",
+   "parts": [
+    "shan",
+    "shi"
+   ],
+   "glyphs": "山石",
+   "decomp": "⿱山石",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": true
+  },
+  {
+   "char": "忕",
+   "pinyin": [
+    "shì"
+   ],
+   "def": "habit; accustomed to",
+   "structure": "LR",
+   "parts": [
+    "xin",
+    "da"
+   ],
+   "glyphs": "心大",
+   "decomp": "⿰忄大",
+   "semantic": "忄",
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "思",
+   "pinyin": [
+    "sī"
+   ],
+   "def": "to think, to ponder, to consider; final particle",
+   "structure": "TB",
+   "parts": [
+    "tian",
+    "xin"
+   ],
+   "glyphs": "田心",
+   "decomp": "⿱田心",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "性",
+   "pinyin": [
+    "xìng"
+   ],
+   "def": "sex, nature, character; suffix converting a verb to an adjec",
+   "structure": "LR",
+   "parts": [
+    "xin",
+    "sheng"
+   ],
+   "glyphs": "心生",
+   "decomp": "⿰忄生",
+   "semantic": "忄",
+   "phonetic": "生",
+   "inSeed": false
+  },
+  {
+   "char": "情",
+   "pinyin": [
+    "qíng"
+   ],
+   "def": "emotion, feeling, sentiment",
+   "structure": "LR",
+   "parts": [
+    "xin",
+    "qing"
+   ],
+   "glyphs": "心青",
+   "decomp": "⿰忄青",
+   "semantic": "忄",
+   "phonetic": "青",
+   "inSeed": true
+  },
+  {
+   "char": "打",
+   "pinyin": [
+    "dǎ"
+   ],
+   "def": "to attack, to beat, to hit, to strike",
+   "structure": "LR",
+   "parts": [
+    "shou",
+    "ding"
+   ],
+   "glyphs": "手丁",
+   "decomp": "⿰扌丁",
+   "semantic": "扌",
+   "phonetic": "丁",
+   "inSeed": true
+  },
+  {
+   "char": "扣",
+   "pinyin": [
+    "kòu"
+   ],
+   "def": "to detain; to knock, to tap; button",
+   "structure": "LR",
+   "parts": [
+    "shou",
+    "kou"
+   ],
+   "glyphs": "手口",
+   "decomp": "⿰扌口",
+   "semantic": "扌",
+   "phonetic": "口",
+   "inSeed": false
+  },
+  {
+   "char": "扪",
+   "pinyin": [
+    "mén"
+   ],
+   "def": "to stoke, to pat; to grope, to feel",
+   "structure": "LR",
+   "parts": [
+    "shou",
+    "men"
+   ],
+   "glyphs": "手门",
+   "decomp": "⿰扌门",
+   "semantic": "扌",
+   "phonetic": "门",
+   "inSeed": false
+  },
+  {
+   "char": "抱",
+   "pinyin": [
+    "bào"
+   ],
+   "def": "to embrace, to hold in one's arms; to enfold",
+   "structure": "LR",
+   "parts": [
+    "shou",
+    "bao"
+   ],
+   "glyphs": "手包",
+   "decomp": "⿰扌包",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": true
+  },
+  {
+   "char": "拓",
+   "pinyin": [
+    "tà"
+   ],
+   "def": "to develop, to expand, to open up",
+   "structure": "LR",
+   "parts": [
+    "shou",
+    "shi"
+   ],
+   "glyphs": "手石",
+   "decomp": "⿰扌石",
+   "semantic": "扌",
+   "phonetic": "石",
+   "inSeed": false
+  },
+  {
+   "char": "拜",
+   "pinyin": [
+    "bài"
+   ],
+   "def": "to bow, to salute; to worship, to pay respects",
+   "structure": "LR",
+   "parts": [
+    "shou",
+    "shou"
+   ],
+   "glyphs": "手手",
+   "decomp": "⿰手手",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "捉",
+   "pinyin": [
+    "zhuō"
+   ],
+   "def": "to clutch, to grasp, to seize",
+   "structure": "LR",
+   "parts": [
+    "shou",
+    "zu"
+   ],
+   "glyphs": "手足",
+   "decomp": "⿰扌足",
+   "semantic": "扌",
+   "phonetic": "足",
+   "inSeed": false
+  },
+  {
+   "char": "旲",
+   "pinyin": [
+    "tái"
+   ],
+   "def": "daylight, sunlight",
+   "structure": "TB",
+   "parts": [
+    "ri",
+    "da"
+   ],
+   "glyphs": "日大",
+   "decomp": "⿱日大",
+   "semantic": "日",
+   "phonetic": "大",
+   "inSeed": false
+  },
+  {
+   "char": "明",
+   "pinyin": [
+    "míng"
+   ],
+   "def": "bright, clear; to explain, to understand, to shed light",
+   "structure": "LR",
+   "parts": [
+    "ri",
+    "yue"
+   ],
+   "glyphs": "日月",
+   "decomp": "⿰日月",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": true
+  },
+  {
+   "char": "星",
+   "pinyin": [
+    "xīng"
+   ],
+   "def": "star, planet; a point of light",
+   "structure": "TB",
+   "parts": [
+    "ri",
+    "sheng"
+   ],
+   "glyphs": "日生",
+   "decomp": "⿱日生",
+   "semantic": "日",
+   "phonetic": "生",
+   "inSeed": true
+  },
+  {
+   "char": "晴",
+   "pinyin": [
+    "qíng"
+   ],
+   "def": "clear weather, fine weather",
+   "structure": "LR",
+   "parts": [
+    "ri",
+    "qing"
+   ],
+   "glyphs": "日青",
+   "decomp": "⿰日青",
+   "semantic": "日",
+   "phonetic": "青",
+   "inSeed": true
+  },
+  {
+   "char": "朋",
+   "pinyin": [
+    "péng"
+   ],
+   "def": "friend, pal, acquaintance",
+   "structure": "LR",
+   "parts": [
+    "yue",
+    "yue"
+   ],
+   "glyphs": "月月",
+   "decomp": "⿰月月",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "李",
+   "pinyin": [
+    "lǐ"
+   ],
+   "def": "plum; luggage; surname",
+   "structure": "TB",
+   "parts": [
+    "mu",
+    "zi"
+   ],
+   "glyphs": "木子",
+   "decomp": "⿱木子",
+   "semantic": "木",
+   "phonetic": "子",
+   "inSeed": false
+  },
+  {
+   "char": "杏",
+   "pinyin": [
+    "xìng"
+   ],
+   "def": "apricot; almond",
+   "structure": "TB",
+   "parts": [
+    "mu",
+    "kou"
+   ],
+   "glyphs": "木口",
+   "decomp": "⿱木口",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": true
+  },
+  {
+   "char": "杰",
+   "pinyin": [
+    "jié"
+   ],
+   "def": "hero; heroic, outstanding",
+   "structure": "TB",
+   "parts": [
+    "mu",
+    "huo"
+   ],
+   "glyphs": "木火",
+   "decomp": "⿱木灬",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "杲",
+   "pinyin": [
+    "gǎo"
+   ],
+   "def": "brilliant, shining; high",
+   "structure": "TB",
+   "parts": [
+    "ri",
+    "mu"
+   ],
+   "glyphs": "日木",
+   "decomp": "⿱日木",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "杳",
+   "pinyin": [
+    "yǎo"
+   ],
+   "def": "dark, mysterious, obscure; deep",
+   "structure": "TB",
+   "parts": [
+    "mu",
+    "ri"
+   ],
+   "glyphs": "木日",
+   "decomp": "⿱木日",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "林",
+   "pinyin": [
+    "lín"
+   ],
+   "def": "forest, grove; surname",
+   "structure": "LR",
+   "parts": [
+    "mu",
+    "mu"
+   ],
+   "glyphs": "木木",
+   "decomp": "⿰木木",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": true
+  },
+  {
+   "char": "果",
+   "pinyin": [
+    "guǒ"
+   ],
+   "def": "fruit, nut; result",
+   "structure": "TB",
+   "parts": [
+    "tian",
+    "mu"
+   ],
+   "glyphs": "田木",
+   "decomp": "⿱田木",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "柘",
+   "pinyin": [
+    "zhè"
+   ],
+   "def": "cudrania, mulberry; sugarcane",
+   "structure": "LR",
+   "parts": [
+    "mu",
+    "shi"
+   ],
+   "glyphs": "木石",
+   "decomp": "⿰木石",
+   "semantic": "木",
+   "phonetic": "石",
+   "inSeed": false
+  },
+  {
+   "char": "柯",
+   "pinyin": [
+    "kē"
+   ],
+   "def": "axe-handle, bough, stalk; surname",
+   "structure": "LR",
+   "parts": [
+    "mu",
+    "ke"
+   ],
+   "glyphs": "木可",
+   "decomp": "⿰木可",
+   "semantic": "木",
+   "phonetic": "可",
+   "inSeed": false
+  },
+  {
+   "char": "氽",
+   "pinyin": [
+    "tǔn"
+   ],
+   "def": "to float; to deep-fry",
+   "structure": "TB",
+   "parts": [
+    "ren",
+    "shui"
+   ],
+   "glyphs": "人水",
+   "decomp": "⿱人水",
+   "semantic": "水",
+   "phonetic": "人",
+   "inSeed": false
+  },
+  {
+   "char": "汀",
+   "pinyin": [
+    "tīng"
+   ],
+   "def": "bank, sandbar; beach, shore",
+   "structure": "LR",
+   "parts": [
+    "shui",
+    "ding"
+   ],
+   "glyphs": "水丁",
+   "decomp": "⿰氵丁",
+   "semantic": "氵",
+   "phonetic": "丁",
+   "inSeed": false
+  },
+  {
+   "char": "汕",
+   "pinyin": [
+    "shàn"
+   ],
+   "def": "bamboo; basket for catching fish; Shantou",
+   "structure": "LR",
+   "parts": [
+    "shui",
+    "shan"
+   ],
+   "glyphs": "水山",
+   "decomp": "⿰氵山",
+   "semantic": "氵",
+   "phonetic": "山",
+   "inSeed": false
+  },
+  {
+   "char": "汝",
+   "pinyin": [
+    "rǔ"
+   ],
+   "def": "you",
+   "structure": "LR",
+   "parts": [
+    "shui",
+    "nv"
+   ],
+   "glyphs": "水女",
+   "decomp": "⿰氵女",
+   "semantic": "氵",
+   "phonetic": "女",
+   "inSeed": false
+  },
+  {
+   "char": "汨",
+   "pinyin": [
+    "mì"
+   ],
+   "def": "to sink; a river in Hunan where Qu Yuan drowned himself",
+   "structure": "LR",
+   "parts": [
+    "shui",
+    "ri"
+   ],
+   "glyphs": "水日",
+   "decomp": "⿰氵日",
+   "semantic": "氵",
+   "phonetic": "日",
+   "inSeed": false
+  },
+  {
+   "char": "沁",
+   "pinyin": [
+    "qìn"
+   ],
+   "def": "to soak, to seep in, to percolate",
+   "structure": "LR",
+   "parts": [
+    "shui",
+    "xin"
+   ],
+   "glyphs": "水心",
+   "decomp": "⿰氵心",
+   "semantic": "氵",
+   "phonetic": "心",
+   "inSeed": false
+  },
+  {
+   "char": "沐",
+   "pinyin": [
+    "mù"
+   ],
+   "def": "to bathe, to cleanse, to shampoo, to wash",
+   "structure": "LR",
+   "parts": [
+    "shui",
+    "mu"
+   ],
+   "glyphs": "水木",
+   "decomp": "⿰氵木",
+   "semantic": "氵",
+   "phonetic": "木",
+   "inSeed": false
+  },
+  {
+   "char": "沓",
+   "pinyin": [
+    "tà"
+   ],
+   "def": "connected, joined; repeated",
+   "structure": "TB",
+   "parts": [
+    "shui",
+    "ri"
+   ],
+   "glyphs": "水日",
+   "decomp": "⿱水日",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "河",
+   "pinyin": [
+    "hé"
+   ],
+   "def": "river, stream; the Yellow river",
+   "structure": "LR",
+   "parts": [
+    "shui",
+    "ke"
+   ],
+   "glyphs": "水可",
+   "decomp": "⿰氵可",
+   "semantic": "氵",
+   "phonetic": "可",
+   "inSeed": true
+  },
+  {
+   "char": "泡",
+   "pinyin": [
+    "pào"
+   ],
+   "def": "bubble, blister; swollen, puffed up",
+   "structure": "LR",
+   "parts": [
+    "shui",
+    "bao"
+   ],
+   "glyphs": "水包",
+   "decomp": "⿰氵包",
+   "semantic": "氵",
+   "phonetic": "包",
+   "inSeed": true
+  },
+  {
+   "char": "泪",
+   "pinyin": [
+    "lèi"
+   ],
+   "def": "tears; to cry, to weep",
+   "structure": "LR",
+   "parts": [
+    "shui",
+    "mu4"
+   ],
+   "glyphs": "水目",
+   "decomp": "⿰氵目",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "泵",
+   "pinyin": [
+    "bèng"
+   ],
+   "def": "to pump",
+   "structure": "TB",
+   "parts": [
+    "shi",
+    "shui"
+   ],
+   "glyphs": "石水",
+   "decomp": "⿱石水",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "浞",
+   "pinyin": [
+    "zhuó"
+   ],
+   "def": "to soak, to steep in water",
+   "structure": "LR",
+   "parts": [
+    "shui",
+    "zu"
+   ],
+   "glyphs": "水足",
+   "decomp": "⿰氵足",
+   "semantic": "氵",
+   "phonetic": "足",
+   "inSeed": false
+  },
+  {
+   "char": "清",
+   "pinyin": [
+    "qīng"
+   ],
+   "def": "clean, pure; clear, distinct; peaceful",
+   "structure": "LR",
+   "parts": [
+    "shui",
+    "qing"
+   ],
+   "glyphs": "水青",
+   "decomp": "⿰氵青",
+   "semantic": "氵",
+   "phonetic": "青",
+   "inSeed": true
+  },
+  {
+   "char": "灯",
+   "pinyin": [
+    "dēng"
+   ],
+   "def": "lamp, lantern, light",
+   "structure": "LR",
+   "parts": [
+    "huo",
+    "ding"
+   ],
+   "glyphs": "火丁",
+   "decomp": "⿰火丁",
+   "semantic": "火",
+   "phonetic": "丁",
+   "inSeed": true
+  },
+  {
+   "char": "灿",
+   "pinyin": [
+    "càn"
+   ],
+   "def": "vivid, illuminating, brilliant",
+   "structure": "LR",
+   "parts": [
+    "huo",
+    "shan"
+   ],
+   "glyphs": "火山",
+   "decomp": "⿰火山",
+   "semantic": "火",
+   "phonetic": "山",
+   "inSeed": false
+  },
+  {
+   "char": "炅",
+   "pinyin": [
+    "jiǒng"
+   ],
+   "def": "brilliant, shining",
+   "structure": "TB",
+   "parts": [
+    "ri",
+    "huo"
+   ],
+   "glyphs": "日火",
+   "decomp": "⿱日火",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "炎",
+   "pinyin": [
+    "yán"
+   ],
+   "def": "flame, blaze; hot",
+   "structure": "TB",
+   "parts": [
+    "huo",
+    "huo"
+   ],
+   "glyphs": "火火",
+   "decomp": "⿱火火",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": true
+  },
+  {
+   "char": "炏",
+   "pinyin": [
+    "kài"
+   ],
+   "def": "grass",
+   "structure": "LR",
+   "parts": [
+    "huo",
+    "huo"
+   ],
+   "glyphs": "火火",
+   "decomp": "⿰火火",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "炙",
+   "pinyin": [
+    "zhì"
+   ],
+   "def": "to roast, to broil; to cauterize",
+   "structure": "TB",
+   "parts": [
+    "yue",
+    "huo"
+   ],
+   "glyphs": "月火",
+   "decomp": "⿱月火",
+   "semantic": "火",
+   "phonetic": "月",
+   "inSeed": false
+  },
+  {
+   "char": "炮",
+   "pinyin": [
+    "pào"
+   ],
+   "def": "cannon, artillery",
+   "structure": "LR",
+   "parts": [
+    "huo",
+    "bao"
+   ],
+   "glyphs": "火包",
+   "decomp": "⿰火包",
+   "semantic": "火",
+   "phonetic": "包",
+   "inSeed": true
+  },
+  {
+   "char": "炻",
+   "pinyin": [
+    "shí"
+   ],
+   "def": "china, stoneware",
+   "structure": "LR",
+   "parts": [
+    "huo",
+    "shi"
+   ],
+   "glyphs": "火石",
+   "decomp": "⿰火石",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "男",
+   "pinyin": [
+    "nán"
+   ],
+   "def": "man, boy; male; baron; surname",
+   "structure": "TB",
+   "parts": [
+    "tian",
+    "li"
+   ],
+   "glyphs": "田力",
+   "decomp": "⿱田力",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": true
+  },
+  {
+   "char": "町",
+   "pinyin": [
+    "tīng"
+   ],
+   "def": "a raised path between fields",
+   "structure": "LR",
+   "parts": [
+    "tian",
+    "ding"
+   ],
+   "glyphs": "田丁",
+   "decomp": "⿰田丁",
+   "semantic": "田",
+   "phonetic": "丁",
+   "inSeed": false
+  },
+  {
+   "char": "盯",
+   "pinyin": [
+    "dīng"
+   ],
+   "def": "to rivet one's gaze upon; to keep eyes on",
+   "structure": "LR",
+   "parts": [
+    "mu4",
+    "ding"
+   ],
+   "glyphs": "目丁",
+   "decomp": "⿰目丁",
+   "semantic": "目",
+   "phonetic": "丁",
+   "inSeed": true
+  },
+  {
+   "char": "相",
+   "pinyin": [
+    "xiāng"
+   ],
+   "def": "mutual, reciprocal; equal; each other",
+   "structure": "LR",
+   "parts": [
+    "mu",
+    "mu4"
+   ],
+   "glyphs": "木目",
+   "decomp": "⿰木目",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "看",
+   "pinyin": [
+    "kàn"
+   ],
+   "def": "to look, to see; to examine, to scrutinize",
+   "structure": "TB",
+   "parts": [
+    "shou",
+    "mu4"
+   ],
+   "glyphs": "手目",
+   "decomp": "⿱手目",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "眚",
+   "pinyin": [
+    "shěng"
+   ],
+   "def": "cataract; fault, error, crime",
+   "structure": "TB",
+   "parts": [
+    "sheng",
+    "mu4"
+   ],
+   "glyphs": "生目",
+   "decomp": "⿱生目",
+   "semantic": "目",
+   "phonetic": "生",
+   "inSeed": false
+  },
+  {
+   "char": "睛",
+   "pinyin": [
+    "jīng"
+   ],
+   "def": "eyeball; pupil",
+   "structure": "LR",
+   "parts": [
+    "mu4",
+    "qing"
+   ],
+   "glyphs": "目青",
+   "decomp": "⿰目青",
+   "semantic": "目",
+   "phonetic": "青",
+   "inSeed": true
+  },
+  {
+   "char": "订",
+   "pinyin": [
+    "dìng"
+   ],
+   "def": "to make an order; to draw up an agreement",
+   "structure": "LR",
+   "parts": [
+    "yan",
+    "ding"
+   ],
+   "glyphs": "言丁",
+   "decomp": "⿰讠丁",
+   "semantic": "讠",
+   "phonetic": "丁",
+   "inSeed": false
+  },
+  {
+   "char": "认",
+   "pinyin": [
+    "rèn"
+   ],
+   "def": "to know, to recognize, to understand",
+   "structure": "LR",
+   "parts": [
+    "yan",
+    "ren"
+   ],
+   "glyphs": "言人",
+   "decomp": "⿰讠人",
+   "semantic": "讠",
+   "phonetic": "人",
+   "inSeed": false
+  },
+  {
+   "char": "讪",
+   "pinyin": [
+    "shàn"
+   ],
+   "def": "to abuse, to slander, to vilify; to ridicule",
+   "structure": "LR",
+   "parts": [
+    "yan",
+    "shan"
+   ],
+   "glyphs": "言山",
+   "decomp": "⿰讠山",
+   "semantic": "讠",
+   "phonetic": "山",
+   "inSeed": false
+  },
+  {
+   "char": "诃",
+   "pinyin": [
+    "hē"
+   ],
+   "def": "to scold loudly, to curse, to abuse",
+   "structure": "LR",
+   "parts": [
+    "yan",
+    "ke"
+   ],
+   "glyphs": "言可",
+   "decomp": "⿰讠可",
+   "semantic": "讠",
+   "phonetic": "可",
+   "inSeed": false
+  },
+  {
+   "char": "请",
+   "pinyin": [
+    "qǐng"
+   ],
+   "def": "to ask, to request; to invite; please",
+   "structure": "LR",
+   "parts": [
+    "yan",
+    "qing"
+   ],
+   "glyphs": "言青",
+   "decomp": "⿰讠青",
+   "semantic": "讠",
+   "phonetic": "青",
+   "inSeed": true
+  },
+  {
+   "char": "跑",
+   "pinyin": [
+    "pǎo"
+   ],
+   "def": "to run, to flee, to escape",
+   "structure": "LR",
+   "parts": [
+    "zu",
+    "bao"
+   ],
+   "glyphs": "足包",
+   "decomp": "⿰足包",
+   "semantic": "足",
+   "phonetic": "包",
+   "inSeed": true
+  },
+  {
+   "char": "跖",
+   "pinyin": [
+    "zhí"
+   ],
+   "def": "the sole of the foot",
+   "structure": "LR",
+   "parts": [
+    "zu",
+    "shi"
+   ],
+   "glyphs": "足石",
+   "decomp": "⿰足石",
+   "semantic": "足",
+   "phonetic": "石",
+   "inSeed": false
+  },
+  {
+   "char": "闪",
+   "pinyin": [
+    "shǎn"
+   ],
+   "def": "flash, lightning; to dodge, to evade",
+   "structure": "ENC",
+   "parts": [
+    "men",
+    "ren"
+   ],
+   "glyphs": "门人",
+   "decomp": "⿵门人",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": true
+  },
+  {
+   "char": "问",
+   "pinyin": [
+    "wèn"
+   ],
+   "def": "to ask about, to inquire after",
+   "structure": "ENC",
+   "parts": [
+    "men",
+    "kou"
+   ],
+   "glyphs": "门口",
+   "decomp": "⿵门口",
+   "semantic": "口",
+   "phonetic": "门",
+   "inSeed": true
+  },
+  {
+   "char": "闲",
+   "pinyin": [
+    "xián"
+   ],
+   "def": "fence, guard; to defend; idle time",
+   "structure": "ENC",
+   "parts": [
+    "men",
+    "mu"
+   ],
+   "glyphs": "门木",
+   "decomp": "⿵门木",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "间",
+   "pinyin": [
+    "jiān"
+   ],
+   "def": "between, among; midpoint; space, place, locality",
+   "structure": "ENC",
+   "parts": [
+    "men",
+    "ri"
+   ],
+   "glyphs": "门日",
+   "decomp": "⿵门日",
+   "semantic": null,
+   "phonetic": null,
+   "inSeed": false
+  },
+  {
+   "char": "闷",
+   "pinyin": [
+    "mèn"
+   ],
+   "def": "gloomy, depressed, melancholy",
+   "structure": "ENC",
+   "parts": [
+    "men",
+    "xin"
+   ],
+   "glyphs": "门心",
+   "decomp": "⿵门心",
+   "semantic": "心",
+   "phonetic": "门",
+   "inSeed": false
+  },
+  {
+   "char": "饱",
+   "pinyin": [
+    "bǎo"
+   ],
+   "def": "satisfied; to eat one's fill",
+   "structure": "LR",
+   "parts": [
+    "shi2",
+    "bao"
+   ],
+   "glyphs": "食包",
+   "decomp": "⿰饣包",
+   "semantic": "饣",
+   "phonetic": "包",
+   "inSeed": true
+  }
+ ]
+}
