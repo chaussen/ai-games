@@ -194,7 +194,7 @@ class Game {
     this.stones = [];
     this.sid = 0;
     this.regrow = L.regrow != null ? !!L.regrow : STONES.regrow;
-    this.fz = forgeKnobs(L.strict || PROFILE);
+    this.fz = forgeKnobs(this.strictOverride || L.strict || PROFILE);
     // What the pavilion wants and every piece on the way to it: anything else forged here is
     // "wrong but real" (DESIGN §4.4), which K7 (wrongLife) may split back.
     this.wantTree = new Set([L.want]);
@@ -1092,6 +1092,14 @@ class Game {
     // alias for one phase (SPEC §7): the board's effects still listen for `fuse`
     this.ev('fuse', { op, a: first.ch, b: second.ch, ch, x, y, z, s: k ? k.id : 0 });
     return k;
+  }
+
+  // Playtest override (the board's ?strict=, never a phone): every stage uses this profile until
+  // cleared with null. An unknown name clears it. Takes effect at once and on every later stage.
+  setStrict(name) {
+    this.strictOverride = FORGE.profiles[name] ? name : null;
+    this.fz = forgeKnobs(this.strictOverride || this.L.strict || PROFILE);
+    this.ev('profile', { profile: this.fz.profile, override: this.strictOverride });
   }
 
   // The knobs the client reads (K9 assist, K10 forms), sent once per stage. SPEC §6.

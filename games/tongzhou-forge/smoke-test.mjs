@@ -3,6 +3,8 @@
 // real WebSocket protocol, in real time, the way a phone would.
 // Run with: node smoke-test.mjs      (takes about 25 seconds)
 import { spawn } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { connect, Bot, sleep } from './tools/wire.mjs';
@@ -13,8 +15,10 @@ const BASE = 'http://127.0.0.1:' + PORT;
 let failed = 0;
 const check = (cond, msg) => { console.log((cond ? 'PASS ✓ ' : 'FAIL ✗ ') + msg); if (!cond) { failed++; process.exitCode = 1; } };
 
-const proc = spawn(process.execPath, ['server.js'], {
-  cwd: __dirname, env: { ...process.env, PORT: String(PORT), FIREWALL_CHECK: '0' }, stdio: ['ignore', 'pipe', 'pipe']
+// --log writes the playtest log (docs/forge/PLAYTEST.md §4); here into a throwaway folder
+const LOG_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'forge-smoke-log-'));
+const proc = spawn(process.execPath, ['server.js', '--log'], {
+  cwd: __dirname, env: { ...process.env, PORT: String(PORT), FIREWALL_CHECK: '0', FORGE_LOG_DIR: LOG_DIR }, stdio: ['ignore', 'pipe', 'pipe']
 });
 let log = '';
 proc.stdout.on('data', d => { log += d; });
@@ -82,9 +86,11 @@ try {
   check(mia.snap.k.filter(k => k[1] === '木').length === 2 && mia.snap.ink < 4, 'Mia writes 木 on her phone: a new one appears and the crew spends a drop');
   await sleep(800);
   await bot.grab();
-  await bot.go(11, 3.5); await bot.go(10.5, 3.5);
+  // stand on the screen-right of the other 木 (R = (1,0,-1)/√2), walking toward it so she faces it
+  const other = mia.snap.k.find(k => k[1] === '木' && k[2] === 'l'), S = Math.SQRT1_2;
+  await bot.go(other[3] + 1.3 * S, other[5] - 1.3 * S); await bot.go(other[3] + 0.95 * S, other[5] - 0.95 * S);
   await sleep(120);
-  check(mia.snap.aim[bot.id][3] === 'join', 'facing the other 木, the button offers to join them');
+  check(mia.snap.aim[bot.id][3] === 'join', 'screen-right of the other 木, the button offers to set hers BESIDE it');
   await bot.grab();
   for (let i = 0; i < 40 && !has('林'); i++) await sleep(50);
   check(has('林') && !has('木'), '木 + 木 becomes 林');
@@ -138,10 +144,37 @@ try {
   await sleep(250);
   check(board.snap && board.snap.p.every(p => Number.isFinite(p[1]) && Number.isFinite(p[3])), 'malformed messages are ignored');
 
+  // ---- playtest profile override: boards only ----
+  dad.send({ type: 'admin', cmd: 'strict', v: 'strict' });
+  await sleep(200);
+  check(!board.events.some(e => e.t === 'profile'), 'a phone cannot change the forge profile');
+  board.send({ type: 'admin', cmd: 'strict', v: 'relaxed' });
+  await sleep(200);
+  const pe = board.events.filter(e => e.t === 'profile');
+  check(pe.length === 1 && pe[0].profile === 'relaxed' && pe[0].override === 'relaxed', 'the board switches every stage to the relaxed profile (?strict= override)');
+  board.send({ type: 'admin', cmd: 'next' });
+  await sleep(200);
+  board.send({ type: 'admin', cmd: 'strict', v: null });
+  await sleep(200);
+  check(board.events.filter(e => e.t === 'profile').pop().profile === 'standard', 'and clears it again');
+
+  // ---- the playtest log ----
+  check(!board.events.some(e => e.t === 'try') && board.events.filter(e => e.t === 'dud').every(e => !('why' in e)), 'clients never see try events or why a dud failed (P9)');
+  const files = fs.readdirSync(LOG_DIR);
+  check(files.length === 1 && /^playtest-\d{4}-\d{2}-\d{2}\.jsonl$/.test(files[0]) && log.includes('Playtest log'), 'node server.js --log writes logs/playtest-<date>.jsonl and says where');
+  const text = files.length ? fs.readFileSync(path.join(LOG_DIR, files[0]), 'utf8') : '';
+  const lines = text.trim().split('\n').map(l => { try { return JSON.parse(l); } catch (e) { return null; } });
+  check(lines.length > 5 && lines.every(l => l && l.sess && l.stage && l.profile && typeof l.st === 'number' && l.t), `every line is JSON with session, stage, profile and stage clock (${lines.length} lines)`);
+  const kinds = new Set(lines.map(l => l && l.t));
+  check(['join', 'try', 'forge', 'win', 'stage', 'profile'].every(k => kinds.has(k)), 'it records join, try, forge, win, stage and profile (leave only after 90 s offline): ' + [...kinds].join(' '));
+  check(lines.some(l => l.t === 'forge' && l.ch === '林' && l.stage === 'two-trees' && l.profile === 'standard' && l.by === 'p-smoke-mia'), 'the 林 forge is logged with who made it, on which isle, under which profile');
+  check(!text.includes('Mia') && !text.includes('Dad'), 'the log holds player ids, never names');
+
   for (const c of [board, mia2, dad]) c.close();
 } catch (e) {
   check(false, 'smoke test aborted: ' + e.message);
 } finally {
   proc.kill();
+  fs.rmSync(LOG_DIR, { recursive: true, force: true });
 }
 console.log(failed ? `--- ${failed} CHECK(S) FAILED ---` : '--- ALL SMOKE CHECKS PASSED ---');

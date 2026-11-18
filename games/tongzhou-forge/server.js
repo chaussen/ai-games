@@ -19,6 +19,26 @@ const MAX_PLAYERS = 16;
 const WS_GUID = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
 const GONE_AFTER_MS = 90000;   // a napping wobbler is removed after this long offline
 
+// ---------- playtest log (docs/forge/PLAYTEST.md §4) ----------
+// node server.js --log   appends one JSON line per forge-relevant event to logs/playtest-<date>.jsonl
+// (FORGE_LOG_DIR overrides the folder). Player ids only, never names: the log is people's data.
+const LOG_EVENTS = new Set(['try', 'forge', 'dud', 'split', 'stage', 'win', 'join', 'leave', 'dusk', 'profile']);
+const LOG = process.argv.includes('--log') ? (() => {
+  const dir = process.env.FORGE_LOG_DIR || path.join(__dirname, 'logs');
+  fs.mkdirSync(dir, { recursive: true });
+  const file = path.join(dir, 'playtest-' + new Date().toISOString().slice(0, 10) + '.jsonl');
+  return { file, sess: crypto.randomBytes(4).toString('hex') };
+})() : null;
+function logEvents(list) {
+  if (!LOG) return;
+  const lines = [];
+  for (const e of list) {
+    if (!LOG_EVENTS.has(e.t)) continue;
+    lines.push(JSON.stringify(Object.assign({ ts: Date.now(), sess: LOG.sess, stage: game.L.id, profile: game.fz.profile, st: Math.round(game.clock * 100) / 100 }, e)));
+  }
+  if (lines.length) fs.appendFileSync(LOG.file, lines.join('\n') + '\n');
+}
+
 // ---------- LAN address discovery ----------
 function isVirtualNic(name) {
   return /^(docker|br-|virbr|vnet|veth|tun|tap|wg|tailscale|zt|ham|lxc|podman|nm-)/i.test(name);
@@ -66,10 +86,13 @@ setInterval(() => {
       const snap = game.snapshot();
       // `try` events and a dud's `why` are for the playtest log only: clients never learn that
       // another arrangement would have worked (P9, docs/forge/SPEC.md §6).
-      const ev = game.drainEvents().filter(e => e.t !== 'try').map(e => e.t === 'dud' && 'why' in e ? Object.assign({}, e, { why: undefined }) : e);
+      const all = game.drainEvents();
+      logEvents(all);
+      const ev = all.filter(e => e.t !== 'try').map(e => e.t === 'dud' && 'why' in e ? Object.assign({}, e, { why: undefined }) : e);
       if (ev.length) {
         snap.e = ev;
-        if (ev.some(e => e.t === 'stage')) { snap.conjure = stageConjure(game.stage); snap.fz = game.clientKnobs(); }
+        if (ev.some(e => e.t === 'stage')) snap.conjure = stageConjure(game.stage);
+        if (ev.some(e => e.t === 'stage' || e.t === 'profile')) snap.fz = game.clientKnobs();
       }
       if (clients.size) sendAll(snap);
     }
@@ -157,7 +180,7 @@ httpServer.on('upgrade', (req, socket) => {
     if (!p || p.client !== client) return;
     game.setAfk(p.id, true);
     setTimeout(() => {
-      if (p.client === client && game.players.get(p.id) === p) { game.removePlayer(p.id); sendRoster(); }
+      if (p.client === client && game.players.get(p.id) === p) { game.removePlayer(p.id); logEvents([{ t: 'leave', id: p.id }]); sendRoster(); }
     }, GONE_AFTER_MS);
   });
 });
@@ -178,7 +201,9 @@ function onMessage(client, msg) {
     client.joined = true;
     if (msg.board) {
       client.board = true;
-      send(client.socket, { type: 'joined', board: true, stage: game.stage });
+      // playtest profile override: boards only (?strict= on the board page), never phones
+      if (typeof msg.strict === 'string') game.setStrict(msg.strict);
+      send(client.socket, { type: 'joined', board: true, stage: game.stage, fz: game.clientKnobs() });
     } else {
       const wanted = typeof msg.playerId === 'string' && /^[\w-]{4,24}$/.test(msg.playerId) ? msg.playerId : null;
       let p = wanted && game.players.get(wanted);
@@ -190,6 +215,7 @@ function onMessage(client, msg) {
       p.client = client;
       client.player = p;
       game.setAfk(p.id, false);
+      logEvents([{ t: 'join', id: p.id }]);
       send(client.socket, {
         type: 'joined', id: p.id, name: p.name, ci: p.ci, stage: game.stage,
         ink: Math.round(game.ink * 100) / 100, inkMax: game.inkMax(),
@@ -259,6 +285,7 @@ function onMessage(client, msg) {
       else if (msg.cmd === 'prev') game.loadStage(game.stage - 1);
       else if (msg.cmd === 'restart') game.loadStage(game.stage);
       else if (msg.cmd === 'goto') game.loadStage(Number(msg.i) | 0);
+      else if (msg.cmd === 'strict' && client.board) game.setStrict(typeof msg.v === 'string' ? msg.v : null);
       break;
   }
 }
@@ -281,6 +308,7 @@ function checkFirewall(port) {
 }
 
 httpServer.listen(PORT, HOST, () => {
+  if (LOG) console.log('    Playtest log  : ' + LOG.file + ' (session ' + LOG.sess + ')');
   const ips = lanIPs();
   console.log('');
   console.log('  ======================================================');

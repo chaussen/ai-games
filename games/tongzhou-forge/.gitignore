@@ -3,3 +3,5 @@ lab/bench-strokes.json
 # Handwriting samples are people's data: commit one only with that person's agreement
 # (SPEC.md §8), using git add -f.
 lab/samples/*.json
+# Playtest logs (server.js --log) are people's data too
+logs/

@@ -30,7 +30,11 @@ the rules would be arbitrary; with characters, what you build is what you read.
 cd games/tongzhou-forge
 node server.js                # port 3200
 PORT=3201 node server.js      # alternative
+node server.js --log          # playtest: logs/playtest-<date>.jsonl (ids, never names; not committed)
 ```
+
+For a playtest the board can force one forge profile on every stage: open
+`http://localhost:3200/?board=1&strict=relaxed` (or `standard`, `strict`). Phones cannot.
 
 Open `http://localhost:3200/?board=1` on the TV or laptop. Phones scan the QR code or go to
 `http://<LAN-IP>:3200/`.
