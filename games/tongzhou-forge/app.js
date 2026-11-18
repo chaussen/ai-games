@@ -972,35 +972,66 @@
     glyphFx.push({ sp, life: 0, max: big ? 2.6 : 1.5, x, y, z, s0: big ? 1.4 : 0.8, s1: big ? 11 : 4.5 });
   }
 
-  // ---------- forge: placement marks and the slide-together burst (F3.2) ----------
-  // One neutral mark between two stones that rest in a placement: an upright bar between a
-  // side-by-side pair, a flat bar under a top stone. Same colour whether or not they make anything (P9).
-  const markTex = canvasTex(64, 64, (g) => {
-    g.fillStyle = '#ffffff'; g.beginPath(); g.arc(32, 32, 28, 0, 7); g.fill();
-  });
-  const markPool = [];
+  // ---------- forge: placement frames and the slide-together burst (F3.2, FG-D017) ----------
+  // While two stones rest in a placement, a frame is drawn round them: two columns for BESIDE (⿰),
+  // two rows for ON TOP (⿱), each stone in its own cell. It looks the same whether or not the pair
+  // makes anything (P9: no preview). After a dud the frame says so; after a near miss a dashed frame
+  // says the stones are close but not in a placement, so a forge that never started is not silent.
+  const frameLayer = document.createElement('div');
+  frameLayer.className = 'pframes';
+  tagsEl.appendChild(frameLayer);
+  const framePool = [];
+  const frameFlags = new Map();   // "idA,idB" -> { kind: 'no' | 'near', op, until }
+  const pairKey = (i, j) => Math.min(i, j) + ',' + Math.max(i, j);
+  function flagFrame(ia, ib, kind, op, secs) {
+    if (!ia || !ib) return;
+    frameFlags.set(pairKey(ia, ib), { kind, op, ia, ib, until: performance.now() + secs * 1000 });
+  }
+  function screenOf(v) {
+    return [view.W / 2 + (v.x * cRight.x + v.z * cRight.z - view.camR) * view.ppu,
+            view.H / 2 - (v.x * cUp.x + v.y * cUp.y + v.z * cUp.z - view.camU) * view.ppu];
+  }
   function drawMarks() {
-    let n = 0;
+    const now = performance.now(), want = new Map();
     for (const st of stones.values()) {
       const r = st.rel;
       if (!r || r[1] !== 1 || !st.g.visible) continue;
       const o = stones.get(r[2]);
       if (!o || !o.g.visible) continue;
-      let m = markPool[n];
-      if (!m) {
-        m = sprite(markTex, '#3a3350', 0.55, false);
-        m.material.depthTest = false; m.renderOrder = 4;
-        scene.add(m); markPool.push(m);
+      want.set(pairKey(st.id, o.id), { op: r[0], a: st, b: o });
+    }
+    for (const [k, f] of frameFlags) {
+      if (now > f.until) { frameFlags.delete(k); continue; }
+      if (want.has(k)) continue;
+      const a = stones.get(f.ia), b = stones.get(f.ib);
+      if (a && b && a.g.visible && b.g.visible) want.set(k, { op: f.op, a, b });
+    }
+    let n = 0, ticks = 0;
+    for (const [k, w] of want) {
+      let el = framePool[n];
+      if (!el) {
+        el = document.createElement('div');
+        el.innerHTML = '<i></i><em></em>';
+        frameLayer.appendChild(el); framePool.push(el);
       }
-      const side = r[0] === '⿰';
-      m.position.set((st.g.position.x + o.g.position.x) / 2, (st.g.position.y + o.g.position.y) / 2 + (side ? 0 : 0.0), (st.g.position.z + o.g.position.z) / 2);
-      m.scale.set(side ? 0.09 : 0.75, side ? 0.75 : 0.09, 1);
-      m.visible = true;
+      const side = w.op === '⿰', f = frameFlags.get(k);
+      const kind = f ? f.kind : '';
+      if (!f || f.kind !== 'near') ticks++;   // a near miss is not a placement
+      const [ax, ay] = screenOf(w.a.g.position), [bx, by] = screenOf(w.b.g.position);
+      const cell = 1.3 * view.ppu;   // a stone's glyph is ~1.35 units across
+      const wpx = Math.abs(ax - bx) + cell, hpx = Math.abs(ay - by) + cell;
+      el.className = 'pframe ' + (side ? 'side' : 'top') + (kind ? ' ' + kind : '');
+      el.style.width = wpx.toFixed(0) + 'px'; el.style.height = hpx.toFixed(0) + 'px';
+      el.style.transform = 'translate(' + ((ax + bx) / 2).toFixed(1) + 'px,' + ((ay + by) / 2).toFixed(1) + 'px) translate(-50%,-50%)';
+      el.lastChild.textContent = kind === 'no' ? '✕ ' + (side ? 'BESIDE' : 'ON TOP') : kind === 'near' ? 'NOT QUITE' : side ? 'BESIDE' : 'ON TOP';
+      el.style.display = '';
       n++;
     }
-    for (let j = n; j < markPool.length; j++) markPool[j].visible = false;
-    forgeUI.ticks = n;
+    for (let j = n; j < framePool.length; j++) framePool[j].style.display = 'none';
+    forgeUI.ticks = ticks;
   }
+  // How a pair was arranged, in words: first piece is the left (⿰) or the top (⿱) one.
+  const arrangement = (op, a, b) => op === '⿱' ? a + ' on top of ' + b : a + ' on the left, ' + b + ' on the right';
   // a forge: the two pieces slide together (side by side for ⿰, one above the other for ⿱)
   // into the new stone, then it bursts. A rescued forge starts them the other way round.
   const forgeSlides = [];
@@ -1435,7 +1466,10 @@
         break;
       case 'dud':
         for (let k = 0; k < 8; k++) puff(e.x, e.y + 0.5, e.z, { color: '#b9b4c6', life: 0.5, vx: (Math.random() - 0.5) * 2, vy: 1.2, vz: (Math.random() - 0.5) * 2, s0: 0.14, s1: 0.3, a: 0.6 });
-        note('warn', e.a + ' + ' + e.b + ' make nothing. Try another pair.');
+        flagFrame(e.ia, e.ib, 'no', e.op, 2.5);
+        // FG-D017: name the arrangement, and be honest when the same two pieces work another way
+        note('warn', arrangement(e.op, e.a, e.b) + ': makes nothing. '
+          + (e.other ? 'But ' + e.a + ' and ' + e.b + ' do go together, another way. Try again!' : e.a + ' and ' + e.b + ' never go together. Try another pair.'), { secs: 9 });
         sfx.bonk();
         break;
       case 'found':
@@ -1443,6 +1477,10 @@
         if (addCodex(e.ch) && !e.made) { showCard(e.ch); note('char', 'found', { ch: e.ch }); if (isBoard || e.id === myId) speak(e.ch); }
         break;
       case 'forge': forgeSlide(e); break;
+      case 'near':
+        flagFrame(e.ia, e.ib, 'near', e.op, 2.5);
+        if (isBoard || e.by === myId) note('warn', e.a + ' and ' + e.b + ' are close, but not quite ' + (e.op === '⿱' ? 'one on top of the other' : 'side by side') + '. Nudge one.', { secs: 6 });
+        break;
       case 'dusk': if (e.on) { sfx.dusk(); note('char', 'Dusk: the isle grows dim', { ch: '杳', secs: 6 }); } break;
       case 'fuse': {
         const el = elOf(e.ch);
@@ -1706,6 +1744,8 @@
   window.addEventListener('resize', resize);
   resize();
 
+  const PORTRAIT_SPAN = 7;   // (tune) world units across a portrait phone
+  let rotateTold = false;
   function updateCamera(dt) {
     const W = view.W, H = view.H, b = view.b;
     const portrait = H > W;
@@ -1717,7 +1757,10 @@
     let cr = (b.r0 + b.r1) / 2, cu = (b.u0 + b.u1) / 2;
     // A phone never shows less than ~11 units across. If the stage is bigger than
     // that, the view glides after your wobbler instead. It still never turns.
-    const minPpu = isBoard ? 0 : Math.min(W, H) / 11;
+    // G1: in portrait the whole isle came out tiny, so a portrait phone shows PORTRAIT_SPAN units
+    // across and follows its own wobbler; the TV (or landscape) shows the whole isle.
+    const minPpu = isBoard ? 0 : portrait ? W / PORTRAIT_SPAN : Math.min(W, H) / 11;
+    if (portrait && !isBoard && !rotateTold && S) { rotateTold = true; note('info', 'Turn your phone sideways to see more of the isle.', { secs: 7 }); }
     if (ppu < minPpu) {
       ppu = minPpu;
       const mine = wobblers.get(myId);
@@ -2021,8 +2064,10 @@
   // =========================================================================
   let conjureAllowed = [];
   let currentInk = 3;
-  let traceMode = true;
-  let targetChar = '木';
+  // G1 (2026-11-18): the pad opens blank. Nothing is pre-chosen and there is no Trace mode: a
+  // stronger writer just writes anything they know; a learner taps an idea below to copy it.
+  // copyChar is the character whose model is shown (null: writing from memory).
+  let copyChar = null;
   let padStrokes = [];
   let currentStroke = null;
   let padPauseTimer = null;
@@ -2038,9 +2083,7 @@
   function onConjureSet(list) {
     if (!Array.isArray(list)) return;
     conjureAllowed = list;
-    if (list.length > 0 && !list.some(item => item.ch === targetChar)) {
-      targetChar = list[0].ch;
-    }
+    if (copyChar && !list.some(item => item.ch === copyChar)) copyChar = null;
     renderPalette();
     updateGuide();
     renderPractice();
@@ -2112,6 +2155,9 @@
     const isHidden = pad.classList.contains('hidden');
     if (isHidden) {
       pad.classList.remove('hidden');
+      copyChar = null;          // always opens blank: no character is pre-chosen (G1)
+      updateGuide();
+      markTargets();
       initPadCanvas();
       clearPad();
       renderPractice();
@@ -2148,21 +2194,11 @@
       const btnClear = $('cp-clear-btn');
       if (btnClear) btnClear.addEventListener('click', clearPad);
 
-      const btnMode = $('cp-mode-btn');
-      if (btnMode) {
-        btnMode.addEventListener('click', () => {
-          traceMode = !traceMode;
-          btnMode.textContent = traceMode ? 'Trace' : 'Free';
-          btnMode.classList.toggle('active', traceMode);
-          updateGuide();
-        });
-      }
-
       // D1: picking a character only sets the Trace target. Conjuring one without a
       // drawing is this separate, explicit action (1 drop for now, ladder price later).
       const btnUse = $('cp-use-btn');
       if (btnUse) {
-        btnUse.addEventListener('click', () => sendConjure(targetChar, { from: 'pick' }));
+        btnUse.addEventListener('click', () => { if (copyChar) sendConjure(copyChar, { from: 'pick' }); });
       }
     }
   }
@@ -2170,11 +2206,14 @@
   function updateGuide() {
     const guide = $('cp-guide');
     if (guide) {
-      guide.textContent = targetChar;
-      guide.classList.toggle('hidden', !traceMode);
+      guide.textContent = copyChar || '';
+      guide.classList.toggle('hidden', !copyChar);
     }
     const btnUse = $('cp-use-btn');
-    if (btnUse) btnUse.textContent = 'Use ' + targetChar + ' without drawing';
+    if (btnUse) {
+      btnUse.textContent = copyChar ? 'Use ' + copyChar + ' without drawing' : '';
+      btnUse.classList.toggle('hidden', !copyChar);
+    }
   }
 
   // D4: one scale for both axes — the pad's shorter side — and centred, so a square drawn
@@ -2295,7 +2334,7 @@
     if (tilesEl) tilesEl.innerHTML = '';
     const palEl = $('cp-palette');
     if (palEl) palEl.classList.add('hidden');
-    setPadStatus('Draw a character...');
+    setPadStatus(copyChar ? 'Copy ' + copyChar + ' stroke by stroke.' : 'Write any character you know. Need an idea? Tap one below.');
   }
 
   function runPadRecogniser() {
@@ -2314,7 +2353,7 @@
 
     const top = matches.slice(0, 3).filter(m => m.score >= 0.15);
     if (top.length === 0) {
-      if (statusEl) statusEl.textContent = 'Not sure. Write it again, or use it without drawing:';
+      if (statusEl) statusEl.textContent = 'Not sure what that was. Write it again, or pick it here:';
       if (palEl) palEl.classList.remove('hidden');
       return;
     }
@@ -2342,44 +2381,38 @@
     itemsEl.innerHTML = '';
     for (const item of conjureAllowed) {
       const btn = document.createElement('button');
-      btn.className = 'cp-pal-btn' + (item.ch === targetChar ? ' selected' : '');
+      btn.className = 'cp-pal-btn' + (item.ch === copyChar ? ' selected' : '');
       btn.dataset.ch = item.ch;
       btn.textContent = `${item.ch} ${item.py || ''}`;
       btn.title = item.en || '';
       // D1: choosing from the palette never spends ink. It only chooses what to trace;
       // "Use … without drawing" is the explicit way to conjure it.
-      btn.addEventListener('click', () => setTargetChar(item.ch));
+      btn.addEventListener('click', () => setCopyChar(item.ch));
       itemsEl.appendChild(btn);
     }
   }
 
   function markTargets() {
-    for (const b of document.querySelectorAll('#cp-pal-items .cp-pal-btn')) {
-      b.classList.toggle('selected', b.dataset.ch === targetChar);
-    }
-    for (const b of document.querySelectorAll('.cp-prac-btn')) {
-      b.classList.toggle('selected', b.dataset.ch === targetChar);
+    for (const b of document.querySelectorAll('#cp-pal-items .cp-pal-btn, .cp-idea')) {
+      b.classList.toggle('selected', b.dataset.ch === copyChar);
     }
   }
 
-  function setTargetChar(ch, quiet) {
-    if (!ch) return;
-    targetChar = ch;
+  // Tap an idea: its model appears in the square to copy. Tap it again: the model goes away and
+  // the square is for writing from memory.
+  function setCopyChar(ch) {
+    copyChar = ch && ch !== copyChar ? ch : null;
     updateGuide();
     markTargets();
-    if (quiet) return;
-    const g = (LV.GLYPHS && LV.GLYPHS[ch]) || {};
-    const label = ch + (g.py ? ' ' + g.py : '') + (g.en ? ' ' + g.en : '');
-    setPadStatus(traceMode
-      ? 'Trace ' + label + ' — or use it without drawing.'
-      : 'Write ' + label + ' from memory, or use it without drawing.');
+    if (!copyChar) { setPadStatus('Write any character you know. Need an idea? Tap one below.'); return; }
+    const g = (LV.GLYPHS && LV.GLYPHS[copyChar]) || {};
+    const label = copyChar + (g.py ? ' ' + g.py : '') + (g.en ? ' (' + g.en + ')' : '');
+    setPadStatus('Copy ' + label + ' stroke by stroke. Tap it again to hide the model.');
   }
 
   // ---------- D8: practice memory, on this phone only (localStorage, never sent) ----------
   const PRACTICE_KEY = 'tjc-practice-v1';
   const PRACTICE_MASTER = 3;                     // clean free writes before "mastered"
-  const PRACTICE_DAY = 24 * 60 * 60 * 1000;
-  const PRACTICE_SHOW = 3;
 
   function loadPractice() {
     try {
@@ -2415,45 +2448,27 @@
     renderPractice();
   }
 
-  // Characters worth writing again: never-practised first, then the stalest. A mastered
-  // character (PRACTICE_MASTER clean free writes) comes back after a few days, the rest
-  // after one.
-  function practiceDue() {
-    const now = Date.now();
-    const rows = [];
-    for (const item of conjureAllowed) {
-      const rec = practice[item.ch];
-      const clean = rec ? rec.clean : 0;
-      const last = rec ? rec.last : 0;
-      const mastered = clean >= PRACTICE_MASTER;
-      const gap = mastered ? 3 * PRACTICE_DAY : PRACTICE_DAY;
-      if (!last || now - last >= gap) rows.push({ item, clean, mastered });
-    }
-    rows.sort((a, b) => (a.mastered - b.mastered) || (a.clean - b.clean));
-    return rows.slice(0, PRACTICE_SHOW);
-  }
-
+  // Ideas to try: every character this isle lets the crew write, in the isle's order. Each shows
+  // its meaning, so a player can pick one by what it does; a tick marks one this phone has
+  // written from memory PRACTICE_MASTER times (D8 memory, local only).
   function renderPractice() {
     const box = $('cp-practice');
     const itemsEl = $('cp-prac-items');
     if (!box || !itemsEl) return;
-    const rows = practiceDue();
     itemsEl.innerHTML = '';
-    if (rows.length === 0) {
-      box.classList.add('hidden');
-      return;
-    }
-    for (const row of rows) {
-      const ch = row.item.ch;
+    if (conjureAllowed.length === 0) { box.classList.add('hidden'); return; }
+    for (const item of conjureAllowed) {
+      const ch = item.ch;
       const g = (LV.GLYPHS && LV.GLYPHS[ch]) || {};
-      const py = g.py || row.item.py || '';
-      const en = g.en || row.item.en || '';
+      const py = g.py || item.py || '';
+      const en = g.en || item.en || '';
+      const clean = practice[ch] ? practice[ch].clean : 0;
       const btn = document.createElement('button');
-      btn.className = 'cp-prac-btn' + (ch === targetChar ? ' selected' : '');
+      btn.className = 'cp-idea' + (ch === copyChar ? ' selected' : '') + (clean >= PRACTICE_MASTER ? ' known' : '');
       btn.dataset.ch = ch;
-      btn.innerHTML = `<b>${ch}</b><span>${py}</span><i>${row.clean}/${PRACTICE_MASTER}</i>`;
-      btn.title = (en ? en + ' — ' : '') + 'written ' + row.clean + ' time(s) on this phone';
-      btn.addEventListener('click', () => setTargetChar(ch));
+      btn.innerHTML = '<b>' + esc(ch) + '</b><span>' + esc(py) + '</span><i>' + esc(en) + '</i>';
+      btn.title = 'Tap to copy ' + ch + ' · written from memory ' + clean + ' time(s) on this phone';
+      btn.addEventListener('click', () => setCopyChar(ch));
       itemsEl.appendChild(btn);
     }
     box.classList.remove('hidden');
@@ -2470,7 +2485,7 @@
       ch,
       from: o.from || 'pick',
       rank: o.rank || 0,
-      free: !traceMode,
+      free: !copyChar,
       strokes: strokes.length
     };
     me.send({ type: 'conjure', ch, strokes });

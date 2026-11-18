@@ -156,12 +156,14 @@ Events:
 | Event | Fields | When |
 |---|---|---|
 | `forge` | `op, a, b, ch, x, y, z, s, by, held, rescued` | A forge succeeded (`held` = the result went to a hand) |
-| `dud` | existing fields + `op, why` | `why`: `dud` (no recipe), `mirror` (another arrangement would be a recipe; **log only**, never shown in game, P9) |
+| `dud` | existing fields + `op, why, ia, ib, other, by` | `why`: `dud` (no recipe), `mirror` (another arrangement would be a recipe; **log only**). `other` (FG-D017): `why === 'mirror'` and knob `dudHint === 'other'`; this one bit **is** sent to clients so the message is honest. `ia, ib`: the two stone ids (first = left / top) |
+| `near` | `op, a, b, ia, ib, by, x, y, z` | FG-D017: a landed stone is within 1.5× the cones of a partner but not in a placement (knob `near`). Sent to clients; the board draws a dashed NOT QUITE frame |
 | `try` | `op, a, b, why, err, by, mode` | Every attempt, including `norel` near misses within 1.5× the cones. **Log only**, never sent to clients |
 | `split` | `s, ch, a, b` | K7 split-back or a future split verb |
 
 `try` and the `why` of `dud` go only to the playtest log (`server.js` writes
-`logs/playtest-<date>.jsonl` when started with `--log`). Clients never see `mirror`.
+`logs/playtest-<date>.jsonl` when started with `--log`). Clients never see `mirror` itself, only
+the `other` bit (FG-D017).
 
 ## 7. Wire
 

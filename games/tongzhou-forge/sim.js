@@ -56,6 +56,10 @@ const FORGE = {
   snap: 0.15, rescue: 'off', dudCd: 0, wrongLife: Infinity,         // (tune)
   // client (K9, K10): sent to the board once per stage
   assist: 'label+snap', forms: true,
+  // feedback (FG-D017): a dud says when the two pieces do make something in another arrangement
+  // ('other') or only names the arrangement ('none'); `near` tells a player whose stone landed
+  // close to a placement but not in one, so a forge that never started is not silent
+  dudHint: 'other', near: true,
   // bodies
   holdLow: 0.55,          // arm hold while a friend stands on your head
   // enclosure (phase 7)
@@ -1050,7 +1054,10 @@ class Game {
       k.ready = 0;
       const wide = Object.assign({}, fz, { besideD: fz.besideD * 1.5, besideR: [fz.besideR[0] / 1.5, fz.besideR[1] * 1.5], besideY: fz.besideY * 1.5 });
       const near = bestRelation(k, this.partners(k), 'ground', wide);
-      if (near) this.ev('try', { op: near.op, a: near.first.ch, b: near.second.ch, why: 'norel', err: near.err, by: k.placer || null, mode: 'ground' });
+      if (near) {
+        this.ev('try', { op: near.op, a: near.first.ch, b: near.second.ch, why: 'norel', err: near.err, by: k.placer || null, mode: 'ground' });
+        if (fz.near && !k.pop) this.ev('near', { op: near.op, a: near.first.ch, b: near.second.ch, ia: near.first.id, ib: near.second.id, by: k.placer || null, x: (near.first.x + near.second.x) / 2, y: Math.max(near.first.y, near.second.y), z: (near.first.z + near.second.z) / 2 });
+      }
       return;
     }
     if (fz.snap > 0 && rel.err > 1e-6) {
@@ -1110,7 +1117,8 @@ class Game {
         const why = alts.length ? 'mirror' : 'dud';
         this.ev('try', { op, a: a.ch, b: b.ch, why, err: rel.err, by, mode });
         if (fz.dudCd > 0) this.cool.set(pair, this.clock + fz.dudCd);
-        if (!opt.quiet) this.ev('dud', { op, why, a: a.ch, b: b.ch, x: (a.x + b.x) / 2, y: Math.max(a.y, b.y), z: (a.z + b.z) / 2 });
+        // `other` is the honest half of the message: these two do go together, just not like this (FG-D017)
+        if (!opt.quiet) this.ev('dud', { op, why, a: a.ch, b: b.ch, ia: a.id, ib: b.id, other: why === 'mirror' && fz.dudHint === 'other', by, x: (a.x + b.x) / 2, y: Math.max(a.y, b.y), z: (a.z + b.z) / 2 });
         return null;
       }
     }

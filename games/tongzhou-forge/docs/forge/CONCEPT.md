@@ -83,6 +83,9 @@ The starting hypothesis, to be proven or broken in playtest:
 5. **Show after, never before** (charter P9). No outcome previews and no near-miss shimmer
    (decided 2026-11-18). Placement labels (BESIDE / ON TOP / INSIDE) describe the hand's action,
    never what it will make.
+   *Amended by FG-D017 after the first playtest:* "before" still means before the forge. After a
+   dud the game tells the truth: it names the arrangement that was tried, and says when the same two
+   pieces do go together in another arrangement (never which one). A near miss is reported too.
 
 ## 5. What carries over from 同舟 and Glyph Isles
 

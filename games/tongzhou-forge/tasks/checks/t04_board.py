@@ -4,6 +4,8 @@ commands on stdin, one per line. Nothing is mocked: the page talks to the real s
   LABELS        -> prints "LABELS <json>" (window.WForgeUI.AIM_LABEL)
   FORM ch op n  -> prints "FORM <json>"   (window.WForgeUI.glyphFor(ch, [op, n, 0]))
   SHOT <file>   -> saves a screenshot of the board, prints "OK"
+  FEED          -> prints "FEED <json>"   (the text of the message feed)
+  FRAMES        -> prints "FRAMES <json>" (visible placement frames: class and label)
   ERRORS        -> prints "ERRORS <json>" (page errors and console errors so far)
   QUIT
 Usage: python3 tasks/checks/t04_board.py <port> <query>   (needs playwright for Python, /usr/bin/chromium)"""
@@ -42,6 +44,12 @@ async def main():
             elif cmd == "SHOT":
                 await page.screenshot(path=arg)
                 print("OK", flush=True)
+            elif cmd == "FEED":
+                s = await page.evaluate("() => document.getElementById('feed').innerText")
+                print("FEED " + json.dumps(s, ensure_ascii=False), flush=True)
+            elif cmd == "FRAMES":
+                s = await page.evaluate("() => [...document.querySelectorAll('.pframe')].filter(e => e.style.display !== 'none').map(e => ({ cls: e.className, label: e.lastChild.textContent }))")
+                print("FRAMES " + json.dumps(s, ensure_ascii=False), flush=True)
             elif cmd == "ERRORS":
                 print("ERRORS " + json.dumps(errors, ensure_ascii=False), flush=True)
         await browser.close()

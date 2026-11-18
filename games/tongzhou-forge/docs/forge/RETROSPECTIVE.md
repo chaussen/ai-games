@@ -35,6 +35,19 @@ the count of characters players can make **and use with an obvious effect** is t
 | Stage (on-my-shoulders) | The pavilion and every boat path sat inside 炎's reach, so the hedge always burned and no second way existed; the pavilion moved south | Judge |
 | Client (effects) | `lite` used outside the block that defined it: a page error on every dispel | Board check `t09` |
 
+## 3b. First playtest (John, one phone, 2026-11-18)
+
+| Finding | Fix (FG-D017, FG-D018) |
+|---|---|
+| A failed 明: no way to see how it failed (wrong side? not lined up? something in the way?) | A frame round every resting pair: columns for BESIDE, rows for ON TOP; red after a dud; dashed NOT QUITE after a near miss, which used to be silent |
+| "日 + 月 make nothing" was false: they make 明 the other way round | The message names the arrangement and says when the pair goes together another way |
+| The pad opened with 木 in the square, so it looked like the only thing to write; Trace confused; "Practice next" suggested nothing to try | Blank pad; ideas to try (tap to copy, tap again to hide); no Trace switch |
+| Portrait phone: the isle is too small to play | Portrait zooms to 7 units across and follows you; a hint to turn sideways |
+
+Not fixed yet: controller and movement niggles (not a priority per John); side-by-side stones are
+0.62 apart but their glyphs are 1.35 wide, so a BESIDE pair overlaps on screen; on a portrait phone
+the goal note covers the quick-call buttons.
+
 ## 4. Known gaps
 
 - **No playtest yet.** G1 (is stacking fun or fiddly?) and G2 (does body forging work socially?)

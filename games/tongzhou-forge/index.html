@@ -81,13 +81,10 @@
       <span class="cp-ink-lbl" title="One pool shared by the whole crew">Crew ink:</span>
       <div id="cp-drops" class="cp-drops"></div>
     </div>
-    <div class="cp-mode-wrap">
-      <button id="cp-mode-btn" class="cp-btn-mode">Trace</button>
-    </div>
     <button id="cp-close-btn" class="cp-btn-close">✕ Close</button>
   </div>
   <div id="cp-canvas-wrap">
-    <div id="cp-guide" class="cp-guide hidden">木</div>
+    <div id="cp-guide" class="cp-guide hidden"></div>
     <svg id="cp-grid" width="100%" height="100%">
       <line x1="50%" y1="0" x2="50%" y2="100%" class="cp-grid-line" />
       <line x1="0" y1="50%" x2="100%" y2="50%" class="cp-grid-line" />
@@ -98,21 +95,21 @@
   </div>
   <div class="cp-bar">
     <button id="cp-clear-btn" class="cp-btn-clear">Clear</button>
-    <div id="cp-status" class="cp-status">Draw a character...</div>
+    <div id="cp-status" class="cp-status">Write any character you know. Need an idea? Tap one below.</div>
   </div>
   <!-- D1: choosing a character never spends ink; this is the explicit way to conjure one
        without writing it (the accessibility fallback). -->
   <div class="cp-actions">
-    <button id="cp-use-btn" class="cp-btn-use">Use without drawing</button>
+    <button id="cp-use-btn" class="cp-btn-use hidden">Use without drawing</button>
   </div>
   <div id="cp-tiles" class="cp-tiles"></div>
   <div id="cp-palette" class="cp-palette hidden">
-    <div class="cp-pal-head">Pick a character to trace:</div>
+    <div class="cp-pal-head">Which one did you mean?</div>
     <div id="cp-pal-items" class="cp-pal-items"></div>
   </div>
-  <!-- D8: what this phone should practise again (local only, never sent) -->
+  <!-- G1: ideas to try. Strong writers write anything; learners tap one to copy it. -->
   <div id="cp-practice" class="cp-practice hidden">
-    <div class="cp-prac-head">Practice next:</div>
+    <div class="cp-prac-head">Ideas to try · tap one to copy it</div>
     <div id="cp-prac-items" class="cp-prac-items"></div>
   </div>
 </div>

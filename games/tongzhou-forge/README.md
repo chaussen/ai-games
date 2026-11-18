@@ -63,11 +63,11 @@ Open `http://localhost:3200/?board=1` on the TV or laptop. Phones scan the QR co
 
 ```sh
 node sim-test.mjs && node smoke-test.mjs && node judge-test.mjs && node conjure-test.mjs && node forge-test.mjs
-node tasks/checks/t04.mjs && node tasks/checks/t08.mjs && node tasks/checks/t09.mjs   # real board in headless chromium
+node tasks/checks/t04.mjs && node tasks/checks/t08.mjs && node tasks/checks/t09.mjs && node tasks/checks/t10.mjs   # real board (and phone) in headless chromium
 ```
 
 The board checks need Python Playwright and `/usr/bin/chromium`. Ports: smoke 3460, conjure 3461,
-forge 3462, board checks 3474 to 3476. No test uses 3000.
+forge 3462, board checks 3474 to 3476 and 3480. No test uses 3000.
 `node lab/playlog.mjs logs/playtest-<date>.jsonl` prints the playtest numbers after `node server.js --log`.
 
 ## Controls
@@ -78,6 +78,13 @@ or screen-right of another stone), **ON TOP** (you stand in front of or behind i
 a friend both hold stones, side by side or one on the other's head), **PASS**, **OFFER** (at the
 pavilion), **THROW** or **SET DOWN**; with empty hands next to a friend, **BOOST**.
 The label names the placement, never what it will make.
+Two stones resting together get a frame round them: two columns for **BESIDE**, two rows for **ON TOP**.
+If they make nothing, the frame turns red and the message names the arrangement ("木 on the left, 日
+on the right: makes nothing"), and says so when the same two pieces **do** go together another way.
+A stone that lands close but out of line gets a dashed **NOT QUITE** frame.
+DRAW opens a blank writing pad: write any character you know, or tap one of the **ideas to try**
+underneath to show it in the square and copy it (tap again to hide it).
+A phone held upright zooms in and follows you; turn it sideways to see more of the isle.
 Board (TV / laptop): N / P / Backspace for next stage, previous stage, restart.
 
 ## Home-network caveats
@@ -85,3 +92,7 @@ Board (TV / laptop): N / P / Backspace for next stage, previous stage, restart.
 Same as `tongzhou-isles`: all devices on the same subnet; guest Wi-Fi with client isolation will not
 work; plain http, so there is no wake lock (keep phones awake); a phone's wobbler is dropped after
 90 s offline.
+Phone says **site can't be reached** (`ERR_ADDRESS_UNREACHABLE`)? Check two things on the computer:
+the address may have changed (the board's QR code and the server's `Phones (Wi-Fi):` line always show
+the current one), and the firewall must allow the port. On a machine where only 3000 is open, run
+`PORT=3000 node server.js`; `./lan-doctor.sh` checks the firewall.

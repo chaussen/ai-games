@@ -60,6 +60,8 @@ moving these knobs between playtests (`PLAYTEST.md` §3). No knob may be hardcod
 | K8 | Body formation: how far a pair may stand off-line, and how still they must be | `bodyD`, `bodyStill` | 0.7, any | 0.35, 0.5 u/s | 0.55, any | classifier |
 | K9 | Placement assist: the aim label names the placement (BESIDE / ON TOP / INSIDE) and the aim marker snaps | `assist` | `label+snap` | `none` | `label+snap` | client + `launch()` |
 | K10 | Variant forms (水→氵 in the left slot) shown on the stone before the forge | `forms` | on | off | on | client |
+| K11 | After a dud, say when the same two pieces go together in another arrangement (FG-D017) | `dudHint` | `other` | `other` | `other` | sim (`dud.other`) |
+| K12 | Report a near miss (landed within 1.5× the cones, not in a placement) (FG-D017) | `near` | on | on | on | sim (`near` event) |
 | K11 | Which characters count as real | content: only `glyphs.json`; rare mirrors (炏, 仌) are duds | — | — | closed set | content |
 | K12 | How many minimal-pair checks a stage asks for | content: stage design | 0–1 | every forge | ≤ 1 per stage early on | content |
 
