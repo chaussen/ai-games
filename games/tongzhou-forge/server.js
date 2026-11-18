@@ -64,7 +64,9 @@ setInterval(() => {
     game.step(TICK);
     if (++tickNo % 2 === 0) {            // 30 snapshots a second
       const snap = game.snapshot();
-      const ev = game.drainEvents();
+      // `try` events and a dud's `why` are for the playtest log only: clients never learn that
+      // another arrangement would have worked (P9, docs/forge/SPEC.md §6).
+      const ev = game.drainEvents().filter(e => e.t !== 'try').map(e => e.t === 'dud' && 'why' in e ? Object.assign({}, e, { why: undefined }) : e);
       if (ev.length) {
         snap.e = ev;
         if (ev.some(e => e.t === 'stage')) snap.conjure = stageConjure(game.stage);

@@ -45,7 +45,18 @@ function driver(g) {
     g.setInput(id, ix, iz); g.act(id, 'jump');
     hold(id, ix, iz, () => landed() && P(id).grounded, 3);
   }
-  return { P, tick, wait, stop, go, hop, grab, hold, toss, leap };
+  // Set the held stone against stone k: side 'left' / 'right' of it on screen (⿰), or 'top' (⿱).
+  // Stands 0.95 from k along screen-left/-right, or in front of it, turns to face it and presses GRAB.
+  const R = [Math.SQRT1_2, -Math.SQRT1_2], D = [Math.SQRT1_2, Math.SQRT1_2];
+  function set(id, k, side) {
+    const [u, w] = side === 'left' ? [-1, 0] : side === 'right' ? [1, 0] : [0, 1];
+    const x = k.x + 0.95 * (u * R[0] + w * D[0]), z = k.z + 0.95 * (u * R[1] + w * D[1]);
+    go(id, x, z);
+    const dx = k.x - P(id).x, dz = k.z - P(id).z, l = Math.hypot(dx, dz);
+    g.setInput(id, dx / l * 0.2, dz / l * 0.2); tick(1); stop(id); tick(8);   // turn to face k
+    g.act(id, 'grab'); tick(1); wait(1);
+  }
+  return { P, tick, wait, stop, go, hop, grab, hold, toss, leap, set };
 }
 
 function solo(stage, name, script) {
@@ -66,6 +77,8 @@ function solo(stage, name, script) {
 
 // pick up a freshly fused stone, unless it already popped into our hands
 const take = (g, d, k) => { d.go('a', k.x + 0.6, k.z); d.grab('a'); if (d.P('a').hold !== k) throw new Error('could not pick up ' + k.ch); };
+// JUDGE-style trace for a failing script: DBG=1 node sim-test.mjs
+const dump = (g, tag) => { if (process.env.DBG) console.log('DBG', tag, g.stones.filter(k => k.state !== 'gone').map(k => k.ch + k.state[0] + ' ' + [k.x, k.y, k.z].map(v => v.toFixed(2)).join(',')).join(' | '), [...g.players.values()].map(p => p.id + '@' + [p.x, p.z].map(v => v.toFixed(2)).join(',') + (p.hold ? p.hold.ch : '')).join(' ')); };
 const stone = (g, ch) => g.stones.find(k => k.ch === ch && k.state !== 'gone');
 const evs = [];
 const seen = (g, t) => { evs.push(...g.drainEvents()); return evs.filter(e => e.t === t); };
@@ -87,7 +100,9 @@ solo(0, 'Two Trees', (g, d) => {
   d.wait(4);
   check(g.stones.filter(k => k.ch === '木').length === 1 && !seen(g, 'regrow').length && seen(g, 'spent').some(e => e.ch === '木' && !e.back), 'a used-up stone is gone for good: nothing grows back');
   // the only way to get it back is to conjure it: walk up beside the other 木 and write one
-  d.go('a', 11.5, 3.5); d.go('a', 10.6, 3.5);
+  // stand so the stone appearing 0.9 ahead (facing -x) lands 0.62 screen-right of the other 木
+  const other = stone(g, '木'), cx = other.x + 0.62 * Math.SQRT1_2 + 0.9, cz = other.z - 0.62 * Math.SQRT1_2;
+  d.go('a', cx + 0.6, cz); d.go('a', cx, cz);
   const inkBefore = g.ink;
   check(g.conjure('a', '木').ok && g.ink === inkBefore - 1, 'conjuring 木 brings one back and spends one drop of the crew ink');
   d.wait(1.5);
@@ -140,10 +155,17 @@ solo(1, 'Sun and Moon', (g, d) => {
   check(g.bridges.length === 1 && g.bridges[0].x0 === 3 && g.bridges[0].x1 === 6, 'a second 木 bridges the gap to the shrine');
   d.go('a', 11, 2.5); d.go('a', 15.5, 1.6); d.grab('a');
   check(d.P('a').hold && d.P('a').hold.ch === '日', '日 can be lifted down from its ledge');
-  d.go('a', 11, 2.5); d.go('a', 8.2, 2.5); d.go('a', 8.2, 1.5); d.go('a', 7.5, 1.5);
+  // 月 sits on the island's left edge, so 日 cannot go on its left: set 日 down, then bring 月 to 日's right
+  d.go('a', 11, 2.5); d.go('a', 8.6, 2.9); d.go('a', 8.13, 2.9);   // facing -x, 月 out of reach: SET DOWN
   d.grab('a'); d.wait(1);
+  dump(g, 'sun down');
+  const sun = stone(g, '日'), moon = stone(g, '月');
+  d.go('a', 6.5, 2.0); d.grab('a');
+  dump(g, 'moon up');
+  check(d.P('a').hold === moon, 'picked up 月');
+  d.set('a', sun, 'right');
   const ming = stone(g, '明');
-  check(ming && !stone(g, '日') && !stone(g, '月'), '日 set down beside 月 becomes 明');
+  check(ming && !stone(g, '日') && !stone(g, '月') && seen(g, 'forge').some(e => e.op === '⿰' && e.a === '日' && e.b === '月'), '月 set on the screen-right of 日 makes 明 (日 ⿰ 月)');
   take(g, d, ming);
   d.go('a', 6.5, 2.5); d.go('a', 1.6, 2.5);
 });
@@ -161,10 +183,16 @@ solo(2, 'Lean on a Tree', (g, d) => {
   d.go('a', 12.5, 4.6); d.go('a', 13.2, 4.6); d.grab('a'); d.wait(0.6);
   d.go('a', 11.7, 5.5); d.grab('a');
   check(d.P('a').hold.ch === '人', 'picked up 人 from behind the flames');
-  d.go('a', 9.4, 6.5); d.go('a', 5, 6.5); d.go('a', 4.5, 6.5);
+  // 木 sits at the island's edge (nothing on its screen-left): set 人 down, then bring 木 to 人's right
+  d.go('a', 9.4, 6.5); d.go('a', 7.5, 4.5); d.go('a', 5.0, 4.4); d.go('a', 5.0, 4.76);   // facing +z: SET DOWN, clear of the crate and the 2-high block
   d.grab('a'); d.wait(1);
+  const ren = stone(g, '人');
+  d.go('a', 4.3, 6.5); d.grab('a');
+  check(d.P('a').hold && d.P('a').hold.ch === '木', 'picked up 木');
+  d.set('a', ren, 'right');
+  dump(g, 'xiu');
   const xiu = stone(g, '休');
-  check(!!xiu, '人 set down beside 木 becomes 休');
+  check(!!xiu && seen(g, 'forge').some(e => e.a === '人' && e.b === '木'), '木 set on the screen-right of 人 makes 休 (人 ⿰ 木)');
   check(xiu.state === 'loose', 'a new character pops up and lands; nobody catches it by accident');
   take(g, d, xiu);
   d.go('a', 4.5, 5.0); d.go('a', 4.5, 4.45);
@@ -240,7 +268,7 @@ solo(2, 'Lean on a Tree', (g, d) => {
   const g = new Game(); g.addPlayer('a', 'A'); g.loadStage(0);
   const d = driver(g); d.wait(2.8);
   const b = g.boat;
-  d.go('a', 10.3, 1.5); d.grab('a'); d.go('a', 11, 3.5); d.go('a', 10.5, 3.5); d.grab('a'); d.wait(1);
+  d.go('a', 10.3, 1.5); d.grab('a'); d.set('a', g.stones.find(k => k.ch === '木' && k.state === 'loose'), 'right');
   take(g, d, stone(g, '林'));
   d.go('a', 12.5, 2.5); d.go('a', 15.5, 2.5);
   check(g.onDeck(d.P('a')) && d.P('a').hold.ch === '林', 'a carrier walks back onto the moored boat');

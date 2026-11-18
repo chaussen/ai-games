@@ -30,11 +30,6 @@ const ARRIVE = 2.6, LEAVE = 3.4;        // seconds the boat takes to sail in and
 const ROW_ACC = 5, ROW_MAX = 2.6, ROW_DRAG = 2, RAIL = 0.14, SEA = 4;
 // a friend can be boosted: flung up and forward, stone and all
 const BOOST_V = 9, BOOST_SPEED = 7.2, FLING = 0.55, BOOST_CD = 0.8, BOOST_R = 1.15;
-const FUSE_R = 0.95;                    // two resting stones this close become one
-// F2.1 BRIDGE, removed by card F2.6: the sim cannot read placement yet (no relate()), so two
-// touching stones still make whatever recipe their two pieces share, in any op and order, exactly
-// as before. Returns the matching [op, first, second, result] or null.
-const bridgeRecipe = (a, b) => LV.mirrors(a, b)[0] || null;
 const REGROW = 3.5;                     // seconds before a used-up stone grows back (only when the stage regrows)
 const MAX_STONES = 14;
 
@@ -194,6 +189,15 @@ class Game {
     this.sid = 0;
     this.regrow = L.regrow != null ? !!L.regrow : STONES.regrow;
     this.fz = forgeKnobs(L.strict || PROFILE);
+    // What the pavilion wants and every piece on the way to it: anything else forged here is
+    // "wrong but real" (DESIGN §4.4), which K7 (wrongLife) may split back.
+    this.wantTree = new Set([L.want]);
+    for (let grew = true; grew;) {
+      grew = false;
+      for (const r of LV.RECIPE_LIST) if (this.wantTree.has(r[3])) for (const c of (r[0] === '⿱⿰' ? [r[1], ...r[2]] : [r[1], r[2]])) if (!this.wantTree.has(c)) { this.wantTree.add(c); grew = true; }
+    }
+    this.cool = new Map();   // K6: "a,b" stone ids -> clock time until which this pair cannot forge again
+    this.clock = 0;          // seconds since the stage loaded, every step (this.time only runs once the crew has started)
     this.springs = (L.stones || []).map(d => ({ ch: d[0], x: d[1], z: d[2], y: this.floor(d[1], d[2]), stone: null, wait: 0 }));
     for (const sp of this.springs) sp.stone = this.addStone(sp.ch, sp.x, sp.y, sp.z, sp);
     for (const p of this.players.values()) p.hold = null;
@@ -413,6 +417,7 @@ class Game {
     stone.pop = true;
     stone.from = [sx, sy, sz];
     stone.by = playerId;
+    stone.placer = playerId;
     stone.conj = true;
     this.ev('conjure', { by: playerId, ch, s: stone.id, x: sx, y: sy, z: sz });
     this.note(ch, null, true);
@@ -485,6 +490,7 @@ class Game {
 
   // ---------- step ----------
   step(dt) {
+    this.clock += dt;
     if (this.phase === 'won') {
       // The shrine has answered and the river is open: all aboard. The boat leaves
       // when everyone awake is on it, or a while after the first one boards.
@@ -529,6 +535,7 @@ class Game {
 
     for (const k of this.stones.slice()) if (k.state !== 'gone') this.stepStone(k, dt);
     this.stepFusion();
+    this.stepWrong(dt);
     this.stepWalls();
     this.stepSprings(dt);
     this.stones = this.stones.filter(k => k.state !== 'gone');
@@ -777,7 +784,7 @@ class Game {
   }
 
   holdStone(p, k, how) {
-    k.state = 'held'; k.holder = p; p.hold = k; k.grounded = false; k.support = null; k.vx = k.vy = k.vz = 0; k.lonely = 0;
+    k.state = 'held'; k.holder = p; p.hold = k; k.grounded = false; k.support = null; k.snap = null; k.ready = 0; k.vx = k.vy = k.vz = 0; k.lonely = 0;
     this.started = true;
     this.note(k.ch, p.id);
     this.ev(how, { id: p.id, s: k.id, ch: k.ch });
@@ -789,7 +796,7 @@ class Game {
     const k = p.hold;
     if (!k) return;
     p.hold = null;
-    k.state = 'loose'; k.holder = null; k.thrower = null; k.flight = 0; k.grounded = false;
+    k.state = 'loose'; k.holder = null; k.thrower = null; k.flight = 0; k.grounded = false; k.placer = p.id;
     k.x = p.x; k.y = p.y + 0.6; k.z = p.z; k.vx = k.vz = 0; k.vy = 1;
     k.from = p.safe.slice();
   }
@@ -859,6 +866,7 @@ class Game {
     k.state = 'loose'; k.holder = null; k.thrower = p; k.flight = 0; k.grounded = false; k.lonely = 0;
     k.x = l.x; k.y = l.y; k.z = l.z; k.vx = l.vx; k.vy = l.vy; k.vz = l.vz;
     k.from = p.safe.slice();
+    k.placer = p.id;
     this.ev('throw', { id: p.id, mode: l.mode, s: k.id });
   }
 
@@ -911,13 +919,8 @@ class Game {
     if (base && base.boat) { k.x += base.dx; k.z += base.dz; }
     const hit = this.moveStoneBody(k, dt);
     if (hit === 2 || (k.grounded && !wasGrounded)) this.ev('thud', { s: k.id });
-    if (k.grounded && !wasGrounded && !k.pop) {
-      // two characters that make nothing together say so, instead of sitting there silently
-      for (const o of this.stones) {
-        if (o === k || o.state !== 'loose' || !o.grounded || Math.hypot(o.x - k.x, o.z - k.z) > FUSE_R || Math.abs(o.y - k.y) > 0.6) continue;
-        if (!bridgeRecipe(k.ch, o.ch)) { this.ev('dud', { a: k.ch, b: o.ch, x: (k.x + o.x) / 2, y: k.y, z: (k.z + o.z) / 2 }); break; }
-      }
-    }
+    if (k.grounded && !wasGrounded) this.settle(k);
+    if (k.snap) this.stepSnap(k, dt);
     if (!k.grounded) {
       k.flight += dt;
       // 木 does what it means: dropped into a gap, it grows across it
@@ -984,25 +987,122 @@ class Game {
     this.consume(k);
   }
 
+  // ---------- forging on the ground (DESIGN §4.2) ----------
+  // Stones that may forge with each other: loose and resting, and not two that still sit where they grew.
+  partners(k) {
+    return this.stones.filter(o => o !== k && o.state === 'loose' && o.grounded && !(k.spring && o.spring && !k.from && !o.from));
+  }
+
+  // A loose stone has just come to rest. If it is in a relation, snap it to the ideal spot (K4) and
+  // forge when the snap ends; otherwise forge (or dud) now. Near misses are logged as `try` norel.
+  settle(k) {
+    if (this.phase !== 'play') return;
+    const fz = this.fz, rel = bestRelation(k, this.partners(k), 'ground', fz);
+    k.ready = k.pop ? 2 : 1;   // 2: a stone that popped out of a forge does not dud on landing
+    if (!rel) {
+      k.ready = 0;
+      const wide = Object.assign({}, fz, { besideD: fz.besideD * 1.5, besideR: [fz.besideR[0] / 1.5, fz.besideR[1] * 1.5], besideY: fz.besideY * 1.5 });
+      const near = bestRelation(k, this.partners(k), 'ground', wide);
+      if (near) this.ev('try', { op: near.op, a: near.first.ch, b: near.second.ch, why: 'norel', err: near.err, by: k.placer || null, mode: 'ground' });
+      return;
+    }
+    if (fz.snap > 0 && rel.err > 1e-6) {
+      const o = rel.partner, top = rel.op === '⿱';
+      let tx = o.x, tz = o.z;
+      if (!top) {
+        const side = ((k.x - o.x) * AX_R[0] + (k.z - o.z) * AX_R[1]) < 0 ? -1 : 1;
+        tx = o.x + side * fz.ideal * AX_R[0]; tz = o.z + side * fz.ideal * AX_R[1];
+      }
+      // snap only along a flat surface: the ideal spot must hold the stone at the height it rests at now
+      const g = this.ground(tx, tz, OR, k.y + SOFT, k, false, true);
+      if (Math.abs(g.y - k.y) < 0.05 && (top ? g.ref === o : g.ref !== o)) { k.snap = { t: 0, x0: k.x, z0: k.z, x1: tx, z1: tz }; return; }
+    }
+  }
+
+  // K4: slide toward the ideal spot over fz.snap seconds, then forge.
+  stepSnap(k, dt) {
+    const sn = k.snap;
+    if (!k.grounded) { k.snap = null; return; }
+    sn.t += dt;
+    const u = Math.min(1, sn.t / this.fz.snap);
+    k.x = sn.x0 + (sn.x1 - sn.x0) * u; k.z = sn.z0 + (sn.z1 - sn.z0) * u;
+    k.vx = k.vz = 0;
+    if (u >= 1) k.snap = null;
+  }
+
+  // Every resting stone that is ready (and not still snapping) tries its relation, in id order.
   stepFusion() {
     if (this.phase !== 'play') return;
-    const list = this.stones;
-    for (let i = 0; i < list.length; i++) for (let j = i + 1; j < list.length; j++) {
-      const a = list[i], b = list[j];
-      if (a.state !== 'loose' || b.state !== 'loose' || !a.grounded || !b.grounded) continue;
-      if (Math.hypot(a.x - b.x, a.z - b.z) > FUSE_R || Math.abs(a.y - b.y) > 0.6) continue;
-      // two stones still sitting where they grew are not a deliberate act
-      if (a.spring && b.spring && !a.from && !b.from) continue;
-      const rec = bridgeRecipe(a.ch, b.ch);
-      if (!rec) continue;
-      const ch = rec[3];
-      const x = (a.x + b.x) / 2, y = Math.max(a.y, b.y), z = (a.z + b.z) / 2;
-      this.consume(a); this.consume(b);
-      const k = this.addStone(ch, x, y, z, null);
-      if (k) { k.from = [x, y, z]; k.vy = 5; k.grounded = false; k.pop = true; }
-      this.note(ch, null, true);
-      this.ev('fuse', { op: rec[0], a: a.ch, b: b.ch, ch, x, y, z, s: k ? k.id : 0 });
-      return;
+    for (const k of this.stones.slice()) {
+      if (!k.ready || k.snap || k.state !== 'loose' || !k.grounded) continue;
+      const quiet = k.ready === 2;
+      k.ready = 0;
+      const rel = bestRelation(k, this.partners(k), 'ground', this.fz);
+      if (rel) this.tryForge(rel, k.placer || null, { quiet, at: k });
+    }
+  }
+
+  // The single path for every forge attempt (ground now, bodies in Phase 4). rel = relate()'s
+  // { op, first, second, err }. Forges, rescues (K5) or duds; a dud consumes nothing.
+  tryForge(rel, by, opt = {}) {
+    const a = rel.first, b = rel.second, fz = this.fz, mode = opt.mode || 'ground';
+    const pair = Math.min(a.id, b.id) + ',' + Math.max(a.id, b.id);
+    if (this.cool.has(pair) && this.cool.get(pair) > this.clock) {
+      this.ev('try', { op: rel.op, a: a.ch, b: b.ch, why: 'cooldown', err: rel.err, by, mode });
+      return null;
+    }
+    let op = rel.op, first = a, second = b, ch = LV.fuse(op, a.ch, b.ch), rescued = false;
+    if (!ch) {
+      const alts = LV.mirrors(a.ch, b.ch).filter(r => r[0] !== '⿱⿰');
+      if (fz.rescue === 'unique' && alts.length === 1) {
+        // the only arrangement of these two pieces that makes anything: forge it, visibly slid into place
+        const r = alts[0];
+        op = r[0]; ch = r[3]; rescued = true;
+        if (r[1] !== a.ch) { first = b; second = a; }
+      } else {
+        const why = alts.length ? 'mirror' : 'dud';
+        this.ev('try', { op, a: a.ch, b: b.ch, why, err: rel.err, by, mode });
+        if (fz.dudCd > 0) this.cool.set(pair, this.clock + fz.dudCd);
+        if (!opt.quiet) this.ev('dud', { op, why, a: a.ch, b: b.ch, x: (a.x + b.x) / 2, y: Math.max(a.y, b.y), z: (a.z + b.z) / 2 });
+        return null;
+      }
+    }
+    // where the result appears: between a beside pair, on the bottom stone's spot for a stack
+    const bot = op === '⿱' ? second : null;
+    const x = bot ? bot.x : (a.x + b.x) / 2, y = bot ? bot.y : Math.max(a.y, b.y), z = bot ? bot.z : (a.z + b.z) / 2;
+    this.consume(a); this.consume(b);
+    const k = this.addStone(ch, x, y, z, null);
+    const wrong = ch !== this.L.want && !this.wantTree.has(ch);
+    if (k) {
+      k.from = [x, y, z]; k.vy = 5; k.grounded = false; k.pop = true; k.parts = [op, first.ch, second.ch];
+      if (wrong && fz.wrongLife !== Infinity) k.life = fz.wrongLife;
+    }
+    this.note(ch, by, true);
+    this.ev('try', { op, a: first.ch, b: second.ch, why: wrong ? 'wrong' : 'ok', err: rel.err, by, mode, rescued });
+    this.ev('forge', { op, a: first.ch, b: second.ch, ch, x, y, z, s: k ? k.id : 0, by, held: false, rescued });
+    // alias for one phase (SPEC §7): the board's effects still listen for `fuse`
+    this.ev('fuse', { op, a: first.ch, b: second.ch, ch, x, y, z, s: k ? k.id : 0 });
+    return k;
+  }
+
+  // K7: a wrong-but-real character splits back into its two pieces after fz.wrongLife seconds.
+  // The pieces land apart in depth (which means nothing), so they do not forge again by themselves.
+  stepWrong(dt) {
+    if (this.fz.wrongLife === Infinity || this.phase !== 'play') return;
+    for (const k of this.stones.slice()) {
+      if (k.life === undefined || k.state === 'gone') continue;
+      k.life -= dt;
+      if (k.life > 0) continue;
+      const at = k.holder ? { x: k.holder.x, y: k.holder.y, z: k.holder.z } : { x: k.x, y: k.y, z: k.z };
+      const [op, ca, cb] = k.parts;
+      this.consume(k);
+      const out = [];
+      for (const [ch, s] of [[ca, -1], [cb, 1]]) {
+        const px = at.x + s * 0.45 * AX_D[0], pz = at.z + s * 0.45 * AX_D[1];
+        const n = this.addStone(ch, px, at.y + 0.3, pz, null);
+        if (n) { n.from = [px, at.y, pz]; n.grounded = false; n.vy = 3; n.pop = true; out.push(n.id); }
+      }
+      this.ev('split', { s: k.id, ch: k.ch, op, a: ca, b: cb, out });
     }
   }
 
@@ -1115,4 +1215,4 @@ class Game {
 
 const STATIC = { kind: 's' };
 
-module.exports = { Game, CONJURE, STONES, FORGE, PROFILE, forgeKnobs, relate, bestRelation, AX_R, AX_D, CONST: { FUSE_R, REGROW, G, SPEED, CARRY_SPEED, JUMP_V, KILL, PR, PH, CR, CH, HOLD_Y, WIN_HOLD, WIN_MIN, BOARD_WAIT, ARRIVE, LEAVE, QI_CD, ROW_MAX, BOOST_R } };
+module.exports = { Game, CONJURE, STONES, FORGE, PROFILE, forgeKnobs, relate, bestRelation, AX_R, AX_D, CONST: { OH, REGROW, G, SPEED, CARRY_SPEED, JUMP_V, KILL, PR, PH, CR, CH, HOLD_Y, WIN_HOLD, WIN_MIN, BOARD_WAIT, ARRIVE, LEAVE, QI_CD, ROW_MAX, BOOST_R } };

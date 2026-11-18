@@ -203,4 +203,122 @@ group('Placement');
   }
 }
 
+// ---------------------------------------------------------------- Order and forging (F2.6)
+// Lay stone a on the floor, then drop b so it lands at screen offset (r, q) from a, or on top of a.
+function pairUp(a, b, where, opts = {}) {
+  const g = new Game([yard(opts.stage || {})]);
+  const A = g.addStone(a, 6, 1, 4, null);
+  const top = where === 'top';
+  const [r, q] = top ? [0.05, 0] : where;
+  const B = g.addStone(b, 6 + r * AX_R[0] + q * AX_D[0], 2.2, 4 + r * AX_R[1] + q * AX_D[1], null);
+  B.grounded = false; B.placer = 'a'; B.from = [B.x, 1, B.z];
+  g.drainEvents();
+  const ev = [];
+  for (let i = 0; i < (opts.ticks || 60); i++) { g.step(1 / 60); ev.push(...g.drainEvents()); }
+  return { g, A, B, ev, of: t => ev.filter(e => e.t === t) };
+}
+group('Order');
+{
+  const ok = pairUp('日', '月', [0.62, 0]);
+  const f = ok.of('forge')[0];
+  check(f && f.ch === '明' && f.op === '⿰' && f.a === '日' && f.b === '月' && f.by === 'a', '日 with 月 landing on its screen-right forges 明 (by the one who placed it)');
+  check(ok.A.state === 'gone' && ok.B.state === 'gone' && ok.g.stones.some(k => k.ch === '明' && k.state !== 'gone'), 'both pieces are used up and 明 appears');
+  check(ok.of('fuse').some(e => e.ch === '明'), 'the old fuse event still fires (board effects, SPEC §7)');
+  const bad = pairUp('日', '月', [-0.62, 0]);
+  check(!bad.of('forge').length && bad.of('dud').length === 1 && bad.of('dud')[0].op === '⿰', '月 on the screen-left of 日 (月 ⿰ 日) is a dud');
+  check(bad.A.state === 'loose' && bad.B.state === 'loose', 'a dud uses up nothing');
+  const t = bad.of('try')[0];
+  check(t && t.why === 'mirror' && t.a === '月' && t.b === '日', 'the log says why: mirror (another arrangement would have worked)');
+  const none = pairUp('女', '木', [0.62, 0]);
+  check(none.of('try')[0] && none.of('try')[0].why === 'dud', 'pieces that make nothing in any arrangement: why dud');
+  const depth = pairUp('日', '月', [0, 0.9]);
+  check(!depth.of('forge').length && !depth.of('dud').length, 'one in front of the other (depth only) is no relation: no forge, no dud');
+  const fen = pairUp('火', '林', 'top');
+  check(fen.of('forge')[0] && fen.of('forge')[0].ch === '焚' && fen.of('forge')[0].op === '⿱', '林 dropped on top of 火 forges 焚 (⿱ 林 火)');
+  const fen2 = pairUp('林', '火', 'top');
+  check(!fen2.of('forge').length && fen2.of('try')[0].why === 'mirror', '火 on top of 林 is a dud (mirror)');
+  const yan = pairUp('火', '火', 'top');
+  check(yan.of('forge')[0] && yan.of('forge')[0].ch === '炎', '火 on 火 forges 炎');
+  const flat = pairUp('火', '火', [0.62, 0]);
+  check(!flat.of('forge').length && flat.of('dud').length === 1, '火 beside 火 is a dud: 炏 is not in the closed set (FG-D011)');
+  const res = yan.g.stones.find(k => k.ch === '炎');
+  check(res && res.state === 'loose' && res.grounded && !yan.of('dud').length, 'the new stone pops up and lands without a dud of its own');
+  const lone = pairUp('日', '月', [0.62, 0.6]);
+  const nr = lone.of('try')[0];
+  check(nr && nr.why === 'norel' && !lone.of('dud').length, 'a near miss just outside the cones is logged (try norel) but shows nothing');
+  check(ok.of('try').some(e => e.why === 'wrong'), 'on an isle that wants 林, 明 is logged as try wrong');
+  const want = pairUp('日', '月', [0.62, 0], { stage: { want: '明' } });
+  check(want.of('try').some(e => e.why === 'ok'), 'on an isle that wants 明, the same forge logs try ok');
+}
+
+group('Forgiveness');
+{
+  // K4 snap: a stone landing at r 0.9 slides to the ideal r 0.62 before it forges (or duds).
+  const rOf = (A, B) => (B.x - A.x) * AX_R[0] + (B.z - A.z) * AX_R[1];
+  const sn = pairUp('女', '木', [0.9, 0.2]);
+  check(Math.abs(rOf(sn.A, sn.B) - 0.62) < 1e-6 && Math.abs((sn.B.x - sn.A.x) * AX_D[0] + (sn.B.z - sn.A.z) * AX_D[1]) < 1e-6, 'snap (standard 0.15 s): a stone landing off the ideal spot slides onto it');
+  check(sn.of('dud').length === 1, 'and the attempt happens after the slide');
+  const ns = pairUp('女', '木', [0.9, 0.2], { stage: { strict: 'strict' } });
+  check(Math.abs(rOf(ns.A, ns.B) - 0.9) < 0.02, 'strict profile: no snap, the stone stays where it landed');
+  const stTop = pairUp('火', '火', [0.3, 0.1]);
+  check(stTop.of('forge')[0] && stTop.of('forge')[0].op === '⿱', 'a stone that lands half on another rests on it and forges ⿱');
+
+  // K5 rescue (relaxed): the only arrangement of these pieces that makes anything is forged instead.
+  const rel = { stage: { strict: 'relaxed' } };
+  const rs = pairUp('日', '月', [-0.62, 0], rel);
+  const rf = rs.of('forge')[0];
+  check(rf && rf.ch === '明' && rf.rescued === true && rf.a === '日' && rf.b === '月' && !rs.of('dud').length, 'relaxed: 月 left of 日 is rescued into 明 (the forge event says rescued)');
+  const nr = pairUp('日', '月', [-0.62, 0]);
+  check(!nr.of('forge').length, 'standard: no rescue');
+  const rd = pairUp('女', '木', [0.62, 0], rel);
+  check(!rd.of('forge').length && rd.of('dud').length === 1, 'relaxed: pieces with no recipe at all still dud');
+
+  // K6 dudCd (strict): after a dud, these two stones cannot forge for 1.5 s.
+  const cd = pairUp('日', '月', [-0.62, 0], { stage: { strict: 'strict' } });
+  const g = cd.g, A = cd.A, B = cd.B;
+  // put 月 on the right side by hand and ask again at once, then after the cooldown
+  B.x = A.x + 0.62 * AX_R[0]; B.z = A.z + 0.62 * AX_R[1];
+  const r1 = g.tryForge(relate(A, B, 'ground', g.fz), 'a');
+  const ev1 = g.drainEvents();
+  check(r1 === null && ev1.some(e => e.t === 'try' && e.why === 'cooldown') && !ev1.some(e => e.t === 'dud'), 'strict: the same two stones right after a dud: nothing happens (try cooldown, no dud shown)');
+  for (let i = 0; i < 90; i++) g.step(1 / 60);
+  const r2 = g.tryForge(relate(A, B, 'ground', g.fz), 'a');
+  check(r2 && r2.ch === '明', 'after dudCd (1.5 s from the dud) they forge');
+  const nc = pairUp('日', '月', [-0.62, 0]);
+  nc.B.x = nc.A.x + 0.62 * AX_R[0]; nc.B.z = nc.A.z + 0.62 * AX_R[1];
+  check(nc.g.tryForge(relate(nc.A, nc.B, 'ground', nc.g.fz), 'a'), 'standard: no cooldown, the corrected pair forges at once');
+
+  // K7 wrongLife (relaxed, 12 s): a real character the pavilion has no use for splits back.
+  const wr = pairUp('火', '火', 'top', { stage: { strict: 'relaxed' }, ticks: 30 });
+  const yan = wr.g.stones.find(k => k.ch === '炎');
+  check(yan && yan.life > 11 && wr.of('try').some(e => e.why === 'wrong'), 'relaxed: 炎 on an isle that wants 林 is wrong (try wrong) and gets 12 s');
+  for (let i = 0; i < 12 * 60; i++) wr.g.step(1 / 60);
+  const ev = wr.g.drainEvents(), sp = ev.find(e => e.t === 'split');
+  const fires = wr.g.stones.filter(k => k.ch === '火' && k.state === 'loose');
+  check(sp && sp.ch === '炎' && yan.state === 'gone' && fires.length === 2, 'after 12 s it splits back into 火 and 火');
+  for (let i = 0; i < 60; i++) wr.g.step(1 / 60);
+  check(!wr.g.drainEvents().some(e => e.t === 'forge' || e.t === 'dud') && !relate(fires[0], fires[1], 'ground', wr.g.fz), 'the pieces land apart in depth and do not forge again by themselves');
+  const keep = pairUp('木', '木', [0.62, 0], { stage: { strict: 'relaxed', want: '森' }, ticks: 30 });
+  const lin = keep.g.stones.find(k => k.ch === '林');
+  check(lin && lin.life === undefined && keep.of('try').some(e => e.why === 'ok'), 'relaxed: 林 on an isle that wants 森 is on the way, not wrong: it keeps');
+  const stdW = pairUp('火', '火', 'top', { ticks: 30 });
+  check(stdW.g.stones.find(k => k.ch === '炎').life === undefined, 'standard: wrong characters keep (wrongLife ∞)');
+}
+
+group('Determinism');
+{
+  // The same placements give bit-identical snapshots: snap, forge, pop, rescue and split included.
+  const run = () => {
+    const out = [];
+    for (const [a, b, w, st] of [['日', '月', [0.9, 0.2], 'standard'], ['日', '月', [-0.62, 0.1], 'relaxed'], ['火', '火', 'top', 'relaxed'], ['女', '木', [0.7, -0.1], 'strict']]) {
+      const { g } = pairUp(a, b, w, { stage: { strict: st }, ticks: 30 });
+      for (let i = 0; i < 14 * 60; i++) { g.step(1 / 60); if (i % 30 === 0) out.push(JSON.stringify(g.snapshot())); }
+      out.push(JSON.stringify(g.drainEvents()));
+    }
+    return out.join('\n');
+  };
+  const one = run(), two = run();
+  check(one === two && one.length > 1000, `two runs of the same forge script give identical snapshots and events (${one.length} bytes)`);
+}
+
 console.log(failed ? `\n${failed} FORGE CHECK(S) FAILED` : '\nALL FORGE CHECKS PASSED');

@@ -210,7 +210,8 @@ console.log('\n--- Sim: 女 + 子 conjured fuse into 好 ---');
 
   // Place players next to each other, facing the same direction
   pA.x = 3.0; pA.y = 1.0; pA.z = 1.5; pA.rot = Math.PI * 0.5; // facing +X
-  pB.x = 3.0; pB.y = 1.0; pB.z = 1.7; pB.rot = Math.PI * 0.5; // facing +X
+  // Bob stands so his stone lands screen-right of Alice's (R = (1,0,-1)/√2, 0.62 apart): 女 ⿰ 子 = 好
+  pB.x = 3.0 + 0.62 * Math.SQRT1_2; pB.y = 1.0; pB.z = 1.5 - 0.62 * Math.SQRT1_2; pB.rot = Math.PI * 0.5; // facing +X
 
   const rA = g2.conjure('pa', '女');
   check(rA.ok === true, 'Alice conjures 女');
@@ -229,7 +230,7 @@ console.log('\n--- Sim: 女 + 子 conjured fuse into 好 ---');
       break;
     }
   }
-  check(fusedHao, '女 and 子 conjured nearby land and fuse into 好');
+  check(fusedHao, '女 conjured with 子 landing on its screen-right fuse into 好');
   check(g2.found.has('好'), '好 is recorded in found characters');
 }
 

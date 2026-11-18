@@ -126,14 +126,14 @@ Every rule reads `this.fz`, never `FORGE` directly. K9 and K10 (client) read `sn
 | `relate(a, b, mode, fz)` | `(stone, stone, 'ground'\|'body', knobs) → {op, first, second, err} \| null` | Pure, module level (exported). Uses R, D, Y and `support` (body: the holders' `support` and, when `bodyStill` is finite, their speed). `err` = ‖(r err, q/maxD, y/besideY)‖/√3, where r err is 0 at `ideal` and 1 at a `besideR` edge; ⿱ `err` is the horizontal offset. `DESIGN.md` §3 |
 | `bestRelation(k, others, mode, fz)` | `→ {op, first, second, err, partner} \| null` | Pure. ⿱ first, then smaller `err`, then lower partner id |
 | `ground(x, z, r, maxY, self, heads, stones)` | `stones` = true adds a stones pass (stone bodies and the aim prediction only) | Round footprints (`hypot < r + OR`); any loose stone except one resting on `self`. Sets `b.support` to the stone below; a stack rides a deck through the support chain |
-| `settle(k)` | runs when a loose stone becomes grounded | Snap (K4) and then a forge or dud attempt |
-| `stepFusion()` | op-aware; keeps the "two stones still where they grew" rule | Uses `relate()`, then `fuse()`, then rescue |
-| `tryForge(a, b, rel, by)` | `→ result stone \| null` | The single path for ground and body forges. Emits `forge` or `dud` |
+| `settle(k)` | runs when a loose stone becomes grounded | Finds `bestRelation` among `partners(k)`; none → a `try norel` if one exists within 1.5× the cones. With a relation and `snap` > 0, starts a slide to the ideal spot (only along a flat surface); the attempt runs in `stepFusion` when the slide ends. Forging happens on landing, not every tick: a stone carried into a relation without landing does not forge |
+| `stepFusion()` | op-aware; keeps the "two stones still where they grew" rule | Every `ready` stone not still snapping, in id order: `bestRelation` → `tryForge`. A stone that popped out of a forge tries quietly (no dud shown) |
+| `tryForge(rel, by, opt)` | `→ result stone \| null` | The single path for ground and body forges. K6 cooldown (on `this.clock`, which runs every step) → `fuse(op, first, second)` → K5 rescue when `LV.mirrors` of the pair has exactly one recipe → else `dud` (`why` mirror/dud). Result: ⿰ between the pair, ⿱ on the bottom stone's spot; `parts` = [op, first, second]; `life` = `wrongLife` when wrong. Emits `try`, `forge`, and `fuse` (alias) |
 | `formation(p)` | `→ {partner, rel} \| null` | Both holding; `relate(…, 'body')`; above uses holder support |
 | `launch(p)` | new modes `forge` and `stack`; the `join` mode now means beside | Priority: dunk > forge > join/stack > pass > toss/place. Facing a loose stone within 1.7: |r| ≥ |q| of your offset from it → `join` to the `ideal` spot on your side; else `stack` onto its top (top stone of a stack). Returns `on` = target id |
 | `forgeHeld(p)` | on GRAB in `forge` mode | Result into `p`'s hands; dud keeps both |
 | `ground(..., heads)` | a holder may now be stood on | Their stone uses `holdLow` while their head is occupied |
-| `stepWrong(dt)` | K7: counts down unwanted results and splits them back | Only when `wrongLife` is finite |
+| `stepWrong(dt)` | K7: counts down unwanted results and splits them back | Only when `wrongLife` is finite. Wrong = not `want` and not in `wantTree` (every piece on a recipe path to `want`). The pieces pop out ±0.45 along D (no relation), held or not |
 
 Determinism rules: no `Math.random`. Ties are broken by stone id. Snap moves are computed from
 `dt`. A replay with forge disabled is out of scope (forging *is* the game now), but a replay of a
