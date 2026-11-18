@@ -20,7 +20,12 @@
   //   wood  thrown into a gap, it grows into a bridge up to `span` cells long
   //   fire  burns a thorn hedge within `reach`
   //   water douses a wall of flames within `reach`
-  // Two stones that touch become one (RECIPES). Order does not matter. All real characters.
+  // Where a piece sits decides the character. A recipe is [op, first, second, result]:
+  //   ⿰ first is on the left (as seen on screen)   ⿱ first is on top
+  //   ⿴ first is the closed frame   ⿵ first is the frame open at the bottom
+  //   ⿱⿰ pyramid: second is a two-character base such as "口口"
+  // Order matters: 日 ⿰ 月 is 明, 月 ⿰ 日 is nothing. Recipes use base pieces (水, not 氵);
+  // the variant shapes in content/forms.json are display only. docs/forge/SPEC.md §2-3.
   //
   // The story of every stage: the crew sails in on one boat, mist has closed the
   // river ahead, the pavilion on the isle wants one character. Give it, the mist
@@ -28,9 +33,20 @@
   // every field of a stage (including the optional "conjure" list).
   const DATA = (typeof module !== 'undefined' && module.exports) ? require('./content.js') : root.WContent;
   const GLYPHS = DATA.glyphs;
+  const OPS = ['⿰', '⿱', '⿴', '⿵', '⿱⿰'];
+  const RECIPE_LIST = DATA.recipes.map(r => Object.freeze(r.slice()));
   const RECIPES = {};
-  DATA.recipes.forEach(r => { RECIPES[r[0] + r[1]] = r[2]; RECIPES[r[1] + r[0]] = r[2]; });
-  const fuse = (a, b) => RECIPES[a + b] || null;
+  RECIPE_LIST.forEach(r => { RECIPES[r[0] + r[1] + r[2]] = r[3]; });
+  // The result of placing `a` and `b` in relation `op`, or null. There is no order-free form.
+  function fuse(op, a, b) {
+    if (OPS.indexOf(op) < 0) throw new Error('fuse(op, a, b): unknown op ' + JSON.stringify(op));
+    return RECIPES[op + a + b] || null;
+  }
+  // Every recipe made of exactly these two pieces, in any op and either order.
+  const mirrors = (a, b) => RECIPE_LIST.filter(r => (r[1] === a && r[2] === b) || (r[1] === b && r[2] === a));
+  // The glyph to draw for `ch` in slot `slot` (1 = first) of `op`: 水 on the left draws as 氵.
+  const FORMS = DATA.forms || {};
+  const form = (ch, op, slot) => (FORMS[ch] && FORMS[ch][op + slot]) || ch;
   const LEVELS = DATA.stages;
 
   function parse(L) {
@@ -69,7 +85,7 @@
     return c.low + t;
   }
 
-  const api = { LEVELS, GLYPHS, RECIPES, fuse, parse, cellTop };
+  const api = { LEVELS, GLYPHS, OPS, RECIPES, RECIPE_LIST, fuse, mirrors, form, parse, cellTop };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.WLevels = api;
 })(typeof window !== 'undefined' ? window : globalThis);

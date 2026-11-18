@@ -227,7 +227,7 @@ function ingredients(want) {
   const need = new Set([want]);
   for (let grew = true; grew;) {
     grew = false;
-    for (const k of Object.keys(LV.RECIPES)) if (need.has(LV.RECIPES[k])) for (const c of k) if (!need.has(c)) { need.add(c); grew = true; }
+    for (const r of LV.RECIPE_LIST) if (need.has(r[3])) for (const c of (r[0] === '⿱⿰' ? [r[1], ...r[2]] : [r[1], r[2]])) if (!need.has(c)) { need.add(c); grew = true; }
   }
   return need;
 }
@@ -371,7 +371,8 @@ function options(run, ban) {
         if (reachable(sp[i], [cell])) add(`${id} carries ${h.ch} to the pavilion`, r => { walkTo(r, id, [cell], ban); r.tick(5); return r.g.phase === 'won'; });
       }
       for (const k of loose) {
-        const made = LV.fuse(h.ch, k.ch);
+        // F2.1 bridge (F2.8 makes joins placement-aware): the sim still fuses in any op and order
+        const rec = LV.mirrors(h.ch, k.ch)[0], made = rec && rec[3];
         if (!made || !need.has(made)) continue;
         const cells = near(nav, k.x, k.z, 0.6, 1.3, k.y, 0.5);
         if (!reachable(sp[i], cells)) continue;

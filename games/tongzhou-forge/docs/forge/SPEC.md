@@ -73,6 +73,8 @@ The key is `op + slot` (slot 1 = first). Display only.
 ## 3. `levels.js` API (shared by server and browser)
 
 ```js
+OPS                // ['⿰', '⿱', '⿴', '⿵', '⿱⿰']
+RECIPE_LIST        // the recipes as [op, first, second, result]; iterate this, not RECIPES' keys
 RECIPES            // { [op + a + b]: result }   e.g. RECIPES['⿱日木'] === '杲'
 fuse(op, a, b)     // result character or null. Order matters.
 mirrors(a, b)      // every [op, first, second, result] for this pair of characters, in any op and order
@@ -80,7 +82,12 @@ form(ch, op, slot) // the variant glyph to draw, or ch
 ```
 
 The old two-argument `fuse(a, b)` is removed, not kept as an alias, so every caller is found and
-fixed.
+fixed. `fuse` throws on an unknown op, so a stale two-argument call fails loudly.
+
+**F2.1 bridge (temporary).** Until `relate()` exists (F2.6), `sim.js` fuses two touching stones with
+`bridgeRecipe(a, b)` = `mirrors(a, b)[0]`: any op, any order, exactly as before. The judge's join
+action does the same until F2.8. The `fuse` event already carries `op`. Search for `F2.1 bridge` to
+find every place to remove.
 
 ## 4. `FORGE` constants (`sim.js`)
 

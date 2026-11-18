@@ -20,14 +20,14 @@ const nums = (v, n) => Array.isArray(v) && v.length === n && v.every(isNum);
 const HAN = /[㐀-鿿]/g;
 
 // Everything that can be made from these characters by joining them, any number of times.
+// Placement is free (any piece can go left, right, on top or below), so the closure only asks
+// whether every piece of a recipe is at hand, not in what order.
+const pieces = r => r[0] === '⿱⿰' ? [r[1], ...r[2]] : [r[1], r[2]];
 export function makeable(chars) {
   const have = new Set(chars);
   for (let grew = true; grew;) {
     grew = false;
-    for (const a of [...have]) for (const b of [...have]) {
-      const c = LV.fuse(a, b);
-      if (c && !have.has(c)) { have.add(c); grew = true; }
-    }
+    for (const r of LV.RECIPE_LIST) if (!have.has(r[3]) && pieces(r).every(c => have.has(c))) { have.add(r[3]); grew = true; }
   }
   return have;
 }
@@ -176,8 +176,8 @@ function meaning(L, add) {
 
   const can = makeable((L.stones || []).map(s => s[0]));
   if (!can.has(L.want)) {
-    const recipe = Object.keys(LV.RECIPES).find(k => LV.RECIPES[k] === L.want);
-    add('want-unmakeable', 'want', `the pavilion wants ${L.want} but the stones here can never make it. ` + (recipe ? `${L.want} = ${[...recipe].join(' + ')}: put those stones in "stones".` : `Put a ${L.want} stone in "stones".`));
+    const recipe = LV.RECIPE_LIST.find(r => r[3] === L.want);
+    add('want-unmakeable', 'want', `the pavilion wants ${L.want} but the stones here can never make it. ` + (recipe ? `${L.want} = ${pieces(recipe).join(' + ')} (${recipe[0]}): put those stones in "stones".` : `Put a ${L.want} stone in "stones".`));
   }
   // English first: the hint may only show characters the players can meet on this isle
   const strangers = [...new Set((L.hint.match(HAN) || []).filter(c => !can.has(c)))];

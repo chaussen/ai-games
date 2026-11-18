@@ -11,7 +11,7 @@ for (const [ch, [py, en]] of Object.entries(want)) {
   const g = LV.GLYPHS[ch];
   check(g && g.py === py && g.en === en && g.el === 'folk', `${ch} exists with py "${py}", en "${en}", el "folk"`);
 }
-check(LV.fuse('女', '子') === '好' && LV.fuse('子', '女') === '好', '女 + 子 = 好, in either order');
+check(LV.fuse('⿰', '女', '子') === '好' && LV.fuse('⿰', '子', '女') === null, '女 left of 子 = 好, and only in that order');
 check(Object.keys(LV.GLYPHS).length === 22, 'nothing else was added or removed (22 characters in all)');
 try { execFileSync('node', ['sim-test.mjs'], { stdio: 'pipe' }); check(true, 'node sim-test.mjs still passes'); } catch (e) { check(false, 'node sim-test.mjs still passes'); }
 console.log(ok ? '--- TASK 03 DONE ---' : '--- TASK 03 NOT DONE ---'); process.exit(ok ? 0 : 1);

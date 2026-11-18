@@ -12,7 +12,7 @@ Last updated: **2026-11-18**.
 |---|---|---|
 | 0 | Fork `tongzhou-conjure` → `tongzhou-forge`; ports 3200 / 3460 / 3461 / 3462; game id | **Done** 2026-11-18. Baseline suites green |
 | 1 | Documentation package (`docs/forge/*`, README, AGENTS) | **Approved** 2026-11-18 |
-| 2 | Sim core: op-aware recipes, classifier, stones on stones, ground forging, placement aims | **In progress** (F2.1) |
+| 2 | Sim core: op-aware recipes, classifier, stones on stones, ground forging, placement aims | **In progress**: F2.1 done; next F2.2 |
 | 3 | Minimal playable `dawn` + client + playtest log → **G1** | Not started |
 | 4 | Body forging → **G2** | Not started |
 | 5 | Judge and lint: op closure, placement and body actions, `order-trap`, `--sloppy` | Not started |
@@ -69,6 +69,7 @@ font re-subset, stages 5, 7 and 9 → G3. 7: pyramid and frames. 8: `RETROSPECTI
 |---|---|
 | 2026-11-18 | Assessment: the reskin test fails today; positional grammar (TZ-D044) is the Chinese-unique core. Plan approved with John's note on the middle point between strict grammar and relaxed play. Phase 0 fork done (suites green: sim, smoke, judge, conjure). Phase 1 docs written. |
 | 2026-11-18 | John approved the Phase 1 docs; Phase 2 started with F2.1. |
+| 2026-11-18 | **F2.1 done.** Recipes are `[op, first, second, result]` (14 ported; 焚 森 众 昌 are ⿱). `levels.js` has `fuse(op,a,b)` (throws on a bad op), `mirrors`, `form`, `RECIPE_LIST`, `OPS`; `content/forms.json` packed. Every caller fixed. The sim and the judge's join still fuse order-free through the marked `F2.1 bridge` (removed in F2.6 and F2.8). All suites green; the 3 stages PASS. Already failing before F2.1 and left alone: `tasks/checks/t03.mjs` expects 好 to be `folk`, but glyphs has `light`. |
 
 ## 4. Decision log
 

@@ -337,8 +337,14 @@ solo(2, 'Lean on a Tree', (g, d) => {
 {
   // every recipe produces a character that exists
   const LV = require('./levels.js');
-  const bad = Object.entries(LV.RECIPES).filter(([k, v]) => !LV.GLYPHS[v] || [...k].some(c => !LV.GLYPHS[c]));
-  check(bad.length === 0 && Object.keys(LV.RECIPES).length >= 20, 'every recipe joins two known characters into a known character');
+  const bad = LV.RECIPE_LIST.filter(r => !LV.OPS.includes(r[0]) || ![r[1], ...(r[0] === '⿱⿰' ? [...r[2]] : [r[2]]), r[3]].every(c => LV.GLYPHS[c]));
+  check(bad.length === 0 && LV.RECIPE_LIST.length >= 14, 'every recipe is [op, first, second, result] over known characters');
+  check(LV.fuse('⿰', '日', '月') === '明' && LV.fuse('⿰', '月', '日') === null && LV.fuse('⿱', '日', '月') === null, 'order and op matter: 日 left of 月 is 明; 月 left of 日 and 日 on 月 are nothing');
+  check(LV.fuse('⿱', '林', '火') === '焚' && LV.fuse('⿱', '火', '林') === null, '焚 is 林 on top of 火, not the other way');
+  let threw = false; try { LV.fuse('日', '月'); } catch (e) { threw = true; }
+  check(threw, 'the old two-argument fuse is gone: calling it throws');
+  check(LV.mirrors('月', '日').length === 1 && LV.mirrors('日', '日')[0][3] === '昌' && LV.mirrors('日', '木').length === 0, 'mirrors() finds a pair in any order and op');
+  check(LV.form('水', '⿰', 1) === '氵' && LV.form('水', '⿰', 2) === '水' && LV.form('水', '⿱', 1) === '水' && LV.form('木', '⿰', 1) === '木', 'variant forms: 水 draws as 氵 only on the left of ⿰');
   check(LV.LEVELS.every(L => LV.GLYPHS[L.want]), 'every shrine waits for a known character');
 }
 console.log(failed ? `--- ${failed} CHECK(S) FAILED ---` : '--- ALL SIM CHECKS PASSED ---');

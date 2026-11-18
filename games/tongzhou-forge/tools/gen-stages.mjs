@@ -30,8 +30,8 @@ const pick = a => a[Math.floor(rnd() * a.length)];
 // The code decides WHAT the isle teaches; the model decides where things go.
 const OBSTACLES = ['a gap of 3 water cells across the whole isle', 'a thorn wall across the whole isle', 'a flame wall across the whole isle', 'a gap of 2 water cells and, further on, a thorn wall'];
 function brief() {
-  const made = [...new Set(Object.values(LV.RECIPES))];
-  const ch = pick(made), parts = [...Object.keys(LV.RECIPES).find(k => LV.RECIPES[k] === ch)];
+  const made = [...new Set(LV.RECIPE_LIST.map(r => r[3]))];
+  const ch = pick(made), rec = LV.RECIPE_LIST.find(r => r[3] === ch), parts = rec[0] === '⿱⿰' ? [rec[1], ...rec[2]] : [rec[1], rec[2]];
   return `The pavilion wants ${ch} (${LV.GLYPHS[ch].en}), made from ${parts.join(' + ')}. Between the landing and the pavilion put ${pick(OBSTACLES)}. ` +
     `Palette: ${pick(['dawn', 'mint', 'dusk', 'citrus', 'night'])}. Map about ${14 + Math.floor(rnd() * 6)} columns by ${5 + Math.floor(rnd() * 3)} rows.`;
 }
@@ -43,7 +43,7 @@ function prompt(b) {
   return fs.readFileSync(path.join(root, 'tools', 'gen-prompt.md'), 'utf8')
     .replace('{{LEAP}}', cal.leapGap)
     .replace('{{GLYPHS}}', Object.entries(LV.GLYPHS).map(([c, g]) => `${c} ${g.py} "${g.en}" (${g.el})`).join('\n'))
-    .replace('{{RECIPES}}', [...new Set(Object.keys(LV.RECIPES).map(k => [...k].sort().join(' + ') + ' = ' + LV.RECIPES[k]))].join('\n'))
+    .replace('{{RECIPES}}', LV.RECIPE_LIST.map(r => `${r[1]} ${{ '⿰': 'left of', '⿱': 'on top of', '⿴': 'around', '⿵': 'over', '⿱⿰': 'on top of the pair' }[r[0]]} ${r[2]} = ${r[3]}`).join('\n'))
     .replace('{{BRIEF}}', b + ` Do not reuse these ids: ${[...taken].join(', ')}.`)
     .replace('{{EXAMPLES}}', read('two-trees') + '\n\n' + read('sun-and-moon'));
 }

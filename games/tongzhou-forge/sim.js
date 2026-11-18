@@ -31,6 +31,10 @@ const ROW_ACC = 5, ROW_MAX = 2.6, ROW_DRAG = 2, RAIL = 0.14, SEA = 4;
 // a friend can be boosted: flung up and forward, stone and all
 const BOOST_V = 9, BOOST_SPEED = 7.2, FLING = 0.55, BOOST_CD = 0.8, BOOST_R = 1.15;
 const FUSE_R = 0.95;                    // two resting stones this close become one
+// F2.1 BRIDGE, removed by card F2.6: the sim cannot read placement yet (no relate()), so two
+// touching stones still make whatever recipe their two pieces share, in any op and order, exactly
+// as before. Returns the matching [op, first, second, result] or null.
+const bridgeRecipe = (a, b) => LV.mirrors(a, b)[0] || null;
 const REGROW = 3.5;                     // seconds before a used-up stone grows back (only when the stage regrows)
 const MAX_STONES = 14;
 
@@ -811,7 +815,7 @@ class Game {
       // two characters that make nothing together say so, instead of sitting there silently
       for (const o of this.stones) {
         if (o === k || o.state !== 'loose' || !o.grounded || Math.hypot(o.x - k.x, o.z - k.z) > FUSE_R || Math.abs(o.y - k.y) > 0.6) continue;
-        if (!LV.fuse(k.ch, o.ch)) { this.ev('dud', { a: k.ch, b: o.ch, x: (k.x + o.x) / 2, y: k.y, z: (k.z + o.z) / 2 }); break; }
+        if (!bridgeRecipe(k.ch, o.ch)) { this.ev('dud', { a: k.ch, b: o.ch, x: (k.x + o.x) / 2, y: k.y, z: (k.z + o.z) / 2 }); break; }
       }
     }
     if (!k.grounded) {
@@ -889,14 +893,15 @@ class Game {
       if (Math.hypot(a.x - b.x, a.z - b.z) > FUSE_R || Math.abs(a.y - b.y) > 0.6) continue;
       // two stones still sitting where they grew are not a deliberate act
       if (a.spring && b.spring && !a.from && !b.from) continue;
-      const ch = LV.fuse(a.ch, b.ch);
-      if (!ch) continue;
+      const rec = bridgeRecipe(a.ch, b.ch);
+      if (!rec) continue;
+      const ch = rec[3];
       const x = (a.x + b.x) / 2, y = Math.max(a.y, b.y), z = (a.z + b.z) / 2;
       this.consume(a); this.consume(b);
       const k = this.addStone(ch, x, y, z, null);
       if (k) { k.from = [x, y, z]; k.vy = 5; k.grounded = false; k.pop = true; }
       this.note(ch, null, true);
-      this.ev('fuse', { a: a.ch, b: b.ch, ch, x, y, z, s: k ? k.id : 0 });
+      this.ev('fuse', { op: rec[0], a: a.ch, b: b.ch, ch, x, y, z, s: k ? k.id : 0 });
       return;
     }
   }
