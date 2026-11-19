@@ -17,6 +17,10 @@ build does about it, the knobs, the defect log and the known gaps.
 (`docs/design/`) to the plan in `docs/ART-DIRECTION.md` (§8 says what shipped and what is still
 missing). The greybox stays for comparison: `?art=greybox`, or ☰ → Look.
 
+**One Stroke 一笔 (2026-11-19):** a second painted look, `?art=cut` (or ☰ → Look), built from Claude Design's
+round 2 boards (`docs/design/one-stroke/`): paper, ink and vermilion, flat fills only, a hero drawn as the
+strokes of 大. Same sim, same screen budget; the default stays the ink scroll until John has played both.
+
 | Isle | Make | Ways |
 |---|---|---|
 | Sun and Moon · 日月同明 | 明 = 日 left of 月 | 木 bridges the gap and 火 burns the thorns, or leap both; 日 waits on a tower you climb with 轻功 |
@@ -30,7 +34,7 @@ node server.js                 # http://localhost:3300/
 PORT=3000 node server.js       # on the machine where only port 3000 is open (phone playtests)
 ```
 
-Phones open `http://<LAN-IP>:3300/` (the server prints it). URL options: `?art=ink|greybox`, `?isle=dawn`,
+Phones open `http://<LAN-IP>:3300/` (the server prints it). URL options: `?art=ink|cut|greybox`, `?isle=dawn`,
 `?profile=relaxed|standard|strict`, `?labels=all|near|card`, `?mute=1`, `?touch=1` (show the pad on
 a laptop).
 
@@ -58,6 +62,7 @@ node sim-test.mjs        # rules, 轻功, forging, elements, two scripted wins p
 node smoke-test.mjs      # real server on port 3481: what a phone may fetch, font coverage
 node screen-test.mjs     # real server on 3482 + screen-check.py: eleven screens (phones, iPads, laptops), real touch, budget, contrast, screenshots
 ART=greybox node screen-test.mjs   # the same for the greybox look
+ART=cut node screen-test.mjs       # and for One Stroke
 ```
 
 `screen-test.mjs` needs Python Playwright and `/usr/bin/chromium`; it writes

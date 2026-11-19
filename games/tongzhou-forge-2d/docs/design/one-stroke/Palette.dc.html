@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>One Stroke palette</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#cc3524}a:hover{color:#171513}
+.zi{font-family:'Noto Serif SC','Songti SC','STSong',serif;font-weight:900}
+.lat{font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.row{display:flex;align-items:center;gap:10px;height:22px;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:12.5px}
+.bar{width:150px;height:20px;box-sizing:border-box;border:1px solid #171513;flex:none}
+.hx{color:#5a544b;font-size:12px}
+.chip{display:flex;align-items:center;gap:7px;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:12px;line-height:14px}
+.sw{width:26px;height:26px;box-sizing:border-box;border:1px solid #171513;flex:none}
+</style>
+</helmet>
+<div style="position: relative; width: 1000px; height: 460px; box-sizing: border-box; padding: 18px 24px; background: #f1e6d0; color: #171513; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; overflow: hidden; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: baseline; gap: 14px">
+<span class="zi" style="font-size: 40px; line-height: 44px">纸墨朱</span>
+<span class="lat" style="font-size: 24px; font-weight: 800; line-height: 28px; white-space: nowrap">Paper, ink, vermilion</span>
+<span class="lat" style="font-size: 12.5px; color: #5a544b; line-height: 17px">flat fills only · tints are pre-mixed hexes, no alpha · one accent per isle</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px"><span class="zi" style="font-size: 20px">月夜</span><span class="lat" style="font-size: 15px; font-weight: 800">Moon night</span><span class="lat" style="font-size: 12px; color: #5a544b">accent: blue-grey #5d7182</span></div>
+<div class="row"><div class="bar" style="background: #5d7182"></div><b>sky</b><span class="hx">accent 100% · #5d7182</span></div>
+<div class="row"><div class="bar" style="background: #f1e6d0"></div><b>moon</b><span class="hx">a hole cut in the sky · paper</span></div>
+<div class="row"><div class="bar" style="background: #d3cfc0"></div><b>far</b><span class="hx">accent 20% · #d3cfc0 · triangles</span></div>
+<div class="row"><div class="bar" style="background: #b0a797"></div><b>middle, back</b><span class="hx">ink 30% · #b0a797 · arches</span></div>
+<div class="row"><div class="bar" style="background: #8f887b"></div><b>middle, front</b><span class="hx">ink 45% · #8f887b</span></div>
+<div class="row"><div class="bar" style="background: #f1e6d0"></div><b>gap strip</b><span class="hx">bare paper · always there</span></div>
+<div class="row"><div class="bar" style="background: #171513"></div><b>play layer</b><span class="hx">ink · #171513 · rim in paper</span></div>
+<div class="row"><div class="bar" style="background: #f1e6d0; border-color: #5d7182; border-width: 3px"></div><b>water</b><span class="hx">accent arcs on paper</span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px"><span class="zi" style="font-size: 20px">破晓</span><span class="lat" style="font-size: 15px; font-weight: 800">Daybreak</span><span class="lat" style="font-size: 12px; color: #5a544b">accent: warm yellow #e3a92b</span></div>
+<div class="row"><div class="bar" style="background: #e9c16d"></div><b>sky</b><span class="hx">accent 60% · #e9c16d</span></div>
+<div class="row"><div class="bar" style="background: #cc3524"></div><b>sun</b><span class="hx">vermilion · #cc3524</span></div>
+<div class="row"><div class="bar" style="background: #e0d5c1"></div><b>far</b><span class="hx">ink 8% · #e0d5c1 · triangles</span></div>
+<div class="row"><div class="bar" style="background: #b0a797"></div><b>middle, back</b><span class="hx">ink 30% · #b0a797 · arches</span></div>
+<div class="row"><div class="bar" style="background: #8f887b"></div><b>middle, front</b><span class="hx">ink 45% · #8f887b</span></div>
+<div class="row"><div class="bar" style="background: #f1e6d0"></div><b>gap strip</b><span class="hx">bare paper · always there</span></div>
+<div class="row"><div class="bar" style="background: #171513"></div><b>play layer</b><span class="hx">ink · #171513 · rim in paper</span></div>
+<div class="row"><div class="bar" style="background: #f1e6d0; border-color: #8f887b; border-width: 3px"></div><b>water</b><span class="hx">ink-45% arcs on paper</span></div>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px 8px; border-top: 2px solid #171513; padding-top: 12px">
+<div class="chip"><div class="sw" style="background: #f1e6d0"></div><div><b>paper</b><br>#f1e6d0</div></div>
+<div class="chip"><div class="sw" style="background: #f8f1e2"></div><div><b>paper +</b><br>#f8f1e2</div></div>
+<div class="chip"><div class="sw" style="background: #171513"></div><div><b>ink</b><br>#171513</div></div>
+<div class="chip"><div class="sw" style="background: #423f39"></div><div><b>cut line</b><br>#423f39</div></div>
+<div class="chip"><div class="sw" style="background: #cc3524"></div><div><b>vermilion</b><br>#cc3524</div></div>
+<div class="chip"><div class="sw" style="background: #eac3ae"></div><div><b>ver. 20%</b><br>#eac3ae</div></div>
+<div class="chip"><div class="sw" style="background: #e0a526"></div><div><b>gamboge</b><br>#e0a526</div></div>
+<div class="chip"><div class="sw" style="background: #847e72"></div><div><b>shadow</b><br>#847e72</div></div>
+<div class="chip"><div class="sw" style="background: #1c6b50"></div><div><b>木 wood</b><br>#1c6b50</div></div>
+<div class="chip"><div class="sw" style="background: #c22f1c"></div><div><b>火 fire</b><br>#c22f1c</div></div>
+<div class="chip"><div class="sw" style="background: #1b5aa6"></div><div><b>水 water</b><br>#1b5aa6</div></div>
+<div class="chip"><div class="sw" style="background: #b06f06"></div><div><b>光 light</b><br>#b06f06</div></div>
+<div class="chip"><div class="sw" style="background: #7a4a22"></div><div><b>土 earth</b><br>#7a4a22</div></div>
+<div class="chip"><div class="sw" style="background: #2f9b71"></div><div><b>tile 木</b><br>#2f9b71</div></div>
+<div class="chip"><div class="sw" style="background: #c9cec8"></div><div><b>moon glow</b><br>#c9cec8</div></div>
+<div class="chip"><div class="sw" style="background: #5d7182"></div><div><b>night</b><br>#5d7182</div></div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1000,"height":460}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

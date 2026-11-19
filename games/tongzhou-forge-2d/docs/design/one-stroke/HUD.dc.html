@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>One Stroke HUD</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#cc3524}a:hover{color:#171513}
+.zi{font-family:'Noto Serif SC','Songti SC','STSong',serif;font-weight:900}
+.lat{font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.cap{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:12px;line-height:15px;color:#5a544b;text-align:center}
+.card{box-sizing:border-box;background:#f8f1e2;border:3px solid #171513;clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% calc(100% - 7px),calc(100% - 7px) 100%,7px 100%,0 calc(100% - 7px),0 7px)}
+.strip{height:30px;box-sizing:border-box;padding:0 22px;display:flex;align-items:center;gap:5px;background:#f8f1e2;border-top:2px solid #171513;border-bottom:2px solid #171513;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:13px;line-height:16px;white-space:nowrap;clip-path:polygon(0 0,100% 0,calc(100% - 10px) 50%,100% 100%,0 100%,10px 50%)}
+.grab{width:58px;height:58px;padding:0;margin:0;border-radius:50%;background:#f8f1e2;border:3px solid #171513;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#171513;cursor:pointer}
+</style>
+</helmet>
+<div style="position: relative; width: 1000px; height: 760px; box-sizing: border-box; padding: 18px 24px; background: #f1e6d0; color: #171513; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; overflow: hidden; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; align-items: baseline; gap: 14px">
+<span class="zi" style="font-size: 44px; line-height: 48px">器</span>
+<span class="lat" style="font-size: 26px; font-weight: 800; line-height: 30px">HUD</span>
+<span class="lat" style="font-size: 13px; color: #5a544b; line-height: 18px">paper slips with a 3 px ink border and cut corners · the JUMP button is a vermilion seal · nothing soft, nothing glowing</span>
+</div>
+
+<div style="display: flex; align-items: flex-end; gap: 28px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px">
+<div class="card" style="width: 92px; height: 114px; display: flex; flex-direction: column; align-items: center; padding-top: 7px">
+<div class="lat" style="font-size: 9.5px; font-weight: 700; letter-spacing: .14em; line-height: 12px; color: #cc3524">目标 GOAL</div>
+<div class="zi" style="font-size: 52px; line-height: 56px">明</div>
+<div class="lat" style="font-size: 14px; font-weight: 600; line-height: 16px">míng</div>
+<div class="lat" style="font-size: 12px; line-height: 14px; color: #5a544b">bright</div>
+</div>
+<div class="cap">Goal · seeking</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px">
+<div style="position: relative">
+<div class="card" style="width: 92px; height: 114px; display: flex; flex-direction: column; align-items: center; padding-top: 7px; background: #cc3524; border-color: #171513">
+<div class="lat" style="font-size: 9.5px; font-weight: 700; letter-spacing: .14em; line-height: 12px; color: #f8f1e2">目标 GOAL</div>
+<div class="zi" style="font-size: 52px; line-height: 56px; color: #f8f1e2">明</div>
+<div class="lat" style="font-size: 14px; font-weight: 600; line-height: 16px; color: #f8f1e2">míng</div>
+<div class="lat" style="font-size: 12px; line-height: 14px; color: #f8f1e2">bright</div>
+</div>
+</div>
+<div class="cap">Goal · made: the card becomes a seal</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px">
+<div class="card" style="height: 50px; padding: 0 14px 0 10px; display: flex; align-items: center; gap: 8px; clip-path: polygon(6px 0,calc(100% - 6px) 0,100% 6px,100% calc(100% - 6px),calc(100% - 6px) 100%,6px 100%,0 calc(100% - 6px),0 6px)">
+<div class="zi" style="font-size: 32px; line-height: 36px; color: #1b5aa6">月</div>
+<div style="display: flex; flex-direction: column"><div class="lat" style="font-size: 14px; font-weight: 600; line-height: 16px">yuè</div><div class="lat" style="font-size: 12px; line-height: 14px; color: #5a544b">moon</div></div>
+</div>
+<div class="cap">Word · holding</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px">
+<div class="card" style="height: 50px; padding: 0 14px 0 10px; display: flex; align-items: center; gap: 8px; border-style: dashed; clip-path: none">
+<div class="zi" style="font-size: 32px; line-height: 36px; color: #b0a797">空</div>
+<div style="display: flex; flex-direction: column"><div class="lat" style="font-size: 14px; font-weight: 600; line-height: 16px">kōng</div><div class="lat" style="font-size: 12px; line-height: 14px; color: #5a544b">empty hands</div></div>
+</div>
+<div class="cap">Word · empty</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px">
+<button aria-label="Menu" style="width: 38px; height: 38px; padding: 0; margin: 0; border: 0; background: #171513; clip-path: polygon(5px 0,calc(100% - 5px) 0,100% 5px,100% calc(100% - 5px),calc(100% - 5px) 100%,5px 100%,0 calc(100% - 5px),0 5px); display: flex; align-items: center; justify-content: center; cursor: pointer">
+<svg width="20" height="18" viewBox="0 0 20 18" aria-hidden="true"><path d="M4,3 H16 M5,9 H15 M2,15 H18" stroke="#f8f1e2" stroke-width="2.6" fill="none"></path></svg>
+</button>
+<div class="cap">Menu · 38 px</div>
+</div>
+<div style="flex: 1; align-self: stretch; display: flex; align-items: center; padding-left: 12px; border-left: 2px solid #171513">
+<div class="lat" style="font-size: 12.5px; line-height: 17px; color: #5a544b">Glyph 52 px Noto Serif SC Black · pinyin 14 px system 600 · meaning 12 px · paper #f8f1e2 · border ink 3 px, corners cut 7 px. When the goal is made, the card turns into a vermilion seal with the glyph in paper.</div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 10px; align-items: center; padding: 16px 0; background: #5d7182">
+<div class="strip"><span>Set</span><span class="zi" style="font-size: 18px; color: #1b5aa6">月</span><span>yuè</span><span style="font-weight: 700">beside</span><span class="zi" style="font-size: 18px; color: #b06f06">日</span><span>rì</span><span>→</span><span class="zi" style="font-size: 18px; color: #cc3524">明</span><span>míng</span></div>
+<div class="strip" style="padding-left: 14px"><span class="zi" style="width: 20px; height: 20px; background: #cc3524; color: #f8f1e2; font-size: 14px; line-height: 20px; text-align: center">明</span><span class="zi" style="font-size: 18px; color: #cc3524">明</span><span>míng · bright —</span><span style="font-weight: 700">made!</span><span>Offer it at the pavilion</span><span class="zi" style="font-size: 18px">献</span><span>xiàn</span></div>
+<div class="strip"><span style="display: inline-block; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 12px solid #171513"></span><span class="zi" style="font-size: 18px">刺</span><span>cì</span><span style="font-weight: 700">thorns!</span><span>Leap over with</span><span class="zi" style="font-size: 18px">跳</span><span>tiào</span></div>
+<div class="cap" style="color: #f1e6d0">Message strip · hint · success · warning · swallow-tail ends, one strip only</div>
+</div>
+
+<div style="position: relative; flex: none; height: 290px; border: 2px solid #171513; background: #f1e6d0; overflow: hidden">
+<svg width="952" height="290" viewBox="0 0 952 290" style="position: absolute; left: 0; top: 0" aria-hidden="true"><defs><pattern id="U-wave" width="20" height="10" patternUnits="userSpaceOnUse"><path d="M0,10 A10,10 0 0 1 20,10 M-10,5 A10,10 0 0 1 10,5 M10,5 A10,10 0 0 1 30,5" fill="none" stroke="#5d7182" stroke-width="1.4"></path></pattern></defs><rect width="952" height="290" fill="url(#U-wave)"></rect></svg>
+<div style="position: absolute; left: 16px; top: 14px; display: flex; gap: 16px; align-items: flex-start">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px">
+<div aria-hidden="true" style="width: 116px; height: 116px"><svg width="116" height="116" viewBox="0 0 116 116"><circle cx="58" cy="58" r="52" fill="none" stroke="#f1e6d0" stroke-width="7"></circle><circle cx="58" cy="58" r="52" fill="none" stroke="#171513" stroke-width="3"></circle><circle cx="58" cy="58" r="20" fill="#171513"></circle><circle cx="58" cy="58" r="20" fill="none" stroke="#f1e6d0" stroke-width="2"></circle></svg></div>
+<div class="cap" style="background: #f1e6d0; padding: 0 4px">Stick · 116 px</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px">
+<div aria-hidden="true" style="width: 116px; height: 116px"><svg width="116" height="116" viewBox="0 0 116 116"><circle cx="58" cy="58" r="52" fill="none" stroke="#f1e6d0" stroke-width="7"></circle><circle cx="58" cy="58" r="52" fill="none" stroke="#171513" stroke-width="3"></circle><path d="M58,58 L86,46" stroke="#cc3524" stroke-width="3" stroke-dasharray="0 6" stroke-linecap="round"></path><circle cx="86" cy="46" r="20" fill="#cc3524"></circle><circle cx="86" cy="46" r="20" fill="none" stroke="#171513" stroke-width="3"></circle></svg></div>
+<div class="cap" style="background: #f1e6d0; padding: 0 4px">pushed</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding-top: 25px">
+<button aria-label="Jump" style="width: 66px; height: 66px; padding: 0; margin: 0; border-radius: 50%; background: #cc3524; border: 3px solid #171513; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #f8f1e2; cursor: pointer">
+<span class="zi" style="font-size: 27px; line-height: 29px">跳</span><span class="lat" style="font-size: 10px; font-weight: 600; line-height: 11px">tiào</span><span class="lat" style="font-size: 7.5px; font-weight: 800; letter-spacing: .1em; line-height: 9px">JUMP</span>
+</button>
+<div class="cap" style="margin-top: 15px; background: #f1e6d0; padding: 0 4px">JUMP · 66 px seal</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding-top: 25px">
+<button aria-label="Jump, pressed" style="width: 66px; height: 66px; padding: 0; margin: 0; border-radius: 50%; background: #171513; border: 3px solid #cc3524; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #f8f1e2; cursor: pointer; transform: scale(.92)">
+<span class="zi" style="font-size: 27px; line-height: 29px">跳</span><span class="lat" style="font-size: 10px; font-weight: 600; line-height: 11px">tiào</span><span class="lat" style="font-size: 7.5px; font-weight: 800; letter-spacing: .1em; line-height: 9px">JUMP</span>
+</button>
+<div class="cap" style="margin-top: 15px; background: #f1e6d0; padding: 0 4px">pressed</div>
+</div>
+</div>
+<div style="position: absolute; left: 16px; top: 176px; right: 14px; display: flex; flex-direction: column; gap: 8px">
+<div class="cap" style="text-align: left; align-self: flex-start; background: #f1e6d0; padding: 0 4px">GRAB · 58 px · one carved verb that changes with what you can do</div>
+<div style="display: flex; gap: 18px; align-items: center">
+<button class="grab" aria-label="Grab"><span class="zi" style="font-size: 22px; line-height: 24px">拿</span><span class="lat" style="font-size: 10px; font-weight: 600; line-height: 11px">ná</span><span class="lat" style="font-size: 7.5px; font-weight: 800; letter-spacing: .08em; line-height: 9px">GRAB</span></button>
+<button class="grab" aria-label="Set beside"><span class="zi" style="font-size: 22px; line-height: 24px">旁</span><span class="lat" style="font-size: 10px; font-weight: 600; line-height: 11px">páng</span><span class="lat" style="font-size: 7.5px; font-weight: 800; letter-spacing: .08em; line-height: 9px">BESIDE</span></button>
+<button class="grab" aria-label="Set on top"><span class="zi" style="font-size: 22px; line-height: 24px">上</span><span class="lat" style="font-size: 10px; font-weight: 600; line-height: 11px">shàng</span><span class="lat" style="font-size: 7.5px; font-weight: 800; letter-spacing: .08em; line-height: 9px">ON TOP</span></button>
+<button class="grab" aria-label="Throw"><span class="zi" style="font-size: 22px; line-height: 24px">扔</span><span class="lat" style="font-size: 10px; font-weight: 600; line-height: 11px">rēng</span><span class="lat" style="font-size: 7.5px; font-weight: 800; letter-spacing: .08em; line-height: 9px">THROW</span></button>
+<button class="grab" aria-label="Set down"><span class="zi" style="font-size: 22px; line-height: 24px">放</span><span class="lat" style="font-size: 10px; font-weight: 600; line-height: 11px">fàng</span><span class="lat" style="font-size: 7px; font-weight: 800; letter-spacing: .06em; line-height: 9px">SET DOWN</span></button>
+<button class="grab" aria-label="Drop"><span class="zi" style="font-size: 22px; line-height: 24px">落</span><span class="lat" style="font-size: 10px; font-weight: 600; line-height: 11px">luò</span><span class="lat" style="font-size: 7.5px; font-weight: 800; letter-spacing: .08em; line-height: 9px">DROP</span></button>
+<button class="grab" aria-label="Offer" style="background: #cc3524; color: #f8f1e2"><span class="zi" style="font-size: 22px; line-height: 24px">献</span><span class="lat" style="font-size: 10px; font-weight: 600; line-height: 11px">xiàn</span><span class="lat" style="font-size: 7.5px; font-weight: 800; letter-spacing: .08em; line-height: 9px">OFFER</span></button>
+<div class="cap" style="align-self: center; text-align: left; background: #f1e6d0; padding: 0 4px">献 becomes a seal at the pavilion</div>
+</div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1000,"height":760}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

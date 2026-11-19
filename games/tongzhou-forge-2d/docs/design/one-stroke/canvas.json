@@ -1,0 +1,23 @@
+{
+  "v": 3,
+  "createdOnFiles": {"v": 1, "at": "2026-11-19T00:50:00Z"},
+  "title": "同舟 · Glyph Isles — One Stroke 一笔",
+  "launch": {"view": "canvas"},
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {"x": 0, "y": 0, "w": 844, "h": 390, "title": "一笔 frame · landscape 844×390 · moon night"},
+    "Daybreak.dc.html": {"x": 0, "y": 510, "w": 844, "h": 390, "title": "一笔 frame · landscape · daybreak"},
+    "Portrait.dc.html": {"x": 924, "y": 0, "w": 390, "h": 844, "title": "一笔 frame · portrait 390×844 · moon night"},
+    "Win.dc.html": {"x": 1394, "y": 0, "w": 844, "h": 390, "title": "一笔 win · seal colophon"},
+    "Palette.dc.html": {"x": 1394, "y": 470, "w": 1000, "h": 460, "title": "一笔 paper & two inks"},
+    "Hero.dc.html": {"x": 0, "y": 964, "w": 1280, "h": 600, "title": "一笔 hero · the strokes of 大"},
+    "Stone.dc.html": {"x": 1360, "y": 964, "w": 1000, "h": 600, "title": "一笔 stone · seal print · tile vs stone"},
+    "Things.dc.html": {"x": 0, "y": 1684, "w": 1280, "h": 1000, "title": "字/物 · word and thing"},
+    "HUD.dc.html": {"x": 1360, "y": 1684, "w": 1000, "h": 760, "title": "一笔 HUD"}
+  },
+  "order": ["Main.dc.html", "Daybreak.dc.html", "Portrait.dc.html", "Win.dc.html", "Palette.dc.html", "Hero.dc.html", "Stone.dc.html", "Things.dc.html", "HUD.dc.html"],
+  "notes": {
+    "title": {"x": 0, "y": -300, "text": "同舟 · 一笔 One Stroke — paper, ink and vermilion", "kind": "title1", "maxW": 2394}
+  },
+  "designSystems": []
+}

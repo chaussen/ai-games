@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>One Stroke hero sheet</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#cc3524}a:hover{color:#171513}
+.zi{font-family:'Noto Serif SC','Songti SC','STSong',serif;font-weight:900}
+.lat{font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.cell{background:#f8f1e2;border:2px solid #171513;display:flex;flex-direction:column;align-items:center;padding-bottom:8px}
+</style>
+</helmet>
+<div style="position: relative; width: 1280px; height: 600px; box-sizing: border-box; background: #f1e6d0; color: #171513; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; overflow: hidden">
+<svg width="0" height="0" style="position: absolute" aria-hidden="true">
+<defs>
+<g id="K-stand" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-15,-26 L-8,-30 L0,-30 L8,-30 L15,-26" stroke="currentColor"></path>
+<path d="M0,-30 L0,-17" stroke="currentColor"></path>
+<path d="M0,-17 L-5,-9 L-10,0 M0,-17 L5,-9 L10,0" stroke="currentColor"></path>
+<circle cx="0" cy="-37" r="0.4" fill="currentColor" stroke="currentColor"></circle>
+<path d="M3,-20.4 C8,-19 9,-14 13,-12 M2.6,-20 C6,-16 5,-12 8,-8" stroke="#cc3524" stroke-width="1.4"></path>
+<path d="M-3.6,-19.6 L3.6,-20.8" stroke="#cc3524" stroke-width="3.4"></path>
+</g>
+<g id="K-run1" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-10,-21 L-4,-25 L4,-29 L10,-25 L14,-30" stroke="currentColor"></path>
+<path d="M4,-29 L-1,-16" stroke="currentColor"></path>
+<path d="M-1,-16 L6,-10 L8,-1 M-1,-16 L-6,-10 L-12,-7" stroke="currentColor"></path>
+<circle cx="7" cy="-35" r="0.4" fill="currentColor" stroke="currentColor"></circle>
+<path d="M-2.6,-21.6 C-8,-23 -12,-18 -18,-19.6 M-2.6,-21 C-8,-18 -12,-15 -17,-13" stroke="#cc3524" stroke-width="1.4"></path>
+<path d="M-2.9,-22 L4.5,-19.2" stroke="#cc3524" stroke-width="3.4"></path>
+</g>
+<g id="K-run2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-6,-30 L-2,-27 L4,-29 L8,-24 L12,-22" stroke="currentColor"></path>
+<path d="M4,-29 L0,-16" stroke="currentColor"></path>
+<path d="M0,-16 L2,-8 L1,0 M0,-16 L-4,-9 L-9,-12" stroke="currentColor"></path>
+<circle cx="6" cy="-35" r="0.4" fill="currentColor" stroke="currentColor"></circle>
+<path d="M-2,-21.4 C-7,-22 -11,-18 -17,-19 M-2,-21 C-7,-18 -11,-16 -16,-14" stroke="#cc3524" stroke-width="1.4"></path>
+<path d="M-2.4,-21.8 L5.2,-19.4" stroke="#cc3524" stroke-width="3.4"></path>
+</g>
+<g id="K-jump" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-12,-44 L-8,-37 L0,-31 L8,-37 L12,-44" stroke="currentColor"></path>
+<path d="M0,-31 L0,-18" stroke="currentColor"></path>
+<path d="M0,-18 L-6,-12 L-3,-6 M0,-18 L6,-12 L3,-6" stroke="currentColor"></path>
+<circle cx="0" cy="-38" r="0.4" fill="currentColor" stroke="currentColor"></circle>
+<path d="M-3,-21 C-6,-15 -4,-10 -7,-5 M-2.4,-20.6 C-3,-14 -8,-11 -9,-7" stroke="#cc3524" stroke-width="1.4"></path>
+<path d="M-3.6,-21 L3.6,-22.2" stroke="#cc3524" stroke-width="3.4"></path>
+</g>
+<g id="K-leap" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-12,-27 L-5,-28 L3,-30 L-4,-24 L-11,-22" stroke="currentColor"></path>
+<path d="M3,-30 L-1,-20 L-8,-10 L-15,-3" stroke="currentColor"></path>
+<path d="M-1,-20 L6,-12 L12,-6" stroke="currentColor"></path>
+<circle cx="6" cy="-37" r="0.4" fill="currentColor" stroke="currentColor"></circle>
+<path d="M-1.6,-24 C-8,-27 -13,-21 -19,-23 M-1.6,-23.4 C-8,-20 -13,-17 -19,-16" stroke="#cc3524" stroke-width="1.4"></path>
+<path d="M-1.9,-24.5 L5.5,-21.5" stroke="#cc3524" stroke-width="3.4"></path>
+</g>
+<g id="K-wall" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-15,-37 L-9,-33 L-2,-29 L-3,-36 L-7,-41" stroke="currentColor"></path>
+<path d="M-2,-29 L3,-17" stroke="currentColor"></path>
+<path d="M3,-17 L8,-14 L12,-17 L12,-21 M3,-17 L-1,-10 L-5,-6" stroke="currentColor"></path>
+<circle cx="-4" cy="-35" r="0.4" fill="currentColor" stroke="currentColor"></circle>
+<path d="M3.6,-24 C6,-20 3,-14 5,-9 M3.4,-23.4 C1,-18 0,-14 2,-9" stroke="#cc3524" stroke-width="1.4"></path>
+<path d="M-3.3,-21.5 L4.1,-24.5" stroke="#cc3524" stroke-width="3.4"></path>
+</g>
+<g id="K-carry" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-14,-46 L-13,-34 L-6,-31 L0,-31 L6,-31 L13,-34 L14,-46" stroke="currentColor"></path>
+<path d="M0,-31 L0,-17" stroke="currentColor"></path>
+<path d="M0,-17 L-6,-9 L-11,0 M0,-17 L6,-9 L11,0" stroke="currentColor"></path>
+<circle cx="0" cy="-38" r="0.4" fill="currentColor" stroke="currentColor"></circle>
+<path d="M3,-20.4 C8,-19 9,-14 13,-12 M2.6,-20 C6,-16 5,-12 8,-8" stroke="#cc3524" stroke-width="1.4"></path>
+<path d="M-3.6,-19.6 L3.6,-20.8" stroke="#cc3524" stroke-width="3.4"></path>
+</g>
+<g id="K-land" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-17,-13 L-10,-18 L0,-20 L10,-18 L17,-13" stroke="currentColor"></path>
+<path d="M0,-20 L0,-11" stroke="currentColor"></path>
+<path d="M0,-11 L-8,-6 L-10,0 M0,-11 L8,-6 L10,0" stroke="currentColor"></path>
+<circle cx="0" cy="-27" r="0.4" fill="currentColor" stroke="currentColor"></circle>
+<path d="M3,-13.4 C7,-17 10,-15 13,-21 M2.6,-13 C7,-13 10,-10 15,-12" stroke="#cc3524" stroke-width="1.4"></path>
+<path d="M-3.6,-13 L3.6,-14" stroke="#cc3524" stroke-width="3.4"></path>
+</g>
+<g id="K-fall" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-13,-41 L-10,-34 L0,-29 L9,-33 L14,-39" stroke="currentColor"></path>
+<path d="M0,-29 L1,-16" stroke="currentColor"></path>
+<path d="M1,-16 L-2,-8 L-5,-1 M1,-16 L5,-9 L6,0" stroke="currentColor"></path>
+<circle cx="-1" cy="-36" r="0.4" fill="currentColor" stroke="currentColor"></circle>
+<path d="M-2.6,-19.8 C-8,-23 -10,-28 -16,-31 M-2.6,-19.6 C-6,-25 -6,-29 -10,-34" stroke="#cc3524" stroke-width="1.4"></path>
+<path d="M-2.6,-19.6 L4.6,-21" stroke="#cc3524" stroke-width="3.4"></path>
+</g>
+<g id="K-stone">
+<rect x="-18" y="-82" width="36" height="36" fill="#171513"></rect>
+<path d="M-15,-75.6 L-11.6,-79 L11.6,-79 L15,-75.6 L15,-52.4 L11.6,-49 L-11.6,-49 L-15,-52.4 Z" fill="#f8f1e2"></path>
+<text x="0" y="-63.4" font-size="24" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#1b5aa6">月</text>
+</g>
+<g id="K-ground"><rect x="-29" y="0" width="58" height="16" fill="#171513"></rect><path d="M-29,2.6 H29" stroke="#f1e6d0" stroke-width="1.2"></path><path d="M-24,9 H-14 M4,12 H14" stroke="#423f39" stroke-width="1.2"></path></g>
+<pattern id="K-wv" width="8" height="4" patternUnits="userSpaceOnUse"><path d="M0,4 A4,4 0 0 1 8,4 M-4,2 A4,4 0 0 1 4,2 M4,2 A4,4 0 0 1 12,2" fill="none" stroke="#5d7182" stroke-width=".6"></path></pattern>
+<g id="K-water"><rect x="-29" y="2" width="58" height="14" fill="url(#K-wv)"></rect><path d="M-29,2 H29" stroke="#5d7182" stroke-width="1"></path></g>
+</defs>
+</svg>
+
+<div style="position: absolute; left: 24px; top: 18px; right: 24px; display: flex; align-items: baseline; gap: 14px">
+<span class="zi" style="font-size: 44px; line-height: 48px">大</span>
+<span class="lat" style="font-size: 26px; font-weight: 800; letter-spacing: -.01em; line-height: 30px; white-space: nowrap">Hero</span>
+<span class="lat" style="font-size: 13px; color: #5a544b; line-height: 18px">a dot and the strokes of 大, bending at the joints · one vermilion sash with two tails · a thin gamboge rim says “you” · no hat, face or weapon</span>
+</div>
+
+<div style="position: absolute; left: 24px; top: 80px; width: 1232px; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 8px">
+<div class="cell"><svg width="128" height="230" viewBox="-29 -88 58 104" aria-hidden="true" style="display: block"><use href="#K-ground"></use><use href="#K-stand" color="#e0a526" stroke-width="7.6"></use><use href="#K-stand" color="#171513" stroke-width="5"></use></svg><div class="zi" style="font-size: 20px; line-height: 26px">立</div><div class="lat" style="font-size: 12.5px; line-height: 16px">lì · stand — 大</div></div>
+<div class="cell"><svg width="128" height="230" viewBox="-29 -88 58 104" aria-hidden="true" style="display: block"><use href="#K-ground"></use><use href="#K-run1" color="#e0a526" stroke-width="7.6"></use><use href="#K-run1" color="#171513" stroke-width="5"></use></svg><div class="zi" style="font-size: 20px; line-height: 26px">跑 一</div><div class="lat" style="font-size: 12.5px; line-height: 16px">pǎo · run, frame 1</div></div>
+<div class="cell"><svg width="128" height="230" viewBox="-29 -88 58 104" aria-hidden="true" style="display: block"><use href="#K-ground"></use><use href="#K-run2" color="#e0a526" stroke-width="7.6"></use><use href="#K-run2" color="#171513" stroke-width="5"></use></svg><div class="zi" style="font-size: 20px; line-height: 26px">跑 二</div><div class="lat" style="font-size: 12.5px; line-height: 16px">pǎo · run, frame 2</div></div>
+<div class="cell"><svg width="128" height="230" viewBox="-29 -88 58 104" aria-hidden="true" style="display: block"><use href="#K-ground"></use><path d="M0,-14 V-3" stroke="#171513" stroke-width=".9" stroke-linecap="round" stroke-dasharray="0 2.6"></path><ellipse cx="0" cy="1" rx="5" ry="1.5" fill="#847e72"></ellipse><g transform="translate(0,-16)"><use href="#K-jump" color="#e0a526" stroke-width="7.6"></use><use href="#K-jump" color="#171513" stroke-width="5"></use></g></svg><div class="zi" style="font-size: 20px; line-height: 26px">跳</div><div class="lat" style="font-size: 12.5px; line-height: 16px">tiào · jump</div></div>
+<div class="cell"><svg width="128" height="230" viewBox="-29 -88 58 104" aria-hidden="true" style="display: block"><use href="#K-water"></use><path d="M2,-26 V-3" stroke="#cc3524" stroke-width=".9" stroke-linecap="round" stroke-dasharray="0 2.6"></path><ellipse cx="2" cy="1" rx="5" ry="1.5" fill="none" stroke="#cc3524" stroke-width=".9"></ellipse><g transform="translate(4,-24)"><use href="#K-leap" color="#e0a526" stroke-width="7.6"></use><use href="#K-leap" color="#171513" stroke-width="5"></use></g></svg><div class="zi" style="font-size: 20px; line-height: 26px">轻功 · 人</div><div class="lat" style="font-size: 12.5px; line-height: 16px">qīnggōng · leap</div></div>
+<div class="cell"><svg width="128" height="230" viewBox="-29 -88 58 104" aria-hidden="true" style="display: block"><use href="#K-ground"></use><rect x="12" y="-88" width="17" height="88" fill="#171513"></rect><path d="M16,-70 H24 M15,-46 H25 M17,-24 H24" stroke="#423f39" stroke-width="1.2"></path><g transform="translate(0,-10)"><use href="#K-wall" color="#e0a526" stroke-width="7.6"></use><use href="#K-wall" color="#171513" stroke-width="5"></use></g></svg><div class="zi" style="font-size: 20px; line-height: 26px">蹬壁</div><div class="lat" style="font-size: 12.5px; line-height: 16px">dēng bì · wall push</div></div>
+<div class="cell"><svg width="128" height="230" viewBox="-29 -88 58 104" aria-hidden="true" style="display: block"><use href="#K-ground"></use><use href="#K-carry" color="#e0a526" stroke-width="7.6"></use><use href="#K-carry" color="#171513" stroke-width="5"></use><use href="#K-stone"></use></svg><div class="zi" style="font-size: 20px; line-height: 26px">举 · 天</div><div class="lat" style="font-size: 12.5px; line-height: 16px">jǔ · carry overhead</div></div>
+<div class="cell"><svg width="128" height="230" viewBox="-29 -88 58 104" aria-hidden="true" style="display: block"><use href="#K-ground"></use><path d="M-19,-2 L-14,-2 M14,-2 L19,-2 M-17,-5 L-13,-4 M13,-4 L17,-5" stroke="#847e72" stroke-width="1.2" stroke-linecap="round"></path><use href="#K-land" color="#e0a526" stroke-width="7.6"></use><use href="#K-land" color="#171513" stroke-width="5"></use></svg><div class="zi" style="font-size: 20px; line-height: 26px">落地</div><div class="lat" style="font-size: 12.5px; line-height: 16px">luòdì · land</div></div>
+<div class="cell"><svg width="128" height="230" viewBox="-29 -88 58 104" aria-hidden="true" style="display: block"><use href="#K-ground"></use><path d="M0,-18 V-3" stroke="#171513" stroke-width=".9" stroke-linecap="round" stroke-dasharray="0 2.6"></path><ellipse cx="0" cy="1" rx="5" ry="1.5" fill="#847e72"></ellipse><g transform="translate(0,-20)"><use href="#K-fall" color="#e0a526" stroke-width="7.6"></use><use href="#K-fall" color="#171513" stroke-width="5"></use></g></svg><div class="zi" style="font-size: 20px; line-height: 26px">坠</div><div class="lat" style="font-size: 12.5px; line-height: 16px">zhuì · fall</div></div>
+</div>
+
+<div class="lat" style="position: absolute; left: 24px; top: 384px; right: 24px; display: flex; justify-content: space-between; font-size: 13px; line-height: 16px; color: #5a544b">
+<span><b style="color: #171513">At play size, 30 px tall</b> · on bare paper</span>
+<span>on the black play layer</span>
+<span>against the night sky</span>
+</div>
+<svg width="1232" height="104" viewBox="0 0 1232 104" style="position: absolute; left: 24px; top: 406px; display: block" role="img" aria-label="The nine poses at 30 pixels tall on paper, on black ink and on the night sky">
+<rect x="0" y="0" width="410" height="104" fill="#f8f1e2"></rect>
+<rect x="411" y="0" width="410" height="104" fill="#171513"></rect>
+<rect x="822" y="0" width="410" height="104" fill="#5d7182"></rect>
+<g transform="translate(26,86) scale(.68)"><use href="#K-stand" color="#e0a526" stroke-width="7.6"></use><use href="#K-stand" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(70,86) scale(.68)"><use href="#K-run1" color="#e0a526" stroke-width="7.6"></use><use href="#K-run1" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(114,86) scale(.68)"><use href="#K-run2" color="#e0a526" stroke-width="7.6"></use><use href="#K-run2" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(158,76) scale(.68)"><use href="#K-jump" color="#e0a526" stroke-width="7.6"></use><use href="#K-jump" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(204,72) scale(.68)"><use href="#K-leap" color="#e0a526" stroke-width="7.6"></use><use href="#K-leap" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(248,80) scale(.68)"><use href="#K-wall" color="#e0a526" stroke-width="7.6"></use><use href="#K-wall" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(294,86) scale(.68)"><use href="#K-carry" color="#e0a526" stroke-width="7.6"></use><use href="#K-carry" color="#171513" stroke-width="5"></use><use href="#K-stone"></use></g>
+<g transform="translate(340,86) scale(.68)"><use href="#K-land" color="#e0a526" stroke-width="7.6"></use><use href="#K-land" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(382,74) scale(.68)"><use href="#K-fall" color="#e0a526" stroke-width="7.6"></use><use href="#K-fall" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(437,86) scale(.68)"><use href="#K-stand" color="#e0a526" stroke-width="7.6"></use><use href="#K-stand" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(481,86) scale(.68)"><use href="#K-run1" color="#e0a526" stroke-width="7.6"></use><use href="#K-run1" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(525,86) scale(.68)"><use href="#K-run2" color="#e0a526" stroke-width="7.6"></use><use href="#K-run2" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(569,76) scale(.68)"><use href="#K-jump" color="#e0a526" stroke-width="7.6"></use><use href="#K-jump" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(615,72) scale(.68)"><use href="#K-leap" color="#e0a526" stroke-width="7.6"></use><use href="#K-leap" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(659,80) scale(.68)"><use href="#K-wall" color="#e0a526" stroke-width="7.6"></use><use href="#K-wall" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(705,86) scale(.68)"><use href="#K-carry" color="#e0a526" stroke-width="7.6"></use><use href="#K-carry" color="#171513" stroke-width="5"></use><use href="#K-stone"></use></g>
+<g transform="translate(751,86) scale(.68)"><use href="#K-land" color="#e0a526" stroke-width="7.6"></use><use href="#K-land" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(793,74) scale(.68)"><use href="#K-fall" color="#e0a526" stroke-width="7.6"></use><use href="#K-fall" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(848,86) scale(.68)"><use href="#K-stand" color="#e0a526" stroke-width="7.6"></use><use href="#K-stand" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(892,86) scale(.68)"><use href="#K-run1" color="#e0a526" stroke-width="7.6"></use><use href="#K-run1" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(936,86) scale(.68)"><use href="#K-run2" color="#e0a526" stroke-width="7.6"></use><use href="#K-run2" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(980,76) scale(.68)"><use href="#K-jump" color="#e0a526" stroke-width="7.6"></use><use href="#K-jump" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(1026,72) scale(.68)"><use href="#K-leap" color="#e0a526" stroke-width="7.6"></use><use href="#K-leap" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(1070,80) scale(.68)"><use href="#K-wall" color="#e0a526" stroke-width="7.6"></use><use href="#K-wall" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(1116,86) scale(.68)"><use href="#K-carry" color="#e0a526" stroke-width="7.6"></use><use href="#K-carry" color="#171513" stroke-width="5"></use><use href="#K-stone"></use></g>
+<g transform="translate(1162,86) scale(.68)"><use href="#K-land" color="#e0a526" stroke-width="7.6"></use><use href="#K-land" color="#171513" stroke-width="5"></use></g>
+<g transform="translate(1204,74) scale(.68)"><use href="#K-fall" color="#e0a526" stroke-width="7.6"></use><use href="#K-fall" color="#171513" stroke-width="5"></use></g>
+</svg>
+
+<div class="lat" style="position: absolute; left: 24px; top: 524px; right: 24px; font-size: 12.5px; line-height: 18px; color: #5a544b">
+<b style="color: #171513">How to draw it.</b> Each pose is one dot and four polylines (arms, body, two legs), round caps and joins. Stroke the pose twice: first in gamboge #e0a526 at width 7.6, then in ink #171513 at width 5 (viewBox units). That leaves a 1.3-unit rim, about 1 px at play scale (×0.68). The sash (width 3.4) and its two tails (1.4) are vermilion #cc3524 in both passes. Air marker: ink dots and an ink-50% shadow over ground, vermilion dots and a vermilion ring over water. viewBox −29 −88 58 104, feet at y = 0.
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":600}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

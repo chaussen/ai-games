@@ -11,7 +11,7 @@ The side-view greybox of the Positional Forge. Read `README.md`, then `docs/GREY
   buttons) is checked by `screen-check.py`; do not add HUD without changing the budget on purpose.
 - Pinyin and meaning stay with every Chinese character shown (buttons included).
 - New Chinese text on the page: re-subset the font with `tools/font.py` (smoke test fails otherwise).
-- Two looks share one sim: `ink.js` (水墨江湖, default, from Claude Design's boards in `docs/design/`) and
+- Three looks share one sim: `cut.js` (一笔 One Stroke, `?art=cut`, from `docs/design/one-stroke/`: flat fills, no gradients, no alpha tints except the dusk and win veils), `ink.js` (水墨江湖, default, from Claude Design's boards in `docs/design/`) and
   the greybox in `app.js` (`?art=greybox`). Renderer only: never put rules in either.
 - Ink performance: no large gradient or stretched-image fills per frame (they cost 40+ ms on a
   software rasteriser); bake them (`layer`, `vband` in `ink.js`) and copy them unscaled.

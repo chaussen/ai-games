@@ -287,10 +287,26 @@ the greybox 42 to 61. The first ink build ran at 5 fps: big gradient fills and s
 copies are slow to rasterise without a GPU, so the sky, both mountain bands, the mist band and the
 river's wash are painted once and copied unscaled (rules in `AGENTS.md`).
 
+**One Stroke 一笔 built (2026-11-19, same day).** Claude Design's round 2 boards (copied to
+`docs/design/one-stroke/`; its hand-off had no `tokens.json`, so `tokens.json` there is written from the
+Palette board) are drawn in canvas in **`cut.js`**, behind `?art=cut` and ☰ → Look: paper, ink and
+vermilion; sky in the isle's one accent (moon-night blue-grey, daybreak yellow); far triangles and two
+bands of arches on one shared baseline; scale-arc river; solid-ink play layer with a bare-paper line inside
+every walkable top and cut dashes on cliff faces only; thorns as black triangles; the boat, plank bridge
+(with a vermilion tag) and pavilion as cut paper; the hero as nine stroke poses in Design's own
+viewBox with the gamboge rim and vermilion sash; stones as paper squares in a notched ink border with a
+pinyin slip (forged characters keep a vermilion glyph); the HUD and win as vermilion/paper slips with cut
+corners and a seal. The forge presses a vermilion seal. Checks (`ART=cut node screen-test.mjs`): the
+screen budget on eleven screens, 60 fps everywhere, contrast at walkable tops 14.7:1 (3.6:1 on the two laptops
+where the top meets the darker sky).
+Not drawn: the empty-hands word card, the dotted stick line when pushed, the fixed tile and 字/物
+boards (below).
+
 **Not built yet**
 
-1. **A 一笔 One Stroke** look for the comparison John asked for: Design drew only B. Needs its own
-   frames (from Design, or V1 in code) before it is built.
+1. **Fixed glyph tiles and the 字/物 sheet**, in either look. Design delivered both for One Stroke
+   (`Stone.dc.html`, `Things.dc.html`); they need the rules change (§3.3) and the carried/thrown/acting
+   things (§3.7), each in its own note first.
 2. **§3.7 字/物**: things in the air and carried (a tree on your shoulder, a torch, the sun disc).
    Not on the boards; level 1 is the next art step.
 3. **Fixed glyph tiles** carved in rock (§3.3): a rules change, its own note first.

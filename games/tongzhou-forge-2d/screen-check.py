@@ -9,7 +9,7 @@ laptop), and checks the screen budget of docs/GREYBOX.md:
   - your feet are on screen and not under the pad;
   - no console errors.
   - (both looks) the contrast at every visible walkable top is 3:1 or more (WF2D.probe).
-Screenshots go to the folder given. Usage: ART=ink|greybox python3 screen-check.py <port> <outdir>
+Screenshots go to the folder given. Usage: ART=ink|cut|greybox python3 screen-check.py <port> <outdir>
 """
 import json, os, sys
 from playwright.sync_api import sync_playwright

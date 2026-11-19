@@ -37,7 +37,7 @@ try {
   // the font holds every character the page can show
   const chars = new Set(fs.readFileSync(path.join(here, 'vendor/MaShanZheng-subset.chars.txt'), 'utf8'));
   const han = new Set();
-  for (const f of ['content.js', 'isles.js', 'app.js', 'ink.js', 'index.html']) for (const c of fs.readFileSync(path.join(here, f), 'utf8').match(/[一-鿿⺀-⿟]/gu) || []) han.add(c);
+  for (const f of ['content.js', 'isles.js', 'app.js', 'ink.js', 'cut.js', 'index.html']) for (const c of fs.readFileSync(path.join(here, f), 'utf8').match(/[一-鿿⺀-⿟]/gu) || []) han.add(c);
   const miss = [...han].filter(c => !chars.has(c));
   ok(!miss.length, 'the brush font covers every character shown (missing: ' + miss.join('') + ')');
   // the sim the page runs

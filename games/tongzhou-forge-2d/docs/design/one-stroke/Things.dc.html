@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>Word and thing sheet</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#cc3524}a:hover{color:#171513}
+.zi{font-family:'Noto Serif SC','Songti SC','STSong',serif;font-weight:900}
+.lat{font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+.c{background:#f8f1e2;border:2px solid #171513;display:flex;flex-direction:column;align-items:center;padding-bottom:5px}
+.cap{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:11.5px;line-height:14px;color:#5a544b;text-align:center;padding:0 4px}
+.rowh{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.colh{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:12.5px;font-weight:800;line-height:16px;text-align:center}
+</style>
+</helmet>
+<div style="position: relative; width: 1280px; height: 1000px; box-sizing: border-box; background: #f1e6d0; color: #171513; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; overflow: hidden">
+<svg width="0" height="0" style="position: absolute" aria-hidden="true">
+<defs>
+<g id="T-gr"><rect x="-45" y="0" width="90" height="16" fill="#171513"></rect><path d="M-45,2.6 H45" stroke="#f1e6d0" stroke-width="1.2"></path><path d="M-38,9 H-28 M10,12 H20" stroke="#423f39" stroke-width="1.2"></path></g>
+<g id="T-st"><rect x="-13" y="-2" width="26" height="17" fill="#f8f1e2" stroke="#171513" stroke-width=".8"></rect><rect x="-14" y="-28" width="28" height="28" fill="#171513"></rect><path d="M-11.5,-23 L-9,-25.5 L9,-25.5 L11.5,-23 L11.5,-5 L9,-2.5 L-9,-2.5 L-11.5,-5 Z" fill="#f8f1e2"></path></g>
+<g id="T-fold"><rect x="-13" y="-2" width="26" height="17" fill="#f8f1e2" stroke="#171513" stroke-width=".8"></rect><path d="M-14,-28 L4,-28 L14,-18 L14,0 L-14,0 Z" fill="#171513"></path><path d="M-11.5,-25.5 L3,-25.5 L11.5,-17 L11.5,-2.5 L-11.5,-2.5 Z" fill="#f8f1e2"></path><path d="M4,-28 L14,-18 L4,-18 Z" fill="#b0a797" stroke="#171513" stroke-width=".8" stroke-linejoin="round"></path></g>
+<path id="T-flame" d="M0,0 C-5,-1 -6,-6 -3,-10 C-3,-7 -1,-6 0,-8 C1,-11 0,-13 -1,-15 C4,-12 6,-6 4,-2 C3,-0.5 2,0 0,0 Z"></path>
+<path id="T-flin" d="M0,-2 C-2,-2.5 -2,-5 0,-7 C2,-5 2,-2.5 0,-2 Z"></path>
+<g id="T-tree"><rect x="-1.5" y="-8" width="3" height="8" fill="#171513"></rect><path d="M-8,-6 L0,-18 L8,-6 Z M-6.5,-13 L0,-23 L6.5,-13 Z M-5,-19 L0,-27 L5,-19 Z" fill="#1c6b50"></path></g>
+<g id="T-rays" stroke="#b06f06" stroke-width="1.6" stroke-linecap="round"><path d="M0,-10.5 V-13.5 M0,10.5 V13.5 M-10.5,0 H-13.5 M10.5,0 H13.5 M7.4,-7.4 L9.5,-9.5 M-7.4,-7.4 L-9.5,-9.5 M7.4,7.4 L9.5,9.5 M-7.4,7.4 L-9.5,9.5"></path></g>
+<g id="T-sun"><circle cx="0" cy="0" r="8" fill="#f8f1e2" stroke="#b06f06" stroke-width="2.4"></circle><use href="#T-rays"></use></g>
+<pattern id="T-wv" width="8" height="4" patternUnits="userSpaceOnUse"><path d="M0,4 A4,4 0 0 1 8,4 M-4,2 A4,4 0 0 1 4,2 M4,2 A4,4 0 0 1 12,2" fill="none" stroke="#5d7182" stroke-width=".7"></path></pattern>
+<g id="K-hold" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-12,-24 L-6,-27 L0,-30 L8,-30 L15,-31" stroke="currentColor"></path>
+<path d="M0,-30 L0,-17" stroke="currentColor"></path>
+<path d="M0,-17 L-5,-9 L-9,0 M0,-17 L5,-9 L9,0" stroke="currentColor"></path>
+<circle cx="1" cy="-37" r="0.4" fill="currentColor" stroke="currentColor"></circle>
+<path d="M-3,-20.4 C-8,-19 -9,-14 -13,-12 M-2.6,-20 C-6,-16 -5,-12 -8,-8" stroke="#cc3524" stroke-width="1.4"></path>
+<path d="M-3.6,-19.6 L3.6,-20.8" stroke="#cc3524" stroke-width="3.4"></path>
+</g>
+<g id="K-shoulder" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-13,-25 L-7,-29 L0,-30 L6,-27 L3,-33" stroke="currentColor"></path>
+<path d="M0,-30 L0,-17" stroke="currentColor"></path>
+<path d="M0,-17 L-5,-9 L-9,0 M0,-17 L5,-9 L9,0" stroke="currentColor"></path>
+<circle cx="0" cy="-37" r="0.4" fill="currentColor" stroke="currentColor"></circle>
+<path d="M3,-20.4 C8,-19 9,-14 13,-12 M2.6,-20 C6,-16 5,-12 8,-8" stroke="#cc3524" stroke-width="1.4"></path>
+<path d="M-3.6,-19.6 L3.6,-20.8" stroke="#cc3524" stroke-width="3.4"></path>
+</g>
+<g id="K-carry" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-14,-46 L-13,-34 L-6,-31 L0,-31 L6,-31 L13,-34 L14,-46" stroke="currentColor"></path>
+<path d="M0,-31 L0,-17" stroke="currentColor"></path>
+<path d="M0,-17 L-6,-9 L-11,0 M0,-17 L6,-9 L11,0" stroke="currentColor"></path>
+<circle cx="0" cy="-38" r="0.4" fill="currentColor" stroke="currentColor"></circle>
+<path d="M3,-20.4 C8,-19 9,-14 13,-12 M2.6,-20 C6,-16 5,-12 8,-8" stroke="#cc3524" stroke-width="1.4"></path>
+<path d="M-3.6,-19.6 L3.6,-20.8" stroke="#cc3524" stroke-width="3.4"></path>
+</g>
+</defs>
+</svg>
+
+<div style="position: absolute; left: 24px; top: 18px; right: 24px; display: flex; align-items: baseline; gap: 14px">
+<span class="zi" style="font-size: 44px; line-height: 48px; white-space: nowrap">字/物</span>
+<span class="lat" style="font-size: 26px; font-weight: 800; line-height: 30px; white-space: nowrap">Word and thing</span>
+<span class="lat" style="font-size: 13px; color: #5a544b; line-height: 18px">at rest a stone is always the square · in hand, in the air and acting, the paper folds into its thing · the glyph rides on a vermilion tag · 2× play size</span>
+</div>
+
+<div style="position: absolute; left: 24px; top: 84px; width: 1232px; display: grid; grid-template-columns: 76px repeat(6, minmax(0, 1fr)); gap: 8px; align-items: stretch">
+<div></div>
+<div class="colh">静 · at rest</div>
+<div class="colh">折 · fold 1</div>
+<div class="colh">折 · fold 2</div>
+<div class="colh">拿 · carried</div>
+<div class="colh">扔 · thrown</div>
+<div class="colh">用 · acting</div>
+
+<div class="rowh"><div class="zi" style="font-size: 40px; line-height: 44px; color: #1c6b50">木</div><div class="lat" style="font-size: 13px; font-weight: 700">mù</div><div class="lat" style="font-size: 12px; color: #5a544b">wood</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><use href="#T-gr"></use><use href="#T-st"></use><text x="0" y="-14" font-size="18" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#1c6b50">木</text><text x="0" y="11" text-anchor="middle" font-size="12" font-weight="600" font-family="system-ui,sans-serif" fill="#171513">mù</text></svg><div class="cap">the square, slip under it</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><use href="#T-gr"></use><use href="#T-fold"></use><text x="-1.5" y="-13" font-size="16" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#1c6b50">木</text></svg><div class="cap">a corner folds back</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><use href="#T-gr"></use><path d="M-10,-34 L0,-44 L10,-34 L0,-24 Z" fill="#f8f1e2" stroke="#171513" stroke-width="1.6"></path><path d="M-9,-6 L0,-22 L9,-6 Z M-7,-14 L0,-27 L7,-14 Z" fill="#1c6b50"></path><rect x="-1.5" y="-6" width="3" height="6" fill="#171513"></rect><rect x="-5.5" y="-16" width="11" height="11" fill="#cc3524"></rect><text x="0" y="-10.4" font-size="9" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#f8f1e2">木</text></svg><div class="cap">branches cut out</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><use href="#T-gr"></use><g transform="translate(6,-19.4) rotate(-35)"><use href="#T-tree"></use></g><g transform="scale(.68)"><use href="#K-shoulder" color="#e0a526" stroke-width="7.6"></use><use href="#K-shoulder" color="#171513" stroke-width="5"></use></g><rect x="-24" y="-33" width="11" height="11" fill="#cc3524"></rect><text x="-18.5" y="-27.4" font-size="9" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#f8f1e2">木</text></svg><div class="cap">a small tree over the shoulder</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><path d="M-42,-6 Q-26,-40 -14,-36" stroke="#b0a797" stroke-width="1.4" stroke-dasharray="0 4" stroke-linecap="round" fill="none"></path><path d="M-16,-46 A18,18 0 0 1 8,-46 M16,-18 A18,18 0 0 1 -8,-14" stroke="#b0a797" stroke-width="2" fill="none" stroke-linecap="round"></path><path d="M8,-46 l-4,-3 M8,-46 l-4,3 M-8,-14 l4,-3 M-8,-14 l4,3" stroke="#b0a797" stroke-width="2" stroke-linecap="round"></path><g transform="translate(0,-31) rotate(-30)"><rect x="-13" y="-4" width="26" height="8" rx="4" fill="#1c6b50"></rect><circle cx="9" cy="0" r="3" fill="#f8f1e2" stroke="#171513" stroke-width=".8"></circle></g><rect x="14" y="-46" width="11" height="11" fill="#cc3524"></rect><text x="19.5" y="-40.4" font-size="9" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#f8f1e2">木</text></svg><div class="cap">a log turning end over end</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><rect x="-16" y="6" width="32" height="10" fill="url(#T-wv)"></rect><path d="M-16,6 H16" stroke="#5d7182" stroke-width="1"></path><path d="M-45,-6 H-16 V16 H-45 Z M16,-6 H45 V16 H16 Z" fill="#171513"></path><path d="M-45,-3.4 H-16 M16,-3.4 H45" stroke="#f1e6d0" stroke-width="1.2"></path><path d="M-16,-8 Q0,0 16,-8" stroke="#171513" stroke-width="1" fill="none"></path><path d="M-13.2,-6 h4 M-7.8,-4.5 h4 M-2,-4 h4 M3.8,-4.5 h4 M9.2,-6 h4" stroke="#1c6b50" stroke-width="3.2"></path><rect x="-5.5" y="-19" width="11" height="11" fill="#cc3524"></rect><text x="0" y="-13.4" font-size="9" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#f8f1e2">木</text></svg><div class="cap">a plank bridge over a gap</div></div>
+
+<div class="rowh"><div class="zi" style="font-size: 40px; line-height: 44px; color: #c22f1c">火</div><div class="lat" style="font-size: 13px; font-weight: 700">huǒ</div><div class="lat" style="font-size: 12px; color: #5a544b">fire</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><use href="#T-gr"></use><use href="#T-st"></use><text x="0" y="-14" font-size="18" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#c22f1c">火</text><text x="0" y="11" text-anchor="middle" font-size="12" font-weight="600" font-family="system-ui,sans-serif" fill="#171513">huǒ</text></svg><div class="cap">the square, slip under it</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><use href="#T-gr"></use><use href="#T-fold"></use><text x="-1.5" y="-13" font-size="16" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#c22f1c">火</text></svg><div class="cap">a corner folds back</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><use href="#T-gr"></use><path d="M-11,-12 L0,-34 L11,-12 Z" fill="#f8f1e2" stroke="#171513" stroke-width="1.6"></path><g transform="translate(0,-2) scale(1.5)"><use href="#T-flame" fill="#c22f1c"></use><use href="#T-flin" fill="#f8f1e2"></use></g><rect x="-5.5" y="-14" width="11" height="11" fill="#cc3524"></rect><text x="0" y="-8.4" font-size="9" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#f8f1e2">火</text></svg><div class="cap">a flame cuts out</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><use href="#T-gr"></use><g transform="scale(.68)"><use href="#K-hold" color="#e0a526" stroke-width="7.6"></use><use href="#K-hold" color="#171513" stroke-width="5"></use></g><path d="M7,-15 L13.5,-28" stroke="#171513" stroke-width="2.2" stroke-linecap="round"></path><g transform="translate(13.8,-28.5) rotate(18) scale(1.1)"><use href="#T-flame" fill="#c22f1c"></use><use href="#T-flin" fill="#f8f1e2"></use></g><rect x="14" y="-27" width="11" height="11" fill="#cc3524"></rect><text x="19.5" y="-21.4" font-size="9" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#f8f1e2">火</text></svg><div class="cap">a torch held out</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><path d="M-42,-8 Q-22,-46 -2,-34" stroke="#b0a797" stroke-width="1.4" stroke-dasharray="0 4" stroke-linecap="round" fill="none"></path><path d="M3,-36 C-7,-37 -15,-34 -25,-38 C-17,-31 -9,-29 2,-24 Z" fill="#c22f1c"></path><circle cx="6" cy="-30" r="7" fill="#c22f1c"></circle><circle cx="7.5" cy="-31" r="2.8" fill="#f8f1e2"></circle><rect x="10" y="-47" width="11" height="11" fill="#cc3524"></rect><text x="15.5" y="-41.4" font-size="9" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#f8f1e2">火</text></svg><div class="cap">a fireball</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><use href="#T-gr"></use><path d="M-38,0 L-33,-15 L-28,0 Z M-28,0 L-23,-13 L-18,0 Z" fill="#171513"></path><g transform="translate(-10,0) scale(1.05)"><use href="#T-flame" fill="#c22f1c"></use><use href="#T-flin" fill="#f8f1e2"></use></g><g transform="translate(0,0) scale(1.3)"><use href="#T-flame" fill="#c22f1c"></use><use href="#T-flin" fill="#f8f1e2"></use></g><g transform="translate(10,0) scale(.9)"><use href="#T-flame" fill="#c22f1c"></use><use href="#T-flin" fill="#f8f1e2"></use></g><path d="M18,0 L22,-4 L26,0 Z M28,0 L32,-3 L36,0 Z" fill="#171513"></path><circle cx="21" cy="-9" r="1" fill="#b0a797"></circle><circle cx="28" cy="-13" r="1.2" fill="#b0a797"></circle><circle cx="34" cy="-8" r=".9" fill="#b0a797"></circle><rect x="-5.5" y="-34" width="11" height="11" fill="#cc3524"></rect><text x="0" y="-28.4" font-size="9" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#f8f1e2">火</text></svg><div class="cap">a thorn hedge burning away</div></div>
+
+<div class="rowh"><div class="zi" style="font-size: 40px; line-height: 44px; color: #b06f06">日</div><div class="lat" style="font-size: 13px; font-weight: 700">rì</div><div class="lat" style="font-size: 12px; color: #5a544b">sun</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><use href="#T-gr"></use><use href="#T-st"></use><text x="0" y="-14" font-size="18" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#b06f06">日</text><text x="0" y="11" text-anchor="middle" font-size="12" font-weight="600" font-family="system-ui,sans-serif" fill="#171513">rì</text></svg><div class="cap">the square, slip under it</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><use href="#T-gr"></use><use href="#T-fold"></use><text x="-1.5" y="-13" font-size="16" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#b06f06">日</text></svg><div class="cap">a corner folds back</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><use href="#T-gr"></use><path d="M-6,-30 L6,-30 L12,-24 L12,-12 L6,-6 L-6,-6 L-12,-12 L-12,-24 Z" fill="#f8f1e2" stroke="#171513" stroke-width="1.6"></path><circle cx="0" cy="-18" r="9" fill="none" stroke="#b06f06" stroke-width="2.4"></circle><path d="M0,-28.5 V-32 M10.5,-18 H14 M-10.5,-18 H-14" stroke="#b06f06" stroke-width="1.6" stroke-linecap="round"></path><rect x="-5.5" y="-23.5" width="11" height="11" fill="#cc3524"></rect><text x="0" y="-17.9" font-size="9" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#f8f1e2">日</text></svg><div class="cap">corners cut; a ring</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><rect x="-45" y="-66" width="90" height="66" fill="#5d7182"></rect><circle cx="0" cy="-24" r="34" fill="#f1e6d0"></circle><use href="#T-gr"></use><g transform="scale(.68)"><use href="#K-carry" color="#e0a526" stroke-width="7.6"></use><use href="#K-carry" color="#171513" stroke-width="5"></use></g><g transform="translate(0,-39.6)"><use href="#T-sun"></use></g><rect x="-5.5" y="-45.1" width="11" height="11" fill="#cc3524"></rect><text x="0" y="-39.5" font-size="9" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#f8f1e2">日</text></svg><div class="cap">held up as 天, lighting the dark</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><path d="M-40,-4 Q0,-80 40,-4" stroke="#b0a797" stroke-width="1.4" stroke-dasharray="0 4" stroke-linecap="round" fill="none"></path><g transform="translate(0,-42)"><use href="#T-sun"></use></g><rect x="-5.5" y="-47.5" width="11" height="11" fill="#cc3524"></rect><text x="0" y="-41.9" font-size="9" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#f8f1e2">日</text></svg><div class="cap">a sun arcing over</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><rect x="-45" y="-66" width="90" height="66" fill="#5d7182"></rect><path d="M-26,-44 L-45,0 L4,0 Z" fill="#f1e6d0"></path><path d="M2,0 L6,-18 L24,-24 L45,-14 L45,0 Z" fill="#847e72"></path><path d="M-4,-8 h4 v4 h-4 Z M-8,-14 h3 v3 h-3 Z M-3,-15 h3 v3 h-3 Z M-10,-5 h2.4 v2.4 h-2.4 Z M-6,-21 h2.4 v2.4 h-2.4 Z" fill="#847e72"></path><use href="#T-gr"></use><g transform="translate(-26,-46)"><use href="#T-sun"></use></g><rect x="-31.5" y="-51.5" width="11" height="11" fill="#cc3524"></rect><text x="-26" y="-45.9" font-size="9" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#f8f1e2">日</text></svg><div class="cap">shade breaks up and melts</div></div>
+
+<div class="rowh"><div class="zi" style="font-size: 40px; line-height: 44px; color: #1b5aa6">月</div><div class="lat" style="font-size: 13px; font-weight: 700">yuè</div><div class="lat" style="font-size: 12px; color: #5a544b">moon</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><use href="#T-gr"></use><use href="#T-st"></use><text x="0" y="-14" font-size="18" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#1b5aa6">月</text><text x="0" y="11" text-anchor="middle" font-size="12" font-weight="600" font-family="system-ui,sans-serif" fill="#171513">yuè</text></svg><div class="cap">the square, slip under it</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><use href="#T-gr"></use><use href="#T-fold"></use><text x="-1.5" y="-13" font-size="16" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#1b5aa6">月</text></svg><div class="cap">a corner folds back</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><use href="#T-gr"></use><g transform="rotate(12 0 -14)"><rect x="-11" y="-25" width="22" height="22" fill="#f8f1e2" stroke="#171513" stroke-width="1.6"></rect></g><path d="M2,-30 A13,13 0 0 0 2,-4 A17,17 0 0 1 2,-30 Z" fill="#1b5aa6"></path><rect x="1" y="-20" width="11" height="11" fill="#cc3524"></rect><text x="6.5" y="-14.4" font-size="9" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#f8f1e2">月</text></svg><div class="cap">an arc cuts a crescent</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><use href="#T-gr"></use><g transform="scale(.68)"><use href="#K-hold" color="#e0a526" stroke-width="7.6"></use><use href="#K-hold" color="#171513" stroke-width="5"></use></g><path d="M10.2,-21.1 L17,-31 M17,-31 V-28" stroke="#171513" stroke-width="1.6" stroke-linecap="round" fill="none"></path><path d="M17,-28 A7.5,7.5 0 0 0 17,-13 A10,10 0 0 1 17,-28 Z" fill="#1b5aa6"></path><path d="M13.5,-13 V-11" stroke="#171513" stroke-width="1"></path><rect x="8" y="-11" width="11" height="11" fill="#cc3524"></rect><text x="13.5" y="-5.4" font-size="9" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#f8f1e2">月</text></svg><div class="cap">a crescent lantern</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><path d="M-14,-50 A20,20 0 0 1 14,-50 M14,-14 A20,20 0 0 1 -14,-14" stroke="#b0a797" stroke-width="2" fill="none" stroke-linecap="round"></path><path d="M14,-50 l-4,-3 M14,-50 l-4,3 M-14,-14 l4,-3 M-14,-14 l4,3" stroke="#b0a797" stroke-width="2" stroke-linecap="round"></path><g transform="translate(0,-32) rotate(35)"><path d="M0,-10 A10,10 0 0 0 0,10 A13,13 0 0 1 0,-10 Z" fill="#1b5aa6"></path></g><rect x="8" y="-44" width="11" height="11" fill="#cc3524"></rect><text x="13.5" y="-38.4" font-size="9" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#f8f1e2">月</text></svg><div class="cap">a spinning crescent</div></div>
+<div class="c"><svg width="180" height="164" viewBox="-45 -66 90 82" aria-hidden="true"><rect x="-45" y="-66" width="90" height="66" fill="#5d7182"></rect><circle cx="0" cy="0" r="40" fill="#7f909c"></circle><circle cx="0" cy="0" r="27" fill="#a3afb4"></circle><circle cx="0" cy="0" r="15" fill="#c9cec8"></circle><use href="#T-gr"></use><g transform="translate(0,-5) rotate(-90)"><path d="M0,-8 A8,8 0 0 0 0,8 A10.5,10.5 0 0 1 0,-8 Z" fill="#1b5aa6"></path></g><rect x="-5.5" y="-26" width="11" height="11" fill="#cc3524"></rect><text x="0" y="-20.4" font-size="9" dominant-baseline="central" text-anchor="middle" font-family="'Noto Serif SC','Songti SC','STSong',serif" font-weight="900" fill="#f8f1e2">月</text></svg><div class="cap">a soft glow where it lands</div></div>
+</div>
+
+<div class="lat" style="position: absolute; left: 24px; top: 952px; right: 24px; font-size: 12.5px; line-height: 17px; color: #5a544b"><b style="color: #171513">Rules kept.</b> A carried thing sticks out at most about half a stone (14 px) past the hero and never covers the landing shadow. The tag is an 11 px vermilion square with a 9 px glyph in paper. Pinyin and meaning stay on the word card while a thing is carried or thrown. Glow and light are flat steps of paper over the night tint, not gradients.</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

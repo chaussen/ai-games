@@ -206,3 +206,95 @@ html.ink #win .seal {
   html.ink #goal .g { font-size: 52px; }
   html.ink #card .g { font-size: 34px; }
 }
+
+/* ======================================================================================
+   The One Stroke look (html.cut): Claude Design's round 2 HUD (docs/design/one-stroke/HUD.dc.html).
+   Paper slips with a 3 px ink border and cut corners; JUMP is a vermilion seal; nothing soft, nothing
+   glowing. Flat colours only. Same places and sizes as the other looks (the screen budget).
+   ====================================================================================== */
+html.cut {
+  --ink: #171513; --ink-soft: #5a544b; --hud-paper: #f8f1e2; --paper-solid: #f8f1e2; --vermilion: #cc3524; --gamboge: #e0a526;
+  --kai: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "Noto Serif CJK SC", "Tongzhou Brush", serif;
+  --cut7: polygon(7px 0, calc(100% - 7px) 0, 100% 7px, 100% calc(100% - 7px), calc(100% - 7px) 100%, 7px 100%, 0 calc(100% - 7px), 0 7px);
+}
+html.cut, html.cut body { background: #f1e6d0; }
+html.cut .g, html.cut #msg b, html.cut #win .recipe b { font-weight: 900; }
+html.cut #goal, html.cut #card, html.cut #menu {
+  background: var(--hud-paper); border: 3px solid var(--ink); border-radius: 0; box-shadow: none; clip-path: var(--cut7);
+}
+html.cut #goal { width: 92px; justify-items: center; padding: 6px 4px 4px; text-align: center; }
+html.cut #goal .lab { display: block; font-size: 9.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--vermilion); line-height: 12px; }
+html.cut #goal .g { font-size: 52px; line-height: 56px; color: var(--ink); }
+html.cut #goal .py { font-size: 14px; font-weight: 600; line-height: 16px; }
+html.cut #goal .en { font-size: 12px; line-height: 14px; color: var(--ink-soft); }
+/* the goal made: the card becomes a vermilion seal, the glyph in paper */
+html.cut #goal.made { background: var(--vermilion); }
+html.cut #goal.made .lab, html.cut #goal.made .g, html.cut #goal.made .py, html.cut #goal.made .en { color: var(--hud-paper); }
+html.cut #card { height: 50px; padding: 0 14px 0 10px; clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0 calc(100% - 6px), 0 6px); }
+html.cut #card .g { font-size: 32px; line-height: 36px; }
+html.cut #card .py { font-size: 14px; font-weight: 600; line-height: 16px; }
+html.cut #card .en { font-size: 12px; line-height: 14px; color: var(--ink-soft); }
+html.cut #card .picto { width: 24px; height: 24px; stroke: var(--ink-soft); }
+html.cut #card.fresh { background: var(--vermilion); }
+html.cut #card.fresh .g, html.cut #card.fresh .py, html.cut #card.fresh .en { color: var(--hud-paper); }
+html.cut #card.fresh .picto { stroke: var(--hud-paper); }
+html.cut #menu { background: var(--ink); border: 0; display: flex; align-items: center; justify-content: center; clip-path: polygon(5px 0, calc(100% - 5px) 0, 100% 5px, 100% calc(100% - 5px), calc(100% - 5px) 100%, 5px 100%, 0 calc(100% - 5px), 0 5px); }
+html.cut #menu .t { display: none; }
+html.cut #menu .san { display: block; fill: none; stroke: var(--hud-paper); stroke-linecap: butt; }
+/* the message: one paper strip with swallow-tail ends */
+html.cut #msg {
+  background: var(--hud-paper); color: var(--ink); border-radius: 0; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+  padding: 4px 22px; font-size: 13px; line-height: 20px; max-width: min(92vw, 600px);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%, 10px 50%);
+}
+html.cut #msg b { font-size: 18px; line-height: 20px; vertical-align: -2px; }
+html.cut #msg.dud { background: var(--vermilion); color: var(--hud-paper); }
+html.cut #msg.dud b { color: var(--hud-paper) !important; }
+/* the pad: a ring for the stick, a vermilion seal for JUMP, a paper GRAB */
+html.cut #stick { border: 3px solid var(--ink); background: none; box-shadow: 0 0 0 2px #f1e6d0, inset 0 0 0 2px #f1e6d0; }
+html.cut #stick .enso { display: none; }
+html.cut #stick i { width: 40px; height: 40px; margin: -20px 0 0 -20px; background: var(--ink); border: 2px solid #f1e6d0; }
+html.cut #stick.live i { background: var(--vermilion); border: 3px solid var(--ink); }
+html.cut #jump { background: var(--vermilion); border: 3px solid var(--ink); color: var(--hud-paper); box-shadow: none; }
+html.cut #jump .en, html.cut #jump .py { color: var(--hud-paper); }
+html.cut #jump .py { font-size: 10px; font-weight: 600; }
+html.cut #jump .en { font-size: 7.5px; font-weight: 800; letter-spacing: .1em; }
+html.cut #jump:active, html.cut #jump.down { transform: scale(.92); background: var(--ink); border-color: var(--vermilion); box-shadow: none; }
+html.cut #grab {
+  width: 58px; height: 58px; right: calc(var(--gap-r) + 78px); bottom: calc(var(--bot) + 26px);
+  background: var(--hud-paper); border: 3px solid var(--ink); box-shadow: none; color: var(--ink);
+}
+html.cut #grab .g { font-size: 22px; line-height: 24px; }
+html.cut #grab .py { font-size: 10px; font-weight: 600; line-height: 11px; color: var(--ink); }
+html.cut #grab .en { font-size: 7.5px; font-weight: 800; letter-spacing: .08em; color: var(--ink); }
+html.cut #grab.idle { opacity: .6; }
+html.cut #grab.mode-offer { background: var(--vermilion); color: var(--hud-paper); }
+html.cut #grab.mode-offer .py, html.cut #grab.mode-offer .en { color: var(--hud-paper); }
+html.cut #grab:active, html.cut #grab.down { transform: scale(.94); background: #e9dfc9; }
+/* sheets: paper with a 3 px ink border and cut corners */
+html.cut .sheet { background: var(--hud-paper); border: 3px solid var(--ink); border-radius: 0; box-shadow: none; clip-path: var(--cut7); }
+html.cut #title { background: var(--hud-paper); }
+html.cut .sheet .row button { border-radius: 0; border: 2px solid var(--ink); background: var(--hud-paper); }
+html.cut .sheet .row button.main { background: var(--ink); color: var(--hud-paper); }
+html.cut #drawer select { border-radius: 0; border: 2px solid var(--ink); background: var(--hud-paper); }
+/* the win: a vermilion seal of the character, the pinyin and meaning, a rule, its parts, a vertical line, the 同舟 seal */
+html.cut #win { top: 10vh; width: min(92vw, 500px); padding: 20px 66px 14px 20px; display: grid; grid-template-columns: 124px 1fr; column-gap: 18px; align-items: start; text-align: left; }
+html.cut #win .g {
+  grid-row: 1 / span 3; width: 124px; height: 124px; display: grid; place-items: center; transform: rotate(-2deg);
+  background: var(--vermilion); color: var(--hud-paper); font-size: 80px; line-height: 1; outline: 2.4px solid var(--hud-paper); outline-offset: -8px;
+}
+html.cut #win .words { font-size: 0; grid-column: 2; display: grid; }
+html.cut #win .words .py { font-size: 28px; font-weight: 700; line-height: 32px; }
+html.cut #win .words .en { font-size: 17px; line-height: 22px; color: var(--ink-soft); }
+html.cut #win .recipe { display: block; grid-column: 2; margin: 8px 0 0; padding-top: 10px; border-top: 3px solid var(--ink); width: fit-content; font-size: 13.5px; line-height: 20px; }
+html.cut #win .recipe b { font-size: 17px; }
+html.cut #win .recipe small { color: var(--ink-soft); font-size: 12px; }
+html.cut #win .line { display: none; }
+html.cut #win .stats { grid-column: 2; margin: 6px 0 10px; font-size: 12px; color: var(--ink-soft); }
+html.cut #win .row { grid-column: 1 / -1; margin-top: 4px; }
+html.cut #win .inscr { display: block; position: absolute; right: 16px; top: 14px; writing-mode: vertical-rl; font: 900 22px/24px var(--kai); letter-spacing: 2px; color: var(--ink); }
+html.cut #win .seal {
+  display: grid; place-items: center; position: absolute; right: 14px; bottom: 64px; width: 40px; height: 40px; box-sizing: border-box;
+  border: 3px solid var(--vermilion); color: var(--vermilion); font: 900 15px/16px var(--kai); writing-mode: vertical-rl;
+}
+@media (max-width: 420px) { html.cut #win { grid-template-columns: 96px 1fr; column-gap: 12px; padding-right: 58px; } html.cut #win .g { width: 96px; height: 96px; font-size: 62px; } }

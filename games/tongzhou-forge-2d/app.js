@@ -1,7 +1,8 @@
 // 同舟 · Glyph Isles 2D — the page: runs sim.js locally (one player), draws the isle side-on, and keeps
 // the phone screen to its budget (docs/GREYBOX.md): one goal, one word card, one message line, the
-// menu, the stick and two buttons. Two looks: 'ink' (ink.js, the 水墨江湖 art, default) and 'greybox'
-// (the plain shapes below, kept for comparison): ?art=ink|greybox or ☰ → Look.
+// menu, the stick and two buttons. Three looks: 'ink' (ink.js, the 水墨江湖 art, default), 'cut' (cut.js,
+// 一笔 One Stroke: paper, ink and vermilion) and 'greybox' (the plain shapes below, kept for comparison):
+// ?art=ink|cut|greybox or ☰ → Look.
 (function () {
   'use strict';
   const SIM = window.WSim, RU = window.WRules, IS = window.WIsles;
@@ -25,10 +26,22 @@
     voice: qs.get('mute') === '1' ? false : store.get('voice', true),
   };
   const STEP = 1 / 60;
-  let ART = ['ink', 'greybox'].includes(qs.get('art')) ? qs.get('art') : store.get('art', 'ink');
-  const INK = window.WInk.create();
-  function setArt(a) { ART = a === 'greybox' ? 'greybox' : 'ink'; document.documentElement.classList.toggle('ink', ART === 'ink'); }
+  const ARTS = ['ink', 'cut', 'greybox'];
+  let ART = ARTS.includes(qs.get('art')) ? qs.get('art') : store.get('art', 'ink');
+  const INK = window.WInk.create(), CUT = window.WCut.create();
+  const painter = () => ART === 'cut' ? CUT : INK;
+  function setArt(a) {
+    ART = ARTS.includes(a) ? a : 'ink';
+    document.documentElement.classList.toggle('ink', ART === 'ink');
+    document.documentElement.classList.toggle('cut', ART === 'cut');
+  }
   setArt(ART);
+  // the two painted looks share their effects; only the colours differ
+  const PAINT = {
+    ink: { ink: '#1d1b1a', print: '#c23a2b', paper: '#f1e7cf', dust: '#ece0c6', wisp: 'rgba(29,27,26,0.32)', frame: 'rgba(42,38,34,0.55)', dud: '#c8402c', near: '#7a6f60', radius: 0.08 },
+    cut: { ink: '#171513', print: '#cc3524', paper: '#f8f1e2', dust: '#f1e6d0', wisp: '#b0a797', frame: '#847e72', dud: '#cc3524', near: '#847e72', radius: 0 },
+  };
+  const painted = () => ART !== 'greybox';
 
   // element colours (copied from the 3D client): a = light, b = dark ink of the element
   const EL = {
@@ -216,7 +229,7 @@
 
   // ---------- HUD: goal, word card, one message line ----------
   const words = ch => { const g = RU.GLYPHS[ch] || {}; return { py: g.py || '', en: g.en || '' }; };
-  const B = ch => ART === 'ink' ? '<b style="color:' + elOf(ch).b + '">' + ch + '</b>' : '<b>' + ch + '</b>';
+  const B = ch => painted() ? '<b style="color:' + elOf(ch).b + '">' + ch + '</b>' : '<b>' + ch + '</b>';
   function setGoal() {
     const ch = world.L.want, w = words(ch), el = $('#goal');
     el.querySelector('.g').textContent = ch;
@@ -369,13 +382,13 @@
       case 'leap':
         if (e.id === ME) {
           sfx.leap(e.chain);
-          if (ART === 'ink') fx.push({ x: p.x, y: p.y, vx: 0, vy: 0, life: 0.55, max: 0.55, kind: 'ring', g: 0 });   // 墨晕: ink blooms under the feet
+          if (painted()) fx.push({ x: p.x, y: p.y, vx: 0, vy: 0, life: 0.55, max: 0.55, kind: 'ring', g: 0 });   // 墨晕: ink blooms under the feet
           else burst(p.x, p.y, 10, { kind: 'wisp', v: 1.6, up: -1.5, life: 0.5, size: 0.12, g: 0 });
         }
         break;
       case 'refill': if (e.id === ME) { sfx.refill(); burst(p.x, p.y + PH / 2, 8, { kind: 'spark', color: '#e0a526', v: 2.2, life: 0.4, g: 0 }); } break;
       case 'land':
-        if (e.id === ME) { sfx.land(); land = ART === 'ink' ? 0.16 : 0.12; if (ART === 'ink') burst(p.x, p.y + 0.04, 6, { kind: 'dust', v: 1.1, up: 0.4, life: 0.35, size: 0.06, g: 3 }); }
+        if (e.id === ME) { sfx.land(); land = painted() ? 0.16 : 0.12; if (painted()) burst(p.x, p.y + 0.04, 6, { kind: 'dust', v: 1.1, up: 0.4, life: 0.35, size: 0.06, g: 3 }); }
         break;
       case 'grab': sfx.grab(); break;
       case 'place': sfx.place(); break;
@@ -385,9 +398,10 @@
       case 'forge': {
         sfx.forge();
         const el = elOf(e.ch);
-        burst(e.x, e.y + SH / 2, 22, { kind: 'ink', color: ART === 'ink' ? '#1d1b1a' : el.b, v: 3.2, life: 0.8, size: 0.1 });
-        // ink: the new character is printed in vermilion and sealed (印); greybox: it rises in its colour
-        fx.push({ x: e.x, y: e.y + SH, vx: 0, vy: 1.2, life: 1.2, max: 1.2, kind: 'glyph', ch: e.ch, color: ART === 'ink' ? '#c23a2b' : el.b, g: 0 });
+        burst(e.x, e.y + SH / 2, 22, { kind: 'ink', color: painted() ? PAINT[ART].ink : el.b, v: 3.2, life: 0.8, size: 0.1 });
+        // ink: the new character is printed in vermilion and sealed (印); one stroke: a vermilion seal presses
+        // the character; greybox: it rises in its colour
+        fx.push({ x: e.x, y: e.y + SH, vx: 0, vy: 1.2, life: 1.2, max: 1.2, kind: 'glyph', ch: e.ch, color: painted() ? PAINT[ART].print : el.b, g: 0 });
         if (ART === 'ink') fx.push({ x: e.x + 0.75, y: e.y + SH + 0.5, vx: 0, vy: 0.6, life: 1.4, max: 1.4, kind: 'seal', ch: '印', g: 0 });
         const how = e.op === '⿱' ? ' on ' : ' beside ';
         say((e.rescued ? 'Slid into place: ' : '') + B(e.a) + how + B(e.b) + ' makes ' + B(e.ch) + ' ' + words(e.ch).py);
@@ -505,9 +519,9 @@
   function rr(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
 
   function draw(a, t) {
-    if (ART === 'ink') {
-      INK.draw({ ctx, W, H, S, DPR, X, Y, cam, anchorY, world, a, t, duskF, wonF, land, fx, labels: UI.labels,
-        me, posOf, words, elOf, font, shapeOf, SW, SH, PW, PH, HOLD_Y,
+    if (painted()) {
+      painter().draw({ ctx, W, H, S, DPR, X, Y, cam, anchorY, world, a, t, duskF, wonF, land, fx, labels: UI.labels,
+        me, posOf, words, elOf, font: ART === 'cut' ? window.WCut.font : font, shapeOf, SW, SH, PW, PH, HOLD_Y,
         frames2, ghost: () => ghost(a), particles, offscreen: () => offscreen(null, a) });
       return;
     }
@@ -717,7 +731,7 @@
     ctx.save();
     ctx.strokeStyle = style.color; ctx.lineWidth = Math.max(1.5, S * 0.04);
     if (style.dash) ctx.setLineDash([S * 0.12, S * 0.08]);
-    rr(X(x0), Y(y1), (x1 - x0) * S, (y1 - y0) * S, S * 0.08); ctx.stroke();
+    rr(X(x0), Y(y1), (x1 - x0) * S, (y1 - y0) * S, S * (ART === 'cut' ? 0 : 0.08)); ctx.stroke();
     ctx.beginPath();
     if (op === '⿰') { const mx = X((a.x + b.x) / 2); ctx.moveTo(mx, Y(y1) + S * 0.08); ctx.lineTo(mx, Y(y0) - S * 0.08); }
     else { const my = Y(Math.max(a.y, b.y) - 0.0); ctx.moveTo(X(x0) + S * 0.08, my); ctx.lineTo(X(x1) - S * 0.08, my); }
@@ -740,11 +754,12 @@
       const a = byId(f.ia), b = byId(f.ib);
       if (!a || !b) continue;
       shown.add(Math.min(a.id, b.id) + ',' + Math.max(a.id, b.id));
-      frameBox(a, b, f.op, f.kind === 'dud' ? { color: '#c8402c', cross: true } : { color: '#7a6f60', dash: true, text: 'NOT QUITE' });
+      const cut = ART === 'cut', Pk = PAINT.cut;
+      frameBox(a, b, f.op, f.kind === 'dud' ? { color: cut ? Pk.dud : '#c8402c', cross: true } : { color: cut ? Pk.near : '#7a6f60', dash: true, text: 'NOT QUITE' });
     }
     for (const r of world.placements()) {
       const key = Math.min(r.a.id, r.b.id) + ',' + Math.max(r.a.id, r.b.id);
-      if (!shown.has(key)) frameBox(r.a, r.b, r.op, { color: 'rgba(42,38,34,0.55)' });
+      if (!shown.has(key)) frameBox(r.a, r.b, r.op, { color: ART === 'cut' ? PAINT.cut.frame : 'rgba(42,38,34,0.55)' });
     }
   }
 
@@ -794,7 +809,7 @@
     else if (l.mode === 'drop') { x = l.on.x; y = l.on.y + SH; }
     else return;
     ctx.save(); ctx.setLineDash([S * 0.1, S * 0.07]); ctx.strokeStyle = 'rgba(42,38,34,0.6)'; ctx.lineWidth = Math.max(1.5, S * 0.04);
-    rr(X(x - SW), Y(y + SH), SH * S, SH * S, S * 0.1); ctx.stroke(); ctx.restore();
+    rr(X(x - SW), Y(y + SH), SH * S, SH * S, ART === 'cut' ? 0 : S * 0.1); ctx.stroke(); ctx.restore();
   }
 
   function player(P, a, t) {
@@ -848,16 +863,25 @@
     for (const f of fx) {
       const k = Math.max(0, f.life / f.max);
       ctx.globalAlpha = k;
-      if (f.kind === 'glyph') {
+      if (f.kind === 'glyph' && ART === 'cut') {
+        // a vermilion seal presses the new character: a square with a paper frame and the glyph in paper
+        const r = S * (0.55 + (1 - k) * 0.25), sx = X(f.x), sy = Y(f.y);
+        ctx.globalAlpha = Math.min(1, k * 3);
+        ctx.save(); ctx.translate(sx, sy); ctx.rotate(-0.07);
+        ctx.fillStyle = PAINT.cut.print; ctx.fillRect(-r, -r, 2 * r, 2 * r);
+        ctx.strokeStyle = PAINT.cut.paper; ctx.lineWidth = Math.max(1.5, r * 0.06); ctx.strokeRect(-r * 0.86, -r * 0.86, r * 1.72, r * 1.72);
+        ctx.fillStyle = PAINT.cut.paper; ctx.font = window.WCut.font(r * 1.3); ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(f.ch, 0, r * 0.04);
+        ctx.restore();
+      } else if (f.kind === 'glyph') {
         ctx.fillStyle = f.color; ctx.font = font(S * (0.9 + (1 - k) * 0.8)); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText(f.ch, X(f.x), Y(f.y));
       } else if (f.kind === 'wisp') {
-        ctx.fillStyle = ART === 'ink' ? 'rgba(29,27,26,0.32)' : 'rgba(80,80,100,0.5)'; ctx.beginPath(); ctx.arc(X(f.x), Y(f.y), S * f.size * (1.5 - k * 0.5), 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = painted() ? PAINT[ART].wisp : 'rgba(80,80,100,0.5)'; ctx.beginPath(); ctx.arc(X(f.x), Y(f.y), S * f.size * (1.5 - k * 0.5), 0, Math.PI * 2); ctx.fill();
       } else if (f.kind === 'ring') {
-        ctx.strokeStyle = '#1d1b1a'; ctx.lineWidth = Math.max(1, S * 0.08 * k);
+        ctx.strokeStyle = painted() ? PAINT[ART].ink : '#1d1b1a'; ctx.lineWidth = Math.max(1, S * 0.08 * k);
         ctx.beginPath(); ctx.ellipse(X(f.x), Y(f.y), S * (0.25 + (1 - k) * 0.7), S * (0.07 + (1 - k) * 0.16), 0, 0, Math.PI * 2); ctx.stroke();
       } else if (f.kind === 'dust') {
-        ctx.fillStyle = '#ece0c6'; ctx.beginPath(); ctx.ellipse(X(f.x), Y(f.y), S * f.size * 1.6, S * f.size * 0.6, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = painted() ? PAINT[ART].dust : '#ece0c6'; ctx.beginPath(); ctx.ellipse(X(f.x), Y(f.y), S * f.size * 1.6, S * f.size * 0.6, 0, 0, Math.PI * 2); ctx.fill();
       } else if (f.kind === 'seal') {
         const r = S * 0.24, sx = X(f.x), sy = Y(f.y);
         ctx.globalAlpha = Math.min(1, k * 2); ctx.fillStyle = '#c23a2b'; ctx.fillRect(sx - r, sy - r, 2 * r, 2 * r);
@@ -894,7 +918,7 @@
     visibleHud: () => [...document.querySelectorAll('[data-hud]')].filter(e => { const r = e.getBoundingClientRect(); const cs = getComputedStyle(e); return !e.hidden && r.width > 0 && r.height > 0 && cs.display !== 'none' && cs.visibility !== 'hidden' && +cs.opacity > 0.05; })
       .map(e => { const r = e.getBoundingClientRect(); return { name: e.dataset.hud, x: r.left, y: r.top, w: r.width, h: r.height }; }),
     say, restart, goIsle, toggleDrawer,
-    art: () => ART, pose: () => INK.heroPose({ land }, me()),
+    art: () => ART, pose: () => painter().heroPose({ land }, me()),
     // contrast at every visible walkable top: rock just below the rim against what is just above it
     // (skipping tops with a stone, you, a cloud, a gem or the pavilion over them). WCAG ratio; the
     // plan (ART-DIRECTION §6) wants 3:1 or more.
