@@ -310,12 +310,17 @@ second where it acts. The word card keeps the thrown stone until it lands (`pick
 alpha, so it is safe in One Stroke. Evidence: `screenshots/cut/things-thrown.png`, `screenshots/things-thrown-ink.png`
 (a stone pinned in the air, from the running build). The sim is untouched.
 
+**Built: §3.7 level 2, carried things (steps 1 and 2 of `docs/CARRIED-THINGS.md`).** A held 木 火 日 月 shows its
+thing instead of the block: a tree over the shoulder, a torch held out, a sun held up, a crescent lantern. One
+Stroke has the three poses from Design's boards (`shoulder`, `hold`, overhead `carry`); the ink look keeps the
+overhead pose with the thing standing on the hands. The tag stays upright when you face left. Renderer only.
+Evidence: `screenshots/cut/carried-things.png`, `screenshots/carried-things-ink.png` (each thing, facing right
+then left, from the running build).
+
 **Not built yet**
 
-1. **§3.7 level 2, carried things** (a tree on the shoulder, a torch held out, the sun disc held up): one
-   hero pose per kind of thing and the size limit. **Plan note written, waiting for John:
-   `docs/CARRIED-THINGS.md`.** Design's `Things.dc.html` has the carried boards for 木 火 日 月 only, with
-   three poses (overhead, held out, over the shoulder).
+1. **§3.7 level 2, remaining parts** (`docs/CARRIED-THINGS.md`): the 水 jar and 土 basket (Design drew no boards for
+   them; still the block overhead), the ink look's own hold/shoulder poses, and the 日 night light (step 3).
 2. **Fixed glyph tiles** carved in rock (§3.3, `Stone.dc.html`): a rules change, its own note first.
 3. Acting for 水 (puts out flames), 土 (mound), 日 (melts the shade) and the 月 glow: their things are drawn
    (thrown), but only 木 and 火 flash when they act.

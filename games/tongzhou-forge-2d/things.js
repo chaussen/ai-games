@@ -93,5 +93,75 @@
     ctx.fillText(ch, x + w / 2, y + w * 0.54);
   }
 
-  root.WThings = { has, fold, draw, tag };
+  // ---- carried (level 2): the thing you hold, drawn in the hero's own units ----
+  // Claude Design's board (Things.dc.html) draws the hero at 0.68 and the things beside it; coordinates
+  // below are the board's, origin at the feet, y up is negative. g is px per board unit, face is +1 / -1.
+  // Pose names: 'carry' (both arms up, the old pose), 'hold' (one arm out front), 'shoulder' (arm over it).
+  const POSE_OF = { '木': 'shoulder', '火': 'hold', '月': 'hold', '日': 'carry' };
+  const poseFor = ch => POSE_OF[ch] || 'carry';
+  const FLAME = 'M0,0 C-5,-1 -6,-6 -3,-10 C-3,-7 -1,-6 0,-8 C1,-11 0,-13 -1,-15 C4,-12 6,-6 4,-2 C3,-0.5 2,0 0,0 Z';
+  const FLIN = 'M0,-2 C-2,-2.5 -2,-5 0,-7 C2,-5 2,-2.5 0,-2 Z';
+  const RAYS = 'M0,-10.5 V-13.5 M0,10.5 V13.5 M-10.5,0 H-13.5 M10.5,0 H13.5 M7.4,-7.4 L9.5,-9.5 M-7.4,-7.4 L-9.5,-9.5 M7.4,7.4 L9.5,9.5 M-7.4,7.4 L-9.5,9.5';
+  const P = {};
+  const path = d => P[d] || (P[d] = new Path2D(d));
+  const BOX = 11;
+
+  function flame(ctx, x, y, rot, sc, t, o) {
+    ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(sc, sc * (1 + Math.sin(t * 17) * 0.05));
+    ctx.fillStyle = o.el.b; ctx.fill(path(FLAME)); ctx.fillStyle = o.paper; ctx.fill(path(FLIN));
+    ctx.restore();
+  }
+  // returns false when the thing has no carried look (the caller then draws the block)
+  function carried(ctx, ch, pose, ox, oy, g, face, o) {
+    if (!has(ch) || ch === '水' || ch === '土') return false;
+    const t = o.t || 0, over = pose === 'carry';
+    let tx, ty;                                    // the tag's top-left, board units
+    ctx.save();
+    ctx.translate(ox, oy); ctx.scale(g * face, g);
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = o.ink; ctx.fillStyle = o.el.b;
+    switch (ch) {
+      case '木': {
+        const x = over ? 0 : 6, y = over ? -31 : -19.4, r = over ? Math.sin(t * 2) * 0.03 : -35 * Math.PI / 180;
+        ctx.translate(x, y); ctx.rotate(r);
+        ctx.fillStyle = o.ink; ctx.fillRect(-1.5, -8, 3, 8);
+        ctx.fillStyle = o.el.b; ctx.fill(path('M-8,-6 L0,-18 L8,-6 Z M-6.5,-13 L0,-23 L6.5,-13 Z M-5,-19 L0,-27 L5,-19 Z'));
+        tx = over ? 3 : -24; ty = over ? -39 : -33;
+        break;
+      }
+      case '火': {
+        ctx.lineWidth = 2.2;
+        if (over) { ctx.beginPath(); ctx.moveTo(0, -31); ctx.lineTo(0, -40); ctx.stroke(); flame(ctx, 0, -40, 0, 1.1, t, o); tx = 3; ty = -39; }
+        else { ctx.beginPath(); ctx.moveTo(7, -15); ctx.lineTo(13.5, -28); ctx.stroke(); flame(ctx, 13.8, -28.5, 18 * Math.PI / 180, 1.1, t, o); tx = 14; ty = -27; }
+        break;
+      }
+      case '日': {
+        ctx.translate(0, -39.6);
+        ctx.lineWidth = 1.6; ctx.strokeStyle = o.el.b; ctx.stroke(path(RAYS));
+        ctx.lineWidth = 2.4; ctx.fillStyle = o.paper; ctx.beginPath(); ctx.arc(0, 0, 8, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        tx = -BOX / 2; ty = -45.1;                  // the tag sits on the disc (board coordinates)
+        break;
+      }
+      case '月': {
+        ctx.fillStyle = o.el.b;
+        if (over) {
+          ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(0, -31); ctx.lineTo(0, -37); ctx.stroke();
+          ctx.fill(path('M0,-52 A7.5,7.5 0 0 0 0,-37 A10,10 0 0 1 0,-52 Z')); tx = 2; ty = -44;
+        } else {
+          ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(10.2, -21.1); ctx.lineTo(17, -31); ctx.lineTo(17, -28); ctx.stroke();
+          ctx.fill(path('M17,-28 A7.5,7.5 0 0 0 17,-13 A10,10 0 0 1 17,-28 Z'));
+          ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(13.5, -13); ctx.lineTo(13.5, -11); ctx.stroke(); tx = 8; ty = -11;
+        }
+        break;
+      }
+    }
+    ctx.restore();
+    // the tag stays upright whichever way you face, so it is placed by hand
+    const w = Math.max(15, BOX * g), x = ox + face * (tx + BOX / 2) * g - w / 2, y = oy + ty * g;
+    ctx.fillStyle = o.red; ctx.fillRect(x, y, w, w);
+    ctx.fillStyle = o.paper; ctx.font = o.font(w * 0.82); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(ch, x + w / 2, y + w * 0.54);
+    return true;
+  }
+
+  root.WThings = { has, fold, draw, tag, carried, poseFor };
 })(window);

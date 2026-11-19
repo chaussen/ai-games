@@ -1,6 +1,6 @@
 # 字/物 level 2: carried things (plan note, not built)
 
-Status: **plan for John's review**. No code yet. Level 1 (things in the air and when acting) is built and
+Status: **steps 1 and 2 built** (John said go with the recommendations: 木 火 日 月 only; ink keeps the overhead pose; 日 night light later). Steps 3 and 4 not built. Level 1 (things in the air and when acting) is built and
 pushed (`things.js`, commit `72c9796`); this is the "you carry the thing" half of
 `ART-DIRECTION.md` §3.7. Review gate: John says go, or changes the scope below.
 

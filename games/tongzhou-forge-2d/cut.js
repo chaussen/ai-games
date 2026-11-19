@@ -34,6 +34,8 @@
     jump: { arms: 'M-12,-44 L-8,-37 L0,-31 L8,-37 L12,-44', torso: 'M0,-31 L0,-18', legs: 'M0,-18 L-6,-12 L-3,-6 M0,-18 L6,-12 L3,-6', dot: [0, -38], tails: ['M-3,-21 C-6,-15 -4,-10 -7,-5', 'M-2.4,-20.6 C-3,-14 -8,-11 -9,-7'], sash: 'M-3.6,-21 L3.6,-22.2', dy: 4 },
     leap: { arms: 'M-12,-27 L-5,-28 L3,-30 L-4,-24 L-11,-22', torso: 'M3,-30 L-1,-20 L-8,-10 L-15,-3', legs: 'M-1,-20 L6,-12 L12,-6', dot: [6, -37], tails: ['M-1.6,-24 C-8,-27 -13,-21 -19,-23', 'M-1.6,-23.4 C-8,-20 -13,-17 -19,-16'], sash: 'M-1.9,-24.5 L5.5,-21.5', dy: 0 },
     wall: { arms: 'M-15,-37 L-9,-33 L-2,-29 L-3,-36 L-7,-41', torso: 'M-2,-29 L3,-17', legs: 'M3,-17 L8,-14 L12,-17 L12,-21 M3,-17 L-1,-10 L-5,-6', dot: [-4, -35], tails: ['M3.6,-24 C6,-20 3,-14 5,-9', 'M3.4,-23.4 C1,-18 0,-14 2,-9'], sash: 'M-3.3,-21.5 L4.1,-24.5', dy: 4 },
+    hold: { arms: 'M-12,-24 L-6,-27 L0,-30 L8,-30 L15,-31', torso: 'M0,-30 L0,-17', legs: 'M0,-17 L-5,-9 L-9,0 M0,-17 L5,-9 L9,0', dot: [1, -37], tails: ['M-3,-20.4 C-8,-19 -9,-14 -13,-12', 'M-2.6,-20 C-6,-16 -5,-12 -8,-8'], sash: 'M-3.6,-19.6 L3.6,-20.8', dy: 0 },
+    shoulder: { arms: 'M-13,-25 L-7,-29 L0,-30 L6,-27 L3,-33', torso: 'M0,-30 L0,-17', legs: 'M0,-17 L-5,-9 L-9,0 M0,-17 L5,-9 L9,0', dot: [0, -37], tails: ['M3,-20.4 C8,-19 9,-14 13,-12', 'M2.6,-20 C6,-16 5,-12 8,-8'], sash: 'M-3.6,-19.6 L3.6,-20.8', dy: 0 },
     carry: { arms: 'M-14,-46 L-13,-34 L-6,-31 L0,-31 L6,-31 L13,-34 L14,-46', torso: 'M0,-31 L0,-17', legs: 'M0,-17 L-6,-9 L-11,0 M0,-17 L6,-9 L11,0', dot: [0, -38], tails: ['M3,-20.4 C8,-19 9,-14 13,-12', 'M2.6,-20 C6,-16 5,-12 8,-8'], sash: 'M-3.6,-19.6 L3.6,-20.8', dy: 0 },
     land: { arms: 'M-17,-13 L-10,-18 L0,-20 L10,-18 L17,-13', torso: 'M0,-20 L0,-11', legs: 'M0,-11 L-8,-6 L-10,0 M0,-11 L8,-6 L10,0', dot: [0, -27], tails: ['M3,-13.4 C7,-17 10,-15 13,-21', 'M2.6,-13 C7,-13 10,-10 15,-12'], sash: 'M-3.6,-13 L3.6,-14', dy: 0 },
     fall: { arms: 'M-13,-41 L-10,-34 L0,-29 L9,-33 L14,-39', torso: 'M0,-29 L1,-16', legs: 'M1,-16 L-2,-8 L-5,-1 M1,-16 L5,-9 L6,0', dot: [-1, -36], tails: ['M-2.6,-19.8 C-8,-23 -10,-28 -16,-31', 'M-2.6,-19.6 C-6,-25 -6,-29 -10,-34'], sash: 'M-2.6,-19.6 L4.6,-21', dy: 0 },
@@ -346,6 +348,12 @@
         const sx = X(x - SW), sy = Y(y + SH), s = SH * S;
         // things (§3.7): a thrown stone opens into its thing in the air and folds back as it lands
         const f = root.WThings ? root.WThings.fold(k, v) : 0;
+        // level 2: the thing you carry, in the pose that goes with it (no block on your head)
+        if (k.state === 'held' && root.WThings && k.holder === p) {
+          const kk = v.PH * S / 40 / 0.68, shake = p.stun > 0 ? Math.sin(v.t * 60) * 1.2 : 0;
+          const o = { t: v.t, ink: K.ink, paper: K.paper2, el: v.elOf(k.ch), red: K.vermilion, gold: K.gamboge, font };
+          if (root.WThings.carried(ctx, k.ch, root.WThings.poseFor(k.ch), X(x) + shake, Y(y - v.HOLD_Y), kk, p.face, o)) continue;
+        }
         if (f > 0) {
           const o = { t: v.t, ink: K.ink, paper: K.paper2, el: v.elOf(k.ch), red: K.vermilion, gold: K.gamboge, font };
           const cx = sx + s / 2, cy = sy + s / 2;
@@ -365,7 +373,7 @@
 
     // ---------- the hero ----------
     function heroPose(v, p) {
-      if (p.hold) return 'carry';
+      if (p.hold) return root.WThings ? root.WThings.poseFor(p.hold.ch) : 'carry';
       if (!p.grounded) {
         if (p.wall) return 'wall';
         if (p.leapt && p.vy > -1.5) return 'leap';

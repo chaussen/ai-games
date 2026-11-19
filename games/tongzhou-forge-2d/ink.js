@@ -613,6 +613,12 @@
         const sx = X(x - SW), sy = Y(y + SH), s = SH * S;
         // things (§3.7): a thrown stone opens into its thing in the air and folds back as it lands
         const f = root.WThings ? root.WThings.fold(k, v) : 0;
+        // level 2 (overhead pose only in this look): the thing you carry stands on your hands
+        if (k.state === 'held' && root.WThings && k.holder === p) {
+          const kk = v.PH * S / 44 / 0.68, shake = p.stun > 0 ? Math.sin(v.t * 60) * 1.2 : 0;
+          const o = { t: v.t, ink: K.ink, paper: K.stone.slip, el: v.elOf(k.ch), red: K.vermilion, gold: K.gamboge, font: v.font };
+          if (root.WThings.carried(ctx, k.ch, 'carry', X(x) + shake, Y(y - v.HOLD_Y), kk, p.face, o)) continue;
+        }
         if (f > 0) {
           const o = { t: v.t, ink: K.ink, paper: K.stone.slip, el: v.elOf(k.ch), red: K.vermilion, gold: K.gamboge, font: v.font };
           const cx = sx + s / 2, cy = sy + s / 2;
