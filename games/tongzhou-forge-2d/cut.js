@@ -344,6 +344,16 @@
         let [x, y] = v.posOf(k, v.a);
         if (k.state === 'held') { const [hx, hy] = v.posOf(k.holder, v.a); x = hx; y = hy + v.HOLD_Y; }
         const sx = X(x - SW), sy = Y(y + SH), s = SH * S;
+        // things (§3.7): a thrown stone opens into its thing in the air and folds back as it lands
+        const f = root.WThings ? root.WThings.fold(k, v) : 0;
+        if (f > 0) {
+          const o = { t: v.t, ink: K.ink, paper: K.paper2, el: v.elOf(k.ch), red: K.vermilion, gold: K.gamboge, font };
+          const cx = sx + s / 2, cy = sy + s / 2;
+          if (f < 1) { const q = s * (1 - f); block(ctx, cx - q / 2, cy - q / 2, q, v.shapeOf(k), v.elOf(k.ch).b, false); }
+          root.WThings.draw(ctx, k.ch, cx, cy, s * 1.15 * f, o);
+          if (f > 0.5) root.WThings.tag(ctx, k.ch, cx, cy, s * f, o);
+          continue;
+        }
         block(ctx, sx, sy, s, v.shapeOf(k), isMade(k.ch) ? K.vermilion : v.elOf(k.ch).b, l.mode === 'grab' && l.k === k);
         let label = 0;
         if (k.state === 'loose' && k.grounded && !k.support && v.labels !== 'card') {

@@ -16,7 +16,7 @@ const TYPES = {
   '.woff2': 'font/woff2', '.json': 'application/json', '.png': 'image/png', '.txt': 'text/plain; charset=utf-8', '.svg': 'image/svg+xml',
 };
 // only what the page needs is served; tests, docs and tools stay on the computer
-const PUBLIC = new Set(['index.html', 'style.css', 'app.js', 'ink.js', 'cut.js', 'sim.js', 'rules.js', 'isles.js', 'content.js']);
+const PUBLIC = new Set(['index.html', 'style.css', 'app.js', 'ink.js', 'cut.js', 'things.js', 'sim.js', 'rules.js', 'isles.js', 'content.js']);
 
 function lanIPs() {
   const out = [];

@@ -13,6 +13,8 @@ The side-view greybox of the Positional Forge. Read `README.md`, then `docs/GREY
 - New Chinese text on the page: re-subset the font with `tools/font.py` (smoke test fails otherwise).
 - Three looks share one sim: `cut.js` (一笔 One Stroke, `?art=cut`, from `docs/design/one-stroke/`: flat fills, no gradients, no alpha tints except the dusk and win veils), `ink.js` (水墨江湖, default, from Claude Design's boards in `docs/design/`) and
   the greybox in `app.js` (`?art=greybox`). Renderer only: never put rules in either.
+- `things.js` (`WThings`) draws the §3.7 things (a thrown stone opens into a log, fireball, sun, crescent, splash or
+  clod) for both painted looks: flat fills, no alpha, glyph on a vermilion tag. Keep it that way; the word card keeps a thrown stone until it lands.
 - Ink performance: no large gradient or stretched-image fills per frame (they cost 40+ ms on a
   software rasteriser); bake them (`layer`, `vband` in `ink.js`) and copy them unscaled.
 - Before committing: `node sim-test.mjs && node smoke-test.mjs && node screen-test.mjs && ART=greybox node screen-test.mjs`. Never port 3000 in tests.

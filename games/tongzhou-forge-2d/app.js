@@ -278,6 +278,9 @@
     if (card.forced && card.forced.until > world.clock && world.stones.some(k => k.ch === card.forced.ch && k.state !== 'gone')) return [card.forced.ch, true];
     card.forced = null;
     if (p.hold) return [p.hold.ch, false];
+    // a thrown stone keeps the card until it lands (§3.7: the words stay with the thing)
+    const fl = world.stones.find(k => k.flying && k.state === 'loose' && k.thrower === p);
+    if (fl) return [fl.ch, false];
     if (l.mode === 'grab') return [l.k.ch, false];
     let best = null, bd = 2.2;
     for (const k of world.stones) {
@@ -427,12 +430,14 @@
         sfx.grow();
         const el = elOf(e.ch);
         for (let x = e.x0; x < e.x1; x++) burst(x + 0.5, e.y - 0.3, 5, { kind: 'ink', color: el.b, v: 1.5, up: 1, life: 0.6 });
+        if (painted()) fx.push({ x: (e.x0 + e.x1) / 2, y: e.y + 0.3, vx: 0, vy: 0, life: 0.55, max: 0.55, kind: 'thing', ch: e.ch, g: 0, span: e.x1 - e.x0 });
         say(B(e.ch) + (e.el === 'earth' ? ' raises a mound in the gap' : ' grows into a bridge'));
         break;
       }
       case 'burn':
         sfx.burn();
         for (let i = 0; i < 26; i++) fx.push({ x: e.x - 0.4 + (i % 5) * 0.2, y: e.y - 1 + Math.floor(i / 5) * 0.4, vx: ((i * 13) % 7 - 3) * 0.15, vy: 1 + (i % 4) * 0.4, life: 1.2, max: 1.2, kind: 'ember', color: i % 3 ? '#f0714f' : '#f2c14e', size: 0.07, g: -0.4 });
+        if (painted()) fx.push({ x: e.x, y: e.y, vx: 0, vy: 0, life: 0.5, max: 0.5, kind: 'thing', ch: e.ch, g: 0, span: 1 });
         say(B(e.ch) + ' burns the thorns');
         break;
       case 'ouch':
@@ -872,6 +877,11 @@
         ctx.strokeStyle = PAINT.cut.paper; ctx.lineWidth = Math.max(1.5, r * 0.06); ctx.strokeRect(-r * 0.86, -r * 0.86, r * 1.72, r * 1.72);
         ctx.fillStyle = PAINT.cut.paper; ctx.font = window.WCut.font(r * 1.3); ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(f.ch, 0, r * 0.04);
         ctx.restore();
+      } else if (f.kind === 'thing') {
+        // the stone, for a moment, as the thing it means; it grows and is gone (no alpha: flat fills in both looks)
+        ctx.globalAlpha = 1;
+        const pc = PAINT[ART], q = 1 - k;
+        window.WThings.draw(ctx, f.ch, X(f.x), Y(f.y), S * (0.9 + q * 0.7) * (k > 0.15 ? 1 : 0.5), { t: world.clock, ink: pc.ink, paper: pc.paper, el: elOf(f.ch), red: pc.print, gold: '#e0a526' });
       } else if (f.kind === 'glyph') {
         ctx.fillStyle = f.color; ctx.font = font(S * (0.9 + (1 - k) * 0.8)); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText(f.ch, X(f.x), Y(f.y));

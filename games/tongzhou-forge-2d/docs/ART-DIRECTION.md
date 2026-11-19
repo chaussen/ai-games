@@ -299,17 +299,25 @@ pinyin slip (forged characters keep a vermilion glyph); the HUD and win as vermi
 corners and a seal. The forge presses a vermilion seal. Checks (`ART=cut node screen-test.mjs`): the
 screen budget on eleven screens, 60 fps everywhere, contrast at walkable tops 14.7:1 (3.6:1 on the two laptops
 where the top meets the darker sky).
-Not drawn: the empty-hands word card, the dotted stick line when pushed, the fixed tile and 字/物
-boards (below).
+Not drawn: the empty-hands word card, the dotted stick line when pushed, the fixed tile board and the
+carried things (below).
+
+**Built: §3.7 level 1 (things in the air and acting), both painted looks.** `things.js` draws six things
+(木 log, 火 fireball, 日 sun, 月 crescent, 水 splash, 土 clod; forged characters stay blocks). A thrown stone
+opens into its thing right after it leaves your hands and folds back into the block as it nears the ground;
+the glyph rides on a vermilion tag. When 木 bridges a gap or 火 burns a hedge, the thing shows for half a
+second where it acts. The word card keeps the thrown stone until it lands (`pickCard`). Flat fills only, no
+alpha, so it is safe in One Stroke. Evidence: `screenshots/cut/things-thrown.png`, `screenshots/things-thrown-ink.png`
+(a stone pinned in the air, from the running build). The sim is untouched.
 
 **Not built yet**
 
-1. **Fixed glyph tiles and the 字/物 sheet**, in either look. Design delivered both for One Stroke
-   (`Stone.dc.html`, `Things.dc.html`); they need the rules change (§3.3) and the carried/thrown/acting
-   things (§3.7), each in its own note first.
-2. **§3.7 字/物**: things in the air and carried (a tree on your shoulder, a torch, the sun disc).
-   Not on the boards; level 1 is the next art step.
-3. **Fixed glyph tiles** carved in rock (§3.3): a rules change, its own note first.
+1. **§3.7 level 2, carried things** (a tree on the shoulder, a torch held out, the sun disc held up): one
+   hero pose per kind of thing and the size limit; its own note first. Design's `Things.dc.html` has the
+   carried boards for 木 火 日 月 only.
+2. **Fixed glyph tiles** carved in rock (§3.3, `Stone.dc.html`): a rules change, its own note first.
+3. Acting for 水 (puts out flames), 土 (mound), 日 (melts the shade) and the 月 glow: their things are drawn
+   (thrown), but only 木 and 火 flash when they act.
 4. Forging is a vermilion print and a seal, not yet the stroke-by-stroke brushing; the win does not
    roll the scroll on.
 5. Design's two Latin faces (Alegreya Sans, Cormorant Garamond) are not vendored: the page uses the
