@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sun and Moon isle — landscape style frame</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&amp;family=Ma+Shan+Zheng&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1f4e6e}a:hover{color:#1d1b1a}
+.msz{font-family:'Ma Shan Zheng','KaiTi','STKaiti',serif;font-weight:400}
+.ale{font-family:'Alegreya Sans',system-ui,sans-serif}
+</style>
+</helmet>
+<div style="position: relative; width: 844px; height: 390px; overflow: hidden; background: #d5cbb2; font-family: 'Alegreya Sans', system-ui, sans-serif; color: #1d1b1a">
+<svg width="844" height="390" viewBox="0 0 844 390" style="position: absolute; left: 0; top: 0; display: block" aria-hidden="true">
+<defs>
+<linearGradient id="L-sky" x1="0" y1="0" x2="0" y2="390" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="{{c.sky0}}"></stop><stop offset=".3" stop-color="{{c.sky1}}"></stop><stop offset=".56" stop-color="{{c.base}}"></stop></linearGradient>
+<radialGradient id="L-halo"><stop offset="0" stop-color="{{c.halo}}" stop-opacity=".8"></stop><stop offset=".45" stop-color="{{c.halo}}" stop-opacity=".32"></stop><stop offset="1" stop-color="{{c.halo}}" stop-opacity="0"></stop></radialGradient>
+<linearGradient id="L-far" x1="0" y1="160" x2="0" y2="268" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="{{c.far0}}"></stop><stop offset=".55" stop-color="{{c.far1}}"></stop><stop offset="1" stop-color="{{c.base}}"></stop></linearGradient>
+<linearGradient id="L-mid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{{c.mid0}}"></stop><stop offset=".3" stop-color="{{c.mid1}}"></stop><stop offset=".68" stop-color="{{c.mid2}}"></stop><stop offset="1" stop-color="{{c.mid3}}"></stop></linearGradient>
+<linearGradient id="L-mist" x1="0" y1="236" x2="0" y2="306" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="{{c.mist}}" stop-opacity="0"></stop><stop offset=".42" stop-color="{{c.mist}}" stop-opacity=".97"></stop><stop offset="1" stop-color="{{c.mist}}"></stop></linearGradient>
+<linearGradient id="L-rock" x1="0" y1="150" x2="0" y2="362" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1d1b1a"></stop><stop offset="1" stop-color="{{c.face}}"></stop></linearGradient>
+<linearGradient id="L-water" x1="0" y1="322" x2="0" y2="390" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="{{c.water0}}"></stop><stop offset="1" stop-color="{{c.water1}}"></stop></linearGradient>
+<pattern id="L-wave" width="44" height="11" patternUnits="userSpaceOnUse"><path d="M0,3 Q11,-1 22,3 T44,3" fill="none" stroke="{{c.wline}}" stroke-width=".9" stroke-opacity=".75"></path><path d="M0,8.5 Q11,12.5 22,8.5 T44,8.5" fill="none" stroke="{{c.wline}}" stroke-width=".9" stroke-opacity=".55"></path></pattern>
+<pattern id="L-crest" width="22" height="6" patternUnits="userSpaceOnUse"><path d="M0,4 Q5.5,0.5 11,4 T22,4" fill="none" stroke="{{c.wcrest}}" stroke-width="1.2" stroke-opacity=".85"></path></pattern>
+<filter id="L-brush" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="4" result="n"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<filter id="L-silk" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".04 .9" numOctaves="2" seed="11"></feTurbulence><feColorMatrix values="0 0 0 0 .32  0 0 0 0 .25  0 0 0 0 .14  0 0 0 .13 0"></feColorMatrix></filter>
+<radialGradient id="L-age" cx="50%" cy="48%" r="75%"><stop offset=".55" stop-color="#7a5f3a" stop-opacity="0"></stop><stop offset="1" stop-color="#7a5f3a" stop-opacity=".3"></stop></radialGradient>
+<radialGradient id="L-gilt"><stop offset="0" stop-color="#e9c46a" stop-opacity=".6"></stop><stop offset="1" stop-color="#e9c46a" stop-opacity="0"></stop></radialGradient>
+<filter id="L-rim" x="-40%" y="-20%" width="180%" height="140%"><feMorphology in="SourceAlpha" operator="dilate" radius="1.5" result="d"></feMorphology><feFlood flood-color="#e0a526"></feFlood><feComposite in2="d" operator="in" result="r"></feComposite><feMerge><feMergeNode in="r"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
+<g id="L-hero">
+<path d="M-9,-36 L3,-17" stroke="#1d1b1a" stroke-width="1.3" fill="none"></path>
+<path d="M-4,-20 C-9,-14 -8,-6 -14,0" stroke="#c23a2b" stroke-width="1.7" fill="none" stroke-linecap="round"></path>
+<path d="M-3.6,-19 C-6,-11 -11,-6 -11,3" stroke="#c23a2b" stroke-width="1.3" fill="none" stroke-linecap="round"></path>
+<path d="M-2,-9 L-7,-4.5 L-11.5,-6" stroke="#1d1b1a" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M2,-9 L6.5,-6 L4.5,-1.5" stroke="#1d1b1a" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M-3.4,-28.6 L-6,-37 L-5.4,-44" stroke="#1d1b1a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M3.4,-28.6 L6,-37 L5.4,-44" stroke="#1d1b1a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M-4.2,-30 C-6,-24 -7.4,-17 -11,-8.6 C-6,-9.4 -2,-10.6 1,-9.6 C3,-9 5,-8.4 6.6,-8.8 C5.8,-16 5.4,-24 4.2,-30 C1.4,-31.4 -1.4,-31.4 -4.2,-30 Z" fill="#1d1b1a"></path>
+<path d="M-5.4,-21.6 C-1.6,-22.4 1.6,-22.4 5.4,-21.6 L5.6,-19.2 C1.7,-20 -1.7,-20 -5.6,-19.2 Z" fill="#c23a2b"></path>
+<circle cx="0.4" cy="-33.4" r="3.4" fill="#1d1b1a"></circle>
+<g transform="translate(0.4,-34.2) rotate(-4)"><path d="M-11,-1.5 L0,-9.5 L11,-1.5 Q0,0.4 -11,-1.5 Z" fill="#24211e"></path><path d="M0,-9.3 L-5.5,-1 M0,-9.3 L5.5,-1 M0,-9.3 L0,-0.6" stroke="#8b6b45" stroke-width=".6" fill="none"></path></g>
+</g>
+</defs>
+
+<rect width="844" height="390" fill="url(#L-sky)"></rect>
+<circle cx="396" cy="150" r="76" fill="url(#L-halo)"></circle>
+<circle cx="396" cy="150" r="31" fill="{{c.orb}}"></circle>
+<circle cx="396" cy="150" r="31" fill="none" stroke="#1d1b1a" stroke-opacity=".12" stroke-width=".8"></circle>
+
+<g filter="url(#L-brush)" fill="url(#L-far)">
+<path d="M0,268 C2,232 10.4,192 26,192 C41.6,192 50,232 52,268 Z"></path>
+<path d="M52,268 C54,206 60,166 72,166 C84,166 90,206 92,268 Z"></path>
+<path d="M84,268 C86,244 95.2,204 112,204 C128.8,204 138,244 140,268 Z"></path>
+<path d="M142,268 C144,218 150.8,178 164,178 C177.2,178 184,218 186,268 Z"></path>
+<path d="M183,268 C185,250 195.4,210 214,210 C232.6,210 243,250 245,268 Z"></path>
+<path d="M242,268 C244,214 250,174 262,174 C274,174 280,214 282,268 Z"></path>
+<path d="M291,268 C293,238 301.8,198 318,198 C334.2,198 343,238 345,268 Z"></path>
+<path d="M356,268 C358,262 364,222 376,222 C388,222 394,262 396,268 Z"></path>
+<path d="M407,268 C409,254 417,214 432,214 C447,214 455,254 457,268 Z"></path>
+<path d="M462,268 C464,218 470,178 482,178 C494,178 500,218 502,268 Z"></path>
+<path d="M499,268 C501,244 510.6,204 528,204 C545.4,204 555,244 557,268 Z"></path>
+<path d="M577,268 C579,208 586.2,168 600,168 C613.8,168 621,208 623,268 Z"></path>
+<path d="M623,268 C625,240 635.4,200 654,200 C672.6,200 683,240 685,268 Z"></path>
+<path d="M684,268 C686,224 692,184 704,184 C716,184 722,224 724,268 Z"></path>
+<path d="M734,268 C736,212 745.2,172 762,172 C778.8,172 788,212 790,268 Z"></path>
+<path d="M786,268 C788,242 798,202 816,202 C834,202 844,242 846,268 Z"></path>
+</g>
+
+<g filter="url(#L-brush)" fill="url(#L-mid)">
+<path d="M13,296 C15,250 28.6,206 52,206 C75.4,206 89,250 91,296 Z"></path>
+<path d="M102,296 C104,230 112.4,180 128,180 C143.6,180 152,230 154,296 Z"></path>
+<path d="M172,296 C174,258 188.8,218 214,218 C239.2,218 254,258 256,296 Z"></path>
+<path d="M268,296 C270,240 277.6,196 292,196 C306.4,196 314,240 316,296 Z"></path>
+<path d="M321,296 C323,272 332.6,236 350,236 C367.4,236 377,272 379,296 Z"></path>
+<path d="M422,296 C424,270 434.8,232 454,232 C473.2,232 484,270 486,296 Z"></path>
+<path d="M614,296 C616,236 628.4,190 650,190 C671.6,190 684,236 686,296 Z"></path>
+<path d="M704,296 C706,252 713.6,214 728,214 C742.4,214 750,252 752,296 Z"></path>
+<path d="M768,296 C770,236 783.2,188 806,188 C828.8,188 842,236 844,296 Z"></path>
+</g>
+<g stroke="{{c.mid0}}" stroke-opacity=".5" stroke-width=".9" fill="none" stroke-linecap="round">
+<path d="M120,196 C118,212 121,226 117,240 M134,200 C137,218 133,232 136,246"></path>
+<path d="M640,206 C637,222 641,236 636,252 M658,210 C661,226 657,240 661,256"></path>
+<path d="M796,204 C793,220 797,236 792,250 M816,206 C819,222 815,238 819,252"></path>
+</g>
+<g fill="{{c.pine}}">
+<path d="M128,181 C124,175 119,172 112,171" fill="none" stroke="{{c.pine}}" stroke-width="1.3" stroke-linecap="round"></path>
+<ellipse cx="110" cy="169.6" rx="7" ry="2"></ellipse><ellipse cx="117" cy="174" rx="5" ry="1.7"></ellipse><ellipse cx="123" cy="177.5" rx="3.4" ry="1.4"></ellipse>
+<path d="M650,191 C655,185 661,182 668,181" fill="none" stroke="{{c.pine}}" stroke-width="1.3" stroke-linecap="round"></path>
+<ellipse cx="670" cy="179.6" rx="7" ry="2"></ellipse><ellipse cx="663" cy="184" rx="5" ry="1.7"></ellipse><ellipse cx="657" cy="187.5" rx="3.4" ry="1.4"></ellipse>
+</g>
+<g fill="{{c.cloud}}" fill-opacity=".9">
+<path d="M150,238 C190,232 230,236 268,230 C290,227 310,232 332,229 C324,234 300,238 270,238 C240,239 210,243 180,244 C168,244.5 158,243 150,238 Z"></path>
+<path d="M596,226 C636,220 690,225 742,218 C760,216 776,219 790,217 C780,223 756,226 730,227 C690,229 650,233 618,232 C606,232 600,230 596,226 Z"></path>
+<path d="M0,224 C24,219 52,222 78,218 C70,223 48,227 26,228 C14,228.6 6,227 0,224 Z"></path>
+</g>
+
+<rect x="0" y="236" width="844" height="70" fill="url(#L-mist)"></rect>
+
+<rect x="0" y="322" width="844" height="68" fill="url(#L-water)"></rect>
+<rect x="0" y="322" width="844" height="68" fill="url(#L-wave)"></rect>
+<g stroke="{{c.refl}}" stroke-width="1.5" stroke-linecap="round" stroke-opacity=".85" fill="none">
+<path d="M384,329 H408 M388,335 H404 M385,341 H407 M390,347 H402"></path>
+</g>
+
+<path d="M112,360 C116,340 122,316 130,302 C134,295 138,291 146,289 C150,288.2 153,288 158,288 L354,288 C358,296 357,306 362,318 C364,330 360,342 364,360 Z" fill="url(#L-rock)"></path>
+<path d="M430,360 C428,344 433,328 429,314 C426,302 430,294 434,288 L844,288 L844,360 Z" fill="url(#L-rock)"></path>
+<g fill="{{c.cun}}">
+<path d="M170,300 l14,22 l-5,1 Z M200,306 l9,16 l-4,0 Z M236,298 l15,25 l-6,1 Z M272,306 l9,16 l-4,1 Z M304,300 l13,23 l-5,0 Z M336,304 l10,20 l-4,1 Z"></path>
+<path d="M446,300 l12,20 l-5,1 Z M478,306 l9,16 l-4,0 Z M520,298 l14,24 l-5,1 Z M560,306 l9,16 l-4,1 Z M640,300 l13,22 l-5,0 Z M690,306 l10,18 l-4,1 Z M748,298 l12,22 l-5,1 Z M800,304 l11,20 l-4,1 Z"></path>
+</g>
+<g stroke="{{c.cun}}" stroke-width="1.2" stroke-linecap="round" fill="none">
+<path d="M150,324 L196,319 M240,332 L300,327 M312,340 L352,335 M436,322 L480,318 M580,330 L640,326 M700,338 L770,333"></path>
+</g>
+<g stroke="{{c.rim}}" stroke-width="3" stroke-linecap="round" fill="none">
+<path d="M130,302.4 C134,295.4 138,291.4 146,289.4 C150,288.6 153,288.4 158,288.4 L353.5,288.4"></path>
+<path d="M434.4,288.4 L844,288.4"></path>
+</g>
+
+<path d="M448,288.6 C449,280 455,274 462,276 C465,268 474,266 479,272 C484,265 494,266 498,273 C505,271 512,278 512,288.6 Z" fill="#1d1b1a"></path>
+<g stroke="#1d1b1a" stroke-width="1.1" stroke-linecap="round" fill="none">
+<path d="M456,278 l-5,-5 M463,274 l-2,-7 M470,270 l2,-7 M478,268 l-1,-7 M486,268 l4,-6 M494,269 l5,-5 M501,273 l6,-4 M508,279 l6,-2"></path>
+</g>
+<g fill="#a0603a">
+<circle cx="451" cy="273" r="1"></circle><circle cx="461" cy="267" r="1"></circle><circle cx="472" cy="263" r="1"></circle><circle cx="477" cy="261" r="1"></circle><circle cx="490" cy="262" r="1"></circle><circle cx="499" cy="264" r="1"></circle><circle cx="507" cy="269" r="1"></circle><circle cx="514" cy="277" r="1"></circle>
+</g>
+
+<path d="M562,289 C566,262 566,214 569,170 C569.4,160 570,154 571,152 L609,152 C610,154 610.6,160 611,170 C614,214 614,262 620,289 Z" fill="url(#L-rock)"></path>
+<path d="M574,170 l8,14 l-3,1 Z M596,180 l7,16 l-3,0 Z M578,206 l9,18 l-4,1 Z M600,224 l7,14 l-3,1 Z M572,248 l10,18 l-4,0 Z M598,258 l8,16 l-3,1 Z" fill="{{c.cun}}"></path>
+<path d="M570,196 L590,192 M590,240 L612,236" stroke="{{c.cun}}" stroke-width="1.1" stroke-linecap="round" fill="none"></path>
+<path d="M571.5,152.3 L608.5,152.3" stroke="{{c.rim}}" stroke-width="3" stroke-linecap="round" fill="none"></path>
+
+<circle cx="752" cy="252" r="28" fill="url(#L-gilt)"></circle>
+<rect x="700" y="280" width="104" height="9" fill="#1d1b1a"></rect>
+<path d="M700.5,280.3 L803.5,280.3" stroke="{{c.rim}}" stroke-width="2.4" stroke-linecap="round" fill="none"></path>
+<rect x="710" y="240" width="4.2" height="40" fill="#1d1b1a"></rect>
+<rect x="790" y="240" width="4.2" height="40" fill="#1d1b1a"></rect>
+<path d="M712,264 L792,264 M712,270.5 L792,270.5" stroke="#1d1b1a" stroke-width="1.4" fill="none"></path>
+<path d="M720,264 V280 M728,264 V280 M736,264 V280 M768,264 V280 M776,264 V280 M784,264 V280" stroke="#1d1b1a" stroke-width=".9" fill="none"></path>
+<rect x="741" y="273" width="22" height="7" fill="#1d1b1a" stroke="#c9a24a" stroke-width=".9"></rect>
+<path d="M752,242 V246.5" stroke="#1d1b1a" stroke-width=".8"></path>
+<ellipse cx="752" cy="252" rx="4" ry="5.4" fill="#c9a24a"></ellipse>
+<path d="M678,236 C694,236 712,232 728,222 C738,215 744,206 748,198 L756,198 C760,206 766,215 776,222 C792,232 810,236 826,236 C820,240 812,242 804,242 L700,242 C692,242 684,240 678,236 Z" fill="#1d1b1a"></path>
+<path d="M678,236 c-3,-1 -5,-4 -4,-7 M826,236 c3,-1 5,-4 4,-7" stroke="#1d1b1a" stroke-width="1.6" stroke-linecap="round" fill="none"></path>
+<path d="M684,240.2 C690,241.6 696,242 700,242 L804,242 C808,242 816,241.6 822,239.8" stroke="#c9a24a" stroke-width="1.2" fill="none"></path>
+<path d="M716,230 L748,203 M788,230 L756,203 M736,232 L750,206 M768,232 L754,206" stroke="#4a443c" stroke-width=".7" fill="none"></path>
+<path d="M752,198 V189" stroke="#1d1b1a" stroke-width="1.6"></path>
+<circle cx="752" cy="187" r="2.6" fill="#c9a24a"></circle>
+<circle cx="752" cy="152" r="36" fill="url(#L-gilt)"></circle>
+<text x="752" y="152" font-size="46" dominant-baseline="central" text-anchor="middle" font-family="'Ma Shan Zheng','KaiTi','STKaiti',serif" fill="#c23a2b" fill-opacity=".22" stroke="#c9a24a" stroke-width=".8" stroke-dasharray="2 2.4" stroke-opacity=".9">明</text>
+
+<g transform="rotate(-3 589 157)">
+<rect x="577" y="146" width="24" height="22" fill="#f5ecd6" stroke="#1d1b1a" stroke-width=".7"></rect>
+<text x="589" y="163.6" text-anchor="middle" font-size="13" font-weight="500" font-family="'Alegreya Sans',system-ui,sans-serif" fill="#1d1b1a">rì</text>
+</g>
+<g transform="translate(572,116)">
+<rect x="0" y="0" width="32" height="32" rx="2" fill="#f3e4c0" stroke="#1d1b1a" stroke-width="1"></rect>
+<path d="M32,0 L36,4 L36,36 L32,32 Z" fill="#b8956a" stroke="#1d1b1a" stroke-width=".8" stroke-linejoin="round"></path>
+<path d="M0,32 L32,32 L36,36 L4,36 Z" fill="#9a774c" stroke="#1d1b1a" stroke-width=".8" stroke-linejoin="round"></path>
+<path d="M3,6 C10,5 20,7 29,5.6 M3,24 C12,22.6 20,25 29,23.6" stroke="#dcc596" stroke-width=".7" fill="none"></path>
+<text x="17" y="17.4" font-size="27" dominant-baseline="central" text-anchor="middle" font-family="'Ma Shan Zheng','KaiTi','STKaiti',serif" fill="#5a3d1c" fill-opacity=".35">日</text>
+<text x="16" y="16.4" font-size="27" dominant-baseline="central" text-anchor="middle" font-family="'Ma Shan Zheng','KaiTi','STKaiti',serif" fill="#b06f06">日</text>
+</g>
+
+<path d="M16,338 C34,349 92,351 124,336 L119,347 C92,358 36,357 19,347 Z" fill="#1d1b1a"></path>
+<path d="M17,338.6 C35,349.4 92,351.4 123.4,336.6" fill="none" stroke="{{c.rim}}" stroke-width="2.4" stroke-linecap="round"></path>
+<path d="M48,345.6 C49,330 86,328 92,346.6 Z" fill="#3a3530"></path>
+<path d="M58,346 C58,336 62,331 66,330.4 M70,347 L70.5,329.2 M80,347 C80,338 82,331 84,331" stroke="#6b6157" stroke-width=".8" fill="none"></path>
+<path d="M8,300 L13,372" stroke="#1d1b1a" stroke-width="2.2" stroke-linecap="round"></path>
+<path d="M12,318 C16,330 22,338 30,342" stroke="#1d1b1a" stroke-width=".8" fill="none"></path>
+
+<rect x="0" y="352" width="844" height="38" fill="url(#L-water)"></rect>
+<rect x="0" y="352" width="844" height="38" fill="url(#L-wave)"></rect>
+<rect x="0" y="349" width="844" height="6" fill="url(#L-crest)"></rect>
+
+<path d="M540,222 L540,284" stroke="#e0a526" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="0 5.5" fill="none"></path>
+<ellipse cx="540" cy="288.6" rx="10" ry="2.8" fill="#1d1b1a" stroke="#e0a526" stroke-width="1"></ellipse>
+<use href="#L-hero" transform="translate(540,214) scale(.72)" filter="url(#L-rim)"></use>
+<g transform="rotate(-6 510 176)">
+<rect x="496" y="168" width="28" height="18" fill="#f5ecd6" stroke="#1d1b1a" stroke-width=".7"></rect>
+<text x="510" y="181.4" text-anchor="middle" font-size="13" font-weight="500" font-family="'Alegreya Sans',system-ui,sans-serif" fill="#1d1b1a">yuè</text>
+</g>
+<g transform="translate(526,150)">
+<rect x="0" y="0" width="28" height="28" rx="2" fill="#f3e4c0" stroke="#1d1b1a" stroke-width="1"></rect>
+<path d="M28,0 L32,4 L32,32 L28,28 Z" fill="#b8956a" stroke="#1d1b1a" stroke-width=".8" stroke-linejoin="round"></path>
+<path d="M0,28 L28,28 L32,32 L4,32 Z" fill="#9a774c" stroke="#1d1b1a" stroke-width=".8" stroke-linejoin="round"></path>
+<text x="15" y="15.2" font-size="23" dominant-baseline="central" text-anchor="middle" font-family="'Ma Shan Zheng','KaiTi','STKaiti',serif" fill="#5a3d1c" fill-opacity=".35">月</text>
+<text x="14" y="14.2" font-size="23" dominant-baseline="central" text-anchor="middle" font-family="'Ma Shan Zheng','KaiTi','STKaiti',serif" fill="#1b5aa6">月</text>
+</g>
+
+<rect width="844" height="390" filter="url(#L-silk)"></rect>
+<rect width="844" height="390" fill="url(#L-age)"></rect>
+</svg>
+
+<sc-if value="{{hud}}" hint-placeholder-val="{{ true }}">
+<div style="position: absolute; left: 12px; top: 10px; width: 92px; height: 114px; box-sizing: border-box; padding-top: 10px; background: #f1e7cf; border: 1px solid #1d1b1a; box-shadow: inset 0 0 0 3px #f1e7cf, inset 0 0 0 4px rgba(29,27,26,.28), 0 2px 0 rgba(29,27,26,.25); display: flex; flex-direction: column; align-items: center">
+<div style="position: absolute; left: 0; right: 0; top: 0; height: 5px; background: #1f4e6e"></div>
+<div class="ale" style="font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: #5c5246; line-height: 12px">目标 · goal</div>
+<div class="msz" style="font-size: 52px; line-height: 54px; color: #1d1b1a">明</div>
+<div class="ale" style="font-size: 14px; font-weight: 500; line-height: 16px; color: #1d1b1a">míng</div>
+<div class="ale" style="font-size: 12px; line-height: 14px; color: #5c5246">bright</div>
+</div>
+
+<div style="position: absolute; right: 58px; top: 10px; height: 50px; box-sizing: border-box; padding: 4px 14px 0 10px; background: #f1e7cf; border: 1px solid #1d1b1a; box-shadow: inset 0 0 0 3px #f1e7cf, inset 0 0 0 4px rgba(29,27,26,.28), 0 2px 0 rgba(29,27,26,.25); display: flex; align-items: center; gap: 8px">
+<div style="position: absolute; left: 0; right: 0; top: 0; height: 4px; background: #1f4e6e"></div>
+<div class="msz" style="font-size: 34px; line-height: 36px; color: #1b5aa6">月</div>
+<div style="display: flex; flex-direction: column">
+<div class="ale" style="font-size: 14px; font-weight: 500; line-height: 16px; color: #1d1b1a">yuè</div>
+<div class="ale" style="font-size: 12px; line-height: 14px; color: #5c5246">moon</div>
+</div>
+</div>
+
+<button aria-label="Menu" style="position: absolute; right: 12px; top: 10px; width: 38px; height: 38px; padding: 0; margin: 0; background: #f1e7cf; border: 1px solid #1d1b1a; box-shadow: 0 2px 0 rgba(29,27,26,.25); display: flex; align-items: center; justify-content: center; cursor: pointer">
+<svg width="22" height="20" viewBox="0 0 22 20" aria-hidden="true"><path d="M5,4 C9,3.2 13,3.4 17,3.8" stroke="#1d1b1a" stroke-width="2.2" stroke-linecap="round" fill="none"></path><path d="M6,10 C9.6,9.4 12.6,9.6 16,10" stroke="#1d1b1a" stroke-width="2" stroke-linecap="round" fill="none"></path><path d="M2,16.4 C8,15.2 14,15.4 20.4,16.2" stroke="#1d1b1a" stroke-width="2.6" stroke-linecap="round" fill="none"></path></svg>
+</button>
+
+<div class="ale" style="position: absolute; left: 50%; top: 68px; transform: translateX(-50%); height: 30px; box-sizing: border-box; padding: 0 20px; display: flex; align-items: center; gap: 5px; background: #f1e7cf; border-top: 1px solid #1d1b1a; border-bottom: 1px solid #1d1b1a; font-size: 13px; line-height: 16px; color: #1d1b1a; white-space: nowrap; clip-path: polygon(9px 0, calc(100% - 9px) 0, 100% 50%, calc(100% - 9px) 100%, 9px 100%, 0 50%)">
+<span>Set</span><span class="msz" style="font-size: 20px; color: #1b5aa6">月</span><span>yuè</span><span style="font-weight: 700">beside</span><span class="msz" style="font-size: 20px; color: #b06f06">日</span><span>rì</span><span style="color: #8a7c69">→</span><span class="msz" style="font-size: 20px; color: #c23a2b">明</span><span>míng</span>
+</div>
+
+<div aria-hidden="true" style="position: absolute; left: 18px; bottom: 12px; width: 116px; height: 116px">
+<svg width="116" height="116" viewBox="0 0 116 116"><path d="M64,7.5 C92,10 110,32 108,60 C106,88 82,109 54,108 C26,107 7,84 8,57 C9,36 22,19 40,11" fill="none" stroke="#1d1b1a" stroke-opacity=".35" stroke-width="6.5" stroke-linecap="round"></path><path d="M64,7.5 C92,10 110,32 108,60 C106,88 82,109 54,108 C26,107 7,84 8,57 C9,36 22,19 40,11" fill="none" stroke="#f1e7cf" stroke-opacity=".8" stroke-width="3" stroke-linecap="round"></path><path d="M40,11 C46,8.6 52,7.8 57,7.6" fill="none" stroke="#f1e7cf" stroke-opacity=".7" stroke-width="1.2" stroke-linecap="round"></path><circle cx="66" cy="58" r="21" fill="#1d1b1a" fill-opacity=".55" stroke="#f1e7cf" stroke-opacity=".75" stroke-width="1.5"></circle></svg>
+</div>
+
+<button aria-label="Set beside" style="position: absolute; right: 90px; bottom: 38px; width: 58px; height: 58px; padding: 0; margin: 0; border-radius: 50%; background: #f1e7cf; border: 1.5px solid #1d1b1a; box-shadow: 0 0 0 2px rgba(29,27,26,.28); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #1d1b1a; cursor: pointer">
+<span class="msz" style="font-size: 25px; line-height: 25px">旁</span>
+<span class="ale" style="font-size: 10px; font-weight: 500; line-height: 11px">páng</span>
+<span class="ale" style="font-size: 7.5px; font-weight: 700; letter-spacing: .08em; line-height: 9px">BESIDE</span>
+</button>
+
+<button aria-label="Jump" style="position: absolute; right: 14px; bottom: 14px; width: 66px; height: 66px; padding: 0; margin: 0; border-radius: 50%; background: radial-gradient(circle at 40% 34%, #3a3632 0%, #1d1b1a 72%); border: 2px solid #e0a526; box-shadow: 0 0 0 2px rgba(241,231,207,.55); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #f1e7cf; cursor: pointer">
+<span class="msz" style="font-size: 29px; line-height: 29px">跳</span>
+<span class="ale" style="font-size: 10px; font-weight: 500; line-height: 11px">tiào</span>
+<span class="ale" style="font-size: 7.5px; font-weight: 700; letter-spacing: .1em; line-height: 9px">JUMP</span>
+</button>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"time":{"editor":"enum","options":["night","daybreak"],"default":"night"},"hud":{"editor":"boolean","default":true},"$preview":{"width":844,"height":390}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const night = {
+      base: '#d5cbb2', sky0: '#64767f', sky1: '#a3aca7',
+      orb: '#f5edd8', halo: '#f5edd8', refl: '#f5edd8',
+      far0: '#94a6a6', far1: '#b2b6aa',
+      mid0: '#4a7383', mid1: '#5e8774', mid2: '#88836d', mid3: '#ddd3ba',
+      mist: '#e5dbc3', cloud: '#e8dec7', pine: '#3c5a50',
+      water0: '#2f6f8f', water1: '#1c4866', wline: '#86b3c4', wcrest: '#dbe4da',
+      face: '#20292e', cun: '#3e5058', rim: '#ece0c6'
+    };
+    const day = {
+      base: '#eadbbb', sky0: '#b5c3c0', sky1: '#f0d6a4',
+      orb: '#e9a062', halo: '#f2c27e', refl: '#f2c27e',
+      far0: '#a5c0b0', far1: '#cbcbb2',
+      mid0: '#2f6f8f', mid1: '#4f9a7a', mid2: '#a3865d', mid3: '#efe2c6',
+      mist: '#f3e9d2', cloud: '#f6ecd6', pine: '#2f5a48',
+      water0: '#2f6f8f', water1: '#235e7e', wline: '#a8ccd8', wcrest: '#f4ecd8',
+      face: '#252c2f', cun: '#4b5c62', rim: '#f3e7cc'
+    };
+    const isDay = (this.props.time ?? 'night') === 'daybreak';
+    return { c: isDay ? day : night, hud: this.props.hud ?? true };
+  }
+}
+</script>
+</body>
+</html>

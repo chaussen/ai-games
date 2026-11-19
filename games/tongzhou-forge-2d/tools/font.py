@@ -6,7 +6,7 @@
 Copied from games/tongzhou-forge/tools/font.py and pointed at this folder's files. The full font (about
 6 MB, github.com/google/fonts/raw/main/ofl/mashanzheng/MaShanZheng-Regular.ttf) is never committed:
 download it once outside the repo and pass its path. The subset keeps everything it held before plus
-every Han character in content.js, isles.js, app.js and index.html.
+every Han character in content.js, isles.js, app.js, ink.js and index.html.
 """
 import os, re, sys
 from fontTools.ttLib import TTFont
@@ -16,7 +16,7 @@ HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(HERE, "vendor", "MaShanZheng-subset.woff2")
 CHARS = os.path.join(HERE, "vendor", "MaShanZheng-subset.chars.txt")
 HAN = re.compile(r"[⺀-⿟　-〿㐀-䶿一-鿿豈-﫿]")
-SOURCES = ("content.js", "isles.js", "app.js", "index.html", "rules.js")
+SOURCES = ("content.js", "isles.js", "app.js", "ink.js", "index.html", "rules.js")
 
 
 def wanted():

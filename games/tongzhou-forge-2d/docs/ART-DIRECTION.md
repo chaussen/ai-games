@@ -1,6 +1,6 @@
 # Art direction plan: 水墨江湖 · ink jianghu
 
-Status: **plan, nothing built** (2026-11-19). Decision FG-D020. John answered §7 the same day (see
+Status: **ink look built and the default** (2026-11-19, §8), from Claude Design's boards. Decision FG-D020. John answered §7 the same day (see
 §7): both styles as a comparison, no sword, and Claude Design goes first, so **code waits for
 Design's frames**. He added one idea: stones show the thing they mean (§3.7). A paste-ready brief for
 Claude Design is `docs/ART-BRIEF.md` (with an addendum for §3.7).
@@ -253,3 +253,43 @@ Rough size: V1 is one session; V2 to V4 are two to three; V5 is one, plus John's
 4. Claude Design first, or V1 in code? **Design first: John has handed the brief over. Code waits
    for Design's frames**, then V1 draws them in canvas.
 5. (New) Stones show their thing: §3.7. Level 1 with V4, level 2 right after.
+
+## 8. What shipped (2026-11-19) and what is still missing
+
+Claude Design delivered eight boards for direction B (copied to `docs/design/`: two style frames at
+night and one at daybreak, the hero pose sheet, the stone, the palette, the HUD skin, the win
+scroll; tokens in `docs/design/tokens.json`). They are drawn in canvas in **`ink.js`**, the
+default look; the greybox stays as `?art=greybox` and ☰ → Look.
+
+**Built, matching the boards**
+
+| Part | As built |
+|---|---|
+| Landscape | Sky wash and moon (or low sun at daybreak); 平远 far band and 深远 middle band of karst pillars (hemp strokes, pines, cloud wisps), each over a sea of mist; the 留白 mist band; the play layer in full ink with axe-cut texture kept out of the top of every walkable cell, a bare-silk rim on tops and a thinner one on cliff faces; the river as Ma Yuan line patterns with a crest and the moon's reflection; silk grain and an aged edge on the far layers |
+| Built things | The pavilion (upswept eaves edged in gilt, finial, lantern, the wanted character as a gilt-dashed ghost above it, a faint gilt beam kept for finding it); the 乌篷船 boat with its awning and punt pole; thorn hedges as ink bushes with ochre berries and no rim; plank bridges with rope lashings; 轻功 clouds as 祥云; gems as jade discs |
+| Hero | All eight poses from the pose sheet (stand, a two-frame run, jump, 轻功 leap, wall push, carry, land, fall) as brush paths, ribbons that flutter with speed, the gamboge rim drawn as a fattened copy of the same strokes. **The sword line on the boards is left out** (John: no weapons) |
+| Stones | 活字 type blocks (face, grain, bevel, raised glyph with an umber shadow) inside the stone's exact box, and a tilted paper slip with the pinyin |
+| Effects | 墨晕 ink ring on a leap, a dry-brush wisp trail, landing dust, the forged character printed in vermilion with a 印 seal |
+| HUD | Mounted paper cards with an azurite brocade band; the goal card in ink, vermilion with a 成 seal once the character is made; the message as a paper strip with cut ends, glyphs in element colours; brushed 三 menu; 圆相 ensō stick; ink-stone JUMP rimmed in gamboge; 58 px paper GRAB, gilt for 献; the win sheet as the scroll's end with a colophon (character, pinyin, meaning, its two parts, a vertical line such as 日月为明, a 同舟 seal) |
+
+**Checks** (`screen-check.py`, both looks, eleven screens): the screen budget, real touch, and a
+**contrast probe** at every visible walkable top (ink 11:1 on phones and iPads, 4:1 on two laptops
+where the top meets the darker sky; greybox 4.4:1; the floor is 3:1). **Frame rate**, headless
+Chrome at the same moment: ink 61 fps on every phone and iPad and on two laptops, 50 on the 13" Mac;
+the greybox 42 to 61. The first ink build ran at 5 fps: big gradient fills and stretched image
+copies are slow to rasterise without a GPU, so the sky, both mountain bands, the mist band and the
+river's wash are painted once and copied unscaled (rules in `AGENTS.md`).
+
+**Not built yet**
+
+1. **A 一笔 One Stroke** look for the comparison John asked for: Design drew only B. Needs its own
+   frames (from Design, or V1 in code) before it is built.
+2. **§3.7 字/物**: things in the air and carried (a tree on your shoulder, a torch, the sun disc).
+   Not on the boards; level 1 is the next art step.
+3. **Fixed glyph tiles** carved in rock (§3.3): a rules change, its own note first.
+4. Forging is a vermilion print and a seal, not yet the stroke-by-stroke brushing; the win does not
+   roll the scroll on.
+5. Design's two Latin faces (Alegreya Sans, Cormorant Garamond) are not vendored: the page uses the
+   system face and Georgia italic for the meaning on the win scroll.
+6. Nobody has played the ink look on a phone: gate V5 (John's playtest) decides whether it stays the
+   default.

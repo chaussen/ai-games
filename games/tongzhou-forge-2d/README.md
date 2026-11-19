@@ -13,8 +13,9 @@ upward off walls, stones, gems and clouds.
 P2 (`docs/GREYBOX.md` §6). Start with **`docs/GREYBOX.md`**: every earlier finding and what this
 build does about it, the knobs, the defect log and the known gaps.
 
-**Next (planned, not built):** the art direction, `docs/ART-DIRECTION.md` (水墨江湖, ink jianghu), with a
-paste-ready brief for Claude Design in `docs/ART-BRIEF.md`.
+**Look (2026-11-19):** the **ink scroll** (水墨江湖) is the default, built from Claude Design's boards
+(`docs/design/`) to the plan in `docs/ART-DIRECTION.md` (§8 says what shipped and what is still
+missing). The greybox stays for comparison: `?art=greybox`, or ☰ → Look.
 
 | Isle | Make | Ways |
 |---|---|---|
@@ -29,11 +30,13 @@ node server.js                 # http://localhost:3300/
 PORT=3000 node server.js       # on the machine where only port 3000 is open (phone playtests)
 ```
 
-Phones open `http://<LAN-IP>:3300/` (the server prints it). URL options: `?isle=dawn`,
+Phones open `http://<LAN-IP>:3300/` (the server prints it). URL options: `?art=ink|greybox`, `?isle=dawn`,
 `?profile=relaxed|standard|strict`, `?labels=all|near|card`, `?mute=1`, `?touch=1` (show the pad on
 a laptop).
 
 ## Controls
+
+☰ also holds **Look** (ink scroll or greybox).
 
 Phone: the **stick** (touch anywhere in the lower left) walks; **跳 JUMP** jumps, and again in the air
 is 轻功 (a leap); **拿 GRAB** picks up a stone. Holding a stone, the GRAB button names the placement:
@@ -53,11 +56,12 @@ else kicks you off it. Carrying a stone you get one leap.
 ```sh
 node sim-test.mjs        # rules, 轻功, forging, elements, two scripted wins per isle (pure node)
 node smoke-test.mjs      # real server on port 3481: what a phone may fetch, font coverage
-node screen-test.mjs     # real server on 3482 + screen-check.py: eleven screens (phones, iPads, laptops), real touch, budget, screenshots
+node screen-test.mjs     # real server on 3482 + screen-check.py: eleven screens (phones, iPads, laptops), real touch, budget, contrast, screenshots
+ART=greybox node screen-test.mjs   # the same for the greybox look
 ```
 
 `screen-test.mjs` needs Python Playwright and `/usr/bin/chromium`; it writes
-`screenshots/greybox/*.jpg`. No test uses port 3000. After adding a Chinese character to the page:
+`screenshots/ink/*.jpg` (or `screenshots/greybox/`). No test uses port 3000. After adding a Chinese character to the page:
 `~/.venv/bin/python tools/font.py <full MaShanZheng-Regular.ttf>` (see the tool's header).
 
 ## Home-network caveats

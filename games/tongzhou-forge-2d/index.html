@@ -14,18 +14,18 @@
      the stick and two buttons. screen-check.py fails if anything else shows or overlaps the pad. -->
 <div id="hud">
   <div id="goal" data-hud="goal" title="The pavilion wants this character">
-    <b class="g"></b><span class="py"></span><span class="en"></span>
+    <span class="lab">目标 · goal</span><b class="g"></b><span class="py"></span><span class="en"></span><i class="seal" aria-hidden="true">成</i>
   </div>
   <button id="card" data-hud="card" hidden title="Tap to hear it">
     <svg class="picto" viewBox="0 0 100 100" aria-hidden="true"><path></path></svg>
     <b class="g"></b><span class="words"><span class="py"></span><span class="en"></span></span>
   </button>
-  <button id="menu" data-hud="menu" aria-label="Menu">☰</button>
+  <button id="menu" data-hud="menu" aria-label="Menu"><span class="t">☰</span><svg class="san" width="22" height="20" viewBox="0 0 22 20" aria-hidden="true"><path d="M5,4 C9,3.2 13,3.4 17,3.8" stroke-width="2.2"/><path d="M6,10 C9.6,9.4 12.6,9.6 16,10" stroke-width="2"/><path d="M2,16.4 C8,15.2 14,15.4 20.4,16.2" stroke-width="2.6"/></svg></button>
   <div id="msg" data-hud="msg" role="status" aria-live="polite"></div>
 </div>
 
 <div id="pad">
-  <div id="stick" data-hud="stick" data-pad><i></i></div>
+  <div id="stick" data-hud="stick" data-pad><svg class="enso" viewBox="0 0 116 116" aria-hidden="true"><path class="e1" d="M64,7.5 C92,10 110,32 108,60 C106,88 82,109 54,108 C26,107 7,84 8,57 C9,36 22,19 40,11"/><path class="e2" d="M64,7.5 C92,10 110,32 108,60 C106,88 82,109 54,108 C26,107 7,84 8,57 C9,36 22,19 40,11"/><path class="e3" d="M40,11 C46,8.6 52,7.8 57,7.6"/></svg><i></i></div>
   <button id="grab" data-hud="grab" data-pad>GRAB</button>
   <button id="jump" data-hud="jump" data-pad>JUMP</button>
 </div>
@@ -35,17 +35,21 @@
 </div>
 
 <div id="win" class="sheet" data-hud="win" hidden>
+  <div class="inscr" aria-hidden="true"></div>
   <div class="g"></div><div class="words"><span class="py"></span> · <span class="en"></span></div>
+  <p class="recipe"></p>
   <p class="line">The mist lifts.</p><p class="stats"></p>
+  <div class="seal" aria-hidden="true">同舟</div>
   <div class="row"><button data-act="again">Again</button><button data-act="next" class="main">Next isle</button></div>
 </div>
 
 <div id="drawer" class="sheet" data-hud="drawer" hidden>
-  <h2>Glyph Isles 2D <small>greybox</small></h2>
+  <h2>Glyph Isles 2D <small>同舟</small></h2>
   <div class="row"><button data-act="restart" class="main">Restart isle</button><button data-act="close">Back to the isle</button></div>
   <label>Isle <select data-k="isle"></select></label>
   <label>Play <select data-k="profile"><option>relaxed</option><option>standard</option><option>strict</option></select></label>
   <label>Pinyin on stones <select data-k="labels"><option value="all">every stone</option><option value="near">stones near you</option><option value="card">only the card</option></select></label>
+  <label>Look <select data-k="art"><option value="ink">ink scroll 水墨</option><option value="greybox">greybox</option></select></label>
   <label><input type="checkbox" data-k="sound"> Sound</label>
   <label><input type="checkbox" data-k="voice"> Say each new character</label>
   <p class="keys">Keys: ← → walk · Space / ↑ jump (again in the air: 轻功) · X grab · R restart · N / P isle · Esc menu</p>
@@ -55,6 +59,7 @@
 <script src="rules.js"></script>
 <script src="isles.js"></script>
 <script src="sim.js"></script>
+<script src="ink.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

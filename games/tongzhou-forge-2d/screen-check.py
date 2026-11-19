@@ -8,14 +8,16 @@ laptop), and checks the screen budget of docs/GREYBOX.md:
   - no top element (goal, card, msg, menu, title) overlaps the pad;
   - your feet are on screen and not under the pad;
   - no console errors.
-Screenshots go to the folder given. Usage: python3 screen-check.py <port> <outdir>
+  - (both looks) the contrast at every visible walkable top is 3:1 or more (WF2D.probe).
+Screenshots go to the folder given. Usage: ART=ink|greybox python3 screen-check.py <port> <outdir>
 """
 import json, os, sys
 from playwright.sync_api import sync_playwright
 
 PORT, OUT = int(sys.argv[1]), sys.argv[2]
 os.makedirs(OUT, exist_ok=True)
-URL = f"http://localhost:{PORT}/?mute=1"
+ART = os.environ.get("ART", "ink")
+URL = f"http://localhost:{PORT}/?mute=1&art={ART}"
 DEVICES = [
     # name, w, h, dpr, touch. Sizes are the page area left by the browser (bars and tabs taken off)
     ("phone-6in-portrait", 390, 844, 3, True),
@@ -146,6 +148,10 @@ def run_device(pw_browser, dev):
     seen["fps"] = page.evaluate("WF2D.frames()") - f0
     seen["canvas"] = page.evaluate("[document.querySelector('canvas').width, document.querySelector('canvas').height]")
     seen["boat"] = check(page, dev, "on the boat")
+    pr = page.evaluate("WF2D.probe()")
+    seen["contrast"] = pr["min"]
+    if pr["n"] and pr["min"] < 3:
+        fails.append(f"{name}: a walkable top has contrast {pr['min']}:1 (under 3:1) at cell {pr['worst']}")
     page.screenshot(path=f"{OUT}/{name}-1-boat.jpg", type="jpeg", quality=70)
 
     t = Touch(page) if touch else None

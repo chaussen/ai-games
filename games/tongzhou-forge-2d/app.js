@@ -1,6 +1,7 @@
-// 同舟 · Glyph Isles 2D — the page: runs sim.js locally (one player, the greybox), draws the isle
-// side-on in ink on paper, and keeps the phone screen to its budget (docs/GREYBOX.md):
-// one goal, one word card, one message line, the menu, the stick and two buttons.
+// 同舟 · Glyph Isles 2D — the page: runs sim.js locally (one player), draws the isle side-on, and keeps
+// the phone screen to its budget (docs/GREYBOX.md): one goal, one word card, one message line, the
+// menu, the stick and two buttons. Two looks: 'ink' (ink.js, the 水墨江湖 art, default) and 'greybox'
+// (the plain shapes below, kept for comparison): ?art=ink|greybox or ☰ → Look.
 (function () {
   'use strict';
   const SIM = window.WSim, RU = window.WRules, IS = window.WIsles;
@@ -24,6 +25,10 @@
     voice: qs.get('mute') === '1' ? false : store.get('voice', true),
   };
   const STEP = 1 / 60;
+  let ART = ['ink', 'greybox'].includes(qs.get('art')) ? qs.get('art') : store.get('art', 'ink');
+  const INK = window.WInk.create();
+  function setArt(a) { ART = a === 'greybox' ? 'greybox' : 'ink'; document.documentElement.classList.toggle('ink', ART === 'ink'); }
+  setArt(ART);
 
   // element colours (copied from the 3D client): a = light, b = dark ink of the element
   const EL = {
@@ -211,13 +216,20 @@
 
   // ---------- HUD: goal, word card, one message line ----------
   const words = ch => { const g = RU.GLYPHS[ch] || {}; return { py: g.py || '', en: g.en || '' }; };
-  const B = ch => '<b>' + ch + '</b>';
+  const B = ch => ART === 'ink' ? '<b style="color:' + elOf(ch).b + '">' + ch + '</b>' : '<b>' + ch + '</b>';
   function setGoal() {
     const ch = world.L.want, w = words(ch), el = $('#goal');
     el.querySelector('.g').textContent = ch;
     el.querySelector('.py').textContent = w.py;
     el.querySelector('.en').textContent = w.en;
     el.style.setProperty('--el', elOf(ch).b);
+    el.classList.remove('made');
+  }
+  // the goal card turns vermilion and takes a 成 seal once the character exists on the isle
+  function updateGoal() {
+    const made = world.stones.some(k => k.ch === world.L.want && k.state !== 'gone');
+    const el = $('#goal');
+    if (el.classList.contains('made') !== made) el.classList.toggle('made', made);
   }
   let msgT = 0;
   function say(html, kind) {
@@ -307,6 +319,7 @@
     drawer.querySelector('[data-k=labels]').value = UI.labels;
     drawer.querySelector('[data-k=sound]').checked = UI.sound;
     drawer.querySelector('[data-k=voice]').checked = UI.voice;
+    drawer.querySelector('[data-k=art]').value = ART;
   }
   function toggleDrawer(open) {
     const o = open === undefined ? drawer.hidden : open;
@@ -326,6 +339,7 @@
     if (k === 'labels') { UI.labels = e.target.value; store.set('labels', UI.labels); }
     if (k === 'sound') { UI.sound = e.target.checked; store.set('sound', UI.sound); unlockAudio(); }
     if (k === 'voice') { UI.voice = e.target.checked; store.set('voice', UI.voice); }
+    if (k === 'art') { setArt(e.target.value); store.set('art', ART); }
   });
   $('#win').addEventListener('click', e => {
     const a = e.target.dataset && e.target.dataset.act;
@@ -353,10 +367,16 @@
     switch (e.t) {
       case 'jump': if (e.id === ME) sfx.jump(); break;
       case 'leap':
-        if (e.id === ME) { sfx.leap(e.chain); burst(p.x, p.y, 10, { kind: 'wisp', v: 1.6, up: -1.5, life: 0.5, size: 0.12, g: 0 }); }
+        if (e.id === ME) {
+          sfx.leap(e.chain);
+          if (ART === 'ink') fx.push({ x: p.x, y: p.y, vx: 0, vy: 0, life: 0.55, max: 0.55, kind: 'ring', g: 0 });   // 墨晕: ink blooms under the feet
+          else burst(p.x, p.y, 10, { kind: 'wisp', v: 1.6, up: -1.5, life: 0.5, size: 0.12, g: 0 });
+        }
         break;
       case 'refill': if (e.id === ME) { sfx.refill(); burst(p.x, p.y + PH / 2, 8, { kind: 'spark', color: '#e0a526', v: 2.2, life: 0.4, g: 0 }); } break;
-      case 'land': if (e.id === ME) { sfx.land(); land = 0.12; } break;
+      case 'land':
+        if (e.id === ME) { sfx.land(); land = ART === 'ink' ? 0.16 : 0.12; if (ART === 'ink') burst(p.x, p.y + 0.04, 6, { kind: 'dust', v: 1.1, up: 0.4, life: 0.35, size: 0.06, g: 3 }); }
+        break;
       case 'grab': sfx.grab(); break;
       case 'place': sfx.place(); break;
       case 'throw': sfx.throw(); break;
@@ -365,8 +385,10 @@
       case 'forge': {
         sfx.forge();
         const el = elOf(e.ch);
-        burst(e.x, e.y + SH / 2, 22, { kind: 'ink', color: el.b, v: 3.2, life: 0.8, size: 0.1 });
-        fx.push({ x: e.x, y: e.y + SH, vx: 0, vy: 1.2, life: 1.2, max: 1.2, kind: 'glyph', ch: e.ch, color: el.b, g: 0 });
+        burst(e.x, e.y + SH / 2, 22, { kind: 'ink', color: ART === 'ink' ? '#1d1b1a' : el.b, v: 3.2, life: 0.8, size: 0.1 });
+        // ink: the new character is printed in vermilion and sealed (印); greybox: it rises in its colour
+        fx.push({ x: e.x, y: e.y + SH, vx: 0, vy: 1.2, life: 1.2, max: 1.2, kind: 'glyph', ch: e.ch, color: ART === 'ink' ? '#c23a2b' : el.b, g: 0 });
+        if (ART === 'ink') fx.push({ x: e.x + 0.75, y: e.y + SH + 0.5, vx: 0, vy: 0.6, life: 1.4, max: 1.4, kind: 'seal', ch: '印', g: 0 });
         const how = e.op === '⿱' ? ' on ' : ' beside ';
         say((e.rescued ? 'Slid into place: ' : '') + B(e.a) + how + B(e.b) + ' makes ' + B(e.ch) + ' ' + words(e.ch).py);
         card.forced = { ch: e.ch, until: world.clock + UI.cardForge };
@@ -426,6 +448,11 @@
     el.querySelector('.py').textContent = w.py;
     el.querySelector('.en').textContent = w.en;
     el.querySelector('.stats').textContent = r.time + ' s · gems ' + r.gems + ' / ' + r.total;
+    // the colophon: what it is made of, and a line in the brush, 日月为明
+    const rec = RU.RECIPE_LIST.find(x => x[3] === r.ch);
+    const part = ch => '<b style="color:' + elOf(ch).b + '">' + ch + '</b> ' + words(ch).py + ' ' + words(ch).en;
+    el.querySelector('.recipe').innerHTML = rec ? part(rec[1]) + ' + ' + part(rec[2]) + '<br><small>' + (rec[0] === '⿱' ? rec[1] + ' on top of ' + rec[2] : 'set side by side') + '</small>' : '';
+    el.querySelector('.inscr').textContent = rec ? rec[1] + rec[2] + '为' + r.ch : r.ch;
     el.querySelector('[data-act=next]').textContent = r.last ? 'Back to the first isle' : 'Next isle';
     el.hidden = false;
   }
@@ -466,6 +493,7 @@
     const [ch, fresh] = pickCard(l);
     showCard(UI.labels === 'none' ? null : ch, fresh);
     updateTitle();
+    updateGoal();
     frames++;
     requestAnimationFrame(frame);
   }
@@ -477,6 +505,12 @@
   function rr(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
 
   function draw(a, t) {
+    if (ART === 'ink') {
+      INK.draw({ ctx, W, H, S, DPR, X, Y, cam, anchorY, world, a, t, duskF, wonF, land, fx, labels: UI.labels,
+        me, posOf, words, elOf, font, shapeOf, SW, SH, PW, PH, HOLD_Y,
+        frames2, ghost: () => ghost(a), particles, offscreen: () => offscreen(null, a) });
+      return;
+    }
     const P = PAL[world.L.pal] || PAL.dusk;
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     // paper and sky wash
@@ -818,7 +852,16 @@
         ctx.fillStyle = f.color; ctx.font = font(S * (0.9 + (1 - k) * 0.8)); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText(f.ch, X(f.x), Y(f.y));
       } else if (f.kind === 'wisp') {
-        ctx.fillStyle = 'rgba(80,80,100,0.5)'; ctx.beginPath(); ctx.arc(X(f.x), Y(f.y), S * f.size * (1.5 - k * 0.5), 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = ART === 'ink' ? 'rgba(29,27,26,0.32)' : 'rgba(80,80,100,0.5)'; ctx.beginPath(); ctx.arc(X(f.x), Y(f.y), S * f.size * (1.5 - k * 0.5), 0, Math.PI * 2); ctx.fill();
+      } else if (f.kind === 'ring') {
+        ctx.strokeStyle = '#1d1b1a'; ctx.lineWidth = Math.max(1, S * 0.08 * k);
+        ctx.beginPath(); ctx.ellipse(X(f.x), Y(f.y), S * (0.25 + (1 - k) * 0.7), S * (0.07 + (1 - k) * 0.16), 0, 0, Math.PI * 2); ctx.stroke();
+      } else if (f.kind === 'dust') {
+        ctx.fillStyle = '#ece0c6'; ctx.beginPath(); ctx.ellipse(X(f.x), Y(f.y), S * f.size * 1.6, S * f.size * 0.6, 0, 0, Math.PI * 2); ctx.fill();
+      } else if (f.kind === 'seal') {
+        const r = S * 0.24, sx = X(f.x), sy = Y(f.y);
+        ctx.globalAlpha = Math.min(1, k * 2); ctx.fillStyle = '#c23a2b'; ctx.fillRect(sx - r, sy - r, 2 * r, 2 * r);
+        ctx.fillStyle = '#f1e7cf'; ctx.font = font(r * 1.5); ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(f.ch, sx, sy + r * 0.05);
       } else {
         ctx.fillStyle = f.color || '#2a2622'; ctx.beginPath(); ctx.arc(X(f.x), Y(f.y), Math.max(1, S * f.size * (0.5 + k * 0.5)), 0, Math.PI * 2); ctx.fill();
       }
@@ -851,6 +894,28 @@
     visibleHud: () => [...document.querySelectorAll('[data-hud]')].filter(e => { const r = e.getBoundingClientRect(); const cs = getComputedStyle(e); return !e.hidden && r.width > 0 && r.height > 0 && cs.display !== 'none' && cs.visibility !== 'hidden' && +cs.opacity > 0.05; })
       .map(e => { const r = e.getBoundingClientRect(); return { name: e.dataset.hud, x: r.left, y: r.top, w: r.width, h: r.height }; }),
     say, restart, goIsle, toggleDrawer,
+    art: () => ART, pose: () => INK.heroPose({ land }, me()),
+    // contrast at every visible walkable top: rock just below the rim against what is just above it
+    // (skipping tops with a stone, you, a cloud, a gem or the pavilion over them). WCAG ratio; the
+    // plan (ART-DIRECTION §6) wants 3:1 or more.
+    probe() {
+      const lum = ([r, g, b]) => { const f = c => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); };
+      const px = (x, y) => ctx.getImageData(Math.round(x * DPR), Math.round(y * DPR), 1, 1).data;
+      const near = (x, y) => world.stones.some(k => k.state !== 'gone' && Math.abs(k.x - x) < 0.9 && k.y > y - 0.2 && k.y < y + 1.6)
+        || (() => { const p = me(); return Math.abs(p.x - x) < 0.8 && p.y > y - 0.2 && p.y < y + 2; })()
+        || world.clouds.some(c => Math.abs(c.x - x) < 1.2 && c.y > y && c.y < y + 1.6) || world.gems.some(g => !g.got && Math.abs(g.x - x) < 0.6 && g.y > y && g.y < y + 1.4)
+        || Math.abs(world.pav.x - x) < 2.6;
+      let min = 99, n = 0, worst = null;
+      for (let cx = 0; cx < world.w; cx++) for (let cy = 0; cy + 1 < world.h; cy++) {
+        if (world.cell(cx, cy) !== '#' || world.cell(cx, cy + 1) !== '.') continue;
+        const x = cx + 0.5, sx = X(x), above = Y(cy + 1.3), below = Y(cy + 0.7);
+        if (sx < 4 || sx > W - 4 || above < 4 || below > H - 4 || near(x, cy + 1)) continue;
+        if (padRects().some(r => sx > r.left - 4 && sx < r.right + 4 && below > r.top - 4)) continue;
+        const a = lum(px(sx, above)), b = lum(px(sx, below)), cr = (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+        n++; if (cr < min) { min = cr; worst = [cx, cy]; }
+      }
+      return { n, min: n ? +min.toFixed(2) : null, worst };
+    },
     // checks only: a thumb on the stick, as a number (the same value the stick's pointermove sets)
     setStick(x) { stick.id = x === null ? null : 'check'; stick.x = x || 0; },
     stepN(n) { for (let i = 0; i < n; i++) stepOnce(); },
