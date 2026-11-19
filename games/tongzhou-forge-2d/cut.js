@@ -196,12 +196,14 @@
       for (let cx = x0; cx <= x1; cx++) for (let cy = 0; cy < world.h; cy++) {
         const ch = world.cell(cx, cy);
         if (ch === 'T' && world.cell(cx, cy - 1) !== 'T') thorns(v, cx, cy);
+        else if (ch === 'F' && world.cell(cx, cy - 1) !== 'F') flames(v, cx, cy);
+        else if (ch === 'S' && world.cell(cx, cy - 1) !== 'S') shade(v, cx, cy);
         else if (ch === '=') bridgeCell(v, cx, cy);
       }
       boats(v);
       for (const b of world.burnt) {
         const age = world.clock - b.t;
-        if (age > 3) continue;
+        if (age > 3 || b.wall === 'shade') continue;
         ctx.fillStyle = K.ink30;
         ctx.beginPath(); ctx.ellipse(X(b.x0 + 0.5), Y(b.y0 + 0.08), S * 0.55 * (1 - age / 4), S * 0.1, 0, 0, Math.PI * 2); ctx.fill();
       }
@@ -215,6 +217,35 @@
       ctx.beginPath(); ctx.moveTo(x, yb); ctx.lineTo(x, yt + tooth);
       for (let i = 0; i < n; i++) { ctx.lineTo(x + S * (i + 0.5) / n, yt); ctx.lineTo(x + S * (i + 1) / n, yt + tooth); }
       ctx.lineTo(x + S, yb); ctx.closePath(); ctx.fill();
+    }
+    // a wall of flames: flat vermilion teeth with gamboge hearts, stepping (not fading) as they flicker
+    function flames(v, cx, cy) {
+      const { ctx, S, X, Y, world } = v;
+      let top = cy; while (world.cell(cx, top + 1) === 'F') top++;
+      const x = X(cx), yb = Y(cy), yt = Y(top + 1), rows = top - cy + 1, step = Math.floor((v.t || 0) * 6) % 2;
+      for (const [col, k] of [[K.vermilion, 1], [K.gamboge, 0.5]]) {
+        ctx.fillStyle = col;
+        ctx.beginPath();
+        for (let r = 0; r < rows; r++) {
+          const y0 = Y(cy + r), hh = S * k * (r === rows - 1 ? 1 : 0.9);
+          for (let i = 0; i < 2; i++) {
+            const tall = (i + r + step) % 2 ? 1 : 0.75, cxm = x + S * (0.27 + i * 0.46), w = S * 0.25 * k;
+            ctx.moveTo(cxm - w, y0); ctx.lineTo(cxm, y0 - hh * tall); ctx.lineTo(cxm + w, y0); ctx.closePath();
+          }
+        }
+        ctx.fill();
+      }
+      ctx.fillStyle = K.ink; ctx.fillRect(x + S * 0.04, yb - Math.max(2, S * 0.06), S * 0.92, Math.max(2, S * 0.06));
+      void yt;
+    }
+    // a wall of shade: a flat block of ink 45% with paper slits, so it never reads as rock or a ledge
+    function shade(v, cx, cy) {
+      const { ctx, S, X, Y, world } = v;
+      let top = cy; while (world.cell(cx, top + 1) === 'S') top++;
+      const x = X(cx), yb = Y(cy), yt = Y(top + 1);
+      ctx.fillStyle = K.ink45; ctx.fillRect(x + S * 0.06, yt, S * 0.88, yb - yt);
+      ctx.fillStyle = K.paper; const sw = Math.max(1.5, S * 0.04);
+      for (let i = 0; i < 3; i++) for (let y = cy; y <= top; y++) ctx.fillRect(x + S * (0.24 + i * 0.26), Y(y + 1) + S * (0.15 + (i % 2) * 0.3), sw, S * 0.4);
     }
     // wood grown into a plank bridge: an ink bar with a paper line and short plank dashes; earth into a mound
     function bridgeCell(v, cx, cy) {

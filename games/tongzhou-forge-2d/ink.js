@@ -363,13 +363,15 @@ const STYLES = {
       for (let cx = x0; cx <= x1; cx++) for (let cy = 0; cy < world.h; cy++) {
         const ch = world.cell(cx, cy);
         if (ch === 'T' && world.cell(cx, cy - 1) !== 'T') thorns(v, cx, cy);
+        else if (ch === 'F' && world.cell(cx, cy - 1) !== 'F') flames(v, cx, cy);
+        else if (ch === 'S' && world.cell(cx, cy - 1) !== 'S') shade(v, cx, cy);
         else if (ch === '=') bridgeCell(v, cx, cy);
       }
       boats(v);
       for (const b of world.burnt) {
         const age = world.clock - b.t;
-        if (age > 3) continue;
-        ctx.fillStyle = 'rgba(40,24,16,' + (0.6 * (1 - age / 3)).toFixed(3) + ')';
+        if (age > 3 || b.wall === 'shade') continue;
+        ctx.fillStyle = (b.wall === 'flame' ? 'rgba(70,78,84,' : 'rgba(40,24,16,') + (0.6 * (1 - age / 3)).toFixed(3) + ')';
         ctx.beginPath(); ctx.ellipse(X(b.x0 + 0.5), Y(b.y0 + 0.08), S * 0.55, S * 0.12, 0, 0, Math.PI * 2); ctx.fill();
       }
     }
@@ -404,6 +406,39 @@ const STYLES = {
         const f = hash(cx + i, cy * 5 + 1), g = hash(cx * 2 + i, cy + 3);
         ctx.beginPath(); ctx.arc(x + w * (0.15 + f * 0.7), yt + S * 0.15 + g * (yb - yt - S * 0.3), Math.max(1, S * 0.035), 0, Math.PI * 2); ctx.fill();
       }
+    }
+    // a wall of flames: vermilion tongues with gamboge hearts and an ink edge, flickering; no rim
+    function flames(v, cx, cy) {
+      const { ctx, S, X, Y, world } = v;
+      let top = cy; while (world.cell(cx, top + 1) === 'F') top++;
+      const x = X(cx), yb = Y(cy), yt = Y(top + 1), hgt = yb - yt, t = v.t || 0;
+      ctx.fillStyle = 'rgba(194,58,43,0.22)'; ctx.fillRect(x + S * 0.08, yt + S * 0.3, S * 0.84, hgt - S * 0.3);
+      const n = 3 * (top - cy + 1);
+      for (const [col, sc, lw] of [[K.vermilion, 1, Math.max(1, S * 0.03)], [K.gamboge, 0.55, 0]]) {
+        ctx.fillStyle = col; ctx.strokeStyle = K.ink; ctx.lineWidth = lw;
+        for (let i = 0; i < n; i++) {
+          const f = hash(cx * 5 + i, cy), fx = x + S * (0.18 + ((i * 0.37 + f * 0.4) % 0.64)), fy = yb - hgt * (i / n) * 0.9;
+          const hh = S * (0.55 + 0.25 * Math.sin(t * 9 + i * 1.7 + f * 6)) * sc, ww = S * 0.2 * sc;
+          ctx.beginPath(); ctx.moveTo(fx - ww, fy);
+          ctx.quadraticCurveTo(fx - ww * 0.9, fy - hh * 0.6, fx + Math.sin(t * 7 + i) * ww * 0.5, fy - hh);
+          ctx.quadraticCurveTo(fx + ww * 0.9, fy - hh * 0.6, fx + ww, fy); ctx.closePath(); ctx.fill();
+          if (lw) ctx.stroke();
+        }
+      }
+    }
+    // a wall of shade: a curtain of wet ink wash, ragged at the top, with slow pale streaks; no rim
+    function shade(v, cx, cy) {
+      const { ctx, S, X, Y, world } = v;
+      let top = cy; while (world.cell(cx, top + 1) === 'S') top++;
+      const x = X(cx), yb = Y(cy), yt = Y(top + 1), t = v.t || 0;
+      ctx.fillStyle = 'rgba(38,30,52,0.86)';
+      ctx.beginPath(); ctx.moveTo(x + S * 0.04, yb); ctx.lineTo(x + S * 0.04, yt + S * 0.2);
+      for (let i = 0; i <= 4; i++) ctx.lineTo(x + S * (0.04 + i * 0.23), yt + S * (i % 2 ? 0.02 : 0.24) + Math.sin(t * 1.5 + i) * S * 0.04);
+      ctx.lineTo(x + S * 0.96, yb); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = 'rgba(200,190,220,0.28)'; ctx.lineWidth = Math.max(1, S * 0.04);
+      ctx.beginPath();
+      for (let i = 0; i < 3; i++) { const sx = x + S * (0.22 + i * 0.28), d = ((t * 0.4 + i * 0.33) % 1); ctx.moveTo(sx, yt + S * 0.4 + (yb - yt) * d * 0.5); ctx.lineTo(sx, yt + S * 0.4 + (yb - yt) * (d * 0.5 + 0.35)); }
+      ctx.stroke();
     }
     // 木 grown into a plank bridge (ochre planks, rope lashings); 土 into a mound
     function bridgeCell(v, cx, cy) {

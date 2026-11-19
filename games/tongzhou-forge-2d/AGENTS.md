@@ -19,3 +19,4 @@ The side-view greybox of the Positional Forge. Read `README.md`, then `docs/GREY
 - Ink performance: no large gradient or stretched-image fills per frame (they cost 40+ ms on a
   software rasteriser); bake them (`layer`, `vband` in `ink.js`) and copy them unscaled.
 - Before committing: `node sim-test.mjs && node smoke-test.mjs && node screen-test.mjs && ART=greybox node screen-test.mjs`. Never port 3000 in tests.
+- Isles live in `isles.js` (map characters in its header: `T` thorns, `F` flames, `S` shade, `_` a gap wood or earth fills). Every isle needs two winning routes in `routes.mjs` (sim-test checks the count); `bot.mjs` `S.go(x, { land })` and `S.take(ch, near)` walk like a person, so routes are mostly where to go and which placement to make. The beta's isle list and order: `docs/BETA.md`.

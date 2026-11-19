@@ -35,6 +35,7 @@
   const OFFER_T = 0.55;               // seconds an offered stone flies to the pavilion
   const PAV_R = 1.8;                  // how close to the pavilion you offer from
   const MAX_STONES = 14;
+  const BLOCKED_SAY = 8;              // seconds a regrow waits on a busy spot before the isle says why
   const EPS = 1e-4;
 
   // ---------- knobs ----------
@@ -140,6 +141,9 @@
   }
 
   const STATIC = { kind: 'tile' };
+  // the map character of each kind of wall, and which walls hurt to touch (shade only blocks)
+  const WALL_OF = { T: 'thorn', F: 'flame', S: 'shade' };
+  const HURTS = { T: 'thorn', F: 'flame' };
 
   class World {
     constructor(isles) {
@@ -205,21 +209,24 @@
       if (cy >= this.h) return '.';
       return this.cells[cy][cx];
     }
-    solid(cx, cy) { const c = this.cell(cx, cy); return c === '#' || c === 'T' || c === 'b' || c === '=' ; }
+    solid(cx, cy) { const c = this.cell(cx, cy); return c === '#' || c === 'T' || c === 'F' || c === 'S' || c === 'b' || c === '=' ; }
     // the top of the highest solid cell in column floor(x) at or below `below`
     groundTop(x, below) {
       const cx = Math.floor(x);
       for (let cy = Math.min(this.h - 1, Math.floor(below) - 1); cy >= 0; cy--) if (this.solid(cx, cy)) return cy + 1;
       return 0;
     }
+    // Walls that stand until the right kind of stone comes near: T thorns (fire), F flames (water),
+    // S shade (light). Each vertical run of one kind is one wall.
     findHedges() {
       const out = [], seen = new Set();
       for (let cx = 0; cx < this.w; cx++) for (let cy = 0; cy < this.h; cy++) {
-        if (this.cells[cy][cx] !== 'T' || seen.has(cx + ',' + cy)) continue;
+        const ch = this.cells[cy][cx];
+        if (!WALL_OF[ch] || seen.has(cx + ',' + cy)) continue;
         let y1 = cy;
-        while (y1 + 1 < this.h && this.cells[y1 + 1][cx] === 'T') y1++;
+        while (y1 + 1 < this.h && this.cells[y1 + 1][cx] === ch) y1++;
         for (let y = cy; y <= y1; y++) seen.add(cx + ',' + y);
-        out.push({ id: 'hedge' + out.length, wall: 'thorn', x0: cx, x1: cx + 1, y0: cy, y1: y1 + 1, done: false });
+        out.push({ id: 'hedge' + out.length, wall: WALL_OF[ch], x0: cx, x1: cx + 1, y0: cy, y1: y1 + 1, done: false });
       }
       return out;
     }
@@ -392,7 +399,7 @@
         }
         if (!done) { p.x = sx.v; p.vx = Math.sign(p.vx) * Math.min(Math.abs(p.vx), 1); }
         if (o.ref === STATIC) p.lean = 0;
-        if (o.t === 'T') this.ouch(p, sgn(-dx));
+        if (HURTS[o.t]) this.ouch(p, sgn(-dx), false, HURTS[o.t]);
       } else { p.x = sx.v; p.lean = 0; }
 
       // wall contact (for the wall kick and the refill)
@@ -421,11 +428,11 @@
         if (!was && p.vy < -6) this.ev('land', { id: p.id, v: Math.round(-p.vy) });
         p.vy = 0; p.grounded = true; p.support = o.ref; p.leapt = false; p.jumping = false;
         p.qi = 1; p.chain = 0; p.src.clear();
-        if (o.t === 'T') this.ouch(p, sgn(p.x - (o.x0 + 0.5)) || -p.face, true);
+        if (HURTS[o.t]) this.ouch(p, sgn(p.x - (o.x0 + 0.5)) || -p.face, true, HURTS[o.t]);
         else if (o.ref === STATIC) {
           // remember safe ground: well back from any edge (a respawn on the lip of a gap with the
           // stick still held walks you straight back in; found by screen-check.py), never thorns
-          const firm = dx => { const c = this.cell(Math.floor(p.x + dx), o.cy); return this.solid(Math.floor(p.x + dx), o.cy) && c !== 'T' && !this.solid(Math.floor(p.x + dx), o.cy + 1); };
+          const firm = dx => { const c = this.cell(Math.floor(p.x + dx), o.cy); return this.solid(Math.floor(p.x + dx), o.cy) && !WALL_OF[c] && !this.solid(Math.floor(p.x + dx), o.cy + 1); };
           if (firm(-0.7) && firm(0) && firm(0.7)) p.safe = [p.x, p.y];
         }
       } else {
@@ -454,9 +461,9 @@
     }
     stoneOn(s) { return this.stones.some(o => o.state === 'loose' && o.support === s); }
 
-    ouch(p, away, top) {
+    ouch(p, away, top, wall) {
       p.vx = away * 5; p.vy = top ? 9 : 6.5; p.stun = 0.3; p.grounded = false; p.support = null; p.kick = 0.3;
-      this.ev('ouch', { id: p.id, wall: 'thorn' });
+      this.ev('ouch', { id: p.id, wall: wall || 'thorn' });
     }
 
     // ---------- GRAB ----------
@@ -798,7 +805,7 @@
       if (was !== t > 0) this.ev('dusk', { on: t > 0, by: by || null });
     }
 
-    // 火 burns thorns: carried or lying there, it works the same.
+    // 火 burns thorns, 水 douses flames, light dispels shade: carried, lying or thrown, it works the same.
     stepWalls() {
       for (const m of this.hedges) {
         if (m.done) continue;
@@ -810,8 +817,8 @@
           if (Math.hypot(dx, dy) < RU.reachOf(k.g) + SW) {
             m.done = true;
             for (let y = m.y0; y < m.y1; y++) this.cells[y][m.x0] = '.';
-            this.burnt.push({ x0: m.x0, x1: m.x1, y0: m.y0, y1: m.y1, t: this.clock });
-            this.ev(W.verb, { id: m.id, ch: k.ch, x: (m.x0 + m.x1) / 2, y: (m.y0 + m.y1) / 2, by: k.holder ? k.holder.id : k.placer });
+            this.burnt.push({ x0: m.x0, x1: m.x1, y0: m.y0, y1: m.y1, t: this.clock, wall: m.wall });
+            this.ev(W.verb, { id: m.id, wall: m.wall, ch: k.ch, x: (m.x0 + m.x1) / 2, y: (m.y0 + m.y1) / 2, by: k.holder ? k.holder.id : k.placer });
             break;
           }
         }
@@ -827,8 +834,14 @@
         // never grow under or into another stone or a player
         const busy = this.stones.some(o => Math.abs(o.x - sp.x) < 1.4 && Math.abs(o.y - sp.y) < 1.5) ||
           [...this.players.values()].some(p => Math.abs(p.x - sp.x) < SW + PW && Math.abs(p.y - sp.y) < SH);
-        if (busy) { sp.wait = 0.5; continue; }
+        if (busy) {
+          // something lies on its spot (often a character forged right there): say so once, after a while
+          sp.wait = 0.5; sp.blocked = (sp.blocked || 0) + 0.5;
+          if (sp.blocked >= BLOCKED_SAY && !sp.told) { sp.told = true; this.ev('springBlocked', { ch: sp.ch, x: sp.x, y: sp.y }); }
+          continue;
+        }
         const k = this.addStone(sp.ch, sp.x, sp.y, sp);
+        sp.blocked = 0; sp.told = false;
         if (k) { sp.stone = k; k.grounded = true; this.ev('regrow', { s: k.id, ch: k.ch }); } else sp.wait = 1;
       }
     }

@@ -317,7 +317,7 @@
     const show = onBoat && world.phase === 'play' && !title.hidden;
     if (show && el.hidden) {
       el.querySelector('.cn').textContent = world.L.cn;
-      el.querySelector('.name').textContent = world.L.name;
+      el.querySelector('.name').textContent = 'Isle ' + (world.index + 1) + ' of ' + IS.ISLES.length + ' · ' + world.L.name;
       el.querySelector('.tip').textContent = store.get('tip.' + world.L.id, false) ? '' : (world.L.tip || '');
     }
     el.hidden = !show;
@@ -328,8 +328,11 @@
   // ---------- the drawer (☰): everything that is not JUMP or GRAB lives here ----------
   const drawer = $('#drawer');
   const isleSel = drawer.querySelector('[data-k=isle]');
-  IS.ISLES.forEach((L, i) => { const o = document.createElement('option'); o.value = i; o.textContent = (i + 1) + '. ' + L.name + ' · ' + L.cn; isleSel.appendChild(o); });
+  // the isle list marks every isle you have won on this device (✓)
+  const isleLabel = (L, i) => (i + 1) + '. ' + L.name + ' · ' + L.cn + ' ' + L.want + (store.get('won.' + L.id, false) ? '  ✓' : '');
+  IS.ISLES.forEach((L, i) => { const o = document.createElement('option'); o.value = i; o.textContent = isleLabel(L, i); isleSel.appendChild(o); });
   function syncDrawer() {
+    IS.ISLES.forEach((L, i) => { isleSel.options[i].textContent = isleLabel(L, i); });
     isleSel.value = world.index;
     drawer.querySelector('[data-k=profile]').value = world.k.profile;
     drawer.querySelector('[data-k=labels]').value = UI.labels;
@@ -434,6 +437,18 @@
         say(B(e.ch) + (e.el === 'earth' ? ' raises a mound in the gap' : ' grows into a bridge'));
         break;
       }
+      case 'douse':
+        sfx.splash();
+        for (let i = 0; i < 22; i++) fx.push({ x: e.x - 0.4 + (i % 5) * 0.2, y: e.y - 1 + Math.floor(i / 5) * 0.4, vx: ((i * 13) % 7 - 3) * 0.12, vy: 0.8 + (i % 4) * 0.3, life: 1.3, max: 1.3, kind: 'wisp', size: 0.16, g: -0.3 });
+        if (painted()) fx.push({ x: e.x, y: e.y, vx: 0, vy: 0, life: 0.5, max: 0.5, kind: 'thing', ch: e.ch, g: 0, span: 1 });
+        say(B(e.ch) + ' puts out the flames');
+        break;
+      case 'dispel':
+        sfx.dawn();
+        burst(e.x, e.y, 18, { kind: 'spark', color: '#f2c14e', v: 2.6, life: 0.8, g: 0 });
+        if (painted()) fx.push({ x: e.x, y: e.y, vx: 0, vy: 0, life: 0.5, max: 0.5, kind: 'thing', ch: e.ch, g: 0, span: 1 });
+        say(B(e.ch) + ' lights up the shade: it melts away');
+        break;
       case 'burn':
         sfx.burn();
         for (let i = 0; i < 26; i++) fx.push({ x: e.x - 0.4 + (i % 5) * 0.2, y: e.y - 1 + Math.floor(i / 5) * 0.4, vx: ((i * 13) % 7 - 3) * 0.15, vy: 1 + (i % 4) * 0.4, life: 1.2, max: 1.2, kind: 'ember', color: i % 3 ? '#f0714f' : '#f2c14e', size: 0.07, g: -0.4 });
@@ -441,11 +456,15 @@
         say(B(e.ch) + ' burns the thorns');
         break;
       case 'ouch':
-        if (e.id === ME) { sfx.ouch(); if (!seenOuch) { seenOuch = true; say('The thorns throw you back'); } }
+        if (e.id === ME) { sfx.ouch(); if (seenOuch !== e.wall) { seenOuch = e.wall; say(e.wall === 'flame' ? 'The flames throw you back: they fear water' : 'The thorns throw you back: they fear fire'); } }
         break;
       case 'splash':
         sfx.splash();
         burst(e.x, 1.05, 14, { kind: 'drop', color: '#6aa6b6', v: 3, up: 3, life: 0.7, g: 9 });
+        break;
+      case 'springBlocked':
+        say(B(e.ch) + ' is waiting to grow back: clear its spot');
+        burst(e.x, e.y + 0.3, 8, { kind: 'wisp', v: 1, life: 0.6, size: 0.1, g: -0.3 });
         break;
       case 'stoneReturn': if (e.why === 'fell') say(B(e.ch) + ' floats home'); break;
       case 'dusk':
@@ -454,6 +473,7 @@
         break;
       case 'win':
         winAt = world.clock + UI.winDelay;
+        store.set('won.' + world.L.id, true);
         sfx.win(); speak(e.ch);
         burst(world.pav.x, world.pav.y + 1.6, 30, { kind: 'spark', color: elOf(e.ch).a, v: 3.5, life: 1.1, g: 0 });
         break;
@@ -618,13 +638,15 @@
           }
           cy = top;
         } else if (c === 'T') thorn(cx, cy);
+        else if (c === 'F') { ctx.fillStyle = 'rgba(240,113,79,0.55)'; ctx.fillRect(X(cx) + S * 0.1, Y(cy + 1), S * 0.8, S); ctx.fillStyle = '#f2c14e'; ctx.fillRect(X(cx) + S * 0.35, Y(cy + 1) + S * 0.3, S * 0.3, S * 0.7); }
+        else if (c === 'S') { ctx.fillStyle = 'rgba(42,31,74,0.8)'; ctx.fillRect(X(cx) + S * 0.08, Y(cy + 1), S * 0.84, S); }
         else if (c === '=') bridgeCell(cx, cy, P);
       }
     }
     boats(P);
     for (const b of world.burnt) {
       const age = world.clock - b.t;
-      if (age > 3) continue;
+      if (age > 3 || b.wall === 'shade') continue;
       ctx.fillStyle = 'rgba(60,30,20,' + (0.6 * (1 - age / 3)).toFixed(3) + ')';
       ctx.fillRect(X(b.x0), Y(b.y0 + 0.25), S, S * 0.25);
     }

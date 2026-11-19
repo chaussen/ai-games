@@ -44,7 +44,7 @@ try {
   const { World } = require('./sim.js');
   const w = new World(); w.addPlayer('me');
   for (let i = 0; i < 120; i++) { w.setInput('me', -1, false); w.step(1 / 60); }
-  ok(w.players.get('me').x < 42.5 && w.drain().some(e => e.t === 'start'), 'the sim runs and the player walks');
+  ok(w.players.get('me').x < require('./isles.js').ISLES[0].spawn - 1 && w.drain().some(e => e.t === 'start'), 'the sim runs and the player walks');
 } finally {
   srv.kill();
 }

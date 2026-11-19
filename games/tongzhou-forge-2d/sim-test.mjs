@@ -2,6 +2,7 @@
 // scripted player winning every isle in two ways. Pure node, no server. Run: node sim-test.mjs
 import { createRequire } from 'module';
 import { run, S, DT } from './bot.mjs';
+import { ROUTES } from './routes.mjs';
 const require = createRequire(import.meta.url);
 const { World, knobs, relate, PROFILES, consts } = require('./sim.js');
 const RU = require('./rules.js');
@@ -39,13 +40,16 @@ G('isles');
 for (const L of IS.ISLES) {
   const g = IS.parse(L);
   ok(L.map.every(r => r.length === g.w), L.id + ': rows are the same width');
-  ok(/^[.#~_Tb]+$/.test(L.map.join('')), L.id + ': only known map characters');
+  ok(/^[.#~_TFSb]+$/.test(L.map.join('')), L.id + ': only known map characters');
   const w = new World(); w.load(IS.ISLES.indexOf(L));
   ok(w.pav.y > 0, L.id + ': the pavilion stands on ground');
   ok(w.stones.every(s => s.y > consts.WATER && s.grounded), L.id + ': every stone lies on ground');
   ok(RU.GLYPHS[L.want], L.id + ': wants a known character');
   ok(L.stones.every(([ch]) => RU.GLYPHS[ch]), L.id + ': every stone is a known character');
-  ok(RU.RECIPE_LIST.some(r => r[3] === L.want && L.stones.some(s => s[0] === r[1]) && L.stones.some(s => s[0] === r[2])), L.id + ': the want can be made from the stones there');
+  // the want can be made from the stones there, in one step or several (林 then 森)
+  const have = L.stones.map(s => s[0]), can = new Set(have);
+  for (let grew = true; grew;) { grew = false; for (const r of RU.RECIPE_LIST) if (!can.has(r[3]) && can.has(r[1]) && can.has(r[2]) && (r[1] !== r[2] || have.filter(c => c === r[1]).length > 1 || r[1] !== have.find(c => c === r[1]))) { can.add(r[3]); grew = true; } }
+  ok(can.has(L.want), L.id + ': the want can be made from the stones there');
 }
 
 // ---------------------------------------------------------------- classifier
@@ -300,68 +304,77 @@ G('elements');
   ok(e.some(x => x.t === 'dusk' && !x.on) && !(w.dusk > 0), 'a light stone set down ends dusk');
 }
 
+// ---------------------------------------------------------------- flames and shade (walls other than thorns)
+G('walls');
+{
+  const { w, p } = fresh(isle('rest'));
+  const f = w.hedges.find(m => m.wall === 'flame');
+  ok(f && f.y1 - f.y0 === 4 && w.solid(f.x0, 2), 'rest: a flame wall four high, solid');
+  p.x = f.x1 + 0.6; p.y = 2; p.face = -1;
+  const e = steps(w, 1);
+  w.setInput('me', -1, false);
+  const e2 = steps(w, 20);
+  ok(e2.some(x => x.t === 'ouch' && x.wall === 'flame'), 'walking into flames throws you back (and says flames)');
+  const water = stone(w, '水'); water.x = f.x1 + 1.2; water.y = 2; water.grounded = true;
+  const e3 = steps(w, 2);
+  ok(e3.some(x => x.t === 'douse' && x.ch === '水') && !w.solid(f.x0, 3) && w.burnt.some(b => b.wall === 'flame'), '水 near the flames puts them out');
+  void e;
+}
+{
+  const { w, p } = fresh(isle('early-light'));
+  const m = w.hedges.find(m => m.wall === 'shade');
+  ok(m && w.solid(m.x0, 3), 'early-light: a wall of shade, solid');
+  p.x = m.x1 + 0.6; p.y = 2; p.face = -1;
+  w.setInput('me', -1, false);
+  const e = steps(w, 20);
+  ok(!e.some(x => x.t === 'ouch') && p.x >= m.x1 + 0.29, 'shade blocks you but does not hurt');
+  const sh = stone(w, '十'); sh.x = m.x1 + 1.0; sh.y = 2; sh.grounded = true; sh.from = [0, 0];
+  ok(!steps(w, 2).some(x => x.t === 'dispel'), 'a stone that is not light leaves the shade');
+  const sun = stone(w, '日'); sun.x = m.x1 + 1.2; sun.y = 2; sun.grounded = true;
+  const e2 = steps(w, 2);
+  ok(e2.some(x => x.t === 'dispel' && x.ch === '日') && !w.solid(m.x0, 3), 'light near the shade melts it');
+}
+{
+  // reach: 火 cannot burn thorns across two cells of water; 炎 (reach 2.6) can, from the bank
+  const { w } = fresh(isle('blaze'));
+  const m = w.hedges[0], k = stone(w, '火');
+  k.state = 'loose'; k.x = m.x1 + 2.3; k.y = 2; k.grounded = true;
+  ok(!steps(w, 2).some(x => x.t === 'burn'), 'blaze: one 火 on the bank is too far from the thorns');
+  k.ch = '炎'; k.g = RU.GLYPHS['炎'];
+  ok(steps(w, 2).some(x => x.t === 'burn'), 'blaze: 炎 on the same spot burns them');
+}
+
+{
+  // a character forged on a stone's spot keeps that stone from growing back, and the isle says so
+  const { w } = fresh(isle('apricot'));
+  const r = run(w, 'me', [S.take('口'), S.go(26.5, { land: 2.9 }), S.grabAs('stack'), S.event('forge', 2), S.event('springBlocked', 12)]);
+  const e = r.ev.find(x => x.t === 'springBlocked');
+  ok(r.ok && e && e.ch === '木' && stone(w, '呆'), 'apricot: 呆 lying on 木\'s spot: "木 is waiting to grow back"');
+  ok(!r.ev.some(x => x.t === 'regrow' && x.ch === '木'), 'apricot: and 木 does not grow under it');
+}
+
 // ---------------------------------------------------------------- routes: every isle, two ways
 G('routes');
-let cloudSteerW = null;
-const cloudSteerP = (p, x) => cloudSteer(cloudSteerW)(p, x);
-const ROUTES = {
-  'sun-and-moon': () => ({
-    // A: 木 bridges the gap, 火 burns the thorns, the 轻功 chain up the tower for 日, 日 left of 月
-    bridge_and_burn: [
-      S.take('木'), S.walk(37.6), S.hop(-1), S.walk(34.6), S.grabAs('toss', -1), S.event('bridge', 3),
-      S.take('火'), S.walk(29.2), S.hop(-1, { leaps: 1, leapAt: 3 }), S.hop(-1, { leaps: 1, leapAt: 2 }),
-      S.hop(-1), S.until('off the tower', ({ p }) => p.y < 2.1 && p.grounded, -1),
-      S.event('burn', 3), S.walk(21.2), S.face(-1), S.grabAs('place'),
-      S.walk(22.3), S.hop(1, { leaps: 4, leapAt: 1 }), S.until('on the tower', ({ p }) => p.y > 7.9, 0, 0.1),
-      S.take('日'), S.until('off the tower', ({ p }) => p.y < 2.1 && p.grounded, -1),
-      S.walk(15.4), S.hop(-1, { stopAt: 12.0 }), S.walk(12.4), S.face(1), S.grabAs('beside'), S.event('forge', 2),
-      S.wait(0.6), S.take('明'), S.walk(9.6), S.hop(-1, { leaps: 1, leapAt: 1 }), S.walk(5), S.grabAs('offer'), S.event('win', 3),
-    ],
-    // B: no 木, no 火: leap the gap and the thorns; first try 日 on the wrong side of 月 (a dud)
-    leap_it: [
-      S.walk(39.8), S.hop(-1, { leaps: 1, leapAt: 0, stopAt: 35.4 }), S.walk(34.6), S.hop(-1, { leaps: 1, leapAt: 2 }), S.walk(29.2), S.hop(-1, { leaps: 1, leapAt: 3 }), S.hop(-1, { leaps: 1, leapAt: 2 }),
-      S.take('日'), S.until('off the tower', ({ p }) => p.y < 2.1 && p.grounded, -1), S.walk(22.6),
-      S.hop(-1, { leaps: 1, leapAt: 4 }), S.walk(14.4), S.face(-1), S.grabAs('beside'), S.event('dud', 2),
-      S.take('日'), S.hop(-1, { stopAt: 12.0 }), S.walk(12.4), S.face(1), S.grabAs('beside'), S.event('forge', 2),
-      S.wait(0.6), S.take('明'), S.walk(9.6), S.hop(-1, { leaps: 1, leapAt: 1 }), S.walk(5), S.grabAs('offer'), S.event('win', 3),
-    ],
-  }),
-  dawn: () => ({
-    // A: stand on 木 holding 日, ON TOP: 杲; carry it over the gap and up the cliff
-    stand_on_it: [
-      S.take('日'), S.walk(21.0), S.hop(-1, { stopAt: 19.6 }), S.grabAs('stack'), S.event('forge', 2),
-      S.wait(0.8), S.take('杲'), S.walk(16.6), S.hop(-1, { leaps: 1, leapAt: 2 }), S.walk(10.4),
-      S.hop(-1, { leaps: 1, leapAt: 1 }), S.walk(7.6), S.hop(-1, { leaps: 1, leapAt: 1 }), S.walk(4), S.grabAs('offer'), S.event('win', 3),
-    ],
-    // B: 木 bridges the gap; 木 dropped on 日 makes 杳 (dusk) first; the glow-gem; then 日 dropped on 木
-    dusk_first: [
-      S.walk(28), S.hop(-1), S.take('木'), S.walk(17.2), S.grabAs('toss', -1), S.event('bridge', 3), S.event('regrow', 6),
-      S.take('木'), S.walk(25.0), S.hop(1, { steer: (p, x) => p.x > 26.4 ? 0 : x, grabAs: 'drop' }), S.event('forge', 2), S.event('dusk', 1),
-      S.walk(22.2), { ...S.hop(0, { leaps: 5, leapAt: 0.3, steer: cloudSteerP }) },
-      S.take('杳'), S.walk(30), S.face(1), S.grabAs('place'), S.event('regrow', 8), S.event('regrow', 8),
-      S.take('日'), S.walk(21.0), S.hop(-1, { steer: (p, x) => p.x < 19.6 ? 0 : x, grabAs: 'drop' }), S.event('forge', 2),
-      S.wait(0.8), S.take('杲'), S.walk(11), S.hop(-1, { leaps: 1, leapAt: 1 }), S.walk(7.6), S.hop(-1, { leaps: 1, leapAt: 1 }),
-      S.walk(4), S.grabAs('offer'), S.event('win', 3),
-    ],
-  }),
-};
+const routesOf = {};
 for (const [id, make] of Object.entries(ROUTES)) {
-  for (const name of Object.keys(make())) {
-    const plan = make()[name];
+  for (const name of Object.keys(make({}))) {
     const { w } = fresh(isle(id));
-    cloudSteerW = w;
+    const plan = make({ w })[name];
     let r;
     try { r = run(w, 'me', plan, { max: 60 * 120 }); } catch (e) { r = { ok: false, at: e.message, ev: [] }; }
+    routesOf[id] = (routesOf[id] || 0) + 1;
     ok(r.ok && w.phase === 'won', id + ' / ' + name + ': won' + (r.ok ? ' in ' + w.result.time + ' s' : ' — stuck at ' + r.at));
     if (id === 'dawn' && name === 'dusk_first') ok(r.ev.some(e => e.t === 'gem' && e.glow), 'dawn / dusk_first: took the glow-gem at dusk');
     if (id === 'sun-and-moon' && name === 'leap_it') ok(!r.ev.some(e => e.t === 'bridge' || e.t === 'burn'), 'sun-and-moon / leap_it: no bridge, no fire');
   }
 }
 
+for (const L of IS.ISLES) ok((routesOf[L.id] || 0) >= 2, L.id + ': has two scripted winning routes (has ' + (routesOf[L.id] || 0) + ')');
+
 // ---------------------------------------------------------------- determinism
 G('determinism');
 {
-  const once = () => { const { w } = fresh(isle('sun-and-moon')); run(w, 'me', ROUTES['sun-and-moon']().bridge_and_burn, { max: 60 * 120 }); return JSON.stringify([w.time, w.players.get('me').x, w.stones.map(s => [s.ch, s.x, s.y])]); };
+  const once = () => { const { w } = fresh(isle('sun-and-moon')); run(w, 'me', ROUTES['sun-and-moon']({ w }).bridge_and_burn, { max: 60 * 120 }); return JSON.stringify([w.time, w.players.get('me').x, w.stones.map(s => [s.ch, s.x, s.y])]); };
   ok(once() === once(), 'the same presses give the same isle');
 }
 

@@ -26,6 +26,12 @@ export function run(w, id, steps, opt = {}) {
   return { ok: i >= steps.length, log, ev: all, at: i < steps.length ? steps[i].name : null };
 }
 
+// What a person sees ahead while walking toward x: the top of the ground or wall in the next column,
+// counting walls of thorns, flames and shade as rock (you jump them or wait for the right stone).
+const topAt = (w, x, below) => { const cx = Math.floor(x); for (let cy = Math.min(w.h - 1, Math.floor(below) - 1); cy >= 0; cy--) if (w.solid(cx, cy)) return cy + 1; return 0; };
+const colTop = (w, x, from) => { const cx = Math.floor(x); let y = Math.floor(from + 0.01); if (!w.solid(cx, y)) return null; while (w.solid(cx, y + 1)) y++; return y + 1; };
+const stoneAhead = (w, p, dir) => w.stones.find(s => s.state === 'loose' && s.grounded && (s.x - p.x) * dir > 0 && (s.x - p.x) * dir < 1.0 && s.y < p.y + 0.9 && s.y + 0.9 > p.y + 0.05);
+
 const toward = (p, x, slow = 0.6) => { const d = x - p.x; return Math.abs(d) < 0.05 ? 0 : Math.sign(d) * Math.min(1, Math.abs(d) / slow + 0.15); };
 
 export const S = {
@@ -45,18 +51,64 @@ export const S = {
     return { x, done: true };
   } }; },
   // walk up to the stone `ch` on the side you are on (without pushing it), face it and pick it up
-  take: (ch) => {
-    let st = 0, n = 0;
-    return { name: 'take ' + ch, timeout: 10, fn: ({ w, p }) => {
-      const k = w.stones.filter(s => s.ch === ch && s.state === 'loose').sort((a, b) => Math.abs(a.x - p.x) - Math.abs(b.x - p.x))[0];
+  // (near: pick the `ch` nearest that x instead of nearest you; far away, walk there like S.go)
+  take: (ch, near) => {
+    let st = 0, n = 0, nav = null, navX = null;
+    return { name: 'take ' + ch, timeout: 14, fn: (c) => {
+      const { w, p } = c;
+      const from = near === undefined ? p.x : near;
+      const k = w.stones.filter(s => s.ch === ch && s.state === 'loose').sort((a, b) => Math.abs(a.x - from) - Math.abs(b.x - from))[0];
       if (!k) return {};
       const side = Math.sign(p.x - k.x) || 1, x = k.x + side * 0.85;
+      if (st === 0 && (Math.abs(p.x - x) > 1.0 || !p.grounded || Math.abs(p.y - k.y) > 0.3)) {
+        const gx = k.x + side * 1.4;
+        if (!nav || Math.abs(navX - gx) > 0.3) { nav = S.go(gx, { land: k.y, tol: 0.4 }); navX = gx; }
+        const r = nav.fn(c);
+        if (!r.done) return r;
+        nav = null;
+      }
       if (st === 0) { if (Math.abs(p.x - x) < 0.08 && p.grounded) st = 1; return { x: toward(p, x, 0.4) }; }
       if (st === 1) { if (n++ < 2) return { x: -side * 0.2 }; st = 2; return {}; }
       w.setInput(p.id, 0, false);
       const l = w.launch(p);
       if (l.mode !== 'grab' || l.k !== k) throw new Error('take ' + ch + ': GRAB would ' + l.mode + ' at x=' + p.x.toFixed(2));
       return { press: 'grab', done: true };
+    } };
+  },
+  // Walk to x like a person would: jump a step, a wall, a stone or a gap in the way; leap (轻功) when
+  // a jump will not do (a tall wall ahead, or falling toward water); press into walls to climb them.
+  // `land` (optional): the height you mean to end at (stops on a tower top rather than below it).
+  go: (tx, opt = {}) => {
+    let jumped = 0, air = 0;
+    return { name: 'go ' + tx, timeout: opt.timeout || 14, fn: ({ w, p }) => {
+      const d = tx - p.x, dir = Math.sign(d) || 1, tol = opt.tol || 0.12;
+      if (Math.abs(d) < tol && p.grounded && (opt.land === undefined || p.y > opt.land - 0.3)) return { x: 0, done: true };
+      let x = Math.abs(d) < tol ? 0 : Math.abs(d) < 0.5 ? toward(p, tx, 0.4) : dir;
+      if (p.grounded) {
+        air = 0;
+        if (jumped > 0) jumped--;
+        if (Math.abs(d) < 0.6) return { x };
+        const ahead = p.x + dir * 0.62, wallTop = colTop(w, ahead, p.y), far = colTop(w, p.x + dir * 1.9, p.y);
+        // a wall two or more high: take off earlier, so the leap clears it before you reach it
+        const tall = far !== null && far - p.y > 1.4 && Math.abs(d) > 2.0;
+        const ground = topAt(w, p.x + dir * 0.55, p.y + 0.5);
+        const block = wallTop !== null && wallTop > p.y + 0.05 && wallTop - p.y > (w.as.nudge || 0) + 0.02;
+        const stone = stoneAhead(w, p, dir) && !opt.push;
+        const drop = ground < p.y - 0.05 && ground <= 1.05;            // water (or the river bed) ahead
+        const want = opt.land !== undefined && opt.land > p.y + 0.3 && Math.abs(d) < 2.2;
+        if ((block || tall || stone || drop || want) && jumped === 0) { jumped = 4; return { x, jump: true, press: 'jump' }; }
+        return { x };
+      }
+      air++;
+      // in the air: keep holding JUMP while rising; leap when it would not otherwise make it
+      const wallTop = Math.max(colTop(w, p.x + dir * 0.45, p.y + 0.1) || -1, colTop(w, p.x + dir * 1.1, p.y + 0.1) || -1);
+      const under = topAt(w, p.x, p.y + 0.1), next = topAt(w, p.x + dir * 1.6, p.y + 3);
+      const wallHigh = wallTop > p.y + 0.3;
+      const overWater = under <= 1.05 && next < p.y - 0.4 ? true : under <= 1.05 && p.y < 2.6;
+      const short = opt.land !== undefined && p.y < opt.land + 0.2 && Math.abs(d) < 1.5;
+      const leapAt = opt.leapAt === undefined ? 0.6 : opt.leapAt;
+      if (p.qi > 0 && air > 3 && ((wallHigh && p.vy < 3) || ((overWater || short) && p.vy < leapAt))) return { x, jump: true, press: 'jump' };
+      return { x, jump: p.vy > 0 };
     } };
   },
   wait: (secs) => ({ name: 'wait ' + secs, fn: ({ t }) => ({ done: t >= secs }) }),

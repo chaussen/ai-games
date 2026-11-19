@@ -29,10 +29,24 @@ stone is drawn lower in this look (renderer only; the sim's hold height is uncha
 round 2 boards (`docs/design/one-stroke/`): paper, ink and vermilion, flat fills only, a hero drawn as the
 strokes of 大. Same sim, same screen budget; the default stays the ink scroll until John has played both.
 
-| Isle | Make | Ways |
-|---|---|---|
-| Sun and Moon · 日月同明 | 明 = 日 left of 月 | 木 bridges the gap and 火 burns the thorns, or leap both; 日 waits on a tower you climb with 轻功 |
-| Dawn · 杲 | 杲 = 日 on 木 | Stand on 木 holding 日, or drop 日 on it from a jump; 木 on 日 makes 杳: dusk, and a glow-gem up a cloud chain |
+**Beta (2026-11-20): 21 isles**, one for every recipe in the content, in both looks. Start with
+**`docs/BETA.md`**: the isle list, what each teaches, how it was checked, the defect log, known gaps and
+playtest questions. New walls: **flames** (水 puts them out) and **shade** (any light melts it), next to
+thorns (火 burns them). ☰ → Isle lists all 21 and marks the ones you have won (✓).
+
+| # | Isle | Make | # | Isle | Make |
+|---|---|---|---|---|---|
+| 1 | Two Trees 双木成林 | 林 = 木 beside 木 | 12 | Partner 伙 | 伙 = 人 left of 火 |
+| 2 | Sun and Moon 日月同明 | 明 = 日 left of 月 | 13 | Bathe 沐 | 沐 = 水 left of 木 |
+| 3 | Dawn 杲 | 杲 = 日 on 木 | 14 | Leaf 叶 | 叶 = 口 left of 十 |
+| 4 | Old Leaf 十口为古 | 古 = 十 on 口 | 15 | Stove 灶 | 灶 = 火 left of 土 |
+| 5 | Friends 月月为朋 | 朋 = 月 beside 月 | 16 | Blaze 火火为炎 | 炎 = 火 on 火 |
+| 6 | Lean on a Tree 人木为休 | 休 = 人 left of 木 | 17 | Forest 三木成森 | 森 = 木 on 林 |
+| 7 | Early Light 早 | 早 = 日 on 十 | 18 | Crowd 三人成众 | 众 = 人 on 从 |
+| 8 | Fruit Field 果 | 果 = 田 on 木 | 19 | Burn 焚 | 焚 = 林 on 火 |
+| 9 | Red Earth 赤 | 赤 = 土 on 火 | 20 | Drench 淋 | 淋 = 水 left of 林 |
+| 10 | Good 女子为好 | 好 = 女 left of 子 | 21 | Flourish 日日为昌 | 昌 = 日 on 日 |
+| 11 | Apricot 杏 | 杏 = 木 on 口 | | | |
 
 ## Run it
 
@@ -42,7 +56,7 @@ node server.js                 # http://localhost:3300/
 PORT=3000 node server.js       # on the machine where only port 3000 is open (phone playtests)
 ```
 
-Phones open `http://<LAN-IP>:3300/` (the server prints it). URL options: `?art=ink|cut|greybox`, `?isle=dawn`,
+Phones open `http://<LAN-IP>:3300/` (the server prints it). URL options: `?art=ink|cut|greybox`, `?isle=dawn` (an isle's id, or its number from 0),
 `?profile=relaxed|standard|strict`, `?labels=all|near|card`, `?mute=1`, `?touch=1` (show the pad on
 a laptop).
 
@@ -66,7 +80,7 @@ else kicks you off it. Carrying a stone you get one leap.
 ## Run tests
 
 ```sh
-node sim-test.mjs        # rules, 轻功, forging, elements, two scripted wins per isle (pure node)
+node sim-test.mjs        # rules, 轻功, forging, elements and walls, two scripted wins per isle (42; pure node)
 node smoke-test.mjs      # real server on port 3481: what a phone may fetch, font coverage
 node screen-test.mjs     # real server on 3482 + screen-check.py: eleven screens (phones, iPads, laptops), real touch, budget, contrast, screenshots
 ART=greybox node screen-test.mjs   # the same for the greybox look
