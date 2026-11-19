@@ -313,8 +313,9 @@ alpha, so it is safe in One Stroke. Evidence: `screenshots/cut/things-thrown.png
 **Not built yet**
 
 1. **§3.7 level 2, carried things** (a tree on the shoulder, a torch held out, the sun disc held up): one
-   hero pose per kind of thing and the size limit; its own note first. Design's `Things.dc.html` has the
-   carried boards for 木 火 日 月 only.
+   hero pose per kind of thing and the size limit. **Plan note written, waiting for John:
+   `docs/CARRIED-THINGS.md`.** Design's `Things.dc.html` has the carried boards for 木 火 日 月 only, with
+   three poses (overhead, held out, over the shoulder).
 2. **Fixed glyph tiles** carved in rock (§3.3, `Stone.dc.html`): a rules change, its own note first.
 3. Acting for 水 (puts out flames), 土 (mound), 日 (melts the shade) and the 月 glow: their things are drawn
    (thrown), but only 木 and 火 flash when they act.
