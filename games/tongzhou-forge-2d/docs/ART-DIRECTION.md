@@ -3,7 +3,8 @@
 Status: **ink look built and the default** (2026-11-19, §8), from Claude Design's boards. Decision FG-D020. John answered §7 the same day (see
 §7): both styles as a comparison, no sword, and Claude Design goes first, so **code waits for
 Design's frames**. He added one idea: stones show the thing they mean (§3.7). A paste-ready brief for
-Claude Design is `docs/ART-BRIEF.md` (with an addendum for §3.7).
+Claude Design is `docs/ART-BRIEF.md` (with an addendum for §3.7); round 2 (One Stroke, fixed tiles and
+the 字/物 sheet) is `docs/ART-BRIEF-ONE-STROKE.md`.
 
 John's ask: more unique Chinese traditional styling, a martial-artist feel, Chinese landscape terrain
 (mountains and rivers, Liyue in Genshin as the bar). **Either extremely simple (a stick man on
@@ -166,6 +167,12 @@ top of another stone, it is a square block, because BESIDE and ON TOP are read f
 nothing may look bigger or more walkable than it is. Its thing appears only **in your hands, in the
 air, and when it acts**. The glyph never disappears: on the object it sits on a small vermilion tag
 (like a seal on a scroll), big enough to read at 30 px.
+
+**The words stay too** (John, 2026-11-19: *"we can still see the character, pinyin and meaning
+right?"*). Yes, and it is a rule: the glyph is on the tag; **pinyin and meaning are on the word card**,
+which already follows the stone you carry. When you throw it, the card must **keep that stone until it
+lands** (today it jumps to the nearest stone lying on the ground, so this needs a small change in
+`pickCard`). At rest the block has its pinyin slip, as now.
 
 Two levels; build the first, then the second:
 
