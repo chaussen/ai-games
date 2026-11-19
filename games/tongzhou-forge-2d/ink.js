@@ -32,83 +32,59 @@
   };
   const timeOf = pal => pal === 'night' ? TIME.night : TIME.daybreak;
 
-  // ---------- the hero: Design's pose sheet, in its own units (44 tall, feet at 0, facing right) ----------
-  // s = ink stroke, r = ribbon (vermilion stroke that flutters), f = fill, c = head, h = hat
-  const RIB1 = 1.6, RIB2 = 1.3;
-  const SASH_STAND = 'M-5.3,-21.5 C-1.5,-22.4 1.5,-22.4 5.3,-21.5 L5.5,-19 C1.6,-19.8 -1.6,-19.8 -5.5,-19 Z';
-  const SASH_AIR = 'M-5.4,-21.6 C-1.6,-22.4 1.6,-22.4 5.4,-21.6 L5.6,-19.2 C1.7,-20 -1.7,-20 -5.6,-19.2 Z';
-  const ROBE_STAND = 'M-4.4,-30 C-5.6,-24 -5.8,-15 -7.6,-4 C-2,-3 3,-3 7.6,-4.2 C5.8,-15 5.6,-24 4.4,-30 C1.5,-31.4 -1.5,-31.4 -4.4,-30 Z';
-  const POSES = {
-    stand: [
-      ['r', 'M3,-20 C8,-16 6,-10 9,-5', RIB1], ['r', 'M2.6,-19.6 C5.5,-14 3.4,-9 5.6,-3.8', RIB2],
-      ['s', 'M-3.8,-29 C-6,-25 -7,-21 -6.6,-17', 3.2],
-      ['s', 'M-2.6,-5 L-2.8,-0.6 L0,-0.4 M2.4,-5 L2.8,-0.6 L5.6,-0.4', 2.3],
-      ['f', ROBE_STAND], ['s', 'M1,-27 C2,-20 1,-12 2.5,-5', 0.6, '#4a4540'],
-      ['s', 'M3.8,-29 C6,-25 6.8,-21 6.2,-16.5', 3.4], ['f', SASH_STAND, K.vermilion],
-      ['c', 0.4, -33.6], ['h', 0.4, -34.4, -3],
-    ],
-    run: [
-      ['r', 'M-5,-19 C-10,-21 -14,-16 -20,-18.5', RIB1], ['r', 'M-5,-18 C-10,-15 -14,-12 -19,-12.8', RIB2],
-      ['s', 'M-1.5,-27.5 L-6,-23 L-9.5,-24.5', 3],
-      ['L', 'M-1.5,-9 L-5.5,-5 L-10,-6.5', 'M1.5,-9 L6,-5.5 L7,-0.6 L10,-0.5'],
-      ['f', 'M-2.6,-29 C-5,-23 -7,-16 -10,-9 C-5,-8 0,-8.6 4,-9.6 C5.4,-16 6.4,-23 6.4,-29.4 C3.6,-30.8 0,-30.6 -2.6,-29 Z'],
-      ['f', 'M-5.4,-20.4 C-1.2,-21.8 2.6,-21.8 5.8,-21 L5.6,-18.6 C2.4,-19.2 -1,-19.2 -6,-17.8 Z', K.vermilion],
-      ['s', 'M5,-27.5 L9.5,-23.5 L12.4,-26', 3],
-      ['c', 4, -33], ['h', 4, -33.8, 8],
-    ],
-    jump: [
-      ['r', 'M-4,-19.6 C-7,-13 -5,-7 -8,-1', RIB1], ['r', 'M-3.6,-19 C-4,-12 -9,-8 -10,-3', RIB2],
-      ['s', 'M-1.6,-8 L-3.4,-4 L0,-1.4 M2,-8 L5.8,-5 L3.4,-1.8', 2.4],
-      ['f', 'M-4.2,-30 C-6,-24 -7,-17 -9,-9 C-3,-7 3,-7 7,-8.6 C6,-16 5.6,-24 4.2,-30 C1.4,-31.4 -1.4,-31.4 -4.2,-30 Z'],
-      ['s', 'M-3.5,-28.5 L-7.5,-33 L-8.4,-37.4 M3.5,-28.5 L8,-32 L11,-35.4', 3],
-      ['f', SASH_AIR, K.vermilion], ['c', 0.6, -33.6], ['h', 0.6, -34.4, -4],
-    ],
-    leap: [
-      ['r', 'M-3,-17 C-10,-22 -16,-16 -24,-21 C-28,-23.4 -31,-20.6 -34,-22.4', RIB1], ['r', 'M-3,-16 C-10,-14 -17,-9 -26,-12', RIB2],
-      ['s', 'M-2,-14 L-10,-10.6 L-16,-11.6', 2.4], ['s', 'M0,-14 L-2.4,-7.6 L-6.6,-5.4', 2.4],
-      ['s', 'M2.5,-28 L-4,-30.2 L-10.4,-33.6', 3], ['f', 'M-10.4,-33.6 l-3.4,-0.4 l2,2.8 Z'],
-      ['f', 'M1.6,-30 C-1,-25 -4,-19 -9,-13 C-5,-11 -1,-11 2,-12.5 C4.6,-18 7,-23 9.4,-28 C7,-30.6 4,-31.4 1.6,-30 Z'],
-      ['f', 'M-3.2,-17.6 C0,-20 3,-20.6 5.8,-20 L4.8,-17.6 C2,-18 -0.6,-17.4 -4.4,-15.4 Z', K.vermilion],
-      ['s', 'M7.5,-27.5 L13,-26 L18.4,-28.6', 3], ['f', 'M18.4,-28.6 l3.4,-1.2 l-1.4,3 Z'],
-      ['c', 8, -33], ['h', 8.4, -33.8, 14],
-    ],
-    wall: [
-      ['r', 'M2,-20 C4,-14 1,-9 3,-4', RIB1], ['r', 'M1.6,-19.5 C-1,-14 -2,-10 0,-5', RIB2],
-      ['s', 'M2,-12 L6,-10.4 L8.4,-12.6', 2.4], ['s', 'M8.4,-15 L8.4,-10.6', 2], ['s', 'M0,-12 L-3.6,-7.4 L0.6,-4.6', 2.4],
-      ['R', -14, 2, -12, [
-        ['f', 'M-0.4,-31 C-2.4,-26 -2.6,-20 -2.4,-12.4 C0.4,-11 3.4,-11 5.8,-12.4 C5,-20 5,-26 4.4,-31 C2.8,-32.2 1,-32.2 -0.4,-31 Z'],
-        ['f', 'M-2.6,-21.4 C0,-22.2 2.6,-22.2 5.2,-21.4 L5.2,-19 C2.6,-19.8 0,-19.8 -2.6,-19 Z', K.vermilion],
-        ['s', 'M0.4,-29 L-5,-31.6 L-9.4,-34.6 M3.6,-29 L-0.6,-33.4 L-4,-37.6', 3],
-        ['c', 1, -34], ['h', 1, -34.8, -12],
-      ]],
-    ],
-    carry: [
-      ['r', 'M3,-20 C8,-16 6,-10 9,-5', RIB1], ['r', 'M2.6,-19.6 C5.5,-14 3.4,-9 5.6,-3.8', RIB2],
-      ['s', 'M-2.4,-5 L-4,-0.6 L-1.4,-0.4 M2.4,-5 L4,-0.6 L6.6,-0.4', 2.3],
-      ['f', ROBE_STAND], ['f', SASH_STAND, K.vermilion],
-      ['s', 'M-3.6,-29 L-6.4,-37 L-5.8,-44.6 M3.6,-29 L6.4,-37 L5.8,-44.6', 3],
-      ['c', 0.4, -33.6], ['h', 0.4, -34.4, 0],
-    ],
-    land: [
-      ['r', 'M4,-15.4 C8,-20 12,-18 15,-24', RIB1], ['r', 'M3.6,-15 C8,-16 11,-12 16,-15', RIB2],
-      ['s', 'M-1.5,-9 L-6,-4.6 L-5,-0.6 L-8,-0.5 M1.5,-9 L6,-5 L5.4,-0.6 L8.4,-0.5', 2.4],
-      ['f', 'M-4,-24 C-6,-19 -8,-13 -10,-5 C-3,-4 4,-4 9.6,-5.4 C7,-13 6,-19 4.4,-24 C1.4,-25.4 -1.4,-25.4 -4,-24 Z'],
-      ['s', 'M-3.4,-23 L-9,-20 L-13,-17.6 M3.6,-23 L9,-21 L13,-19', 3],
-      ['f', 'M-5.4,-16.6 C-1.6,-17.4 1.6,-17.4 5.6,-16.6 L5.8,-14.2 C1.8,-15 -1.8,-15 -5.8,-14.2 Z', K.vermilion],
-      ['c', 0.6, -27.6], ['h', 0.6, -28.4, 4],
-    ],
-    fall: [
-      ['r', 'M-3,-21 C-6,-28 -3,-34 -6,-42', RIB1], ['r', 'M-2.4,-21 C-1,-29 -4,-36 -1,-44', RIB2],
-      ['s', 'M-1.6,-8 L-2.6,-2.4 L-4.4,0.6 M2,-8 L3.6,-2.6 L6.2,-1.2', 2.4],
-      ['f', 'M-4.2,-30 C-6,-25 -7,-19 -8.6,-10 C-3,-11.6 3,-11.6 8.4,-10 C7,-19 6,-25 4.2,-30 C1.4,-31.4 -1.4,-31.4 -4.2,-30 Z'],
-      ['s', 'M-3.6,-28.6 L-8.6,-33 L-9.6,-39 M3.6,-28.6 L9,-31 L13,-35.4', 3],
-      ['f', SASH_AIR, K.vermilion], ['c', 0, -33.6], ['h', 0, -36.2, -10],
-    ],
-  };
-  // the run cycle's second frame: the legs swap (Design drew one frame; two read as running)
-  const RUN_LEGS = [['M-1.5,-9 L-5.5,-5 L-10,-6.5', 'M1.5,-9 L6,-5.5 L7,-0.6 L10,-0.5'], ['M-1.5,-9 L-2.6,-4.6 L-1,-0.6 L2,-0.5', 'M1.5,-9 L6.6,-7.6 L4.6,-3.2']];
-  const HAT = new Path2D('M-11,-1.5 L0,-9.5 L11,-1.5 Q0,0.4 -11,-1.5 Z');
-  const HAT_RIBS = new Path2D('M0,-9.3 L-5.5,-1 M0,-9.3 L5.5,-1 M0,-9.3 L0,-0.6');
+  // ---------- the hero: Design's pose sheet (docs/design/Hero.dc.html), in its own units ----------
+  // A little xiake (knight-errant) about 32 units tall (feet at 0, facing right), no hat, no weapon: bun and hairpin, slim waist,
+  // robe split at the hips. The poses and the other players' hairstyles are generated by
+  // tools/hero-from-design.mjs; paint() below reads them.
+  // <hero-poses> generated by tools/hero-from-design.mjs from docs/design/Hero.dc.html; do not edit by hand
+const POSES = {
+  stand: { head: [0.4,-25.2,0],
+    ops: [['H','back'], ['s','M-0.5,-12.0 L-0.9,-6.3 L-1.3,-0.6',2.3,undefined], ['s','M-1.3,-0.6 L0.8,-0.4',1.9,undefined], ['s','M0.5,-12.0 L1.6,-6.4 L2.0,-0.7',2.3,undefined], ['s','M2.0,-0.7 L3.6,0.8',1.9,undefined], ['f','M-1.8,-13.2 L-2.1,-10.2 L-2.4,-7.3 L-2.8,-4.4 L-1.3,-4.1 L-0.5,-6.9 L0.2,-9.8 L1.0,-12.6 Z',undefined,0], ['f','M-0.8,-12.7 L-0.1,-9.9 L0.6,-7.1 L1.3,-4.3 L2.8,-4.6 L2.5,-7.4 L2.2,-10.3 L1.9,-13.1 Z',undefined,0], ['s','M-2.2,-19.9 L-3.3,-16.7 L-1.6,-14.6',1.8,undefined], ['f','M-2.7,-16.0 L-1.6,-14.6 L-1.6,-12.5 L-2.4,-14.5 Z',undefined,0.5], ['f','M-3.2,-20.9 Q0.3,-21.6 3.6,-20.7 L2.2,-13.6 L-2.2,-13.7 Z',undefined,0], ['s','M-2.4,-14.0 L2.4,-13.9',1.8,'a'], ['r','M-1.4,-14.0 Q-0.1,-12.0 0.7,-8.1',1,'a'], ['r','M-1.4,-14.0 Q-1.0,-12.0 -0.3,-8.7',0.8,'a'], ['e',0.4,-25.2,3.8,4.2,0,undefined], ['H','front'], ['s','M2.4,-19.9 L4.2,-17.7 L2.2,-17.4',1.8,undefined], ['f','M3.5,-17.6 L2.2,-17.4 L2.2,-14.9 L3.2,-16.1 Z',undefined,0.5]],
+    hair: { back: [['r','M-0.7,-29.4 Q-2.8,-28.4 -3.6,-26.3',0.9,'a'], ['r','M-0.7,-29.4 Q-0.4,-27.4 -1.8,-25.9',0.75,'a']], front: [['e',0.1,-29.8,2.1,1.9,0,undefined], ['s','M-1.2,-28.6 L1.6,-31.8',0.7,'#c9a24a']] } },
+  run: { head: [3.6,-23.6,18],
+    ops: [['H','back'], ['s','M-0.4,-11.3 L-3.7,-7.7 L-7.3,-6.5',2.3,undefined], ['s','M-7.3,-6.5 L-8.4,-4.7',1.9,undefined], ['s','M0.4,-11.3 L4.1,-7.8 L4.8,-2.4',2.3,undefined], ['s','M4.8,-2.4 L7.0,-2.1',1.9,undefined], ['f','M-1.4,-13.3 L-3.1,-11.8 L-4.8,-10.4 L-6.5,-9.0 L-5.8,-7.9 L-3.8,-8.9 L-1.9,-9.9 L0.1,-10.9 Z',undefined,0], ['f','M-0.5,-11.2 L0.8,-9.6 L2.1,-8.1 L3.4,-6.5 L4.5,-7.2 L3.6,-9.1 L2.7,-10.9 L1.8,-12.7 Z',undefined,0], ['s','M1.1,-19.4 L-2.4,-17.5 L-6.2,-17.0',1.8,undefined], ['f','M-3.7,-17.3 L-6.2,-17.0 L-8.4,-16.4 L-5.5,-16.9 Z',undefined,0.5], ['f','M-0.4,-20.5 Q3.1,-20.1 6.0,-18.1 L2.4,-11.9 L-1.7,-13.4 Z',undefined,0], ['s','M-1.8,-13.8 L2.7,-12.1',1.8,'a'], ['r','M1.3,-12.6 Q-2.0,-13.3 -5.9,-11.9',1,'a'], ['r','M1.3,-12.6 Q-2.0,-11.6 -5.6,-9.6',0.8,'a'], ['e',3.6,-23.6,3.8,4.2,18,undefined], ['H','front'], ['s','M4.1,-19.1 L1.4,-16.4 L-2.2,-15.8',1.8,undefined], ['f','M0.2,-16.2 L-2.2,-15.8 L-4.3,-15.3 L-1.5,-15.8 Z',undefined,0.5]],
+    hair: { back: [['r','M4.0,-27.7 Q1.7,-28.1 -0.1,-26.7',0.9,'a'], ['r','M4.0,-27.7 Q3.1,-25.9 1.1,-25.6',0.75,'a']], front: [['e',4.8,-28.1,2.1,1.9,0,undefined], ['s','M3.2,-27.4 L6.8,-29.5',0.7,'#c9a24a']] } },
+  jump: { head: [0.7,-25.2,4],
+    ops: [['H','back'], ['s','M-0.4,-12.3 L-0.7,-6.8 L-0.8,-0.8',2.3,undefined], ['s','M-0.8,-0.8 L0.2,1.1',1.9,undefined], ['s','M0.4,-12.3 L3.7,-11.4 L2.6,-7.3',2.3,undefined], ['s','M2.6,-7.3 L4.3,-6.0',1.9,undefined], ['f','M-1.9,-13.2 L-2.1,-10.6 L-2.3,-8.0 L-2.6,-5.4 L-1.3,-5.2 L-0.6,-7.7 L0.1,-10.2 L0.8,-12.7 Z',undefined,0], ['f','M-0.6,-12.1 L0.6,-11.1 L1.7,-10.1 L2.9,-9.1 L3.9,-9.9 L3.1,-11.2 L2.4,-12.6 L1.6,-13.9 Z',undefined,0], ['s','M-2.4,-20.1 L-5.0,-22.4 L-7.0,-24.9',1.8,undefined], ['f','M-5.7,-23.2 L-7.0,-24.9 L-7.0,-23.0 L-6.0,-22.6 Z',undefined,0.5], ['f','M-3.0,-21.0 Q0.4,-21.6 3.8,-20.7 L2.2,-13.8 L-2.2,-14.0 Z',undefined,0], ['s','M-2.3,-14.3 L2.5,-14.1',1.8,'a'], ['r','M1.3,-14.1 Q0.7,-11.5 -0.6,-7.5',1,'a'], ['r','M1.3,-14.1 Q0.0,-12.2 -2.0,-8.9',0.8,'a'], ['e',0.7,-25.2,3.8,4.2,4,undefined], ['H','front'], ['s','M2.5,-20.0 L4.2,-22.9 L4.9,-26.5',1.8,undefined], ['f','M4.5,-24.1 L4.9,-26.5 L4.9,-24.6 L4.5,-23.6 Z',undefined,0.5]],
+    hair: { back: [['r','M-0.1,-29.4 Q-2.1,-28.4 -2.8,-26.2',0.9,'a'], ['r','M-0.1,-29.4 Q0.3,-27.5 -1.1,-26.0',0.75,'a']], front: [['e',0.7,-29.8,2.1,1.9,0,undefined], ['s','M-0.7,-28.7 L2.3,-31.7',0.7,'#c9a24a']] } },
+  leap: { head: [4.8,-22.6,30],
+    ops: [['H','back'], ['s','M-1.4,-12.0 L-5.7,-10.4 L-10.5,-9.1',2.3,undefined], ['s','M-10.5,-9.1 L-12.5,-8.3',1.9,undefined], ['s','M-0.7,-11.8 L2.6,-9.3 L0.1,-6.1',2.3,undefined], ['s','M0.1,-6.1 L1.9,-5.0',1.9,undefined], ['f','M-2.0,-14.0 L-3.8,-13.3 L-5.7,-12.7 L-7.6,-12.1 L-7.3,-11.0 L-5.4,-11.1 L-3.4,-11.2 L-1.5,-11.2 Z',undefined,0], ['f','M-1.8,-11.6 L-0.6,-10.0 L0.5,-8.5 L1.6,-6.9 L2.6,-7.4 L2.0,-9.2 L1.3,-11.1 L0.7,-12.9 Z',undefined,0], ['s','M2.1,-18.7 L-1.9,-20.4 L-6.1,-21.7',1.8,undefined], ['f','M-3.3,-20.9 L-6.1,-21.7 L-8.3,-21.3 L-5.2,-20.8 Z',undefined,0.5], ['f','M0.7,-20.5 Q3.9,-19.1 6.2,-16.4 L1.2,-11.8 L-2.3,-14.4 Z',undefined,0], ['s','M-2.3,-14.7 L1.6,-11.9',1.8,'a'], ['r','M0.4,-12.7 Q-3.5,-14.1 -8.8,-13.4',1,'a'], ['r','M0.4,-12.7 Q-3.5,-12.4 -8.5,-10.4',0.8,'a'], ['e',4.8,-22.6,3.8,4.2,30,undefined], ['H','front'], ['s','M5.3,-18.4 L8.6,-19.8 L12.3,-21.7',1.8,undefined], ['f','M9.9,-20.4 L12.3,-21.7 L11.2,-20.2 L9.9,-19.9 Z',undefined,0.5]],
+    hair: { back: [['r','M6.1,-26.4 Q4.0,-27.3 1.9,-26.4',0.9,'a'], ['r','M6.1,-26.4 Q4.8,-24.8 2.8,-24.9',0.75,'a']], front: [['e',6.9,-26.8,2.1,1.9,0,undefined], ['s','M5.1,-26.4 L9.2,-27.7',0.7,'#c9a24a']] } },
+  wall: { head: [-2,-24.2,-18],
+    ops: [['H','back'], ['s','M1.9,-11.8 L5.5,-10.7 L6.9,-7.6',2.3,undefined], ['s','M6.9,-7.6 L7.1,-9.8',1.9,undefined], ['s','M1.3,-11.8 L-0.7,-8.7 L1.6,-5.8',2.3,undefined], ['s','M1.6,-5.8 L3.6,-5.0',1.9,undefined], ['f','M0.8,-11.8 L2.1,-10.1 L3.4,-8.5 L4.8,-6.9 L5.8,-7.5 L4.9,-9.4 L4.0,-11.3 L3.2,-13.2 Z',undefined,0], ['f','M-0.2,-12.7 L-0.2,-10.7 L-0.2,-8.6 L-0.3,-6.6 L0.9,-6.5 L1.5,-8.4 L2.0,-10.4 L2.6,-12.3 Z',undefined,0], ['s','M-3.0,-19.5 L-6.1,-21.3 L-8.4,-24.0',1.8,undefined], ['f','M-6.9,-22.3 L-8.4,-24.0 L-7.6,-22.3 L-6.8,-21.7 Z',undefined,0.5], ['f','M-4.4,-18.7 Q-1.5,-20.6 1.9,-21.0 L3.3,-14.0 L-0.8,-12.4 Z',undefined,0], ['s','M-1.1,-12.6 L3.4,-14.3',1.8,'a'], ['r','M0.3,-13.1 Q2.2,-11.2 3.6,-7.2',1,'a'], ['r','M0.3,-13.1 Q1.6,-10.8 2.0,-6.9',0.8,'a'], ['e',-2,-24.2,3.8,4.2,-18,undefined], ['H','front'], ['s','M0.3,-20.5 L-2.8,-23.1 L-4.2,-26.4',1.8,undefined], ['f','M-3.3,-24.2 L-4.2,-26.4 L-3.4,-24.7 L-3.0,-23.8 Z',undefined,0.5]],
+    hair: { back: [['r','M-4.5,-28.0 Q-3.3,-26.1 -1.0,-25.7',0.9,'a'], ['r','M-4.5,-28.0 Q-2.9,-26.8 -2.9,-24.8',0.75,'a']], front: [['e',-3.7,-28.4,2.1,1.9,0,undefined], ['s','M-4.6,-26.9 L-2.9,-30.8',0.7,'#c9a24a']] } },
+  carry: { head: [0.2,-24.4,0],
+    ops: [['H','back'], ['s','M-0.5,-11.0 L-3.7,-6.5 L-6.5,-0.6',2.3,undefined], ['s','M-6.5,-0.6 L-8.2,0.8',1.9,undefined], ['s','M0.5,-11.0 L4.1,-7.0 L4.4,-0.6',2.3,undefined], ['s','M4.4,-0.6 L6.6,-0.3',1.9,undefined], ['f','M-1.8,-12.3 L-2.5,-10.2 L-3.3,-8.2 L-4.0,-6.1 L-2.7,-5.5 L-1.6,-7.3 L-0.4,-9.2 L0.7,-11.0 Z',undefined,0], ['f','M-0.7,-11.0 L0.4,-9.4 L1.4,-7.7 L2.5,-6.0 L3.8,-6.7 L3.1,-8.5 L2.5,-10.4 L1.8,-12.3 Z',undefined,0], ['s','M-2.4,-19.3 L-5.0,-24.8 L-4.8,-30.2',1.8,undefined], ['f','M-3.3,-20.1 Q0.1,-20.8 3.5,-20.0 L2.2,-12.4 L-2.2,-12.4 Z',undefined,0], ['s','M-2.4,-12.7 L2.4,-12.7',1.8,'a'], ['r','M-1.4,-12.7 Q-0.1,-10.8 0.6,-6.8',1,'a'], ['r','M-1.4,-12.7 Q-1.0,-10.8 -0.4,-7.5',0.8,'a'], ['e',0.2,-24.4,3.8,4.2,0,undefined], ['H','front'], ['s','M2.5,-19.2 L5.1,-24.7 L5.2,-30.2',1.8,undefined]],
+    hair: { back: [['r','M-0.9,-28.6 Q-3.0,-27.7 -3.7,-25.5',0.9,'a'], ['r','M-0.9,-28.6 Q-0.6,-26.6 -2.0,-25.2',0.75,'a']], front: [['e',-0.1,-29,2.1,1.9,0,undefined], ['s','M-1.4,-27.8 L1.4,-31.0',0.7,'#c9a24a']] } },
+  land: { head: [2.8,-17.4,10],
+    ops: [['H','back'], ['s','M-1.1,-6.0 L-6.3,-2.1 L-10.0,-0.6',2.3,undefined], ['s','M-10.0,-0.6 L-12.1,-0.2',1.9,undefined], ['s','M-0.3,-6.0 L3.4,-6.0 L2.8,-0.6',2.3,undefined], ['s','M2.8,-0.6 L5.0,-0.2',1.9,undefined], ['f','M-2.0,-7.5 L-3.1,-5.7 L-4.1,-4.0 L-5.1,-2.2 L-4.1,-1.4 L-2.6,-2.9 L-1.2,-4.4 L0.2,-5.8 Z',undefined,0], ['f','M-0.9,-5.7 L0.5,-4.7 L1.9,-3.7 L3.4,-2.7 L4.3,-3.7 L3.2,-5.0 L2.1,-6.4 L0.9,-7.7 Z',undefined,0], ['s','M0.3,-13.1 L-3.6,-14.5 L-7.7,-17.1',1.8,undefined], ['f','M-5.0,-15.4 L-7.7,-17.1 L-8.2,-18.9 L-5.9,-16.8 Z',undefined,0.5], ['f','M-1.7,-14.3 Q1.8,-14.0 4.8,-12.2 L1.7,-6.7 L-2.5,-8.1 Z',undefined,0], ['s','M-2.6,-8.4 L2.0,-6.9',1.8,'a'], ['r','M0.8,-7.3 Q-1.9,-10.0 -3.8,-13.9',1,'a'], ['r','M0.8,-7.3 Q-2.5,-8.7 -5.8,-11.3',0.8,'a'], ['e',2.8,-17.4,3.8,4.2,10,undefined], ['H','front'], ['s','M2.9,-12.9 L5.9,-9.6 L8.2,-6.0',1.8,undefined], ['f','M6.7,-8.3 L8.2,-6.0 L7.6,-7.4 L6.8,-8.6 Z',undefined,0.5]],
+    hair: { back: [['r','M2.5,-21.6 Q1.1,-23.4 -1.2,-23.7',0.9,'a'], ['r','M2.5,-21.6 Q0.9,-20.5 -1.0,-21.1',0.75,'a']], front: [['e',3.3,-22,2.1,1.9,0,undefined], ['s','M1.8,-21.1 L5.1,-23.7',0.7,'#c9a24a']] } },
+  fall: { head: [-0.7,-24,-8],
+    ops: [['H','back'], ['s','M0.0,-10.9 L-1.7,-6.7 L-0.8,-1.7',2.3,undefined], ['s','M-0.8,-1.7 L-2.2,0.1',1.9,undefined], ['s','M0.8,-10.9 L3.1,-6.8 L2.1,-2.3',2.3,undefined], ['s','M2.1,-2.3 L3.8,-1.0',1.9,undefined], ['f','M1.1,-12.3 L-0.0,-13.6 L-1.1,-14.9 L-2.2,-16.2 L-3.3,-15.5 L-2.6,-13.9 L-2.0,-12.4 L-1.3,-10.8 Z',undefined,0], ['f','M1.9,-10.7 L2.7,-12.2 L3.5,-13.7 L4.3,-15.2 L3.2,-16.0 L2.0,-14.8 L0.8,-13.6 L-0.3,-12.4 Z',undefined,0], ['s','M-2.9,-19.3 L-5.9,-22.0 L-7.0,-25.5',1.8,undefined], ['f','M-6.3,-23.2 L-7.0,-25.5 L-7.0,-27.2 L-6.5,-24.7 Z',undefined,0.5], ['f','M-3.7,-19.3 Q-0.4,-20.4 3.0,-20.0 L2.5,-12.5 L-1.9,-12.1 Z',undefined,0], ['s','M-2.1,-12.4 L2.7,-12.8',1.8,'a'], ['r','M0.3,-12.6 Q-1.0,-15.9 -0.4,-20.5',1,'a'], ['r','M0.3,-12.6 Q1.0,-15.9 2.3,-19.9',0.8,'a'], ['e',-0.7,-24,3.8,4.2,-8,undefined], ['H','front'], ['s','M2.2,-19.5 L5.5,-20.9 L7.9,-23.9',1.8,undefined], ['f','M6.4,-22.0 L7.9,-23.9 L7.9,-25.6 L6.7,-23.4 Z',undefined,0.5]],
+    hair: { back: [['r','M-2.4,-28.1 Q-2.4,-30.4 -4.0,-32.0',0.9,'a'], ['r','M-2.4,-28.1 Q-2.9,-30.1 -1.6,-31.7',0.75,'a']], front: [['e',-1.6,-28.5,2.1,1.9,0,undefined], ['s','M-2.8,-27.2 L-0.4,-30.7',0.7,'#c9a24a']] } },
+  run2: { head: [3.6,-23.6,18],
+    ops: [['H','back'], ['s','M0.4,-11.3 L4.1,-7.8 L4.8,-2.4',2.3,undefined], ['s','M4.8,-2.4 L7.0,-2.1',1.9,undefined], ['s','M-0.4,-11.3 L-3.7,-7.7 L-7.3,-6.5',2.3,undefined], ['s','M-7.3,-6.5 L-8.4,-4.7',1.9,undefined], ['f','M-0.5,-11.2 L0.8,-9.6 L2.1,-8.1 L3.4,-6.5 L4.5,-7.2 L3.6,-9.1 L2.7,-10.9 L1.8,-12.7 Z',undefined,0], ['f','M-1.4,-13.3 L-3.1,-11.8 L-4.8,-10.4 L-6.5,-9.0 L-5.8,-7.9 L-3.8,-8.9 L-1.9,-9.9 L0.1,-10.9 Z',undefined,0], ['s','M1.1,-19.4 L-2.4,-17.5 L-6.2,-17.0',1.8,undefined], ['f','M-3.7,-17.3 L-6.2,-17.0 L-8.4,-16.4 L-5.5,-16.9 Z',undefined,0.5], ['f','M-0.4,-20.5 Q3.1,-20.1 6.0,-18.1 L2.4,-11.9 L-1.7,-13.4 Z',undefined,0], ['s','M-1.8,-13.8 L2.7,-12.1',1.8,'a'], ['r','M1.3,-12.6 Q-2.0,-13.3 -5.9,-11.9',1,'a'], ['r','M1.3,-12.6 Q-2.0,-11.6 -5.6,-9.6',0.8,'a'], ['e',3.6,-23.6,3.8,4.2,18,undefined], ['H','front'], ['s','M4.1,-19.1 L1.4,-16.4 L-2.2,-15.8',1.8,undefined], ['f','M0.2,-16.2 L-2.2,-15.8 L-4.3,-15.3 L-1.5,-15.8 Z',undefined,0.5]],
+    hair: { back: [['r','M4.0,-27.7 Q1.7,-28.1 -0.1,-26.7',0.9,'a'], ['r','M4.0,-27.7 Q3.1,-25.9 1.1,-25.6',0.75,'a']], front: [['e',4.8,-28.1,2.1,1.9,0,undefined], ['s','M3.2,-27.4 L6.8,-29.5',0.7,'#c9a24a']] } },
+};
+// hairstyles of players 2-4 in the head's own frame (player 1's hair rides on its pose)
+const STYLES = {
+  2: { back: [['r','M-3.3,-2.8 Q-5.2,-2 -5.9,0',0.9,'a'], ['r','M2.9,-3 Q3,-1 4.7,-0.1',0.9,'a']], front: [['e',-2.7,-3.4,1.75,1.75,0,undefined], ['e',2.5,-3.6,1.75,1.75,0,undefined], ['s','M-1.5,-2.4 L-2.9,-1.7',1,'a'], ['s','M1.3,-2.6 L2.7,-1.9',1,'a']] },
+  3: { back: [['r','M-1.2,-5 Q-3.1,-4.2 -3.6,-2.3',0.9,'a'], ['r','M-1.2,-5 Q-0.8,-3.2 -2.1,-2.1',0.75,'a']], front: [['e',0,-4.5,1.9,1.6,0,undefined], ['f','M-1.3,-5.4 L1.3,-5.4 L1,-7.7 L-1,-7.7 Z','a',0.4], ['e',0,-8.1,0.55,0.55,0,'#c9a24a']] },
+  4: { back: [['r','M-3.4,-1.6 Q-5.6,-0.5 -6.5,1.8',0.9,'a'], ['r','M-3.4,-1.6 Q-3.2,0.6 -4.7,2.2',0.75,'a']], front: [['e',-2.9,-2.6,2,2,0,undefined], ['s','M-3.4,-1.5 L3.3,-2.2',1.3,'a']] },
+};
+// </hero-poses>
+  // four players share one body: each owns a colour and a hairstyle; the player on this device gets the gamboge rim
+  const PLAYERS = [
+    null,
+    { ink: '#1d1b1a', acc: '#c23a2b', style: 1 },        // 朱 vermilion: single bun, gilt hairpin
+    { ink: '#1c2836', acc: '#3c8dbc', style: 2 },        // 石青 azurite: twin buns
+    { ink: '#1b3027', acc: '#4aa27c', style: 3 },        // 石绿 malachite: small crown
+    { ink: '#2c2034', acc: '#8c5cab', style: 4 },        // wisteria: headband, low bun
+  ];
+  // the pose's origin is the feet of the standing figure; these poses hang elsewhere
+  const POSE_AT = { wall: [3.5, 3], leap: [0, 5] };
+  // where a held stone's underside sits, in hero units: Design's carry board puts it a hand above the head
+  const HOLD_UNITS = 36;
   const P2 = {};
   const path = d => P2[d] || (P2[d] = new Path2D(d));
   const startOf = d => { const m = /^M\s*(-?[\d.]+)[ ,](-?[\d.]+)/.exec(d); return m ? [+m[1], +m[2]] : [0, 0]; };
@@ -609,15 +585,16 @@
       for (const k of world.stones) {
         if (k.state === 'gone' || (k.state === 'held') !== heldOnly) continue;
         let [x, y] = v.posOf(k, v.a);
-        if (k.state === 'held') { const [hx, hy] = v.posOf(k.holder, v.a); x = hx; y = hy + v.HOLD_Y; }
+        if (k.state === 'held') { const [hx, hy] = v.posOf(k.holder, v.a); x = hx; y = hy + HOLD_UNITS * v.PH / 44; }
         const sx = X(x - SW), sy = Y(y + SH), s = SH * S;
         // things (§3.7): a thrown stone opens into its thing in the air and folds back as it lands
         const f = root.WThings ? root.WThings.fold(k, v) : 0;
         // level 2 (overhead pose only in this look): the thing you carry stands on your hands
         if (k.state === 'held' && root.WThings && k.holder === p) {
-          const kk = v.PH * S / 44 / 0.68, shake = p.stun > 0 ? Math.sin(v.t * 60) * 1.2 : 0;
+          const hk = v.PH * S / 44, kk = hk / 0.68, shake = p.stun > 0 ? Math.sin(v.t * 60) * 1.2 : 0;
           const o = { t: v.t, ink: K.ink, paper: K.stone.slip, el: v.elOf(k.ch), red: K.vermilion, gold: K.gamboge, font: v.font };
-          if (root.WThings.carried(ctx, k.ch, 'carry', X(x) + shake, Y(y - v.HOLD_Y), kk, p.face, o)) continue;
+          // Design's things board stands them on hands at 45.6 hero units; this hero's hands are at 30.2
+          if (root.WThings.carried(ctx, k.ch, 'carry', X(x) + shake, Y(y - HOLD_UNITS * v.PH / 44) + 15.4 * hk, kk, p.face, o)) continue;
         }
         if (f > 0) {
           const o = { t: v.t, ink: K.ink, paper: K.stone.slip, el: v.elOf(k.ch), red: K.vermilion, gold: K.gamboge, font: v.font };
@@ -649,34 +626,50 @@
       if (Math.abs(p.vx) > 0.5) return 'run';
       return 'stand';
     }
-    // One pose, drawn twice: first fattened by `rim` in gamboge (the "you" outline), then in ink.
-    function paint(g, ops, t, sp, runFrame, rim) {
-      const ink = col => rim ? K.gamboge : (col || K.ink);
+    // One pose for one player, drawn twice: first fattened by `rim` in the rim colour (gamboge for "you", the
+    // player's own colour for the others), then in ink and colour. ops: see tools/hero-from-design.mjs.
+    function paint(g, P, pl, t, sp, rim, rimCol) {
+      const col = c => rim ? rimCol : (c === undefined ? pl.ink : c === 'a' ? pl.acc : c);
       const lw = w => w + 2 * rim;
-      for (const op of ops) {
-        const [kind] = op;
-        if (kind === 'R') { g.save(); g.translate(op[2], op[3]); g.rotate(op[1] * Math.PI / 180); g.translate(-op[2], -op[3]); paint(g, op[4], t, sp, runFrame, rim); g.restore(); continue; }
-        if (kind === 'f') {
-          g.fillStyle = ink(op[2]); g.fill(path(op[1]));
-          if (rim) { g.strokeStyle = K.gamboge; g.lineWidth = 2 * rim; g.stroke(path(op[1])); }
-          continue;
+      const run = ops => {
+        for (const op of ops) {
+          switch (op[0]) {
+            case 'H': {
+              // the hair: player 1's rides on the pose; the others' are drawn in the head's own frame
+              const part = op[1];
+              if (pl.style === 1) { run(P.hair[part]); break; }
+              g.save(); g.translate(P.head[0], P.head[1]); g.rotate(P.head[2] * Math.PI / 180);
+              run(STYLES[pl.style][part]);
+              g.restore(); break;
+            }
+            case 's': g.strokeStyle = col(op[3]); g.lineWidth = lw(op[2]); g.stroke(path(op[1])); break;
+            case 'r': {
+              // the ribbons carry the 轻功: they flutter with speed, from where they are tied
+              const [px, py] = startOf(op[1]);
+              g.save(); g.translate(px, py); g.rotate(Math.sin(t * (6 + sp) + op[2] * 3) * (0.05 + Math.min(0.12, sp * 0.015))); g.translate(-px, -py);
+              g.strokeStyle = col(op[3]); g.lineWidth = lw(op[2]); g.stroke(path(op[1])); g.restore(); break;
+            }
+            case 'f':
+              g.fillStyle = col(op[2]); g.fill(path(op[1]));
+              if (rim || op[3]) { g.strokeStyle = col(op[2]); g.lineWidth = lw(op[3] || 0); g.stroke(path(op[1])); }
+              break;
+            case 'e':
+              g.fillStyle = col(op[6]); g.beginPath(); g.ellipse(op[1], op[2], op[3] + rim, op[4] + rim, op[5] * Math.PI / 180, 0, Math.PI * 2); g.fill(); break;
+          }
         }
-        if (kind === 's') { g.strokeStyle = ink(op[3]); g.lineWidth = lw(op[2]); g.stroke(path(op[1])); continue; }
-        if (kind === 'L') { const legs = RUN_LEGS[runFrame]; g.strokeStyle = ink(); g.lineWidth = lw(2.4); g.stroke(path(legs[0])); g.stroke(path(legs[1])); continue; }
-        if (kind === 'r') {
-          // the ribbons carry the 轻功: they flutter with speed, from the sash knot
-          const [px, py] = startOf(op[1]);
-          g.save(); g.translate(px, py); g.rotate(Math.sin(t * (6 + sp) + op[2] * 3) * (0.05 + Math.min(0.12, sp * 0.015))); g.translate(-px, -py);
-          g.strokeStyle = ink(K.vermilion); g.lineWidth = lw(op[2]); g.stroke(path(op[1])); g.restore(); continue;
-        }
-        if (kind === 'c') { g.fillStyle = ink(); g.beginPath(); g.arc(op[1], op[2], 3.4 + rim, 0, Math.PI * 2); g.fill(); continue; }
-        if (kind === 'h') {
-          g.save(); g.translate(op[1], op[2]); g.rotate(op[3] * Math.PI / 180);
-          g.fillStyle = ink('#24211e'); g.fill(HAT);
-          if (rim) { g.strokeStyle = K.gamboge; g.lineWidth = 2 * rim; g.stroke(HAT); } else { g.strokeStyle = '#8b6b45'; g.lineWidth = 0.6; g.stroke(HAT_RIBS); }
-          g.restore();
-        }
-      }
+      };
+      run(P.ops);
+    }
+    // One figure, any player: feet at (0,0) in hero units, ctx already translated and scaled by the caller
+    function figure(g, pose, slot, me, t, sp, rim) {
+      const P = POSES[pose], pl = PLAYERS[slot] || PLAYERS[1];
+      const at = POSE_AT[pose];
+      g.save();
+      g.lineCap = 'round'; g.lineJoin = 'round';
+      if (at) g.translate(at[0], at[1]);
+      paint(g, P, pl, t, sp, rim, me ? K.gamboge : pl.acc);
+      paint(g, P, pl, t, sp, 0);
+      g.restore();
     }
     function hero(v) {
       const { ctx, S, X, Y, world, t } = v;
@@ -707,18 +700,18 @@
       const face = pose === 'wall' ? p.wall : p.face;
       ctx.save();
       ctx.translate(X(x) + shake, Y(y)); ctx.scale(k * face, k);
-      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-      if (pose === 'wall') ctx.translate(2.4, 4);
-      if (pose === 'leap') ctx.translate(0, 6);
-      const runFrame = Math.floor(t * 8) % 2, sp = Math.hypot(p.vx, p.vy);
-      const rim = Math.max(1.5, S * 0.034) / k;
-      paint(ctx, POSES[pose], t, sp, runFrame, rim);
-      paint(ctx, POSES[pose], t, sp, runFrame, 0);
-      if (pose === 'land') { ctx.fillStyle = 'rgba(236,224,198,.8)'; ctx.beginPath(); ctx.ellipse(-12, -1.2, 4.6, 1.4, 0, 0, Math.PI * 2); ctx.ellipse(12.4, -1, 4, 1.2, 0, 0, Math.PI * 2); ctx.fill(); }
+      const sp = Math.hypot(p.vx, p.vy);
+      const rim = Math.max(1.5, 1.3 / k);                      // Design's rim: the silhouette grown by 1.5 hero units
+      const key = pose === 'run' && Math.floor(t * 8) % 2 ? 'run2' : pose;
+      figure(ctx, key, p.slot || 1, true, t, sp, rim);
+      if (pose === 'land') {
+        ctx.fillStyle = 'rgba(236,224,198,.8)'; ctx.beginPath();
+        ctx.ellipse(-13, -1, 3.6, 1.1, 0, 0, Math.PI * 2); ctx.ellipse(7.6, -1, 3, 1, 0, 0, Math.PI * 2); ctx.fill();
+      }
       ctx.restore();
     }
 
-    return { draw, heroPose, block };
+    return { draw, heroPose, block, figure };
   }
 
   function rr(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
@@ -727,5 +720,5 @@
     return 'rgba(' + (n >> 16) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
   }
 
-  root.WInk = { create, TIME, K, POSES };
+  root.WInk = { create, TIME, K, POSES, PLAYERS };
 })(window);

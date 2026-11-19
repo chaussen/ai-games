@@ -9,10 +9,10 @@
     "Daybreak.dc.html": {"x": 0, "y": 510, "w": 844, "h": 390, "title": "Style frame · landscape · daybreak"},
     "Portrait.dc.html": {"x": 924, "y": 0, "w": 390, "h": 844, "title": "Style frame · portrait 390×844 · moon night"},
     "Win.dc.html": {"x": 1394, "y": 0, "w": 844, "h": 390, "title": "Win moment · scroll end & colophon"},
-    "Hero.dc.html": {"x": 0, "y": 964, "w": 1240, "h": 560, "title": "Hero pose sheet"},
+    "Hero.dc.html": {"x": 0, "y": 964, "w": 1240, "h": 810, "title": "Hero pose sheet · four players"},
     "Stone.dc.html": {"x": 1320, "y": 964, "w": 1000, "h": 560, "title": "The stone · 活字 movable type"},
-    "Palette.dc.html": {"x": 0, "y": 1644, "w": 1240, "h": 860, "title": "Palette & value sheet"},
-    "HUD.dc.html": {"x": 1320, "y": 1644, "w": 1000, "h": 640, "title": "HUD skin"}
+    "Palette.dc.html": {"x": 0, "y": 1894, "w": 1240, "h": 860, "title": "Palette & value sheet"},
+    "HUD.dc.html": {"x": 1320, "y": 1894, "w": 1000, "h": 640, "title": "HUD skin"}
   },
   "order": ["Main.dc.html", "Daybreak.dc.html", "Portrait.dc.html", "Win.dc.html", "Hero.dc.html", "Stone.dc.html", "Palette.dc.html", "HUD.dc.html"],
   "notes": {

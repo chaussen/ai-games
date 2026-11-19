@@ -92,6 +92,9 @@ lanterns for wind.
 
 ### 3.2 The hero: 侠 in a few strokes
 
+> **Superseded 2026-11-20:** John redesigned the hero (bun and hairpin, no hat, four players with their own colour and
+> hairstyle). The build follows `docs/design/Hero.dc.html`; the list below is the original plan.
+
 - **Silhouette first**, readable at 30 px: a conical bamboo hat (斗笠), a long robe flaring at the
   hem, and a **vermilion sash with two long ribbons** (飘带). No face; the hat says who it is.
 - **Brush-stroke body**: about 8 tapered strokes on a small skeleton (hips, chest, head, two arms, two

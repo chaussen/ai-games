@@ -17,6 +17,14 @@ build does about it, the knobs, the defect log and the known gaps.
 (`docs/design/`) to the plan in `docs/ART-DIRECTION.md` (§8 says what shipped and what is still
 missing). The greybox stays for comparison: `?art=greybox`, or ☰ → Look.
 
+**New hero (2026-11-20):** the ink scroll's player is Claude Design's redesigned 侠客 (`docs/design/Hero.dc.html`):
+about four heads tall, a bun with a gilt hairpin, slim waist, robe split at the hips, wushu stances, no hat, no face,
+no weapon. Eight poses (the run has two frames), and the sheet's four players (朱 single bun, 石青 twin buns, 石绿
+crown, 藤紫 headband) are in `ink.js` ready for rooms; the game is still one player, so only the first shows, with the
+gold rim. The pose data is generated: `node tools/hero-from-design.mjs` rereads the sheet and rewrites the
+`<hero-poses>` block in `ink.js`. The figure is smaller than the old one (23 px at play size on the boards), so a held
+stone is drawn lower in this look (renderer only; the sim's hold height is unchanged).
+
 **One Stroke 一笔 (2026-11-19):** a second painted look, `?art=cut` (or ☰ → Look), built from Claude Design's
 round 2 boards (`docs/design/one-stroke/`): paper, ink and vermilion, flat fills only, a hero drawn as the
 strokes of 大. Same sim, same screen budget; the default stays the ink scroll until John has played both.
