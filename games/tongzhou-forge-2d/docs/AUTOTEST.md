@@ -339,9 +339,11 @@ a test player's failure is the test player's until shown otherwise):
    way: **2 times in 200**, by a four-leap chain (brush the 月 in the air, the pillar wall, then the high gem
    at (10.5, 11)). Reachable, but hidden: a child will restart. A design question, not a bug: a way back
    (a cloud on the left, or the pillar stone regrowing when it is far from home), or let the restart be it.
+   **John (2026-11-20): add a cloud.** A restart must not be the only way out; see §7, S3 decisions.
 3. **A late GRAB turns ON TOP into BESIDE**, which is a dud ("mirror") and can box a piece in. On Burn the 林
    ended between the gap and the 火 with nowhere to stand to take it; the way out is to move the 火 (the mind
    learned to, M14). Duds per isle in the final sweep (24 persona runs per isle): dawn 7, blaze 7, forest 6, crowd 6, rest 5, flourish 5, burn 5, others 0-2.
+   **John (2026-11-20): yes, enhance it, carefully.** See §7, S3 decisions.
 4. **Restarts** (no way on for 15 s, the same step for 40 s, or nothing made for 75 s): 4 in 504 persona runs, all the kid's (Crowd 2, Forest 1,
    Flourish 1). The pillar trap of finding 2 was entered 3 times in 24 kid runs by earlier versions of the
    mind and not at all by the final one: it is a configuration that exists, not a frequent one.
@@ -397,6 +399,17 @@ A **fidelity ladder**, each level with its own job and repeatability promise:
 | 5 | Crew harness on 3D now or wait | "whichever is faster and easier" | 3D server now, real time, no server test clock (§4.7). |
 
 Also from John: **write a hand-off at the end of every session** (`AUTOTEST-HANDOFF.md`).
+
+**Decisions on the S3 findings (John, 2026-11-20).** Recorded for later; none is built yet.
+
+| Finding (§5, S3) | John | What it means when it is built |
+|---|---|---|
+| 2. Friends / Leaf pillar's far side | **add a cloud** | "Be mindful of the player's quality of life: a restart should not be the only way out." Put a cloud on the pavilion side so a hero there without the pillar's stone can climb back up. Leaf shares the layout and gets the same. Check: `friends-trap.mjs` should find the way most of the time, not 2 in 200; the mind should climb back with no restart; the isle's intended puzzle (bring the pillar's 月 down) must still be needed, so the cloud must not make the 月 trip pointless. Wider rule from this: when a player can strand themselves, give a visible way back. |
+| 3. A late GRAB turns ON TOP into BESIDE (a dud) | **yes, enhance it, but be careful** | A slightly wider ON TOP spot (a knob) and/or the label holding a few frames. Careful because the same window decides real BESIDE throws: a wider ON TOP must not swallow a BESIDE the player meant (e.g. 林, 朋, 明). Keep it a tunable knob, change it in small steps, and measure before and after with the mind: duds per isle in `mind-personas` (now dawn 7, blaze 7 … in 24 runs) should fall, and no isle's BESIDE recipe may start forging ON TOP. `sim-test` gets cases on both sides of the edge. |
+| 4. Burn and Crowd need the most precise thumb | **that's fine** | No change. Their place (18th, 19th) stays. |
+
+Also: `adb` is installed on the laptop; access opens after the next reboot. **The Android phone step waits for
+John:** stop and ask before starting it, as he wants to be there (S4 part 2).
 
 ## 8. Plan for the next sessions (revised in session 3)
 

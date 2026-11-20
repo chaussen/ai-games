@@ -39,14 +39,19 @@ MAX=120 node lab/autotest/mind-ablate.mjs burn kid 6
 node lab/autotest/mind-trace.mjs dawn kid 1000      # how any one run went
 ```
 
-**For John to triage** (AUTOTEST.md §5, S3, findings 1-4)
+**For John to triage** (AUTOTEST.md §5, S3, findings 1-4); **John's answers (2026-11-20)** in bold
 1. Sim defect, fixed (above). Say if a hovering stone was ever seen in family play.
 2. **Friends / Leaf, the pillar's far side.** Drop down the pavilion side without the pillar's stone and the
-   only way back up is a hidden four-leap chain. A random player found it 2 times in 200 minutes. Options: add a
-   cloud on that side, or accept the restart as the way out.
+   only way back up is a hidden four-leap chain. A random player found it 2 times in 200 minutes.
+   **Add a cloud on that side** (Leaf too): "be mindful of the player's quality of life; a restart should not be
+   the only way out."
 3. **A late GRAB turns ON TOP into BESIDE** (a dud) on 12 of 21 isles (up to 7 in 24 runs: Dawn, Blaze). It can
-   box a piece in (Burn). Consider a slightly wider ON TOP (a knob) or keeping the label for a few frames.
-4. Burn and Crowd ask a child for the most precise thumb. Fine if intended; they sit 18th and 19th in the order.
+   box a piece in (Burn). **Yes, enhance it, but carefully:** a knob, small steps, measured with the mind before
+   and after, and no meant BESIDE may turn into ON TOP.
+4. Burn and Crowd ask a child for the most precise thumb. **Fine as is.**
+
+These are written down for later and **not built**; the checks each needs are in AUTOTEST.md §7 (S3 decisions)
+and BETA.md's known gaps. They are game work, outside the S4 test work, unless John puts them in a session.
 
 **Open**
 - The **render-state check** (sim truth vs drawn frame under `?lockstep=1`) was not reached; it starts S4.
@@ -60,7 +65,9 @@ node lab/autotest/mind-trace.mjs dawn kid 1000      # how any one run went
    check that the hero, stones, held stone and GRAB label are drawn where the sim says (exact under lockstep).
    Acceptance: a mind run in the page reaches the same win as in the sim, and the render check passes every
    frame of it.
-2. The same on the Android phone over `adb` (John's install list below; still needed), then the emulator.
+2. The same on the Android phone over `adb`, then the emulator. `adb` is installed (2026-11-20); access opens
+   after John's next reboot. **Stop before this step and ask John:** he wants to be there for the phone. Do
+   part 1 first and on its own.
 
 ---
 
@@ -95,7 +102,7 @@ node lab/autotest/clone-probe.mjs                  # world copy speed and fideli
   theme if one is tried. Confirm if he meant something else.
 - Still untriaged from S1: the hero partly behind JUMP at the Two Trees start; the red dud banner's legibility.
 
-**For John to install (Android, decision 2)**
+**For John to install (Android, decision 2)**: done for `adb` (2026-11-20, active after a reboot)
 ```sh
 sudo pacman -S android-tools android-udev     # adb; udev rules and the adbusers group
 sudo usermod -aG adbusers $USER               # then log out and in again

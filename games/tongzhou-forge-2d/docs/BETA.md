@@ -102,7 +102,11 @@ Night and dusk skies alternate. Maps are 36 to 46 cells wide and 10 to 15 high, 
 - **Friends and Leaf: the pillar's far side.** Drop off the pillar to the pavilion's side without its stone and
   the only way back up is a hidden four-leap chain (brush the stone in the air, the wall, the high gem); a seeded
   random player found it 2 times in 200 minutes (`lab/autotest/friends-trap.mjs`). A child will restart. A way
-  back (a cloud on that side) or the restart itself: John's call (`docs/AUTOTEST.md` §5, S3, finding 2).
+  back (a cloud on that side) or the restart itself. **John (2026-11-20): add a cloud**, so a restart is not
+  the only way out; not built yet (`docs/AUTOTEST.md` §7, S3 decisions).
+- **A late GRAB can turn ON TOP into BESIDE** (a dud) on 12 of 21 isles. **John (2026-11-20): make ON TOP a
+  little more forgiving, carefully** (a knob, small steps, without turning a meant BESIDE into ON TOP); not
+  built yet (`docs/AUTOTEST.md` §7, S3 decisions).
 - One player only, as before. The ✓ marks live in this browser only.
 - The ink look's flames and shade are not from Claude Design's boards; they follow the ink and One Stroke
   rules (flat fills in One Stroke, no gradients) but are my drawings. Worth a Design pass if they stay.
