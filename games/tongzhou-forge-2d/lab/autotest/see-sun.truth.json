@@ -1,0 +1,38 @@
+{
+ "viewport": [
+  844,
+  390
+ ],
+ "hero": {
+  "sx": 497,
+  "sy": 325,
+  "holding": null,
+  "grounded": true
+ },
+ "goal": "明",
+ "grabLabel": "GRAB 木",
+ "stones": [
+  {
+   "ch": "火",
+   "sx": 408,
+   "sy": 301,
+   "state": "loose"
+  },
+  {
+   "ch": "木",
+   "sx": 458,
+   "sy": 301,
+   "state": "loose"
+  }
+ ],
+ "walls": [],
+ "hud": [
+  "goal",
+  "card",
+  "menu",
+  "msg",
+  "stick",
+  "grab",
+  "jump"
+ ]
+}

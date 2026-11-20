@@ -48,6 +48,9 @@ thorns (火 burns them). ☰ → Isle lists all 21 and marks the ones you have w
 | 10 | Good 女子为好 | 好 = 女 left of 子 | 21 | Flourish 日日为昌 | 昌 = 日 on 日 |
 | 11 | Apricot 杏 | 杏 = 木 on 口 | | | |
 
+**Automated play-testing (research, 2026-11-20):** `docs/AUTOTEST.md`: which technologies can see, operate and
+play this game like a person, with spikes in `lab/autotest/`. Nothing in the game changed.
+
 ## Run it
 
 ```sh
