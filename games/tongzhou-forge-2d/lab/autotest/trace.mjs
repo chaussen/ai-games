@@ -1,0 +1,12 @@
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const { World } = require('../../sim.js'); const IS = require('../../isles.js');
+import { run } from '../../bot.mjs'; import { ROUTES } from '../../routes.mjs'; import { humanize } from './human.mjs';
+const [id, route, lagF = 1] = process.argv.slice(2);
+const H = { retap: 0, t: lagF / 60 - 1e-6, tS: 0, servo: lagF / 60 - 1e-6, stick: 0, levels: Array.from({ length: 101 }, (_, i) => i / 100), aim: 0, notice: 0.45, hold: 0 };
+const w = new World(); w.load(IS.ISLES.findIndex(L => L.id === id)); w.addPlayer('me'); w.drain();
+const p = w.players.get('me'); const log = [];
+const plan = ROUTES[id]({ w })[route].map(s => ({ ...s, fn: (c) => { const r = s.fn(c); log.push([s.name, p.x.toFixed(2), p.y.toFixed(2), p.vx.toFixed(2), p.grounded ? 'G' : 'a', JSON.stringify(r || {})]); return r; } }));
+const r = run(humanize(w, 'me', +lagF ? H : null, 1), 'me', plan, { max: 60 * 60 });
+console.log(r.ok, r.at); const i = process.env.FROM ? log.findIndex(l => l[0] === process.env.FROM) : log.findIndex(l => l[0] === r.at);
+for (const l of (process.env.ALL ? log : log.slice(i, i + 40))) console.log(l.join(' '));

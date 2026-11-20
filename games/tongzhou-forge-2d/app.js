@@ -26,6 +26,9 @@
     voice: qs.get('mute') === '1' ? false : store.get('voice', true),
   };
   const STEP = 1 / 60;
+  // tests only (docs/AUTOTEST.md §4.2): ?lockstep=1 runs exactly one sim step per animation frame, whatever
+  // the clock says, so a test that pauses the page clock (Playwright) gets bit-exact replays: N frames = N steps.
+  const LOCK = qs.get('lockstep') === '1';
   const ARTS = ['ink', 'cut', 'greybox'];
   let ART = ARTS.includes(qs.get('art')) ? qs.get('art') : store.get('art', 'ink');
   const INK = window.WInk.create(), CUT = window.WCut.create();
@@ -507,11 +510,11 @@
     for (const e of world.drain()) handle(e);
   }
   function frame(now) {
-    const dt = Math.min(0.1, (now - last) / 1000);
+    const dt = LOCK ? STEP : Math.min(0.1, (now - last) / 1000);
     last = now;
     paused = !drawer.hidden || document.hidden;
     if (!paused) {
-      acc += dt;
+      acc = LOCK ? STEP : acc + dt;
       let n = 0;
       while (acc >= STEP && n < 6) { stepOnce(); acc -= STEP; n++; }
       if (n === 6) acc = 0;
@@ -525,7 +528,7 @@
       if (winAt && world.clock >= winAt) { winAt = 0; showWin(); }
     }
     updateCam(dt);
-    const alpha = paused ? 1 : acc / STEP;
+    const alpha = paused || LOCK ? 1 : acc / STEP;   // lockstep draws exactly where the sim is
     draw(alpha, now / 1000);
     const l = world.launch(me());
     updateGrab(l);
@@ -944,7 +947,7 @@
   // ---------- a small API for the headless checks (screen-check.py) ----------
   window.WF2D = {
     world, ui: UI, cam,
-    me, frames: () => frames, scale: () => S,
+    me, frames: () => frames, scale: () => S, lockstep: LOCK,
     feet: () => { const p = me(); return { x: X(p.x), y: Y(p.y) }; },
     padRects: () => padRects().map(r => ({ x: r.left, y: r.top, w: r.width, h: r.height })),
     visibleHud: () => [...document.querySelectorAll('[data-hud]')].filter(e => { const r = e.getBoundingClientRect(); const cs = getComputedStyle(e); return !e.hidden && r.width > 0 && r.height > 0 && cs.display !== 'none' && cs.visibility !== 'hidden' && +cs.opacity > 0.05; })

@@ -5,8 +5,9 @@ play as is feasible and repeatable, running on its own and reporting a result. A
 fun; it should secure a **bottom line** before real players get the game. Order of questions:
 **technology first** (what can see, operate and act as several players), then metrics, then thresholds.
 
-This file is the research log. Session 1 (2026-11-20) covers the technology landscape and three spikes.
-The spikes live in `lab/autotest/` and run against the real build. No game code was changed.
+This file is the research log. Session 1 (2026-11-20) covers the technology landscape and three spikes; session 2
+(2026-11-20) adds the page's lockstep seam and a human input model. The spikes live in `lab/autotest/` and run
+against the real build. **Where to pick up:** [`AUTOTEST-HANDOFF.md`](AUTOTEST-HANDOFF.md), one entry per session.
 
 ---
 
@@ -96,6 +97,10 @@ was also on screen.
   runs are repeatable in outcome, not frame by frame**, unless the page gets a test seam (e.g. `?lockstep=1`: one
   sim step per animation frame, accumulator reset on restart). The seam is small, but it touches the product,
   so it is a decision for John.
+- **Session 2: the seam is in** (John said yes). `?lockstep=1` makes each animation frame exactly one sim step and
+  draws exactly where the sim is; `WF2D.lockstep` reports it. **Measured** (`lockstep-repeat.py`): the same touch
+  script three times gives 27.025 / 27.025 / 27.102 without it and 26.795 three times with it, 138 frames each.
+  So page runs under a paused clock are now **bit-exact**: `run_for(16 × N)` = N steps.
 - CDP `Emulation.setVirtualTimePolicy`: an alternative; not tested, and probably not needed.
 - **Multiplayer:** the 3D server advances its sim on a wall-clock `setInterval`, and a browser's fake clock
   can't pause it. Lockstep multiplayer tests need a server test clock (e.g. `TEST_CLOCK=1`: the server steps
@@ -144,6 +149,9 @@ The 3D server already logs playtest events to JSONL (`--log`). If the 2D page re
 (a) **replays as regression tests** (bit-exact in the sim), (b) **calibration** for the human input model
 (reaction times, hold lengths, how often a GRAB is wrong), (c) data for **imitation personas**. This is the most
 direct route to "as genuine as human play". Privacy: device-local, no names, John's call.
+**Session 2:** John marked it low priority. Parked. What it would buy, concretely: the numbers in
+`lab/autotest/human.mjs` (`PERSONAS`) are guesses, and a few recorded family runs would replace them with
+measurements (how late a child really presses JUMP at an edge, how often GRAB is missed).
 
 ### 4.7 Multiplayer
 
@@ -157,6 +165,9 @@ direct route to "as genuine as human play". Privacy: device-local, no names, Joh
 
 The 2D game has no rooms yet, so a multiplayer spike would run against the 3D server (`games/tongzhou-forge`)
 to prove the harness, then move to 2D when rooms land.
+**Session 2 decision (John: "whichever is faster and easier"):** build the crew harness against the **3D server
+now**, in **real time**, judged on outcomes. No server test clock, so the 3D game is not touched. Node protocol
+bots, N browser contexts and the lag proxy carry over to 2D when rooms land.
 
 ### 4.8 Oracles: how a machine knows something is wrong
 
@@ -186,7 +197,9 @@ repo's rules (no CDN, no npm unless needed, tests boot the real server on a test
 
 ---
 
-## 5. Spikes run in session 1 (evidence)
+## 5. Spikes (evidence)
+
+### Session 1 spikes (2026-11-20)
 
 All three are in `lab/autotest/`, run against the real server on test port 3491.
 
@@ -204,9 +217,27 @@ All three are in `lab/autotest/`, run against the real server on test port 3491.
 - The VLM found the red "makes nothing" banner hard to read over the sky, and called the card's grey
   stroke-form glyph "a broken 木". Usability points for John, not verdicts.
 
+### Session 2 spikes (2026-11-20)
+
+| Spike | What it showed |
+|---|---|
+| `lockstep-repeat.py` | The `?lockstep=1` seam gives bit-exact page runs through real touch (§4.2). |
+| `human.mjs` | A **motor channel** between a test player's mind and the game. Timing error on each planned press (lognormal), stick placement spread and the page's dead zone, JUMP hold spread, taps that miss a button of the measured size (JUMP 66 px, GRAB 58 px across) and a second tap after noticing. Seeded. Personas `steady`, `rusher` and `kid` are **uncalibrated guesses** (§4.6). |
+| `personas.mjs` | Every isle's two routes × each persona × 10 seeds (14 s). The route bot as written wins 100%. Through the channel: steady 38%, rusher 34%, kid 19% mean. |
+| `ablate.mjs`, `trace.mjs` | **Why so low: the bots, not (only) the game.** With all noise at zero the channel wins 100%, but a **single frame (16 ms) of delay** already fails Friends, Leaf and Crowd 3 of 3. Traced on Friends: one late input leaves the hero on the ground at (17, 2) instead of up on the clouds at (13.6, 9.9), and the route bot's `go` can't climb back. A person would ride the clouds again. |
+| `clone-probe.mjs` | The `World` can be deep-copied (prototypes, Maps, Sets; no closures inside): **0.2 ms per copy**, and the copy plays the same future as the original. A search mind that tries moves on copies is affordable. |
+
+**What session 2 changes in the design.** The scripted routes are fixed paths. They prove each isle can be won;
+they are not players. Under any human imperfection they fail where a person would just try again, so their
+failure rate under noise measures the bot, not the isle. A human-like test player needs a **mind that replans
+from wherever it is**: a goal-directed search on world copies over a few macro moves (walk to, jump toward,
+leap, take, GRAB as), re-planned every half second, driving the motor channel. Then a persona's win rate and
+time-to-win per isle become a real **difficulty and precision signal** for session 5's thresholds. The motor
+channel stays as built. Results are recorded in this order: zero noise = 100% first, then personas.
+
 ---
 
-## 6. Emerging shape (to be confirmed in sessions 2-4)
+## 6. Emerging shape (to be confirmed in sessions 3-5)
 
 A **fidelity ladder**, each level with its own job and repeatability promise:
 
@@ -217,29 +248,34 @@ A **fidelity ladder**, each level with its own job and repeatability promise:
 | **L2 page real time** | nightly | human-model bots (reaction, aim error) / state / CDP touch, CPU-throttled | outcome, statistical | timing on slow phones, the jump physics in the page |
 | **L3 Android emulator** | nightly / pre-release | L1 bots / state / `adb` input in mobile Chrome | outcome | the real mobile browser and touch stack |
 | **L4 crew** | pre-release | N contexts + Node bots / proxy with bad network | outcome | sync, joins, lag |
-| **Observer** | nightly, a few checkpoints per isle | VLM on screenshots | advisory | readability, overlaps, "looks broken" → triage list |
+| **Observer** | on demand only (John: no nightly) | VLM on screenshots | advisory | readability, overlaps, "looks broken" → triage list; e.g. a one-off look if a dark theme is tried |
 | **Humans** | before each hand-over | John's family | — | fun, pace, understanding (CT-GaMe playtesting) |
 
 ---
 
-## 7. Decisions for John
+## 7. Decisions for John (answered 2026-11-20)
 
-1. **Test seam in the page?** `?lockstep=1` (one step per frame, accumulator reset) for bit-exact page replays.
-   Small, test-only, but it touches `app.js`.
-2. **Devices:** is there an Android phone that can be plugged in (USB debugging)? Is iOS fidelity worth a paid
-   device cloud, or does it stay manual?
-3. **VLM observer:** OK to spend Claude subscription runs nightly (~40 min for 3 checkpoints × 21 isles × 2 looks)?
-4. **Recording human play:** OK to add an opt-in, device-local input recorder for family playtests?
-5. **Multiplayer:** prove the crew harness on the 3D server now, or wait for 2D rooms?
+| # | Question | John | What it means |
+|---|---|---|---|
+| 1 | `?lockstep=1` test seam in the page | **yes** | Done in session 2 (§4.2). |
+| 2 | Android phone over USB; iOS | **yes**, "tell me what to install" | Install list in `AUTOTEST-HANDOFF.md`. iOS stays manual (no device cloud). |
+| 3 | Nightly VLM observer | **no nightly**; "dark theme maybe" | The observer is on demand only; a candidate use is checking a dark theme if one is tried. |
+| 4 | Opt-in input recorder | "what for? low priority" | Parked. What it buys is in §4.6. |
+| 5 | Crew harness on 3D now or wait | "whichever is faster and easier" | 3D server now, real time, no server test clock (§4.7). |
 
-## 8. Plan for the next sessions
+Also from John: **write a hand-off at the end of every session** (`AUTOTEST-HANDOFF.md`).
 
-- **S2, human model and persona bots:** an input model (reaction, aim, hold-time spread) over CDP touch; 3-4
-  personas; the render-state check as a real test; a first look at a search agent for soft-locks.
-- **S3, real mobile browser:** Android SDK + emulator + Chrome; drive one isle by `adb` input; WebKit build.
-- **S4, crew:** multiplayer harness (contexts + Node bots + lag proxy) on the 3D server; server test clock.
-- **S5, metrics and thresholds** (John's questions 1 and 2), mapped to ISO 25010:2023 and CT-GaMe areas,
-  using the numbers from S2-S4.
+## 8. Plan for the next sessions (revised in session 2)
+
+- **S3, a mind that recovers:** a search player on world copies (`clone-probe.mjs`) over macro moves, driving the
+  motor channel; goal from the isle (the target character and where it is offered). First check: it wins every
+  isle at zero noise without a script. Then persona win rates and time-to-win per isle. Also the render-state
+  check as a real test (with `?lockstep=1` it is exact now).
+- **S4, real mobile browser:** the phone over `adb` (Chrome, `adb reverse` + CDP), then the Android emulator; the
+  same touch script as the lockstep spike on the phone. WebKit build for Safari's engine.
+- **S5, crew:** contexts + Node protocol bots + lag proxy against the 3D server, in real time.
+- **S6, metrics and thresholds** (John's questions 1 and 2), mapped to ISO 25010:2023 and CT-GaMe areas, using
+  the numbers from S3-S5.
 
 ## Sources
 
@@ -258,6 +294,7 @@ A **fidelity ladder**, each level with its own job and repeatability promise:
 - Generative Personas That Behave and Experience Like Humans: [arXiv 2209.00459](https://arxiv.org/pdf/2209.00459)
 - iv4XR / aplib: [framework](https://github.com/iv4xr-project/iv4xr-framework), [aplib](https://github.com/iv4xr-project/aplib)
 - AI for Games in the Foundation Model Era (2026 survey): [arXiv 2609.16679](https://arxiv.org/pdf/2609.16679)
+- Bi, Li & Zhai, *FFitts law: modeling finger touch with Fitts' law* (CHI 2013): the touch-spread model behind `PADS`/`aim` in `human.mjs`
 - Playwright [clock](https://playwright.dev/python/docs/clock), [Android (experimental)](https://playwright.dev/docs/api/class-android)
 - Airtest / Poco: [docs](https://airtest.doc.io.netease.com/en/tutorial/1_quick_start_guide)
 - nunu.ai: [YC launch](https://www.ycombinator.com/launches/Jzd-nunu-ai-ai-agents-to-play-and-test-games),
