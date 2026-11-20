@@ -238,6 +238,15 @@ G('forge');
   ok(e.filter(x => x.t === 'dud').length === 1, 'strict: one dud');
   ok(w.cool.size === 1, 'strict: the pair cools down');
 }
+{
+  // a stone thrown onto the corner of a resting stone slides off it and lands; it never hangs in the air
+  // (it did: the slide kept the throw's speed, went back over the corner each frame; S3 autotest finding)
+  const { w } = fresh(isle('dawn'));
+  const r = stone(w, '日'), m = stone(w, '木');
+  Object.assign(r, { x: m.x - 2.7, y: m.y + 1.25, vx: 5.72, vy: 4.93, grounded: false, support: null });
+  steps(w, 120);
+  ok(r.grounded && r.y === m.y && Math.abs(r.vx) < 1e-9, 'a stone thrown onto a corner lands beside it (y ' + r.y.toFixed(2) + ')');
+}
 
 // ---------------------------------------------------------------- elements
 G('elements');

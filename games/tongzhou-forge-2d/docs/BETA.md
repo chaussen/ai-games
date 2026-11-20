@@ -89,6 +89,7 @@ Night and dusk skies alternate. Maps are 36 to 46 cells wide and 10 to 15 high, 
 | route bot (Forest) | A 林 thrown at the gap landed on the 森 left beside it: 林 on 森, a dud | the route leaves 森 out of the way; for players, the frame and dud line already explain it |
 | route bot (Apricot, Red Earth) | A character forged on a stone's spot (呆 on 木's, 灶 on 火's) kept that stone from ever growing back, silently: a likely stuck moment for a child | after 8 s: "木 is waiting to grow back: clear its spot" (`springBlocked`; 3 s fired in ordinary play, found by the play check) |
 | route bot (Lean on a Tree) | GRAB beside a stone is BESIDE, so a throw from next to 木 is impossible there | routes throw from a step further away (the sim is right) |
+| search mind, kid persona (Dawn; autotest S3) | A stone thrown onto the top corner of a resting stone slid off the corner but kept its throw speed, so it flew back over the corner every frame and hung in the air for good, ungrabbable (its spring never regrew): stuck until a restart. Any plain THROW from standing height about 2.7 short of a resting stone did it | the slide-off also stops the stone's sideways speed; regression check in `sim-test.mjs` (`docs/AUTOTEST.md` §5, S3) |
 
 ## 6. Known gaps
 
@@ -98,6 +99,10 @@ Night and dusk skies alternate. Maps are 36 to 46 cells wide and 10 to 15 high, 
   terrain of a finished level.
 - Many isles are long walks back and forth; there is no shortcut, timer, star or score beyond time and gems.
 - Gems are optional; they are placed along the way, not tested for reachability (the clouds' are).
+- **Friends and Leaf: the pillar's far side.** Drop off the pillar to the pavilion's side without its stone and
+  the only way back up is a hidden four-leap chain (brush the stone in the air, the wall, the high gem); a seeded
+  random player found it 2 times in 200 minutes (`lab/autotest/friends-trap.mjs`). A child will restart. A way
+  back (a cloud on that side) or the restart itself: John's call (`docs/AUTOTEST.md` §5, S3, finding 2).
 - One player only, as before. The ✓ marks live in this browser only.
 - The ink look's flames and shade are not from Claude Design's boards; they follow the ink and One Stroke
   rules (flat fills in One Stroke, no gradients) but are my drawings. Worth a Design pass if they stay.

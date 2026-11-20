@@ -661,7 +661,9 @@
         // landing on a stone off-centre: slide off it instead of balancing on a corner
         if (o.ref !== STATIC && Math.abs(k.x - o.ref.x) > this.fz.stackR) {
           const side = sgn(k.x - o.ref.x), nx = o.ref.x + side * (2 * SW + 0.01);
-          if (!this.overlaps(nx, k.y, SW, SH, k, { restingOnly: true })) { k.x = nx; k.grounded = false; k.support = null; return; }
+          // (and stop its flight: a thrown stone that kept its speed slid back over the corner every frame
+          // and hung there in the air for good; found by the automated player, docs/AUTOTEST.md §5 S3)
+          if (!this.overlaps(nx, k.y, SW, SH, k, { restingOnly: true })) { k.x = nx; k.vx = 0; k.grounded = false; k.support = null; return; }
         }
         // resting on rock with its middle over air: it tips over the edge
         if (o.ref === STATIC && !this.solid(Math.floor(k.x), o.cy)) {

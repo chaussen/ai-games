@@ -6,6 +6,64 @@ The full reasoning and evidence are in [`AUTOTEST.md`](AUTOTEST.md); the experim
 
 ---
 
+## Session 3 (2026-11-20): a mind that recovers
+
+**State**
+- **Built:** `lab/autotest/mind.mjs`, a test player with no script. Three layers:
+  - a stateless plan from the isle's recipe (deliver, make, clear a wall or gap, make a filler, set aside,
+    send home by the river, move a stone that boxes another in, restart when stuck);
+  - a navigation graph whose edges are moves played on world copies;
+  - a per-0.2 s choice of the move with the least time + cost-to-go.
+
+  It drives `human.mjs` exactly as the route bots did and allows for its persona's median latency. Runners:
+  `mind-zero`, `mind-personas`, `mind-ablate`, `mind-trace`, and `friends-trap` (a random-thumb probe).
+- **Acceptance 1 met:** 21 of 21 isles won at zero noise with no script, median 10 s of game time.
+- **Acceptance 2 met:** 693 runs (21 isles × ideal + 3 personas × 8 seeds), **all won** within 180 s. Median
+  time to win: ideal 10 s, steady 11, rusher 11, kid 17 (route bots in S2: 38 / 34 / 19% wins). The kid's
+  hardest isles are Crowd (2.8× ideal), Burn (2.7×) and Flourish (2.4×). Ablation shows the cost is **timing**:
+  a timed leap while carrying (on Burn, every thorn hit is at the hedge at x 22, holding 木).
+- **Game change:** fixed a **sim defect** the mind found. A stone thrown onto another stone's top corner hung in
+  the air for good, ungrabbable. The slide-off rule now stops its sideways speed (one line in `sim.js`), and a
+  regression check is in `sim-test.mjs` (fails before, passes after). `sim-test` 294, `smoke-test` 30,
+  `screen-test` (ink, greybox) and `play-test` 21/21 pass. Logged in `docs/BETA.md` §5.
+- 17 defects of the mind itself were found and fixed by tracing (AUTOTEST.md §5, S3, M1-M17). The biggest:
+  executing a move the rollout had already used up (M9); planning leaps as instant when a thumb's leap is
+  lift-and-tap (M13, M15); putting the thumb back on JUMP, which is a tap on glass (M17).
+
+**Resume**
+```sh
+cd games/tongzhou-forge-2d
+node lab/autotest/mind-zero.mjs                     # 21/21 at zero noise (≈2.5 min)
+node lab/autotest/mind-personas.mjs 8               # the persona table (≈13 min on 7 cores)
+MAX=120 node lab/autotest/mind-ablate.mjs burn kid 6
+node lab/autotest/mind-trace.mjs dawn kid 1000      # how any one run went
+```
+
+**For John to triage** (AUTOTEST.md §5, S3, findings 1-4)
+1. Sim defect, fixed (above). Say if a hovering stone was ever seen in family play.
+2. **Friends / Leaf, the pillar's far side.** Drop down the pavilion side without the pillar's stone and the
+   only way back up is a hidden four-leap chain. A random player found it 2 times in 200 minutes. Options: add a
+   cloud on that side, or accept the restart as the way out.
+3. **A late GRAB turns ON TOP into BESIDE** (a dud) on 12 of 21 isles (up to 7 in 24 runs: Dawn, Blaze). It can
+   box a piece in (Burn). Consider a slightly wider ON TOP (a knob) or keeping the label for a few frames.
+4. Burn and Crowd ask a child for the most precise thumb. Fine if intended; they sit 18th and 19th in the order.
+
+**Open**
+- The **render-state check** (sim truth vs drawn frame under `?lockstep=1`) was not reached; it starts S4.
+- The personas are still uncalibrated guesses; the mind predicts physics exactly. Both caveats hold every number.
+- Kid restarts (4 in 504 persona runs: Crowd 2, Forest 1, Flourish 1) are not traced one by one.
+- Cost: a full persona sweep is about 13 minutes on 7 cores. That is fine for nightly, too slow for every
+  commit. `mind-zero` (2.5 min) could become a gate (S6).
+
+**Next (S4): the page, then the phone.**
+1. The mind plays in the real page: `?lockstep=1`, CDP touch on the measured stick and buttons. Each frame,
+   check that the hero, stones, held stone and GRAB label are drawn where the sim says (exact under lockstep).
+   Acceptance: a mind run in the page reaches the same win as in the sim, and the render check passes every
+   frame of it.
+2. The same on the Android phone over `adb` (John's install list below; still needed), then the emulator.
+
+---
+
 ## Session 2 (2026-11-20): lockstep seam, human motor model, why route bots can't be the mind
 
 **State**
