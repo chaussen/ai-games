@@ -379,7 +379,8 @@ async function runIsle(browser, isleId) {
 // ---------- main ----------
 const browser = PHONE ? await android(PORT) : await headless({ width: VW, height: VH, dpr: 2 });
 if (PHONE) console.log(`phone: ${browser.model}, ${browser.version.Browser}`);
-const isles = ISLE === 'all' ? IS.ISLES.map((L) => L.id) : ISLE.split(',');
+// the mind cannot write yet: writing isles (L.write, docs/CONJURE.md 7a) are left out of 'all'
+const isles = ISLE === 'all' ? IS.ISLES.filter((L) => !L.write).map((L) => L.id) : ISLE.split(',');
 const results = [];
 let wake = null;
 if (PHONE) { try { wake = adb('shell', 'settings', 'get', 'global', 'stay_on_while_plugged_in'); adb('shell', 'svc', 'power', 'stayon', 'usb'); } catch (_) {} }

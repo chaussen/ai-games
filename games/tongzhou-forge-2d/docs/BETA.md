@@ -1,5 +1,7 @@
 # Beta: 21 isles, both looks
 
+(2026-11-21: two writing isles were added after the beta, so the game now has 23; see `CONJURE.md` §7a.)
+
 Built 2026-11-20 for John to playtest. It follows `GREYBOX.md` (gate P2) and the art work in `ART-DIRECTION.md`;
 the sim, the controls and the screen budget have not changed. What is new: **19 more isles** (21 in all, up
 from 2), **flames and shade** next to thorns, a hint when a stone cannot grow back, and the isle number and ✓

@@ -16,7 +16,7 @@ HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(HERE, "vendor", "MaShanZheng-subset.woff2")
 CHARS = os.path.join(HERE, "vendor", "MaShanZheng-subset.chars.txt")
 HAN = re.compile(r"[⺀-⿟　-〿㐀-䶿一-鿿豈-﫿]")
-SOURCES = ("content.js", "isles.js", "app.js", "ink.js", "index.html", "rules.js")
+SOURCES = ("content.js", "isles.js", "app.js", "ink.js", "index.html", "rules.js", "board.html", "board.js")
 
 
 def wanted():

@@ -321,7 +321,7 @@ def run_device(pw_browser, dev):
     page.screenshot(path=f"{OUT}/{name}-6-win.jpg", type="jpeg", quality=70)
 
     # dawn: the cloud chain, high up (the camera climbs with you)
-    page.evaluate("WF2D.goIsle(1)")
+    page.evaluate("WF2D.goIsle(WIsles.ISLES.findIndex(L => L.id === 'sun-and-moon'))")
     wait_frames(page, 10)
     page.evaluate("(() => { const p = WF2D.me(); p.x = 22.3; p.y = 2; WF2D.world.setDusk(20); })()")
     wait_frames(page, 30)

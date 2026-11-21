@@ -94,6 +94,11 @@ html.touch #write { right: calc(var(--gap-r) + 146px); bottom: var(--bot); width
 #write .dots i.part, .wp-ink i.part { background: linear-gradient(to top, var(--ink) var(--fill, 0%), transparent var(--fill, 0%)); }
 #write.dry .g { opacity: .45; }
 #write.down, #write:active { transform: scale(0.94); }
+/* a writing isle: WRITE calls until you write there (CJ2-15). A solid ring that steps on and off, no alpha, so
+   it is the same in One Stroke; it sits outside the button and never changes its size */
+#write.call { animation: write-call 1.2s steps(2, jump-none) infinite; }
+@keyframes write-call { from { outline: 3px solid var(--vermilion, #c0392b); outline-offset: 3px; } to { outline: 3px solid transparent; outline-offset: 3px; } }
+@media (prefers-reduced-motion: reduce) { #write.call { animation: none; outline: 3px solid var(--vermilion, #c0392b); outline-offset: 3px; } }
 
 /* the writing sheet: the square on top (upright) or on the left (sideways), then guesses, ideas and buttons */
 #writepad {

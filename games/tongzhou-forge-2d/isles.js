@@ -15,6 +15,8 @@
 //   b   the boat's deck (solid); the crew lands here and the title card shows while you stand on it
 // Entities are placed by x; stones drop onto whatever is under them when the isle loads.
 //   stones [ch, x]          pieces lying on the isle (they grow back when used, if `regrow`)
+//   write  [ch, ...]        what 书 WRITE may make here (else the stones' characters; never the goal).
+//                           A writing isle has one and too few pieces, so writing is the way (docs/CONJURE.md 7a)
 //   gems   [x, y]           take one: it counts, and it refills your 轻功 (a new source)
 //   glow   [x, y]           glow-gems: only there at dusk (杳)
 //   clouds [x, y]           touch one in the air: it refills your 轻功 (each cloud once per chain)
@@ -43,6 +45,29 @@
       spawn: 33.5,
       pavilion: 3.5,
       stones: [['木', 16.5], ['木', 23.5]],
+      gems: [[10.5, 4.2], [20, 4.6], [27.5, 3.4]],
+      clouds: [],
+      glow: [],
+    },
+    {
+      // a writing isle (docs/CONJURE.md CJ2-13): Two Trees with one 木. A grove needs two, so write the other
+      id: 'one-tree', name: 'One Tree', cn: '书木成林', want: '林', pal: 'dusk', regrow: true, write: ['木'],
+      tip: 'Only one 木 grows here, and a grove needs two. Write the other: tap 书 WRITE and draw 木.',
+      map: [
+        '....................................',
+        '....................................',
+        '....................................',
+        '....................................',
+        '....................................',
+        '....................................',
+        '....................................',
+        '#########...........................',
+        '#########___####################bbbb',
+        '#########~~~####################~~~~',
+      ],
+      spawn: 33.5,
+      pavilion: 3.5,
+      stones: [['木', 16.5]],
       gems: [[10.5, 4.2], [20, 4.6], [27.5, 3.4]],
       clouds: [],
       glow: [],
@@ -329,6 +354,30 @@
       spawn: 37.5,
       pavilion: 3.5,
       stones: [['木', 15.5], ['水', 31.5]],
+      gems: [[12, 4.4], [21, 4.8], [27, 4.4]],
+      clouds: [],
+      glow: [],
+    },
+    {
+      // a writing isle (CJ2-14): no 水 anywhere. The 水 you write douses the flames, then bathes the tree
+      id: 'water-the-tree', name: 'Water the Tree', cn: '书水为沐', want: '沐', pal: 'night', regrow: true, write: ['水'],
+      tip: 'Flames guard the tree, and there is no 水 here. Write 水 (书 WRITE): it puts the fire out. Then 水 left of 木 is 沐.',
+      map: [
+        '........................................',
+        '........................................',
+        '........................................',
+        '........................................',
+        '........................................',
+        '...............F........................',
+        '...............F........................',
+        '...............F........................',
+        '...............F..............####......',
+        '####################___#############bbbb',
+        '####################~~~#############~~~~',
+      ],
+      spawn: 37.5,
+      pavilion: 3.5,
+      stones: [['木', 10.5]],
       gems: [[12, 4.4], [21, 4.8], [27, 4.4]],
       clouds: [],
       glow: [],

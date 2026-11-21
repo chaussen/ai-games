@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glyph Isles 2D · board</title>
+<!-- The board: this computer shows a QR code; every phone that scans it plays its own game in
+     the look and profile chosen here. Opened by ../board/board.sh, or by hand: /board?art=cut&profile=relaxed. README.md, "The board" -->
+<style>
+  @font-face { font-family: "Tongzhou Brush"; src: url("vendor/MaShanZheng-subset.woff2") format("woff2"); font-display: block; }
+  :root { --ink: #1d1b1a; --soft: #5c5246; --paper: #f1e7cf; --ver: #c23a2b; --kai: "Tongzhou Brush", "Kaiti SC", "KaiTi", serif; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--paper); color: var(--ink); font: 16px/1.4 system-ui, sans-serif; }
+  main { min-height: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4vmin; align-items: center; padding: 5vmin 6vmin; }
+  @media (orientation: portrait) { main { grid-template-columns: 1fr; justify-items: center; text-align: center; } }
+  h1 { margin: 0; font-family: var(--kai); font-weight: 400; font-size: clamp(64px, 14vmin, 160px); line-height: 1; }
+  .py { font-size: clamp(16px, 2.6vmin, 26px); color: var(--soft); margin-top: .3em; }
+  .name { font-size: clamp(20px, 3.6vmin, 38px); font-weight: 700; letter-spacing: .04em; margin-top: .6em; }
+  .how { font-size: clamp(16px, 2.6vmin, 24px); margin: 1.2em 0 .4em; max-width: 34em; }
+  .url { font: 700 clamp(18px, 3vmin, 30px)/1.2 ui-monospace, monospace; color: var(--ver); word-break: break-all; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.4em; align-items: center; }
+  @media (orientation: portrait) { .row { justify-content: center; } }
+  .row b { font-size: 14px; color: var(--soft); margin-right: 4px; min-width: 4.5em; }
+  .chip { border: 2px solid var(--ink); background: transparent; color: var(--ink); padding: 6px 12px; font: 600 15px system-ui, sans-serif; cursor: pointer; }
+  .chip .g { font-family: var(--kai); font-weight: 400; font-size: 20px; margin-right: 4px; }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  #qr { background: #fff; padding: 2.4vmin; border: 3px solid var(--ink); line-height: 0; }
+  #qr img, #qr canvas { width: min(70vmin, 520px); height: auto; image-rendering: pixelated; }
+  .foot { margin-top: 1.6em; font-size: 14px; color: var(--soft); }
+  .foot a { color: var(--ink); }
+  .warn { color: var(--ver); font-weight: 700; }
+  /* upright (a tablet or a turned TV): the QR code first and sized to the height, so all of it is on screen */
+  @media (orientation: portrait) {
+    main { padding: 3vh 5vw; gap: 2.5vh; align-content: center; }
+    #qr { order: -1; }
+    #qr img, #qr canvas { width: min(80vw, 42vh); }
+    h1 { font-size: clamp(48px, 9vh, 120px); }
+    .how { margin: .6em auto .3em; }
+    .row { margin-top: .8em; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <section>
+    <h1>同舟</h1>
+    <div class="py">tóng zhōu · in the same boat</div>
+    <div class="name">Glyph Isles 2D</div>
+    <p class="how">Scan with a phone camera. Every phone plays its own game, in the look below.</p>
+    <div class="url" id="url"></div>
+    <div class="row" id="arts"><b>Look</b></div>
+    <div class="row" id="profiles"><b>Profile</b></div>
+    <p class="foot"><span id="note"></span> <a id="here" href="./">Play on this screen</a></p>
+  </section>
+  <div id="qr" aria-label="QR code for phones"></div>
+</main>
+<script src="vendor/qrcode.js"></script>
+<script src="config.js"></script>
+<script src="board.js"></script>
+</body>
+</html>

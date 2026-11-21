@@ -37,6 +37,12 @@ try {
   ok(sd.status === 200 && (sd.headers.get('content-type') || '').startsWith('application/json'), 'the stroke data is served as JSON');
   ok(Object.keys(require('./rules.js').GLYPHS).every(ch => sj.chars[ch]), 'the stroke data has every character in the game');
   ok((await fetch(base + '/favicon.ico')).status === 204, 'favicon: no content, no 404 in the console');
+  // the board (README, "The board"): a QR code page for phones, with this computer's address
+  const bd = await get('/board');
+  ok(bd.status === 200 && bd.type.startsWith('text/html') && /同舟/.test(bd.body) && /vendor\/qrcode\.js/.test(bd.body) && /config\.js/.test(bd.body), '/board is the board page');
+  ok((await get('/board.js')).status === 200 && (await get('/vendor/qrcode.js')).status === 200, 'the board script and its QR library are served');
+  const cf = await get('/config.js');
+  ok(cf.status === 200 && /^window\.F2D_CONFIG=\{"lanIPs":\[.*\],"port":\d+\};$/.test(cf.body), '/config.js gives the board the Wi-Fi addresses and port');
   for (const p of ['/sim-test.mjs', '/server.js', '/docs/GREYBOX.md', '/../CLAUDE.md', '/%2e%2e/CLAUDE.md', '/vendor/../sim.js.map'])
     ok((await get(p)).status === 404, 'not served: ' + p);
   // the font holds every character the page can show

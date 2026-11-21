@@ -46,10 +46,20 @@ for (const L of IS.ISLES) {
   ok(w.stones.every(s => s.y > consts.WATER && s.grounded), L.id + ': every stone lies on ground');
   ok(RU.GLYPHS[L.want], L.id + ': wants a known character');
   ok(L.stones.every(([ch]) => RU.GLYPHS[ch]), L.id + ': every stone is a known character');
-  // the want can be made from the stones there, in one step or several (林 then 森)
-  const have = L.stones.map(s => s[0]), can = new Set(have);
-  for (let grew = true; grew;) { grew = false; for (const r of RU.RECIPE_LIST) if (!can.has(r[3]) && can.has(r[1]) && can.has(r[2]) && (r[1] !== r[2] || have.filter(c => c === r[1]).length > 1 || r[1] !== have.find(c => c === r[1]))) { can.add(r[3]); grew = true; } }
-  ok(can.has(L.want), L.id + ': the want can be made from the stones there');
+  // the want can be made from the stones there, in one step or several (林 then 森); on a writing isle
+  // (docs/CONJURE.md CJ2-12) only with what you may write too, and never from the stones alone
+  const makes = (have) => {
+    const can = new Set(have);
+    for (let grew = true; grew;) { grew = false; for (const r of RU.RECIPE_LIST) if (!can.has(r[3]) && can.has(r[1]) && can.has(r[2]) && (r[1] !== r[2] || have.filter(c => c === r[1]).length > 1 || r[1] !== have.find(c => c === r[1]))) { can.add(r[3]); grew = true; } }
+    return can.has(L.want);
+  };
+  const have = L.stones.map(s => s[0]);
+  if (!L.write) ok(makes(have), L.id + ': the want can be made from the stones there');
+  else {
+    ok(L.write.every(ch => RU.GLYPHS[ch] && ch !== L.want), L.id + ': writes only known characters, never the goal');
+    ok(!makes(have), L.id + ': a writing isle: the stones alone cannot make ' + L.want);
+    ok(makes(have.concat(L.write, L.write)), L.id + ': with what it lets you write, they can');
+  }
 }
 
 // ---------------------------------------------------------------- classifier

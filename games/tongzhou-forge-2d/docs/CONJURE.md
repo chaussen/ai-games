@@ -9,7 +9,7 @@ Sources (copied, never imported): `games/tongzhou-conjure` (the first Conjure: p
 `docs/conjure/`) and `games/tongzhou-forge` (its G1 pad: opens blank, *Ideas to try*, FG-D018; the order-tolerant
 recogniser on Make Me a Hanzi stroke data, cards B3 and B4).
 
-**Status (2026-11-21): built for one player; the sim is ready for four.** §8 is the hand-off.
+**Status (2026-11-21): built for one player; the sim is ready for four; two writing isles (§7a).** §8 is the hand-off.
 
 ---
 
@@ -124,7 +124,7 @@ drawing and offers the ideas), `practiceMaster` (3).
   check passing after this change (sideways, ink; the WRITE button moves the sideways camera anchor by a few pixels).
   The full 21-isle run was not repeated.
 - Writing time does not count in the isle's time while the pad pauses it (one player).
-- Children may not know they can write: nothing points at WRITE yet except the button itself and the ☰ key list.
+- Children may not know they can write: WRITE blinks only on the two writing isles (CJ2-15); elsewhere nothing points at it except the button itself and the ☰ key list.
 
 ## 7a. Writing isles (session 2, 2026-11-21)
 
@@ -146,6 +146,35 @@ isles" run skips these two until it learns (§7).
 ## 8. Hand-off
 
 Kept up to date at the end of each session. Newest first.
+
+### Session 2 (2026-11-21): writing isles, and the board launcher
+
+**State**
+- §7a built: **One Tree** (isle 2) and **Water the Tree** (after Bathe), 23 isles in all. Each has a `write`
+  list and too few pieces; `sim-test` proves that the stones alone cannot make the goal, that the stones plus
+  writes can, and that two scripted routes win each isle, every one with a write (424 checks). WRITE blinks on
+  a writing isle until you write there (CJ2-15).
+- `write-isle-test.mjs` (new, port 3487): both isles in all three looks, upright and sideways. The call is on,
+  the character is written by real touches and read first, the stone is in your hands, the call stops, and
+  the written 水 douses the flames. Screenshots in `screenshots/write-isles/`.
+- Regression found and fixed: `screen-check.py` chose the cloud-chain isle by number (`goIsle(1)`), which the
+  new isle 2 moved. It now chooses by id. The lab minds skip writing isles in their "all" runs (they cannot
+  write); `mind-zero` still wins 21 of 21 of the rest.
+- **The board:** `/board` (board.html, board.js, `vendor/qrcode.js` copied from `games/tongzhou-forge`, MIT)
+  shows a QR code for phones with the look and profile in the link. `games/board/` is the launcher for the
+  board machine: `board.sh` plus `install.sh`, which made `board-2d`, `board-2d-onestroke`, ..., `board-3d`,
+  `board-conjure`, `board-isles` and `board-stop` in `~/bin` and the desktop menu. Port 3000 only (firewall).
+  `games/board/smoke-test.mjs` checks it on test port 3488 (26 checks).
+- The 3D-game launches only start the existing servers and boards; their boards were not re-checked here.
+- Not pushed: this network blocks github.com (John, 2026-11-21). Commits wait on local `master`.
+
+**For John**
+1. Play One Tree and Water the Tree: did you notice the blinking WRITE? Is writing 水 next to the flames clear
+   from the tip alone?
+2. On the board machine: `board-2d` (or the menu: Games → Board). Do the phones reach it, and is the QR code
+   big enough from across the room?
+3. Next: more writing isles (one per element?), or rooms for four on top of the board?
+
 
 ### Session 1 (2026-11-21): plan and build, one player
 

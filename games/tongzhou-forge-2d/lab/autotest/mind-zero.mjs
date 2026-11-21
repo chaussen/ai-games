@@ -12,6 +12,7 @@ const t0 = Date.now();
 for (let i = 0; i < IS.ISLES.length; i++) {
   const L = IS.ISLES[i];
   if (ONLY && L.id !== ONLY) continue;
+  if (!ONLY && L.write) { console.log(L.id + ': skipped, ' + 'the mind cannot write yet (docs/CONJURE.md 7a)'); continue; }
   const w = new World(); w.load(i); w.addPlayer('me'); w.drain();
   const t1 = Date.now();
   const r = play(w, 'me', { max: 60 * 180 });

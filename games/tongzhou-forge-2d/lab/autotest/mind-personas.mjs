@@ -40,7 +40,7 @@ if (process.argv[1] === me && process.env.MIND_WORKER) {
   process.on('message', ({ id, seeds }) => { process.send(runIsle(id, seeds)); process.exit(0); });
 } else if (process.argv[1] === me) {
   const seeds = +(process.argv[2] || 5), only = process.argv.slice(3);
-  const ids = IS.ISLES.map((L) => L.id).filter((id) => !only.length || only.includes(id));
+  const ids = IS.ISLES.filter((L) => only.length || !L.write).map((L) => L.id).filter((id) => !only.length || only.includes(id));   // the mind cannot write yet: writing isles (L.write, docs/CONJURE.md 7a) are left out of 'all'
   const t0 = Date.now(), all = {}, queue = ids.slice();
   await new Promise((done) => {
     let running = 0;

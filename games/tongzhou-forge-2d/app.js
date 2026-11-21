@@ -386,7 +386,7 @@
     fx.length = 0; flashes.length = 0; winAt = 0;
     $('#win').hidden = true; title.hidden = false; card.forced = null; msgT = 0; $('#msg').className = '';
     cam.ready = false; seenOuch = false; duskF = 0; wonF = 0;
-    closePad();
+    closePad(); wroteHere = false;
   }
   function restart() { world.load(world.index); onIsle(); }
   function goIsle(i) { world.load(i); onIsle(); }
@@ -487,6 +487,7 @@
         else { sfx.dawn(); say('Light again'); }
         break;
       case 'write': {
+        if (e.id === ME) wroteHere = true;
         sfx.write();
         const k = world.stones.find(s => s.id === e.s);
         if (k) burst(k.x, k.y + SH / 2, 14, { kind: 'ink', color: painted() ? PAINT[ART].ink : '#2a2622', v: 2, life: 0.6, size: 0.07 });
@@ -1148,7 +1149,10 @@
     for (let i = 0; i < max; i++) h += ink >= i + 1 ? '<i class="full"></i>' : ink > i ? '<i class="part" style="--fill:' + Math.round((ink - i) * 100) + '%"></i>' : '<i></i>';
     return h;
   }
+  // on a writing isle (docs/CONJURE.md CJ2-15) WRITE blinks until you have written there once
+  let wroteHere = false;
   function updateInk(force) {
+    writeEl.classList.toggle('call', !!world.L.write && !wroteHere && world.phase === 'play' && !pad.open);
     const ink = world.inkOf(ME), max = world.inkMax(), key = Math.round(ink * 20) + '/' + max;
     if (key === inkKey && !force) return;
     inkKey = key;

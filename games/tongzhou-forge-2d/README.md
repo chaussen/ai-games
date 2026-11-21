@@ -54,6 +54,16 @@ character in the game; an isle lets you write the characters lying on it (never 
 every 15 s; you keep two written stones (a third fades your oldest). One player for now; the sim gives each of four
 players their own ink and colour. Plan, decisions, knobs and hand-off: **`docs/CONJURE.md`**.
 
+**Writing isles (2026-11-21): 23 isles now.** Two isles where a piece lies nowhere, so you must write it:
+**One Tree 书木成林** (isle 2, right after Two Trees: one 木, and a grove needs two) and **Water the Tree
+书水为沐** (after Bathe: no 水 anywhere; the 水 you write puts out the flames, then goes left of 木 for 沐). On
+them the WRITE button blinks until you write. `docs/CONJURE.md` §7a.
+
+**The board (2026-11-21):** `/board` shows a big QR code for phones, with the look and profile in the link
+(chips on the board switch them). Every phone plays its own game; there are no rooms yet. On the board machine,
+`board-2d`, `board-2d-onestroke` and the other shortcuts in `../board/` start the server on port 3000 and open
+this page.
+
 **Automated play-testing (research, 2026-11-20):** `docs/AUTOTEST.md`: which technologies can see, operate and
 play this game like a person, with spikes in `lab/autotest/`. Nothing in the game changed.
 
@@ -63,6 +73,7 @@ play this game like a person, with spikes in `lab/autotest/`. Nothing in the gam
 cd games/tongzhou-forge-2d
 node server.js                 # http://localhost:3300/
 PORT=3000 node server.js       # on the machine where only port 3000 is open (phone playtests)
+../board/board.sh 2d cut relaxed   # or board-2d-onestroke etc. once ../board/install.sh has run: server on 3000 + the board
 ```
 
 Phones open `http://<LAN-IP>:3300/` (the server prints it). URL options: `?art=ink|cut|greybox`, `?isle=dawn` (an isle's id, or its number from 0),
@@ -91,6 +102,7 @@ else kicks you off it. Carrying a stone you get one leap.
 ```sh
 node sim-test.mjs        # rules, 轻功, forging, elements and walls, two scripted wins per isle (42; pure node)
 node write-test.mjs      # the pad's recogniser on its stroke data (synthetic: not real handwriting)
+node write-isle-test.mjs # real server on 3487: both writing isles in all three looks, written by real touches
 node smoke-test.mjs      # real server on port 3481: what a phone may fetch, font coverage
 node screen-test.mjs     # real server on 3482 + screen-check.py: eleven screens (phones, iPads, laptops), real touch, budget, contrast, screenshots
 ART=greybox node screen-test.mjs   # the same for the greybox look

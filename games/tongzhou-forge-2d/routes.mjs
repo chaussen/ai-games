@@ -33,6 +33,20 @@ export const ROUTES = {
       S.wait(0.6), S.take('林'), S.go(4), S.grabAs('offer'), S.event('win', 3),
     ],
   }),
+  // writing isles (docs/CONJURE.md 7a): every route writes, because a piece lies nowhere
+  'one-tree': () => ({
+    // A: stand by the one 木, write the other into your hands, set it beside
+    write_beside: [
+      S.go(17.6), S.face(-1), S.write('木'), S.grabAs('beside'), S.event('forge', 2),
+      S.wait(0.6), S.take('林'), S.go(4), S.grabAs('offer'), S.event('win', 3),
+    ],
+    // B: the isle's 木 bridges the gap and grows back; write a second and set it beside, walk over the bridge
+    bridge_then_write: [
+      S.take('木'), S.go(13.2), S.grabAs('toss', -1), S.event('bridge', 3), S.event('regrow', 6),
+      S.go(17.6), S.face(-1), S.write('木'), S.grabAs('beside'), S.event('forge', 2),
+      S.wait(0.6), S.take('林'), S.go(4), S.grabAs('offer'), S.event('win', 3),
+    ],
+  }),
   'sun-and-moon': () => ({
     // A: 木 bridges the gap, 火 burns the thorns, the 轻功 chain up the tower for 日, 日 left of 月
     bridge_and_burn: [
@@ -206,6 +220,20 @@ export const ROUTES = {
       S.go(16.6), S.take('木'), S.go(19.0), S.grabAs('toss', 1), S.event('bridge', 3), S.event('regrow', 6),
       S.go(31.5, { land: 3 }), S.take('水'), S.go(11.0), S.event('douse', 2),
       S.go(14.5), S.face(1), S.grabAs('beside'), S.event('forge', 2),
+      S.wait(0.6), S.take('沐'), S.go(4), S.grabAs('offer'), S.event('win', 3),
+    ],
+  }),
+  'water-the-tree': () => ({
+    // A: write 水 on the boat, carry it to the flames (they go out), set it left of 木
+    carry_it: [
+      S.write('水'), S.go(17.0), S.event('douse', 3),
+      S.go(9.5), S.face(1), S.grabAs('beside'), S.event('forge', 2),
+      S.wait(0.6), S.take('沐'), S.go(4), S.grabAs('offer'), S.event('win', 3),
+    ],
+    // B: throw the written 水 at the flames from across the gap, pick it up again, then 沐
+    throw_it: [
+      S.go(19.0), S.write('水'), S.grabAs('toss', -1), S.event('douse', 3),
+      S.take('水'), S.go(9.5), S.face(1), S.grabAs('beside'), S.event('forge', 2),
       S.wait(0.6), S.take('沐'), S.go(4), S.grabAs('offer'), S.event('win', 3),
     ],
   }),

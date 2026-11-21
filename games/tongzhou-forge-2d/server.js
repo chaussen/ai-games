@@ -2,6 +2,7 @@
 // (one player); the server only hands out files and prints the address phones can use.
 //   node server.js              port 3300
 //   PORT=3000 node server.js    on a machine where only 3000 is open (phone playtests here)
+//   /board                      the board page: a QR code for phones (board.html; ../board/board.sh opens it)
 'use strict';
 const http = require('http');
 const fs = require('fs');
@@ -16,7 +17,7 @@ const TYPES = {
   '.woff2': 'font/woff2', '.json': 'application/json', '.png': 'image/png', '.txt': 'text/plain; charset=utf-8', '.svg': 'image/svg+xml',
 };
 // only what the page needs is served; tests, docs and tools stay on the computer
-const PUBLIC = new Set(['index.html', 'style.css', 'app.js', 'ink.js', 'cut.js', 'things.js', 'sim.js', 'rules.js', 'isles.js', 'content.js']);
+const PUBLIC = new Set(['index.html', 'board.html', 'board.js', 'style.css', 'app.js', 'ink.js', 'cut.js', 'things.js', 'sim.js', 'rules.js', 'isles.js', 'content.js']);
 
 function lanIPs() {
   const out = [];
@@ -32,6 +33,13 @@ const server = http.createServer((req, res) => {
   try { p = decodeURIComponent(new URL(req.url, 'http://x').pathname); } catch (e) { res.writeHead(400); res.end('bad request'); return; }
   if (p === '/favicon.ico') { res.writeHead(204); res.end(); return; }
   if (p === '/') p = '/index.html';
+  if (p === '/board') p = '/board.html';
+  // the board's QR code needs this computer's Wi-Fi address (board.js)
+  if (p === '/config.js') {
+    res.writeHead(200, { 'content-type': 'text/javascript; charset=utf-8', 'cache-control': 'no-cache' });
+    res.end('window.F2D_CONFIG=' + JSON.stringify({ lanIPs: lanIPs(), port: PORT }) + ';');
+    return;
+  }
   const rel = p.replace(/^\/+/, '');
   const ok = PUBLIC.has(rel) || (/^vendor\/[\w.-]+\.(woff2|txt|js|json)$/.test(rel));
   const file = path.join(ROOT, rel);
@@ -46,5 +54,6 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, HOST, () => {
   console.log('Glyph Isles 2D on http://localhost:' + PORT + '/');
   for (const ip of lanIPs()) console.log('Phones (Wi-Fi): http://' + ip + ':' + PORT + '/');
+  console.log('Board (QR code for phones): http://localhost:' + PORT + '/board');
 });
 module.exports = server;
