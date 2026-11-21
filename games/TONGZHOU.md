@@ -4,7 +4,14 @@ Five folders, a launcher and a test lab have grown around one idea: a crew of ch
 Chinese characters as stones, where each character does what it means. This page says what each piece is, where
 it stands, how to start it and where its docs are. Updated 2026-11-21.
 
-## The direction
+## Newer direction (2026-11-22): 神笔 Shenbi
+
+The name Tongzhou is retired for the next step. John wants an open sandbox where written characters become
+objects that can be wielded, thrown and react to the world and each other. It is a **new folder**,
+[`shenbi/`](shenbi/README.md), with docs only so far; start at `shenbi/docs/HANDOFF.md`. The folders below stay
+as reference and are not archived; code is copied from them, never imported.
+
+## The direction (2026-11-21, still true for the folders below)
 
 From John, 2026-11-21:
 
