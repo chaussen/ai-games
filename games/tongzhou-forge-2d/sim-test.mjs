@@ -519,5 +519,188 @@ G('determinism');
   ok(once() === once(), 'the same presses give the same isle');
 }
 
+// ---------------------------------------------------------------- bodies (docs/CO-OP.md)
+G('bodies');
+const { STATIC } = require('./sim.js');
+{
+  const { PW, PH, HOLD_Y, SH } = consts;
+  // a crew on the flat ground of Two Trees (x 25-31, ground at y 2), no stones in the way
+  const crew = (n = 2, setup) => {
+    const w = new World(); w.load(0);
+    w.stones.slice().forEach(k => w.consume(k));
+    w.L = Object.assign({}, w.L, { regrow: false });
+    const ps = [];
+    for (let i = 0; i < n; i++) ps.push(w.addPlayer('p' + i));
+    ps.forEach((p, i) => { p.x = 26 + i * 1.5; p.y = 2; p.vx = p.vy = 0; p.grounded = true; p.support = STATIC; p.face = 1; });
+    if (setup) setup(w, ps);
+    w.drain();
+    return { w, ps };
+  };
+  const hold = (w, ps, inputs, n) => { const out = []; for (let i = 0; i < n; i++) { ps.forEach((p, j) => w.setInput(p.id, inputs[j] || 0, false)); w.step(DT); out.push(...w.drain()); } return out; };
+  const apart = (a, b) => Math.abs(a.x - b.x) >= 2 * PW - 1e-6;
+
+  { // two friends push against each other: nobody moves through anybody
+    const { w, ps: [a, b] } = crew();
+    hold(w, [a, b], [1, -1], 40);
+    ok(apart(a, b) && a.x < b.x, 'pushing against each other: they stop, touching, in the same order');
+    ok(Math.abs(a.x - b.x - -2 * PW) < 0.05, 'pushing against each other: they meet in between');
+  }
+  { // walking into a friend who stands still shoves them along
+    const { w, ps: [a, b] } = crew();
+    const b0 = b.x, ev = hold(w, [a, b], [1, 0], 90);
+    ok(b.x > b0 + 0.8 && apart(a, b) && a.x < b.x, 'walking into a friend who stands still shoves them along (' + (b.x - b0).toFixed(2) + ')');
+    ok(ev.some(e => e.t === 'bump' && e.id === 'p0' && e.other === 'p1'), 'a bump event says who ran into whom');
+  }
+  { // shove 0: a friend is a wall
+    const { w, ps: [a, b] } = crew(2, w => { w.bd = Object.freeze(Object.assign({}, w.bd, { shove: 0, slip: 0 })); });
+    const b0 = b.x;
+    hold(w, [a, b], [1, 0], 90);
+    ok(b.x === b0 && apart(a, b), 'BODY.shove 0: a friend is a wall');
+  }
+  { // leaning on a friend who pushes back: after BODY.slip seconds you slip past (no corridor soft-lock)
+    const { w, ps: [a, b] } = crew();
+    const ev = hold(w, [a, b], [1, -1], Math.round((w.bd.slip + 0.6) / DT));
+    ok(ev.some(e => e.t === 'slip' && e.id === 'p0'), 'leaning on a friend long enough: you slip past');
+    hold(w, [a, b], [1, 0], 30);
+    ok(a.x > b.x && apart(a, b), 'after the slip you are on the other side, and apart again');
+    ok(!a.slip.length, 'the slip ends once you are apart');
+  }
+  { // stand on a friend's head, ride along, and come along when they jump
+    const { w, ps: [a, b] } = crew(2, (w, [a, b]) => { a.x = b.x + 0.1; a.y = 5; a.grounded = false; a.support = null; });
+    hold(w, [a, b], [0, 0], 60);
+    ok(a.support === b && a.grounded && Math.abs(a.y - (b.y + PH)) < 1e-6, 'falling onto a friend: you stand on their head');
+    const dx = a.x - b.x;
+    hold(w, [a, b], [0, 1], 45);
+    ok(a.support === b && Math.abs(a.x - b.x - dx) < 0.02, 'your friend walks: you ride along (offset ' + (a.x - b.x - dx).toFixed(3) + ')');
+    w.press(b.id, 'jump');
+    let top = 0;
+    for (let i = 0; i < 70; i++) { w.setInput(b.id, 0, true); w.setInput(a.id, 0, false); w.step(DT); w.drain(); top = Math.max(top, a.y); }
+    ok(top > 2 + PH + 1 && a.support === b && Math.abs(a.y - (b.y + PH)) < 1e-6, 'your friend jumps: you go up with them and land on their head again');
+    // the depth order: the carrier steps first
+    ok(w.depth(a) === 1 && w.depth(b) === 0 && w.ridesOn(a, b), 'depth and ridesOn see the stack');
+  }
+  { // a friend's head is a step: jumping off it goes higher than any jump from the ground
+    const { w, ps: [a, b] } = crew(2, (w, [a, b]) => { a.x = b.x; a.y = b.y + PH; a.support = b; });
+    w.press(a.id, 'jump');
+    let top = 0;
+    for (let i = 0; i < 60; i++) { w.setInput(a.id, 0, true); w.setInput(b.id, 0, false); w.step(DT); w.drain(); top = Math.max(top, a.y); }
+    // a plain jump from the ground rises about 1.56 (the sim's steps fall a little short of QI.jump)
+    ok(top > 2 + PH + 1.5, 'jumping off a friend\'s head: a friend\'s height higher than a jump from the ground (' + top.toFixed(2) + ')');
+  }
+  { // a tapped hop (1.17 high) toward a friend (1.2 tall) still climbs on: the ledge nudge covers heads
+    const { w, ps: [a, b] } = crew(2, (w, [a, b]) => { a.x = b.x - 2 * PW - 0.02; });
+    w.press(a.id, 'jump');
+    for (let i = 0; i < 60; i++) { w.setInput(a.id, 1, i < 4); w.setInput(b.id, 0, false); w.step(DT); w.drain(); if (a.support === b) break; }
+    ok(a.support === b, 'a tapped hop into a friend climbs onto their head (ASSIST.nudge)');
+  }
+  { // three high: a tower of friends, each riding the one below
+    const { w, ps: [a, b, c] } = crew(3, (w, [a, b, c]) => { b.x = a.x; b.y = 2 + PH; b.support = a; c.x = a.x; c.y = 2 + 2 * PH; c.support = b; });
+    hold(w, [a, b, c], [1, 0, 0], 40);
+    ok(c.support === b && b.support === a && Math.abs(c.x - a.x) < 0.02 && Math.abs(c.y - (2 + 2 * PH)) < 1e-6, 'a tower of three walks as one');
+    w.removePlayer(b.id);
+    hold(w, [a, c], [0, 0], 40);
+    ok(c.grounded && c.support === a && Math.abs(c.y - (2 + PH)) < 1e-6, 'the middle one leaves: the top one falls onto the bottom one');
+  }
+  { // a friend carrying a stone: you stand on the stone
+    const { w, ps: [a, b] } = crew(2, (w, [a, b]) => { a.x = b.x; a.y = 6; a.grounded = false; a.support = null; });
+    w.write(b.id, '木');
+    hold(w, [a, b], [0, 0], 60);
+    ok(b.hold && a.support === b && Math.abs(a.y - (b.y + HOLD_Y + SH)) < 1e-6, 'a friend carrying a stone: you stand on the stone');
+  }
+  { // in the air, a friend's side gives a 轻功 charge back (QI.refill 'head')
+    const { w, ps: [a, b] } = crew(2, (w, [a, b]) => { a.x = b.x - 2 * PW - 0.01; a.y = 2.4; a.grounded = false; a.support = null; a.qi = 0; a.vy = 0; });
+    const ev = hold(w, [a, b], [1, 0], 3);
+    ok(ev.some(e => e.t === 'refill' && e.src === 'head') && a.qi === 1, 'touching a friend in the air gives a 轻功 charge back');
+  }
+  { // BODY.solid false: the old rule
+    const { w, ps: [a, b] } = crew(2, w => { w.bd = Object.freeze(Object.assign({}, w.bd, { solid: false })); });
+    hold(w, [a, b], [1, 0], 60);
+    ok(a.x > b.x, 'BODY.solid false: friends pass through each other');
+  }
+  { // overlapping friends (a respawn, a placement) drift apart instead of sticking
+    const { w, ps: [a, b] } = crew(2, (w, [a, b]) => { a.x = b.x - 0.1; });
+    hold(w, [a, b], [0, 0], 60);
+    ok(apart(a, b), 'two friends in one spot drift apart');
+  }
+  { // one player: no body rule touches them
+    const { w, p } = fresh(0);
+    ok(w.bodiesFor(p) === null, 'alone: no bodies to run into');
+  }
+  // knock (CO-06): a thrown stone and a friend
+  const throwAt = (mode, bHolds) => {
+    const { w, ps: [a, b] } = crew(2, (w, [a, b]) => { b.x = a.x + 2.7; if (mode) w.setKnock(mode); });
+    w.write(a.id, '木');
+    if (bHolds) w.write(b.id, '木');
+    w.setInput(a.id, 1, false); w.step(DT); w.drain();
+    const l = w.launch(a);
+    w.press(a.id, 'grab');
+    const ev = [];
+    for (let i = 0; i < 60; i++) { w.setInput(a.id, i ? 0 : 1, false); w.setInput(b.id, 0, false); w.step(DT); ev.push(...w.drain()); }
+    return { w, a, b, ev, l };
+  };
+  {
+    const r = throwAt(null);
+    ok(r.l.mode === 'toss' && r.w.bd.knock === 'off' && !r.ev.some(e => e.t === 'knock') && r.b.stun <= 0, 'knock off (default): a thrown stone flies through a friend');
+  }
+  {
+    const r = throwAt('push');
+    const k = r.ev.find(e => e.t === 'knock');
+    ok(k && k.id === r.b.id && k.by === r.a.id && !k.lost, 'knock push: the stone throws your friend back (and says who threw it)');
+  }
+  {
+    const r = throwAt('loose', true);
+    const k = r.ev.find(e => e.t === 'knock');
+    ok(k && k.lost === '木' && !r.b.hold, 'knock loose: what your friend carried flies out of their hands');
+    ok(r.w.stones.filter(s => s.ch === '木').every(s => s.state !== 'gone'), 'knock loose: nothing is lost, both stones lie on the isle');
+  }
+  {
+    const { w } = crew();
+    w.setKnock('push'); w.load(3);
+    ok(w.bd.knock === 'push', 'the knock choice survives the next isle'); w.setKnock('nope');
+    ok(w.bd.knock === 'off', 'an unknown knock falls back to off');
+  }
+}
+
+// ---------------------------------------------------------------- snapshot (the server sends it to every phone)
+G('snapshot');
+{
+  // key order may differ on reused objects (it means nothing): compare with sorted keys
+  const canon = v => v === null || typeof v !== 'object' ? JSON.stringify(v) : Array.isArray(v) ? '[' + v.map(canon).join() + ']' : '{' + Object.keys(v).sort().map(k => JSON.stringify(k) + ':' + canon(v[k])).join() + '}';
+  // four players with made-up but repeatable hands on Sun and Moon; a copy made half way through steps on
+  // bit for bit like the original, through JSON (the wire)
+  let seed = 7;
+  const rnd = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+  const A = new World(); A.load(isle('sun-and-moon'));
+  for (let i = 0; i < 4; i++) A.addPlayer('p' + i);
+  A.setKnock('loose');
+  const hands = [];
+  for (let t = 0; t < 900; t++) hands.push([0, 1, 2, 3].map(() => ({ x: rnd() * 2 - 1, j: rnd() < 0.04, g: rnd() < 0.02, w: rnd() < 0.004 })));
+  const play = (w, t) => {
+    hands[t].forEach((h, i) => { const id = 'p' + i; w.setInput(id, h.x, h.j); if (h.j) w.press(id, 'jump'); if (h.g) w.press(id, 'grab'); if (h.w) w.write(id, w.writable()[0]); });
+    w.step(DT); w.drain();
+  };
+  for (let t = 0; t < 400; t++) play(A, t);
+  const B = new World();
+  B.restore(JSON.parse(JSON.stringify(A.snapshot())));
+  ok(canon(B.snapshot()) === canon(A.snapshot()), 'restore(snapshot()) gives the same snapshot');
+  let same = true, at = -1;
+  for (let t = 400; t < 900 && same; t++) { play(A, t); play(B, t); if (canon(A.snapshot()) !== canon(B.snapshot())) { same = false; at = t; } }
+  ok(same, 'a restored world steps on bit for bit like the original (500 steps, four players)' + (same ? '' : ': differs at step ' + at));
+  ok(A.stones.length > 0 && [...A.players.values()].some(p => p.hold || p.wrote.length), 'the run had stones held or written (it tested something)');
+  // a world on another isle catches up; the page's own keys survive
+  const C = new World(); C.load(0); C.addPlayer('p0');
+  C.players.get('p0')._px = 123;
+  C.restore(A.snapshot());
+  ok(C.index === A.index && C.players.size === 4 && C.players.get('p0')._px === 123, 'restore switches isle, adds players, keeps the page\'s _ keys');
+  const D = new World(); D.load(A.index);
+  D.restore(A.snapshot({ cells: false }));
+  ok(D.cells.map(r => r.join('')).join() === IS.parse(A.L).cells.map(r => r.join('')).join(), 'a snapshot without cells leaves the map alone');
+  // the rider survives the trip
+  const E = new World(); E.load(0); const e1 = E.addPlayer('a'), e2 = E.addPlayer('b');
+  e1.x = e2.x; e1.y = e2.y + consts.PH; e1.support = e2; e1.grounded = true;
+  const F = new World(); F.restore(E.snapshot());
+  ok(F.players.get('a').support === F.players.get('b'), 'standing on a friend survives a snapshot');
+}
+
 console.log(fail ? `SIM TESTS: ${pass} passed, ${fail} FAILED` : `ALL ${pass} SIM TESTS PASSED`);
 process.exit(fail ? 1 : 0);

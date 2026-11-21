@@ -19,22 +19,31 @@ this folder, so updating the repo updates them. It never needs a password.
 
 | Command | Starts | Board |
 |---|---|---|
-| `board-2d` | Glyph Isles 2D, ink scroll 水墨 shuǐ mò, standard | `/board?art=ink&profile=standard` |
-| `board-2d-onestroke` | Glyph Isles 2D, One Stroke 一笔 yī bǐ | `/board?art=cut&profile=standard` |
-| `board-2d-greybox` | Glyph Isles 2D, greybox | `/board?art=greybox&profile=standard` |
-| `board-2d-relaxed` | Glyph Isles 2D, ink, relaxed (young children) | `/board?art=ink&profile=relaxed` |
-| `board-2d-strict` | Glyph Isles 2D, ink, strict | `/board?art=ink&profile=strict` |
+| `board-2d` | Glyph Isles 2D **crew** (one isle, up to four phones), ink scroll 水墨 shuǐ mò, standard | `/board?art=ink&profile=standard&crew=1&knock=off` |
+| `board-2d-onestroke` | the crew, One Stroke 一笔 yī bǐ | `/board?art=cut&profile=standard&crew=1&knock=off` |
+| `board-2d-greybox` | the crew, greybox | `/board?art=greybox&profile=standard&crew=1&knock=off` |
+| `board-2d-relaxed` | the crew, ink, relaxed (young children) | `/board?art=ink&profile=relaxed&crew=1&knock=off` |
+| `board-2d-strict` | the crew, ink, strict | `/board?art=ink&profile=strict&crew=1&knock=off` |
+| `board-2d-rough` | the crew, ink, thrown stones knock a friend back | `/board?art=ink&profile=standard&crew=1&knock=push` |
+| `board-2d-alone` | Glyph Isles 2D, every phone its own game (as before the crew) | `/board?art=ink&profile=standard&crew=0` |
 | `board-3d` | The Forge 3D (`games/tongzhou-forge`) | `/?board=1` |
 | `board-3d-relaxed` | The Forge 3D, relaxed forge profile | `/?board=1&strict=relaxed` |
 | `board-conjure` | Conjure (`games/tongzhou-conjure`) | `/?board=1` |
 | `board-isles` | Glyph Isles 3D (`games/tongzhou-isles`) | `/?board=1` |
 | `board-stop` | stops the game on port 3000 | |
 
-Any other combination: `board 2d cut strict`, `board 3d strict`, `board status`, `board list`.
+Any other combination: `board 2d cut strict`, `board 2d greybox relaxed loose`, `board 2d alone`, `board 3d strict`,
+`board status`, `board list`. The 2D words come in any order: a look (`ink`, `cut`, `greybox`), a profile
+(`relaxed`, `standard`, `strict`), `crew` (the default) or `alone`, and what a thrown stone does to a friend
+(`off`, the default, `push` or `loose`; see `../tongzhou-forge-2d/docs/CO-OP.md`).
 
-In the 2D board you can also switch the look and profile with the chips on the page. The QR code changes
-straight away, with no restart. Every phone plays its own 2D game (no rooms yet). The 3D games are multiplayer:
-their board also shows who has joined.
+In the 2D board you can also switch these with the chips on the page. The QR code changes straight away, with no
+restart. In a crew the board shows who has joined (a dot in each player's colour) and which isle they are on. The
+crew's profile and thrown-stone setting follow the board, and any phone can change them in ☰. The 3D games are
+multiplayer too: their board also shows who has joined.
+
+Since 2026-11-21, `board-2d` and its variants start a **crew**, so run `./install.sh` again to get `board-2d-rough`
+and `board-2d-alone`.
 
 ## What it does
 

@@ -381,3 +381,6 @@ html.cut #win .seal {
   border: 3px solid var(--vermilion); color: var(--vermilion); font: 900 15px/16px var(--kai); writing-mode: vertical-rl;
 }
 @media (max-width: 420px) { html.cut #win { grid-template-columns: 96px 1fr; column-gap: 12px; padding-right: 58px; } html.cut #win .g { width: 96px; height: 96px; font-size: 62px; } }
+
+/* a player's colour in the message line (docs/CO-OP.md) */
+.pdot { display: inline-block; width: 0.7em; height: 0.7em; border-radius: 50%; vertical-align: -0.05em; margin-right: 0.15em; box-shadow: 0 0 0 2px rgba(255,255,255,0.85); }

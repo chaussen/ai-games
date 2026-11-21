@@ -85,6 +85,9 @@ const STYLES = {
   const POSE_AT = { wall: [3.5, 3], leap: [0, 5] };
   // where a held stone's underside sits, in hero units: Design's carry board puts it a hand above the head
   const HOLD_UNITS = 36;
+  // the top of this hero's head, in hero units (the bun rises to 32): a friend standing on it is drawn there,
+  // not on the sim's taller box (docs/CO-OP.md §7)
+  const HEAD_UNITS = 30;
   const P2 = {};
   const path = d => P2[d] || (P2[d] = new Path2D(d));
   const startOf = d => { const m = /^M\s*(-?[\d.]+)[ ,](-?[\d.]+)/.exec(d); return m ? [+m[1], +m[2]] : [0, 0]; };
@@ -207,7 +210,9 @@ const STYLES = {
       v.frames2();
       stones(v, false);
       v.ghost();
-      hero(v);
+      // friends first (docs/CO-OP.md), then you on top of them
+      for (const q of world.players.values()) if (q !== v.me()) hero(v, q, false);
+      hero(v, v.me(), true);
       stones(v, true);
       v.particles();
       if (v.wonF > 0.01) { ctx.fillStyle = 'rgba(255,250,236,' + (0.2 * v.wonF).toFixed(3) + ')'; ctx.fillRect(0, 0, W, H); }
@@ -613,6 +618,16 @@ const STYLES = {
       ctx.fillText(text, 0, h * 0.04);
       ctx.restore();
     }
+    // Friends stand on friends (docs/CO-OP.md). This hero is drawn shorter than the sim's body and a carried
+    // stone lower than its sim box, so a rider is drawn lower by what the friends under them lack.
+    function sink(v, p) {
+      let d = 0;
+      for (let q = p.support, n = 0; q && q.in !== undefined && n < 8; q = q.support, n++) {
+        d += q.hold ? v.HOLD_Y - HOLD_UNITS * v.PH / 44 : v.PH * (1 - HEAD_UNITS / 44);
+      }
+      return d;
+    }
+    const ridden = (world, h) => { for (const q of world.players.values()) if (q.support === h) return true; return false; };
     function stones(v, heldOnly) {
       const { ctx, S, X, Y, world } = v;
       const p = v.me(), l = world.launch(p), [mpx] = v.posOf(p, v.a);
@@ -620,16 +635,17 @@ const STYLES = {
       for (const k of world.stones) {
         if (k.state === 'gone' || (k.state === 'held') !== heldOnly) continue;
         let [x, y] = v.posOf(k, v.a);
-        if (k.state === 'held') { const [hx, hy] = v.posOf(k.holder, v.a); x = hx; y = hy + HOLD_UNITS * v.PH / 44; }
+        if (k.state === 'held') { const [hx, hy] = v.posOf(k.holder, v.a); x = hx; y = hy - sink(v, k.holder) + HOLD_UNITS * v.PH / 44; }
         const sx = X(x - SW), sy = Y(y + SH), s = SH * S;
         // things (§3.7): a thrown stone opens into its thing in the air and folds back as it lands
         const f = root.WThings ? root.WThings.fold(k, v) : 0;
         // level 2 (overhead pose only in this look): the thing you carry stands on your hands
-        if (k.state === 'held' && root.WThings && k.holder === p) {
-          const hk = v.PH * S / 44, kk = hk / 0.68, shake = p.stun > 0 ? Math.sin(v.t * 60) * 1.2 : 0;
+        // a friend stands on what you carry: it stays a block, so they stand on something
+        if (k.state === 'held' && root.WThings && k.holder && !ridden(world, k.holder)) {
+          const h = k.holder, hk = v.PH * S / 44, kk = hk / 0.68, shake = h.stun > 0 ? Math.sin(v.t * 60) * 1.2 : 0;
           const o = { t: v.t, ink: K.ink, paper: K.stone.slip, el: v.elOf(k.ch), red: K.vermilion, gold: K.gamboge, font: v.font };
           // Design's things board stands them on hands at 45.6 hero units; this hero's hands are at 30.2
-          if (root.WThings.carried(ctx, k.ch, 'carry', X(x) + shake, Y(y - HOLD_UNITS * v.PH / 44) + 15.4 * hk, kk, p.face, o)) continue;
+          if (root.WThings.carried(ctx, k.ch, 'carry', X(x) + shake, Y(y - HOLD_UNITS * v.PH / 44) + 15.4 * hk, kk, h.face, o)) continue;
         }
         if (f > 0) {
           const o = { t: v.t, ink: K.ink, paper: K.stone.slip, el: v.elOf(k.ch), red: K.vermilion, gold: K.gamboge, font: v.font };
@@ -706,12 +722,12 @@ const STYLES = {
       paint(g, P, pl, t, sp, 0);
       g.restore();
     }
-    function hero(v) {
+    // a player: yours (mine) with the gamboge rim, the landing shadow and the 轻功 ring; a friend in their colour
+    function hero(v, p, mine) {
       const { ctx, S, X, Y, world, t } = v;
-      const p = v.me();
-      const [x, y] = v.posOf(p, v.a);
+      const [x, y0] = v.posOf(p, v.a), y = y0 - sink(v, p);
       // where you will land: an ink shadow ringed in gamboge and a dotted gamboge line; over water, vermilion
-      if (!p.grounded) {
+      if (mine && !p.grounded) {
         const fy = world.floorUnder(x, v.PW, y);
         const wet = fy < 1.01, gy = wet ? 1 : fy, h = y - gy;
         const col = wet ? K.vermilion : K.gamboge;
@@ -723,13 +739,13 @@ const STYLES = {
       }
       // 轻功 ready: a gamboge ring under your feet while you can still leap
       const cap = p.hold ? world.qi.carry : world.qi.chain;
-      if (!p.grounded && p.qi > 0 && p.chain < cap) {
+      if (mine && !p.grounded && p.qi > 0 && p.chain < cap) {
         ctx.strokeStyle = 'rgba(224,165,38,.9)'; ctx.lineWidth = Math.max(1.5, S * 0.045);
         ctx.beginPath(); ctx.ellipse(X(x), Y(y) + 2, S * 0.3, S * 0.085, 0, 0, Math.PI * 2); ctx.stroke();
       }
       if (p.leapt && p.vy > 0 && Math.random() < 0.7) v.fx.push({ x: x - p.face * 0.15 + (Math.random() - 0.5) * 0.2, y: y + 0.45, vx: 0, vy: -0.4, life: 0.45, max: 0.45, kind: 'wisp', size: 0.07, g: 0 });
       // the figure, with a gamboge rim round its silhouette: "you"
-      const pose = heroPose(v, p);
+      const pose = heroPose(mine ? v : { land: 0 }, p);
       const k = v.PH * S / 44;
       const shake = p.stun > 0 ? Math.sin(t * 60) * 1.2 : 0;
       const face = pose === 'wall' ? p.wall : p.face;
@@ -738,7 +754,7 @@ const STYLES = {
       const sp = Math.hypot(p.vx, p.vy);
       const rim = Math.max(1.5, 1.3 / k);                      // Design's rim: the silhouette grown by 1.5 hero units
       const key = pose === 'run' && Math.floor(t * 8) % 2 ? 'run2' : pose;
-      figure(ctx, key, p.slot || 1, true, t, sp, rim);
+      figure(ctx, key, p.slot || 1, mine, t, sp, rim);
       if (pose === 'land') {
         ctx.fillStyle = 'rgba(236,224,198,.8)'; ctx.beginPath();
         ctx.ellipse(-13, -1, 3.6, 1.1, 0, 0, Math.PI * 2); ctx.ellipse(7.6, -1, 3, 1, 0, 0, Math.PI * 2); ctx.fill();

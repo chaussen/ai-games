@@ -103,6 +103,26 @@
       strict:   { ink: 1, regen: 25, cooldown: 2, own: 1, pick: false },
     },
   };
+  // BODY: players are bodies (docs/CO-OP.md). They block each other, shove each other along the ground, stand
+  // on each other's heads (or on the stone a friend carries) and ride along. With one player none of this
+  // happens, so solo play is exactly as before.
+  const BODY = {
+    solid: true,                      // false: players pass through each other (the rule before CO-OP)
+    shove: 0.5,                       // walking into a friend on the ground moves them at this share of your speed (0: a wall)
+    shoveDelay: 0.12,                 // lean this long before they move (a brush is not a shove)
+    slip: 1.0,                        // lean on a friend this long and you slip past them (no soft-lock in a corridor; 0: never)
+    ride: true,                       // standing on a friend, you move with them
+    part: 1.5,                        // two friends overlapping (a respawn, a slip that stopped) drift apart this fast
+    knock: 'off',                     // a thrown stone that hits a friend: 'off' passes through, 'push' knocks them
+                                      // back, 'loose' also knocks what they carry out of their hands (CO-06)
+    knockV: 5,                        // how hard a knock throws them
+    profiles: {
+      relaxed:  { slip: 0.6 },
+      standard: {},
+      strict:   { slip: 1.5 },
+    },
+  };
+  const KNOCKS = ['off', 'push', 'loose'];
   const PROFILE = 'standard';
   const PROFILES = ['relaxed', 'standard', 'strict'];
   function pick(T, name) {
@@ -113,12 +133,16 @@
   // The knobs of one profile. An unknown name falls back to the default.
   function knobs(name) {
     const p = PROFILES.includes(name) ? name : PROFILE;
-    return { profile: p, fz: pick(FORGE, p), qi: pick(QI, p), as: pick(ASSIST, p), cj: pick(CONJURE, p) };
+    return { profile: p, fz: pick(FORGE, p), qi: pick(QI, p), as: pick(ASSIST, p), cj: pick(CONJURE, p), bd: pick(BODY, p) };
   }
 
   const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
   const sgn = v => v < 0 ? -1 : 1;
   const leapV = h => Math.sqrt(2 * G * h);
+  // a player (a stone has a numeric id and no input)
+  const isBody = r => !!r && r.in !== undefined;
+  // a plain copy of snapshot values (arrays and objects of numbers, strings, booleans)
+  const copy = v => v === null || typeof v !== 'object' ? v : Array.isArray(v) ? v.map(copy) : Object.fromEntries(Object.entries(v).map(([k, x]) => [k, copy(x)]));
 
   // ---------- the classifier (page axes) ----------
   // relate(a, b, fz): the placement of two resting stones, or null.
@@ -165,6 +189,8 @@
       this.isles = isles || IS.ISLES;
       this.players = new Map();
       this.profileOverride = null;
+      this.knockOverride = null;
+      this.cellsV = 0;
       this.load(0);
     }
 
@@ -174,8 +200,8 @@
       const L = this.L = this.isles[this.index];
       const g = IS.parse(L);
       this.w = g.w; this.h = g.h; this.cells = g.cells;
-      this.k = knobs(this.profileOverride || L.strict || PROFILE);
-      this.fz = this.k.fz; this.qi = this.k.qi; this.as = this.k.as; this.cj = this.k.cj;
+      this.cellsV++;
+      this.useKnobs();
       this.events = [];
       this.time = 0; this.clock = 0; this.started = false;
       this.phase = 'play'; this.result = null;
@@ -213,11 +239,22 @@
 
     setProfile(name) {
       this.profileOverride = PROFILES.includes(name) ? name : null;
-      this.k = knobs(this.profileOverride || this.L.strict || PROFILE);
-      this.fz = this.k.fz; this.qi = this.k.qi; this.as = this.k.as; this.cj = this.k.cj;
+      this.useKnobs();
       for (const p of this.players.values()) p.ink = Math.min(p.ink, this.cj.ink);
       this.crewInk = Math.min(this.crewInk, this.inkMax());
       this.ev('profile', { profile: this.k.profile });
+    }
+
+    useKnobs() {
+      this.k = knobs(this.profileOverride || this.L.strict || PROFILE);
+      this.fz = this.k.fz; this.qi = this.k.qi; this.as = this.k.as; this.cj = this.k.cj;
+      this.bd = this.knockOverride ? Object.freeze(Object.assign({}, this.k.bd, { knock: this.knockOverride })) : this.k.bd;
+    }
+    // what a thrown stone does to a friend it hits (CO-06): a crew choice, kept across isles like the profile
+    setKnock(mode) {
+      this.knockOverride = KNOCKS.includes(mode) ? mode : null;
+      this.useKnobs();
+      this.ev('knockMode', { knock: this.bd.knock });
     }
 
     // ---------- tiles ----------
@@ -263,8 +300,18 @@
         const b = { x0: s.x - SW, y0: s.y, x1: s.x + SW, y1: s.y + SH, ref: s };
         if (b.x1 > x0 && b.x0 < x1 && b.y1 > y0 && b.y0 < y1) out.push(b);
       }
+      if (withStones && withStones.bodies) for (const q of withStones.bodies) {
+        for (const b of this.bodyBoxes(q)) if (b.x1 > x0 && b.x0 < x1 && b.y1 > y0 && b.y0 < y1) out.push(b);
+      }
       return out;
     }
+    // A player as boxes others run into: the body, and the stone they carry over their head (you can stand on it)
+    bodyBoxes(q) {
+      const out = [{ x0: q.x - PW, y0: q.y, x1: q.x + PW, y1: q.y + PH, ref: q, body: 'body' }];
+      if (q.hold) out.push({ x0: q.x - SW, y0: q.y + HOLD_Y, x1: q.x + SW, y1: q.y + HOLD_Y + SH, ref: q, body: 'held' });
+      return out;
+    }
+    topOf(q) { return q.y + (q.hold ? HOLD_Y + SH : PH); }
 
     // Move a box (centre x, bottom y, half-width hw, height h) along one axis by d. Returns the
     // new position and the box it ran into, if any.
@@ -301,6 +348,7 @@
         hold: null, qi: 1, chain: 0, src: new Set(), leapt: false, apex: 0, kick: 0, cd: 0, stun: 0,
         safe: [0, 0], wall: 0, gems: 0, lean: 0,
         ink: 0, wcd: 0, wrote: [], slot: 0,
+        x0: 0, y0: 0, slip: [], bump: 0, bumpOn: null,
       };
       // the player's colour on the isle (1-4, WInk.PLAYERS): the lowest one free
       const used = new Set([...this.players.values()].map(o => o.slot));
@@ -316,13 +364,15 @@
       const p = this.players.get(id);
       if (p && p.hold) this.dropHeld(p);
       this.players.delete(id);
+      // whoever stood on them now stands on air
+      for (const q of this.players.values()) if (q.support === p) { q.support = null; q.grounded = false; }
     }
     spawn(p) {
       const n = [...this.players.keys()].indexOf(p.id);
       p.x = this.L.spawn + (n > 0 ? (n % 2 ? -0.7 : 0.7) * Math.ceil(n / 2) : 0);
       p.y = this.groundTop(p.x, this.h); p.vx = p.vy = 0; p.grounded = true; p.support = STATIC;
       p.hold = null; p.qi = 1; p.chain = 0; p.src.clear(); p.leapt = false; p.stun = 0;
-      p.safe = [p.x, p.y]; p.face = -1;
+      p.safe = [p.x, p.y]; p.face = -1; p.x0 = p.x; p.y0 = p.y; p.slip = []; p.bump = 0; p.bumpOn = null;
     }
     // x in [-1, 1]; jump is whether the button is held (for jump height)
     setInput(id, x, jump) {
@@ -346,7 +396,12 @@
     step(dt) {
       this.clock += dt;
       if (this.started && this.phase === 'play') this.time += dt;
-      for (const p of this.players.values()) this.stepPlayer(p, dt);
+      // carriers before the friends on their heads, so a rider moves with where the carrier is now
+      const ps = [...this.players.values()];
+      for (const p of ps) { p.x0 = p.x; p.y0 = p.y; }
+      if (ps.length > 1) { const d = new Map(ps.map(p => [p, this.depth(p)])); ps.sort((a, b) => d.get(a) - d.get(b)); }
+      for (const p of ps) this.stepPlayer(p, dt);
+      if (ps.length > 1) this.stepBodies(dt);
       const order = this.stones.filter(s => s.state !== 'gone').sort((a, b) => a.y - b.y || a.id - b.id);
       for (const k of order) this.stepStone(k, dt);
       this.stepFusion();
@@ -370,7 +425,64 @@
       return true;
     }
 
+    // ---------- bodies (docs/CO-OP.md) ----------
+    // how many friends p stands on, one on another's head
+    depth(p) {
+      let n = 0;
+      for (let r = p.support; isBody(r) && n < 8; r = r.support) n++;
+      return n;
+    }
+    // q stands on p, directly or on someone who does
+    ridesOn(q, p) {
+      let n = 0;
+      for (let r = q.support; isBody(r) && n < 8; r = r.support, n++) if (r === p) return true;
+      return false;
+    }
+    // p's body overlaps q's (body or carried stone): they do not block each other until they are apart
+    bodyOverlap(p, q) {
+      for (const b of this.bodyBoxes(q)) if (p.x + PW > b.x0 + 0.02 && p.x - PW < b.x1 - 0.02 && p.y + PH > b.y0 + 0.02 && p.y < b.y1 - 0.02) return true;
+      return false;
+    }
+    // the friends p runs into this step: not p, not anyone standing on p, not someone p is slipping past or
+    // already overlaps (a respawn on a friend, a slip that stopped half way), and not `also`
+    bodiesFor(p, also) {
+      if (!this.bd.solid || this.players.size < 2) return null;
+      const out = [];
+      for (const q of this.players.values()) {
+        if (q === p || q === also || p.slip.includes(q.id) || q.slip.includes(p.id) || this.ridesOn(q, p) || this.bodyOverlap(p, q)) continue;
+        out.push(q);
+      }
+      return out;
+    }
+    // after everyone moved: slips end once apart; friends who overlap drift apart (never through rock)
+    stepBodies(dt) {
+      const ps = [...this.players.values()];
+      for (const p of ps) if (p.slip.length) p.slip = p.slip.filter(id => { const q = this.players.get(id); return q && this.bodyOverlap(p, q); });
+      if (!this.bd.solid || !(this.bd.part > 0)) return;
+      for (let i = 0; i < ps.length; i++) for (let j = i + 1; j < ps.length; j++) {
+        const p = ps[i], q = ps[j];
+        if (p.slip.includes(q.id) || q.slip.includes(p.id) || this.ridesOn(p, q) || this.ridesOn(q, p)) continue;
+        if (Math.abs(p.x - q.x) >= 2 * PW - 0.02 || Math.min(p.y, q.y) + PH - Math.max(p.y, q.y) < 0.3) continue;
+        const s = p.x < q.x || (p.x === q.x && i < j) ? -1 : 1, d = this.bd.part * dt;
+        p.x = this.sweep(p, PW, PH, 'x', s * d, null, { restingOnly: true }).v;
+        q.x = this.sweep(q, PW, PH, 'x', -s * d, null, { restingOnly: true }).v;
+      }
+    }
+    // standing on a friend: move with them (they stepped first this step)
+    ride(p) {
+      const q = p.support;
+      if (!this.players.has(q.id) || q === p) { p.support = null; p.grounded = false; return; }
+      if (!this.bd.ride) return;
+      const ddx = q.x - q.x0, bodies = this.bodiesFor(p, q);
+      if (ddx) p.x = this.sweep(p, PW, PH, 'x', ddx, null, { restingOnly: true, bodies }).v;
+      const top = this.topOf(q);
+      if (p.grounded && Math.abs(p.x - q.x) < PW + (q.hold ? SW : PW) && top !== p.y) {
+        p.y = this.sweep(p, PW, PH, 'y', top - p.y, null, { restingOnly: true, bodies }).v;
+      }
+    }
+
     stepPlayer(p, dt) {
+      if (isBody(p.support)) this.ride(p);
       const carrying = !!p.hold;
       const ix = p.stun > 0 ? 0 : p.in.x;
       if (Math.abs(ix) > 0.2) p.face = sgn(ix);
@@ -402,13 +514,40 @@
 
       // horizontal
       const dx = p.vx * dt;
-      const skip = this.inside(p);
-      const sx = this.sweep(p, PW, PH, 'x', dx, null, { skip, restingOnly: true });
+      const skip = this.inside(p), bodies = this.bodiesFor(p);
+      const sx = this.sweep(p, PW, PH, 'x', dx, null, { skip, restingOnly: true, bodies });
+      if (!(sx.hit && sx.hit.body)) { p.bump = 0; p.bumpOn = null; }
       if (sx.hit) {
         const o = sx.hit;
         let done = false;
+        // a friend: shove them along the ground, unless they push back; lean long enough and slip past
+        if (o.body) {
+          const q = o.ref, dir = sgn(dx), bd = this.bd;
+          // a friend's head just above your feet: you climb on, as onto a ledge (ASSIST.nudge; a tapped hop
+          // rises 1.17 and a friend is 1.2 tall)
+          if (!p.grounded && p.vy <= 1 && this.as.nudge > 0) {
+            const rise = o.y1 - p.y;
+            if (rise > 0 && rise <= this.as.nudge && !this.overlaps(p.x + dx, o.y1, PW, PH, null, { skip, restingOnly: true, bodies })) {
+              p.x += dx; p.y = o.y1; p.vy = 0; done = true;
+              this.ev('nudge', { id: p.id });
+            }
+          }
+          if (!done && p.bumpOn !== q.id) { p.bumpOn = q.id; p.bump = 0; if (Math.abs(p.vx) > 2) this.ev('bump', { id: p.id, other: q.id }); }
+          if (!done) p.bump += dt;
+          const back = q.stun <= 0 && q.in.x * dir < -0.2;
+          if (!done && o.body === 'body' && bd.shove > 0 && p.grounded && q.grounded && Math.abs(q.y - p.y) < 0.3 && !back && p.bump >= bd.shoveDelay) {
+            q.x = this.sweep(q, PW, PH, 'x', dx * bd.shove, null, { restingOnly: true, skip: this.inside(q), bodies: this.bodiesFor(q, p) }).v;
+            p.x = dir > 0 ? Math.min(p.x + dx, q.x - 2 * PW) : Math.max(p.x + dx, q.x + 2 * PW);
+            done = true;
+          }
+          if (!done && bd.slip > 0 && p.bump >= bd.slip && !p.slip.includes(q.id)) {
+            p.slip.push(q.id); p.bump = 0;
+            this.ev('slip', { id: p.id, other: q.id });
+          }
+          if (!done) { p.x = sx.v; p.vx = Math.sign(p.vx) * Math.min(Math.abs(p.vx), 1); done = true; }
+        }
         // push a resting stone along the ground
-        if (this.fz.push && o.ref !== STATIC && p.grounded && !carrying && Math.abs(o.ref.y - p.y) < 0.2 && !this.stoneOn(o.ref) && (p.lean += dt) >= PUSH_DELAY) {
+        if (!done && this.fz.push && o.ref !== STATIC && p.grounded && !carrying && Math.abs(o.ref.y - p.y) < 0.2 && !this.stoneOn(o.ref) && (p.lean += dt) >= PUSH_DELAY) {
           const s = o.ref, want = dx * PUSH;
           const m = this.sweep(s, SW, SH, 'x', want, s, { restingOnly: true });
           if (Math.abs(m.v - s.x) > 1e-5) { s.x = m.v; s.pushed = true; s.pushT = 0.12; s.placer = p.id; s.from = [s.x, s.y]; }
@@ -432,11 +571,12 @@
       p.wall = 0;
       if (!p.grounded) {
         for (const side of [-1, 1]) {
-          const bx = this.boxes(side > 0 ? p.x + PW : p.x - PW - 0.06, p.y + 0.2, side > 0 ? p.x + PW + 0.06 : p.x - PW, p.y + PH - 0.1, null, { skip, restingOnly: true });
+          const bx = this.boxes(side > 0 ? p.x + PW : p.x - PW - 0.06, p.y + 0.2, side > 0 ? p.x + PW + 0.06 : p.x - PW, p.y + PH - 0.1, null, { skip, restingOnly: true, bodies });
           const wall = bx.find(b => b.t === '#' || b.t === 'b' || b.t === '=' || b.ref !== STATIC);
           if (wall) {
             p.wall = side;
-            if (wall.ref !== STATIC) this.refill(p, 's' + wall.ref.id, 'stone');
+            if (wall.body) this.refill(p, 'p' + wall.ref.id, 'head');
+            else if (wall.ref !== STATIC) this.refill(p, 's' + wall.ref.id, 'stone');
             else this.refill(p, 'w' + wall.cx + (side > 0 ? 'L' : 'R') + (this.qi.wallKey === 'band' ? ':' + Math.floor(p.y / 2) : ''), 'wall');
           }
         }
@@ -447,7 +587,7 @@
       if (p.leapt && p.apex > 0 && p.vy < 2.5) { g *= this.qi.floatG; p.apex -= dt; }
       p.vy = Math.max(-MAX_FALL, p.vy - g * dt);
       const was = p.grounded;
-      const sy = this.sweep(p, PW, PH, 'y', p.vy * dt, null, { skip, restingOnly: true });
+      const sy = this.sweep(p, PW, PH, 'y', p.vy * dt, null, { skip, restingOnly: true, bodies });
       p.y = sy.v;
       if (sy.hit && p.vy <= 0) {
         const o = sy.hit;
@@ -611,7 +751,7 @@
 
     holdStone(p, k) {
       k.state = 'held'; k.holder = p; k.grounded = false; k.support = null; k.snap = null; k.ready = 0;
-      k.vx = k.vy = 0; k.flying = false; k.from = null;
+      k.vx = k.vy = 0; k.flying = false; k.from = null; k.hit = false;
       p.hold = k;
       this.ev('grab', { id: p.id, s: k.id, ch: k.ch });
     }
@@ -745,6 +885,7 @@
         k.x = sx.v;
         if (sx.hit) k.vx = 0;
       }
+      if (k.flying && !k.hit && this.bd.knock !== 'off' && this.players.size > 1) this.knock(k);
       k.vy = Math.max(-MAX_FALL, k.vy - G * dt);
       const sy = this.sweep(k, SW, SH, 'y', k.vy * dt, k, { restingOnly: true });
       k.y = sy.v;
@@ -778,6 +919,22 @@
       if (k.grounded) { k.pop = false; k.flying = false; }
     }
 
+    // A thrown stone hits a friend (CO-06, BODY.knock): they are thrown back; with 'loose' what they carry
+    // flies out of their hands. Once per throw. Never the thrower.
+    knock(k) {
+      for (const q of this.players.values()) {
+        if (q === k.thrower || q.stun > 0 || q.hold === k) continue;
+        if (Math.abs(k.x - q.x) >= SW + PW || k.y >= q.y + PH || k.y + SH <= q.y) continue;
+        const dir = k.vx ? sgn(k.vx) : sgn(q.x - k.x), bd = this.bd;
+        q.vx = dir * bd.knockV; q.vy = 5; q.stun = 0.35; q.kick = 0.3; q.grounded = false; q.support = null;
+        let lost = null;
+        if (bd.knock === 'loose' && q.hold) { lost = q.hold; this.loosen(q, lost, q.x, q.y + HOLD_Y, dir * 2, 4); }
+        k.hit = true; k.vx = -dir;
+        this.ev('knock', { id: q.id, by: k.thrower ? k.thrower.id : null, s: k.id, ch: k.ch, lost: lost ? lost.ch : null, x: q.x, y: q.y });
+        return;
+      }
+    }
+
     // The run of '_' cells this falling stone is in, if the stone's span covers it.
     gapRun(k) {
       const cy = Math.floor(k.y + 0.2), cx = Math.floor(k.x);
@@ -790,6 +947,7 @@
     }
     growBridge(k, run) {
       for (let x = run.x0; x < run.x1; x++) this.cells[run.cy][x] = '=';
+      this.cellsV++;
       const m = { ch: k.ch, el: k.g.el, x0: run.x0, x1: run.x1, y: run.cy + 1, t: this.clock };
       this.bridges.push(m);
       this.ev('bridge', { ch: k.ch, el: k.g.el, x0: run.x0, x1: run.x1, y: run.cy + 1, by: k.placer });
@@ -911,6 +1069,7 @@
           if (Math.hypot(dx, dy) < RU.reachOf(k.g) + SW) {
             m.done = true;
             for (let y = m.y0; y < m.y1; y++) this.cells[y][m.x0] = '.';
+            this.cellsV++;
             this.burnt.push({ x0: m.x0, x1: m.x1, y0: m.y0, y1: m.y1, t: this.clock, wall: m.wall });
             this.ev(W.verb, { id: m.id, wall: m.wall, ch: k.ch, x: (m.x0 + m.x1) / 2, y: (m.y0 + m.y1) / 2, by: k.holder ? k.holder.id : k.placer });
             break;
@@ -975,6 +1134,85 @@
       this.ev('win', this.result);
     }
 
+    // ---------- snapshot: the whole isle as plain data (docs/CO-OP.md §4) ----------
+    // The server runs the world and sends this to every phone; a phone's world restore()s it and draws.
+    // restore(snapshot()) on a fresh world steps on bit for bit the same (sim-test, group Snapshot).
+    // Keys that start with '_' belong to the page (interpolation) and are never sent or cleared.
+    snapshot(opt) {
+      const ref = r => r == null ? null : r === STATIC ? 'T' : isBody(r) ? 'p:' + r.id : 's:' + r.id;
+      const players = [...this.players.values()].map(p => {
+        const o = {};
+        for (const key in p) {
+          if (key[0] === '_') continue;
+          const v = p[key];
+          o[key] = key === 'support' ? ref(v) : key === 'hold' ? (v ? v.id : null) : key === 'src' ? [...v] : copy(v);
+        }
+        return o;
+      });
+      const springs = this.springs;
+      const stones = this.stones.map(k => {
+        const o = {};
+        for (const key in k) {
+          if (key[0] === '_' || key === 'g') continue;
+          const v = k[key];
+          o[key] = key === 'holder' || key === 'thrower' ? (v ? v.id : null) : key === 'support' ? ref(v) : key === 'spring' ? (v ? springs.indexOf(v) : null) : copy(v);
+        }
+        return o;
+      });
+      const s = {
+        index: this.index, prof: this.profileOverride, knock: this.knockOverride, cellsV: this.cellsV,
+        time: this.time, clock: this.clock, started: this.started, phase: this.phase, result: copy(this.result),
+        dusk: this.dusk, cool: [...this.cool], nextId: this.nextId, crewInk: this.crewInk,
+        springs: springs.map(sp => ({ ch: sp.ch, x: sp.x, y: sp.y, stone: sp.stone ? sp.stone.id : null, wait: sp.wait, blocked: sp.blocked || 0, told: !!sp.told })),
+        bridges: copy(this.bridges), burnt: copy(this.burnt), hedges: this.hedges.map(m => m.done),
+        gems: this.gems.map(g => g.got), glow: this.glow.map(g => g.got), clouds: this.clouds.map(c => c.t),
+        players, stones,
+      };
+      if (!opt || opt.cells !== false) s.cells = this.cells.map(r => r.join(''));
+      return s;
+    }
+    restore(s) {
+      if (s.index !== this.index) this.load(s.index);
+      if ((s.prof || null) !== this.profileOverride) this.setProfile(s.prof);
+      if ((s.knock || null) !== this.knockOverride) this.setKnock(s.knock);
+      // the map changes only with a bridge or a burnt wall; the server sends it then (and on a new isle)
+      if (s.cells) { this.cells = s.cells.map(r => r.split('')); this.cellsV = s.cellsV; }
+      for (const key of ['time', 'clock', 'started', 'phase', 'dusk', 'nextId', 'crewInk']) this[key] = s[key];
+      this.result = copy(s.result);
+      this.cool = new Map(s.cool);
+      s.hedges.forEach((d, i) => { if (this.hedges[i]) this.hedges[i].done = d; });
+      s.gems.forEach((d, i) => { if (this.gems[i]) this.gems[i].got = d; });
+      s.glow.forEach((d, i) => { if (this.glow[i]) this.glow[i].got = d; });
+      s.clouds.forEach((t, i) => { if (this.clouds[i]) this.clouds[i].t = t; });
+      this.bridges = copy(s.bridges); this.burnt = copy(s.burnt);
+      // reuse the objects by id: the page keeps its interpolation on them
+      const fill = (obj, o, special) => {
+        for (const key of Object.keys(obj)) if (key[0] !== '_' && !(key in o)) delete obj[key];
+        for (const key in o) if (!special.includes(key)) obj[key] = copy(o[key]);
+        return obj;
+      };
+      const oldP = this.players, oldS = new Map(this.stones.map(k => [k.id, k]));
+      this.players = new Map();
+      for (const o of s.players) this.players.set(o.id, fill(oldP.get(o.id) || {}, o, ['support', 'hold', 'src']));
+      this.stones = s.stones.map(o => fill(oldS.get(o.id) || {}, o, ['holder', 'thrower', 'support', 'spring']));
+      const byId = new Map(this.stones.map(k => [k.id, k]));
+      const deref = r => r == null ? null : r === 'T' ? STATIC : r[0] === 'p' ? this.players.get(r.slice(2)) || null : byId.get(+r.slice(2)) || null;
+      this.springs = s.springs.map(sp => ({ ch: sp.ch, x: sp.x, y: sp.y, stone: sp.stone == null ? null : byId.get(sp.stone) || null, wait: sp.wait, blocked: sp.blocked, told: sp.told }));
+      for (const o of s.players) {
+        const p = this.players.get(o.id);
+        p.support = deref(o.support); p.hold = o.hold == null ? null : byId.get(o.hold) || null; p.src = new Set(o.src);
+      }
+      for (const o of s.stones) {
+        const k = byId.get(o.id);
+        k.g = RU.GLYPHS[k.ch];
+        k.holder = o.holder == null ? null : this.players.get(o.holder) || null;
+        k.thrower = o.thrower == null ? null : this.players.get(o.thrower) || null;
+        k.support = deref(o.support);
+        k.spring = o.spring == null ? null : this.springs[o.spring] || null;
+      }
+      this.events = [];
+    }
+
     // The placement every resting stone is in right now, for the frames drawn round them:
     // [{ op, a, b, err }] with a the first piece. Each pair once.
     placements() {
@@ -992,7 +1230,7 @@
     }
   }
 
-  const api = { World, FORGE, QI, ASSIST, CONJURE, PROFILES, knobs, relate, bestRelation, STATIC,
+  const api = { World, FORGE, QI, ASSIST, CONJURE, BODY, KNOCKS, PROFILES, knobs, isBody, relate, bestRelation, STATIC,
     consts: { G, PW, PH, SW, SH, RUN, CARRY_RUN, HOLD_Y, WATER, DUSK_TIME, REGROW, PAV_R } };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.WSim = api;

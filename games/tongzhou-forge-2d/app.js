@@ -1,4 +1,6 @@
-// 同舟 · Glyph Isles 2D — the page: runs sim.js locally (one player), draws the isle side-on, and keeps
+// 同舟 · Glyph Isles 2D — the page: runs sim.js locally (one player) or, with ?crew=1, joins the server's crew
+// (docs/CO-OP.md: up to four phones on one isle; the server steps the world and this page draws its snapshots),
+// draws the isle side-on, and keeps
 // the phone screen to its budget (docs/GREYBOX.md): one goal, one word card, one message line, the
 // menu, the stick and two buttons. Three looks: 'ink' (ink.js, the 水墨江湖 art, default), 'cut' (cut.js,
 // 一笔 One Stroke: paper, ink and vermilion) and 'greybox' (the plain shapes below, kept for comparison):
@@ -25,7 +27,7 @@
     sound: qs.get('mute') === '1' ? false : store.get('sound', true),
     voice: qs.get('mute') === '1' ? false : store.get('voice', true),
     // the writing pad (docs/CONJURE.md)
-    padPause: true,                                           // one player: the isle waits while you write (CJ2-09)
+    padPause: true,                                           // one player: the isle waits while you write (CJ2-09); never in a crew
     padMinScore: 0.65,                                        // a guess under this is not offered (scribbles score 0.5-0.7; write-test.mjs)
     padWait: 0.5,                                             // seconds after the last stroke before the pad reads it
     practiceMaster: 3,                                        // clean writes from memory before an idea gets its ✓
@@ -75,9 +77,11 @@
 
   // ---------- the world ----------
   const world = new SIM.World();
-  const ME = 'me';
+  // alone, you are 'me'; in a crew, the id the server gave you (the world is a mirror of the server's)
+  let ME = 'me';
+  const CREW = qs.get('crew') === '1';
   const prof = qs.get('profile') || store.get('profile', null);
-  if (prof) world.setProfile(prof);
+  if (prof && !CREW) world.setProfile(prof);
   const startIsle = (() => { const v = qs.get('isle'); if (v === null) return store.get('isle', 0); const i = IS.ISLES.findIndex(L => L.id === v); return i >= 0 ? i : (+v || 0); })();
   world.load(startIsle);
   world.addPlayer(ME, 'you');
@@ -145,8 +149,8 @@
     if (!k) return;
     e.preventDefault();
     if (e.repeat) return;
-    if (k === 'jump') { world.press(ME, 'jump'); input.jump = true; }
-    else if (k === 'grab') world.press(ME, 'grab');
+    if (k === 'jump') { press('jump'); input.jump = true; }
+    else if (k === 'grab') press('grab');
     else input.keys.add(k);
   });
   addEventListener('keyup', e => {
@@ -184,8 +188,8 @@
     const off = () => { el.classList.remove('down'); if (up) up(); };
     el.addEventListener('pointerup', off); el.addEventListener('pointercancel', off); el.addEventListener('lostpointercapture', off);
   }
-  holdButton(jumpEl, () => { world.press(ME, 'jump'); input.jump = true; }, () => { input.jump = false; });
-  holdButton(grabEl, () => world.press(ME, 'grab'));
+  holdButton(jumpEl, () => { press('jump'); input.jump = true; }, () => { input.jump = false; });
+  holdButton(grabEl, () => press('grab'));
   holdButton($('#write'), () => openPad());
   addEventListener('contextmenu', e => e.preventDefault());
 
@@ -224,6 +228,7 @@
     burn: () => { tone(220, 0.7, 'sawtooth', 0.04, 60); tone(900, 0.5, 'square', 0.02, 200, 0.05); },
     splash: () => { tone(900, 0.25, 'sine', 0.05, 160); tone(300, 0.3, 'triangle', 0.04, 90, 0.05); },
     ouch: () => tone(180, 0.12, 'square', 0.05, 110),
+    bump: () => tone(120, 0.07, 'triangle', 0.07, 90),
     dusk: () => { tone(330, 0.9, 'sine', 0.06, 196); tone(247, 1.1, 'triangle', 0.05, 147, 0.2); },
     dawn: () => [392, 523, 659, 784].forEach((f, k) => tone(f, 0.35, 'sine', 0.06, null, k * 0.06)),
     write: () => { tone(660, 0.12, 'triangle', 0.07, 990); tone(990, 0.3, 'sine', 0.06, 1320, 0.08); },
@@ -352,7 +357,10 @@
     drawer.querySelector('[data-k=sound]').checked = UI.sound;
     drawer.querySelector('[data-k=voice]').checked = UI.voice;
     drawer.querySelector('[data-k=art]').value = ART;
+    drawer.querySelector('[data-k=knock]').value = world.bd.knock;
+    for (const el of drawer.querySelectorAll('[data-crew]')) el.hidden = !CREW;
   }
+  const KNOCK_SAY = { off: 'fly through friends', push: 'knock a friend back', loose: 'knock what a friend carries loose' };
   function toggleDrawer(open) {
     const o = open === undefined ? drawer.hidden : open;
     if (o) closePad();
@@ -368,7 +376,11 @@
   drawer.addEventListener('change', e => {
     const k = e.target.dataset.k;
     if (k === 'isle') { goIsle(+e.target.value); toggleDrawer(false); }
-    if (k === 'profile') { world.setProfile(e.target.value); store.set('profile', world.k.profile); say('Play: ' + world.k.profile); }
+    if (k === 'profile') {
+      if (CREW) { net.send({ t: 'profile', name: e.target.value }); say('Play: ' + e.target.value + ', for the whole crew'); }
+      else { world.setProfile(e.target.value); store.set('profile', world.k.profile); say('Play: ' + world.k.profile); }
+    }
+    if (k === 'knock') { net.send({ t: 'knock', mode: e.target.value }); say('Thrown stones: ' + KNOCK_SAY[e.target.value]); }
     if (k === 'labels') { UI.labels = e.target.value; store.set('labels', UI.labels); }
     if (k === 'sound') { UI.sound = e.target.checked; store.set('sound', UI.sound); unlockAudio(); }
     if (k === 'voice') { UI.voice = e.target.checked; store.set('voice', UI.voice); }
@@ -388,8 +400,83 @@
     cam.ready = false; seenOuch = false; duskF = 0; wonF = 0;
     closePad(); wroteHere = false;
   }
-  function restart() { world.load(world.index); onIsle(); }
-  function goIsle(i) { world.load(i); onIsle(); }
+  // in a crew anyone may restart or change the isle, for everyone (the living-room rule of the 3D game)
+  function restart() { if (CREW) { net.send({ t: 'isle', i: world.index }); return; } world.load(world.index); onIsle(); }
+  function goIsle(i) { if (CREW) { net.send({ t: 'isle', i: ((i % IS.ISLES.length) + IS.ISLES.length) % IS.ISLES.length }); return; } world.load(i); onIsle(); }
+  function press(what) { if (CREW) net.send({ t: 'press', what }); else world.press(ME, what); }
+
+  // ---------- the crew (docs/CO-OP.md §4): a socket to the server, snapshots in, hands out ----------
+  // Until the first snapshot the isle stands still. A full crew or no server: you play alone, and the message says so.
+  const net = {
+    ws: null, joined: false, live: false, snaps: [], at: 0, gap: 1 / 30, tries: 0, sent: '', sentAt: 0, n: 0, pending: null, roster: [],
+    send(m) { if (this.ws && this.ws.readyState === 1) this.ws.send(JSON.stringify(m)); },
+  };
+  const slotName = s => ['', 'vermilion', 'azurite', 'malachite', 'wisteria'][s] || 'a friend';
+  const dot = s => '<i class="pdot" style="background:' + ((window.WInk.PLAYERS[s] || window.WInk.PLAYERS[1]).acc) + '"></i>';
+  const who = id => { const p = world.players.get(id); return p ? dot(p.slot) : ''; };
+  function connect() {
+    if (!CREW) return;
+    let ws;
+    try { ws = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws'); } catch (e) { alone('no crew here'); return; }
+    net.ws = ws;
+    ws.onopen = () => { net.tries = 0; ws.send(JSON.stringify({ t: 'join', id: sessionStore('crewId') })); };
+    ws.onmessage = ev => {
+      let m; try { m = JSON.parse(ev.data); } catch (e) { return; }
+      if (m.t === 'snap') { net.snaps.push(m); return; }
+      if (m.t === 'joined') { net.joined = true; ME = m.id; sessionStore('crewId', m.id); say(dot(m.slot) + ' You joined the crew: you are ' + slotName(m.slot)); return; }
+      if (m.t === 'full') { alone('the crew is full (' + m.max + ')'); return; }
+      if (m.t === 'wrote') { wrote(m); return; }
+      if (m.t === 'roster') {
+        const before = new Set(net.roster.map(p => p.id));
+        for (const p of m.players) if (!before.has(p.id) && p.id !== ME && net.roster.length) say(dot(p.slot) + ' ' + slotName(p.slot) + ' joined');
+        net.roster = m.players;
+      }
+    };
+    ws.onclose = () => {
+      if (net.ws !== ws || !CREW_ON()) return;
+      net.live = false;
+      if (++net.tries > 15) { alone('the crew is not reachable'); return; }
+      say('Lost the crew: trying again…');
+      setTimeout(connect, 1000 + 300 * net.tries);
+    };
+  }
+  let crewOff = false;
+  const CREW_ON = () => CREW && !crewOff;
+  // the crew cannot have you: play this isle alone on this phone
+  function alone(why) {
+    crewOff = true; net.joined = false; net.live = false;
+    try { net.ws && net.ws.close(); } catch (e) {}
+    const i = world.index;
+    world.players.clear(); ME = 'me'; world.addPlayer(ME, 'you'); world.load(i); onIsle();
+    say('Playing alone: ' + why);
+  }
+  function sessionStore(k, v) { try { if (v === undefined) return sessionStorage.getItem('tzf2d.' + k); sessionStorage.setItem('tzf2d.' + k, v); } catch (e) { return null; } }
+  // apply the snapshots that came in; draw between the last two (the renderers lerp from _px to x)
+  function netFrame(now) {
+    if (!net.snaps.length) return;
+    const list = net.snaps; net.snaps = [];
+    for (const m of list) {
+      const prev = new Map();
+      for (const p of world.players.values()) prev.set('p' + p.id, [p.x, p.y]);
+      for (const k of world.stones) prev.set('s' + k.id, [k.x, k.y]);
+      const idx = world.index;
+      world.restore(m.s);
+      for (const o of [...world.players.values()].map(p => ['p' + p.id, p]).concat(world.stones.map(k => ['s' + k.id, k]))) {
+        const q = prev.get(o[0]); o[1]._px = q ? q[0] : o[1].x; o[1]._py = q ? q[1] : o[1].y;
+      }
+      if (world.index !== idx && !m.e.some(e => e.t === 'isle')) onIsle();
+      for (const e of m.e) handle(e);
+    }
+    if (!net.live) { net.live = true; cam.ready = false; }
+    net.gap = clamp((now - net.at) / 1000, 1 / 60, 0.1) * 0.3 + net.gap * 0.7;
+    net.at = now;
+  }
+  // your hands, to the server: when they change, and every 0.1 s anyway (a lost packet never sticks a stick)
+  function netInput(now) {
+    const x = Math.round((pad.open ? 0 : stick.id !== null ? stick.x : keyX()) * 100) / 100, j = !pad.open && input.jump;
+    const key = x + ',' + j;
+    if (key !== net.sent || now - net.sentAt > 100) { net.send({ t: 'in', x, j }); net.sent = key; net.sentAt = now; }
+  }
 
   // ---------- events → what you see and hear ----------
   const fx = [];            // particles, in world units
@@ -489,8 +576,11 @@
       case 'write': {
         if (e.id === ME) wroteHere = true;
         sfx.write();
-        const k = world.stones.find(s => s.id === e.s);
+        const k = world.stones.find(s => s.id === e.s), wr = world.players.get(e.id);
         if (k) burst(k.x, k.y + SH / 2, 14, { kind: 'ink', color: painted() ? PAINT[ART].ink : '#2a2622', v: 2, life: 0.6, size: 0.07 });
+        // the strokes, in ink over the writer's head, drawn in to the stone (everyone's, in a crew)
+        if (wr && e.strokes && e.strokes.length) fx.push({ kind: 'strokes', strokes: e.strokes, s: e.s, x: wr.x, y: wr.y + PH + 1.4, vx: 0, vy: 0, g: 0, life: 1.1, max: 1.1 });
+        if (e.id !== ME && wr) say(dot(wr.slot) + ' wrote ' + B(e.ch) + ' ' + words(e.ch).py + ' · ' + words(e.ch).en);
         if (e.id === ME) {
           const w = words(e.ch);
           say('You wrote ' + B(e.ch) + ' ' + w.py + ' · ' + w.en + (e.held ? '' : ': your hands were full, it fell in front of you'));
@@ -504,6 +594,15 @@
         burst(e.x, e.y + SH / 2, 12, { kind: 'wisp', v: 1.2, life: 0.7, size: 0.12, g: -0.4 });
         if (e.id === ME) say('Your older ' + B(e.ch) + ' fades: you keep ' + world.cj.own + ' written stone' + (world.cj.own > 1 ? 's' : ''));
         break;
+      case 'isle': if (CREW_ON()) onIsle(); break;
+      case 'knockMode': if (CREW_ON()) say('Thrown stones: ' + KNOCK_SAY[e.knock]); break;
+      case 'knock':
+        sfx.ouch();
+        burst(e.x, e.y + PH * 0.7, 10, { kind: 'ink', color: painted() ? PAINT[ART].ink : '#2a2622', v: 2.4, life: 0.5, size: 0.07 });
+        if (e.id === ME) say(who(e.by) + ' ' + B(e.ch) + ' knocked you back' + (e.lost ? ': you dropped ' + B(e.lost) : ''));
+        else if (e.by === ME) say('Your ' + B(e.ch) + ' hit ' + who(e.id) + (e.lost ? ': ' + B(e.lost) + ' flew out of their hands' : ''));
+        break;
+      case 'bump': if (e.id === ME || e.other === ME) sfx.bump(); break;
       case 'win':
         winAt = world.clock + UI.winDelay;
         store.set('won.' + world.L.id, true);
@@ -542,12 +641,16 @@
   function frame(now) {
     const dt = LOCK ? STEP : Math.min(0.1, (now - last) / 1000);
     last = now;
-    paused = !drawer.hidden || document.hidden || (pad.open && UI.padPause);
+    // in a crew the isle never waits: the others play on (the server steps it)
+    paused = CREW_ON() ? !net.live && !net.snaps.length : !drawer.hidden || document.hidden || (pad.open && UI.padPause);
+    if (CREW_ON()) { netInput(now); netFrame(now); }
     if (!paused) {
-      acc = LOCK ? STEP : acc + dt;
       let n = 0;
-      while (acc >= STEP && n < 6) { stepOnce(); acc -= STEP; n++; }
-      if (n === 6) acc = 0;
+      if (!CREW_ON()) {
+        acc = LOCK ? STEP : acc + dt;
+        while (acc >= STEP && n < 6) { stepOnce(); acc -= STEP; n++; }
+        if (n === 6) acc = 0;
+      }
       if (msgT > 0 && (msgT -= dt) <= 0) $('#msg').className = '';
       if (land > 0) land -= dt;
       for (const f of fx) { f.life -= dt; f.x += f.vx * dt; f.y += f.vy * dt; f.vy -= f.g * dt; }
@@ -557,8 +660,9 @@
       wonF += ((world.phase === 'won' ? 1 : 0) - wonF) * Math.min(1, dt * 0.8);
       if (winAt && world.clock >= winAt) { winAt = 0; showWin(); }
     }
+    if (!me()) { requestAnimationFrame(frame); return; }   // a crew snapshot without you in it yet
     updateCam(dt);
-    const alpha = paused || LOCK ? 1 : acc / STEP;   // lockstep draws exactly where the sim is
+    const alpha = CREW_ON() ? clamp((now - net.at) / 1000 / net.gap, 0, 1) : paused || LOCK ? 1 : acc / STEP;   // lockstep draws exactly where the sim is
     draw(alpha, drawT = now / 1000);
     const l = world.launch(me());
     updateGrab(l);
@@ -611,7 +715,8 @@
     frames2();
     stones(P, a);
     ghost(a);
-    player(P, a, t);
+    for (const q of world.players.values()) if (q !== me()) player(P, a, t, q, false);
+    player(P, a, t, me(), true);
     particles();
     if (wonF > 0.01) { ctx.fillStyle = 'rgba(255,250,236,' + (0.22 * wonF).toFixed(3) + ')'; ctx.fillRect(0, 0, W, H); }
     offscreen(P, a);
@@ -875,11 +980,10 @@
     rr(X(x - SW), Y(y + SH), SH * S, SH * S, ART === 'cut' ? 0 : S * 0.1); ctx.stroke(); ctx.restore();
   }
 
-  function player(P, a, t) {
-    const p = me();
+  function player(P, a, t, p, mine) {
     const [x, y] = posOf(p, a);
     // where you will land: a shadow on whatever is under you, a thin line down to it; on water, red
-    if (!p.grounded) {
+    if (mine && !p.grounded) {
       const fy = world.floorUnder(x, PW, y);
       const wet = fy < 1.01;
       const gy = wet ? 1 : fy, h = y - gy;
@@ -891,13 +995,13 @@
     }
     // 轻功 ready: a gold ring under your feet while you can still leap
     const cap = p.hold ? world.qi.carry : world.qi.chain;
-    if (!p.grounded && p.qi > 0 && p.chain < cap) {
+    if (mine && !p.grounded && p.qi > 0 && p.chain < cap) {
       ctx.strokeStyle = 'rgba(224,165,38,0.9)'; ctx.lineWidth = Math.max(1.5, S * 0.05);
       ctx.beginPath(); ctx.ellipse(X(x), Y(y) + 2, S * 0.3, S * 0.09, 0, 0, Math.PI * 2); ctx.stroke();
     }
     if (p.leapt && p.vy > 0 && Math.random() < 0.7) fx.push({ x: x + (Math.random() - 0.5) * 0.3, y: y + 0.2, vx: 0, vy: -0.6, life: 0.45, max: 0.45, kind: 'wisp', size: 0.1, g: 0 });
-    // the body: an ink figure with a bright gold outline, so you always know which one is you
-    const sq = land > 0 ? 1 - land * 1.2 : 1, stx = land > 0 ? 1 + land : 1;
+    // the body: an ink figure with a bright gold outline, so you always know which one is you (a friend: their colour)
+    const ld = mine ? land : 0, sq = ld > 0 ? 1 - ld * 1.2 : 1, stx = ld > 0 ? 1 + ld : 1;
     const shake = p.stun > 0 ? Math.sin(t * 60) * S * 0.04 : 0;
     const bx = X(x) + shake, by = Y(y);
     const bob = p.grounded && Math.abs(p.vx) > 0.5 ? Math.abs(Math.sin(t * 14)) * S * 0.04 : 0;
@@ -907,7 +1011,7 @@
     ctx.moveTo(bx - hw * 1.05, by); ctx.lineTo(bx + hw * 1.05, by);
     ctx.lineTo(bx + hw * 0.62, by - bh - bob); ctx.lineTo(bx - hw * 0.62, by - bh - bob); ctx.closePath();
     ctx.fillStyle = '#2b2c38'; ctx.fill();
-    ctx.strokeStyle = '#e0a526'; ctx.lineWidth = Math.max(2, S * 0.07); ctx.stroke();
+    ctx.strokeStyle = mine ? '#e0a526' : (window.WInk.PLAYERS[p.slot] || window.WInk.PLAYERS[1]).acc; ctx.lineWidth = Math.max(2, S * 0.07); ctx.stroke();
     const hx = bx + p.face * S * 0.03, hy = by - bh - bob - S * 0.21 * sq;
     ctx.beginPath(); ctx.arc(hx, hy, S * 0.21, 0, Math.PI * 2);
     ctx.fillStyle = '#f6eedb'; ctx.fill(); ctx.stroke();
@@ -1098,19 +1202,36 @@
   // the isle answers: yes, the stone is yours and the pad closes; no, the pad stays open with your drawing
   function tryWrite(ch, opt) {
     const pick = !!opt.pick, strokes = pad.strokes.map(st => st.slice());
+    const clean = !pick && !pad.copy && opt.rank === 0 && strokes.length > 0;
+    if (CREW_ON()) {
+      // the server decides; its answer (wrote) closes the pad, its write event replays the strokes for everyone
+      if (net.pending) return null;
+      net.pending = { ch, clean, n: ++net.n };
+      net.send({ t: 'write', ch, pick, strokes: thin(strokes), n: net.n });
+      padStatus('Writing ' + B(ch) + '…');
+      setTimeout(() => { if (net.pending && net.pending.n === net.n) { net.pending = null; padStatus('No answer from the crew: try again.'); } }, 3000);
+      return null;
+    }
     const r = world.write(ME, ch, { pick });
-    world.drain().forEach(e => { if (e.t !== 'writeNo') handle(e); });
-    if (!r.ok) {
-      const left = r.why === 'ink' ? ' (' + Math.ceil((1 - world.inkOf(ME) % 1) * world.cj.regen) + ' s)' : '';
-      padStatus(B(ch) + ': ' + (WHY[r.why] || 'not now.') + left);
-      return r;
+    world.drain().forEach(e => { if (e.t === 'write' && e.id === ME) e.strokes = strokes; if (e.t !== 'writeNo') handle(e); });
+    return wrote({ ok: r.ok, why: r.why, ch, clean, s: r.stone && r.stone.id }), r;
+  }
+  // the isle's answer to a write: yes, the stone is yours and the pad closes; no, the pad stays open with your drawing
+  function wrote(m) {
+    if (CREW_ON()) { if (!net.pending || m.n !== net.pending.n) return; m.clean = net.pending.clean; net.pending = null; }
+    if (!m.ok) {
+      const left = m.why === 'ink' ? ' (' + Math.ceil((1 - world.inkOf(ME) % 1) * world.cj.regen) + ' s)' : '';
+      padStatus(B(m.ch) + ': ' + (WHY[m.why] || 'not now.') + left);
+      return;
     }
     // a clean write from memory: no model shown, the first guess, a real drawing (D8, on this device only)
-    if (!pick && !pad.copy && opt.rank === 0 && strokes.length) { practice[ch] = (practice[ch] || 0) + 1; store.set('practice', practice); }
-    const p = me();
-    if (strokes.length) fx.push({ kind: 'strokes', strokes, s: r.stone.id, x: p.x, y: p.y + PH + 1.4, vx: 0, vy: 0, g: 0, life: 1.1, max: 1.1 });
+    if (m.clean) { practice[m.ch] = (practice[m.ch] || 0) + 1; store.set('practice', practice); }
     closePad();
-    return r;
+  }
+  // strokes for the wire: at most 32 points a stroke and 20 strokes (the server refuses more), evenly kept
+  function thin(strokes) {
+    return strokes.slice(0, 20).map(st => st.length <= 32 ? st : Array.from({ length: 32 }, (_, i) => st[Math.round(i * (st.length - 1) / 31)]))
+      .map(st => st.map(([x, y]) => [Math.round(x * 1000) / 1000, Math.round(y * 1000) / 1000]));
   }
   function showModel() {
     const m = $('#wp-model');
@@ -1163,6 +1284,7 @@
 
   // ---------- start ----------
   onIsle();
+  connect();
   const go = () => requestAnimationFrame(t => { last = t; requestAnimationFrame(frame); });
   if (document.fonts && document.fonts.load) Promise.race([document.fonts.load('40px "Tongzhou Brush"', '日月明杲'), new Promise(r => setTimeout(r, 1500))]).then(go, go);
   else go();
@@ -1171,6 +1293,7 @@
   window.WF2D = {
     world, ui: UI, cam,
     me, frames: () => frames, scale: () => S, lockstep: LOCK,
+    crew: () => ({ on: CREW_ON(), joined: net.joined, live: net.live, id: ME, slot: me() ? me().slot : 0, players: world.players.size }),
     feet: () => { const p = me(); return { x: X(p.x), y: Y(p.y) }; },
     padRects: () => padRects().map(r => ({ x: r.left, y: r.top, w: r.width, h: r.height })),
     visibleHud: () => [...document.querySelectorAll('[data-hud]')].filter(e => { const r = e.getBoundingClientRect(); const cs = getComputedStyle(e); return !e.hidden && r.width > 0 && r.height > 0 && cs.display !== 'none' && cs.visibility !== 'hidden' && +cs.opacity > 0.05; })

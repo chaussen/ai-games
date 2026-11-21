@@ -60,9 +60,19 @@ players their own ink and colour. Plan, decisions, knobs and hand-off: **`docs/C
 them the WRITE button blinks until you write. `docs/CONJURE.md` §7a.
 
 **The board (2026-11-21):** `/board` shows a big QR code for phones, with the look and profile in the link
-(chips on the board switch them). Every phone plays its own game; there are no rooms yet. On the board machine,
-`board-2d`, `board-2d-onestroke` and the other shortcuts in `../board/` start the server on port 3000 and open
-this page.
+(chips on the board switch them). **同舟 together** (the default) puts the phones in one crew and shows who has
+joined; **each alone** gives every phone its own game. On the board machine, `board-2d` (the crew),
+`board-2d-onestroke`, `board-2d-relaxed`, `board-2d-rough` (thrown stones knock friends back), `board-2d-alone`
+and the rest in `../board/` start the server on port 3000 and open this page. Any mix: `board 2d cut relaxed push`.
+
+**Co-op: the crew (2026-11-21):** on the board choose **同舟 together** (the default) and every phone that scans
+the code joins **one isle**, up to four, each in their own colour with their own ink and pad (`/?crew=1`; `/` alone
+is still solo). Players are bodies: walk into a friend to shove them, push back to block, jump on a friend's head
+and ride along, stack three high. Lean on a friend for a second and you slip past, so nobody gets trapped. While you
+write, the others play on, and everyone sees your strokes over your head. Thrown stones fly through friends, unless
+the crew picks **knock a friend back** or **knock what they carry loose** (☰ or the board). Forging one character
+together is a proposal for Claude Design, not built yet. Plan, decisions, knobs, wire protocol and hand-off:
+**`docs/CO-OP.md`**.
 
 **Automated play-testing (research, 2026-11-20):** `docs/AUTOTEST.md`: which technologies can see, operate and
 play this game like a person, with spikes in `lab/autotest/`. Nothing in the game changed.
@@ -76,7 +86,8 @@ PORT=3000 node server.js       # on the machine where only port 3000 is open (ph
 ../board/board.sh 2d cut relaxed   # or board-2d-onestroke etc. once ../board/install.sh has run: server on 3000 + the board
 ```
 
-Phones open `http://<LAN-IP>:3300/` (the server prints it). URL options: `?art=ink|cut|greybox`, `?isle=dawn` (an isle's id, or its number from 0),
+Phones open `http://<LAN-IP>:3300/` (the server prints it), or `http://<LAN-IP>:3300/?crew=1` to join the crew (the
+board's QR code does this). URL options: `?crew=1`, `?art=ink|cut|greybox`, `?isle=dawn` (an isle's id, or its number from 0),
 `?profile=relaxed|standard|strict`, `?labels=all|near|card`, `?mute=1`, `?touch=1` (show the pad on
 a laptop).
 
@@ -104,6 +115,8 @@ node sim-test.mjs        # rules, 轻功, forging, elements and walls, two scrip
 node write-test.mjs      # the pad's recogniser on its stroke data (synthetic: not real handwriting)
 node write-isle-test.mjs # real server on 3487: both writing isles in all three looks, written by real touches
 node smoke-test.mjs      # real server on port 3481: what a phone may fetch, font coverage
+node crew-test.mjs       # real server on 3489, WebSocket phones: join, bodies, writes, isle/knock, full crew, reconnect
+node crew-check-test.mjs # real server on 3490 + crew-check.py: four headless phones in one crew, real touches, the board
 node screen-test.mjs     # real server on 3482 + screen-check.py: eleven screens (phones, iPads, laptops), real touch, budget, contrast, screenshots
 ART=greybox node screen-test.mjs   # the same for the greybox look
 ART=cut node screen-test.mjs       # and for One Stroke

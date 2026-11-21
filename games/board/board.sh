@@ -2,7 +2,10 @@
 # The board launcher: start one of the Tongzhou games on this computer and open its board (a QR code for
 # phones). See README.md here. One game at a time, on port 3000 (the only port this machine's firewall opens).
 #
-#   board.sh 2d [ink|cut|greybox] [relaxed|standard|strict]   Glyph Isles 2D (games/tongzhou-forge-2d)
+#   board.sh 2d [ink|cut|greybox] [relaxed|standard|strict] [crew|alone] [off|push|loose]
+#                                                              Glyph Isles 2D (games/tongzhou-forge-2d), any order;
+#                                                              crew (default): one isle for up to four phones;
+#                                                              off|push|loose: what a thrown stone does to a friend
 #   board.sh 3d [relaxed|standard|strict]                      The Forge 3D (games/tongzhou-forge)
 #   board.sh conjure                                           Conjure (games/tongzhou-conjure)
 #   board.sh isles                                             Glyph Isles 3D (games/tongzhou-isles)
@@ -23,7 +26,7 @@ LOG="$STATE/server-$PORT.log"
 say() { printf '%s\n' "$*"; }
 die() { printf 'board: %s\n' "$*" >&2; exit 1; }
 
-usage() { sed -n '5,11p' "$(readlink -f "$0")" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '5,14p' "$(readlink -f "$0")" | sed 's/^# \{0,1\}//'; }
 
 # the process listening on PORT, if any
 listener() { ss -ltnpH "sport = :$PORT" 2>/dev/null | grep -o 'pid=[0-9]*' | head -1 | cut -d= -f2 || true; }
@@ -74,12 +77,27 @@ start() {
   local ip; ip=$(lan_ip)
   case "$game" in
     2d)
-      local art=${1:-ink} profile=${2:-standard}
-      oneof "$art" ink cut greybox || die "look must be ink, cut or greybox (got '$art')"
-      oneof "$profile" relaxed standard strict || die "profile must be relaxed, standard or strict (got '$profile')"
-      dir=$GAMES/tongzhou-forge-2d; name="Glyph Isles 2D, $art, $profile"
-      board="http://localhost:$PORT/board?art=$art&profile=$profile"
-      phone="http://$ip:$PORT/?art=$art&profile=$profile" ;;
+      # words in any order: a look, a profile, crew or alone, and a knock (docs/CO-OP.md in that game)
+      local art=ink profile=standard crew=1 knock=off w
+      for w in "$@"; do
+        if oneof "$w" ink cut greybox; then art=$w
+        elif oneof "$w" relaxed standard strict; then profile=$w
+        elif oneof "$w" crew together; then crew=1
+        elif oneof "$w" alone solo; then crew=0
+        elif oneof "$w" off push loose; then knock=$w
+        else die "2d takes a look (ink, cut, greybox), a profile (relaxed, standard, strict), crew or alone, and a knock (off, push, loose); got '$w'"
+        fi
+      done
+      dir=$GAMES/tongzhou-forge-2d
+      if [ "$crew" = 1 ]; then
+        name="Glyph Isles 2D, crew of up to four, $art, $profile, thrown stones: $knock"
+        board="http://localhost:$PORT/board?art=$art&profile=$profile&crew=1&knock=$knock"
+        phone="http://$ip:$PORT/?art=$art&profile=$profile&crew=1"
+      else
+        name="Glyph Isles 2D, each phone alone, $art, $profile"
+        board="http://localhost:$PORT/board?art=$art&profile=$profile&crew=0"
+        phone="http://$ip:$PORT/?art=$art&profile=$profile"
+      fi ;;
     3d)
       local profile=${1:-}
       [ -z "$profile" ] || oneof "$profile" relaxed standard strict || die "profile must be relaxed, standard or strict (got '$profile')"
@@ -121,7 +139,7 @@ start() {
 cmd=${1:-}
 case "$cmd" in
   ""|-h|--help|help) usage ;;
-  list) say "2d [ink|cut|greybox] [relaxed|standard|strict], 3d [profile], conjure, isles" ;;
+  list) say "2d [ink|cut|greybox] [relaxed|standard|strict] [crew|alone] [off|push|loose], 3d [profile], conjure, isles" ;;
   stop) [ -z "$(listener)" ] && say "Nothing is running on port $PORT." || { stop_port; say "Stopped."; }; rm -f "$STATE/current-$PORT" ;;
   status)
     pid=$(listener)

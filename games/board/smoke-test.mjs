@@ -28,6 +28,15 @@ ok((await get('/board.js')).code === 200 && (await get('/vendor/qrcode.js')).cod
 let c = await get('/config.js');
 ok(c.code === 200 && /F2D_CONFIG/.test(c.body) && c.body.includes('"port":3488'), '/config.js tells the board its address and port');
 ok((await get('/')).code === 200, 'the game itself answers');
+ok(/\/board\?art=cut&profile=relaxed&crew=1&knock=off/.test(r.stdout) && /:3488\/\?art=cut&profile=relaxed&crew=1/.test(r.stdout), '2d is a crew by default: the board and phone links join it');
+ok(/"players":\[\]/.test((await get('/crew.json')).body), 'the crew answers (/crew.json), nobody in it yet');
+// any order: a knock word and alone
+r = board('2d', 'push', 'greybox');
+ok(r.status === 0 && /\/board\?art=greybox&profile=standard&crew=1&knock=push/.test(r.stdout), '2d push greybox: words in any order, the knock in the board link');
+r = board('2d', 'alone', 'strict');
+ok(r.status === 0 && /\/board\?art=ink&profile=strict&crew=0/.test(r.stdout) && !/Phones:.*crew=1/.test(r.stdout), '2d alone: every phone its own game');
+r = board('2d', 'sideways');
+ok(r.status !== 0 && /2d takes a look/.test(r.stderr), 'an unknown 2d word is refused, with what it takes');
 
 // switching to another game stops the 2D one first
 for (const [g, check] of [['3d', /Forge|同舟|board/i], ['conjure', /./], ['isles', /./]]) {

@@ -114,8 +114,8 @@ drawing and offers the ideas), `practiceMaster` (3).
 
 - **Real handwriting is unmeasured.** The recogniser is checked on its own templates with jitter; children's
   writing on phones has never been collected (3D ROADMAP B2). Gate before any classroom use.
-- **One player.** No rooms, phones-as-pads or board yet; the sim is ready (CJ2-02). With rooms, `padPause` must
-  go and the strokes should travel with the write so the board can replay them (3D wire format, `SPEC.md` §4).
+- ~~**One player.**~~ Done in `docs/CO-OP.md` (2026-11-21): the crew on the server, `padPause` only alone, the
+  strokes travel with the write and every phone replays them (CO-08).
 - **No isle is designed around writing yet.** Every isle is still won by finding stones; writing is a shortcut
   and a way to recover a lost piece. An isle that *needs* a written character (a piece that lies nowhere) is the
   next content step, with routes in `routes.mjs`.

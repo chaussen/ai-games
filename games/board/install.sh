@@ -11,11 +11,13 @@ MARK="tongzhou-board"
 
 # name | arguments to board.sh | menu label
 SHORTCUTS=(
-  "board-2d|2d ink standard|Board: Glyph Isles 2D (ink scroll)"
-  "board-2d-onestroke|2d cut standard|Board: Glyph Isles 2D (One Stroke)"
-  "board-2d-greybox|2d greybox standard|Board: Glyph Isles 2D (greybox)"
-  "board-2d-relaxed|2d ink relaxed|Board: Glyph Isles 2D (ink, relaxed for young children)"
-  "board-2d-strict|2d ink strict|Board: Glyph Isles 2D (ink, strict)"
+  "board-2d|2d ink standard crew|Board: Glyph Isles 2D (crew, ink scroll)"
+  "board-2d-onestroke|2d cut standard crew|Board: Glyph Isles 2D (crew, One Stroke)"
+  "board-2d-greybox|2d greybox standard crew|Board: Glyph Isles 2D (crew, greybox)"
+  "board-2d-relaxed|2d ink relaxed crew|Board: Glyph Isles 2D (crew, ink, relaxed for young children)"
+  "board-2d-strict|2d ink strict crew|Board: Glyph Isles 2D (crew, ink, strict)"
+  "board-2d-rough|2d ink standard crew push|Board: Glyph Isles 2D (crew, thrown stones knock friends back)"
+  "board-2d-alone|2d ink standard alone|Board: Glyph Isles 2D (every phone its own game)"
   "board-3d|3d|Board: The Forge 3D"
   "board-3d-relaxed|3d relaxed|Board: The Forge 3D (relaxed)"
   "board-conjure|conjure|Board: Conjure"

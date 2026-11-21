@@ -93,7 +93,9 @@
       v.frames2();
       stones(v, false);
       v.ghost();
-      hero(v);
+      // friends first (docs/CO-OP.md), then you on top of them
+      for (const q of world.players.values()) if (q !== v.me()) hero(v, q, false);
+      hero(v, v.me(), true);
       stones(v, true);
       v.particles();
       if (v.wonF > 0.01) { ctx.fillStyle = 'rgba(248,241,226,' + (0.22 * v.wonF).toFixed(3) + ')'; ctx.fillRect(0, 0, W, H); }
@@ -380,10 +382,11 @@
         // things (§3.7): a thrown stone opens into its thing in the air and folds back as it lands
         const f = root.WThings ? root.WThings.fold(k, v) : 0;
         // level 2: the thing you carry, in the pose that goes with it (no block on your head)
-        if (k.state === 'held' && root.WThings && k.holder === p) {
-          const kk = v.PH * S / 40 / 0.68, shake = p.stun > 0 ? Math.sin(v.t * 60) * 1.2 : 0;
+        // a friend stands on what you carry (docs/CO-OP.md): it stays a block at its sim box, so they stand on something
+        if (k.state === 'held' && root.WThings && k.holder && ![...world.players.values()].some(q => q.support === k.holder)) {
+          const h = k.holder, kk = v.PH * S / 40 / 0.68, shake = h.stun > 0 ? Math.sin(v.t * 60) * 1.2 : 0;
           const o = { t: v.t, ink: K.ink, paper: K.paper2, el: v.elOf(k.ch), red: K.vermilion, gold: K.gamboge, font };
-          if (root.WThings.carried(ctx, k.ch, root.WThings.poseFor(k.ch), X(x) + shake, Y(y - v.HOLD_Y), kk, p.face, o)) continue;
+          if (root.WThings.carried(ctx, k.ch, root.WThings.poseFor(k.ch), X(x) + shake, Y(y - v.HOLD_Y), kk, h.face, o)) continue;
         }
         if (f > 0) {
           const o = { t: v.t, ink: K.ink, paper: K.paper2, el: v.elOf(k.ch), red: K.vermilion, gold: K.gamboge, font };
@@ -415,14 +418,15 @@
       if (Math.abs(p.vx) > 0.5) return 'run';
       return 'stand';
     }
-    // one pose, stroked twice: gamboge at 7.6 units then ink at 5, so a 1.3 unit rim is left; then the sash
-    function paintPose(g, P, t, sp) {
-      for (const [col, w, r] of [[K.gamboge, 7.6, 4.2], [K.ink, 5, 2.9]]) {
+    // one pose, stroked twice: gamboge at 7.6 units then ink at 5, so a 1.3 unit rim is left; then the sash.
+    // A friend (docs/CO-OP.md) has no rim and wears their colour as the sash: flat fills, no alpha.
+    function paintPose(g, P, t, sp, sash) {
+      for (const [col, w, r] of sash ? [[K.ink, 5, 2.9]] : [[K.gamboge, 7.6, 4.2], [K.ink, 5, 2.9]]) {
         g.strokeStyle = col; g.fillStyle = col; g.lineWidth = w;
         g.stroke(path(P.arms)); g.stroke(path(P.torso)); g.stroke(path(P.legs));
         g.beginPath(); g.arc(P.dot[0], P.dot[1], r, 0, Math.PI * 2); g.fill();
       }
-      g.strokeStyle = K.vermilion; g.lineWidth = 1.4;
+      g.strokeStyle = sash || K.vermilion; g.lineWidth = sash ? 2.2 : 1.4;
       P.tails.forEach((d, i) => {
         const [px, py] = startOf(d);
         g.save(); g.translate(px, py); g.rotate(Math.sin(t * (6 + sp) + i * 2) * (0.04 + Math.min(0.1, sp * 0.012))); g.translate(-px, -py);
@@ -430,12 +434,11 @@
       });
       g.lineWidth = 3.4; g.stroke(path(P.sash));
     }
-    function hero(v) {
+    function hero(v, p, mine) {
       const { ctx, S, X, Y, world, t } = v;
-      const p = v.me();
       const [x, y] = v.posOf(p, v.a);
       // where you will land: a dotted ink line and a shadow; over water a vermilion line and a ring
-      if (!p.grounded) {
+      if (mine && !p.grounded) {
         const fy = world.floorUnder(x, v.PW, y);
         const wet = fy < 1.01, gy = wet ? 1 : fy, h = y - gy;
         const col = wet ? K.vermilion : K.ink;
@@ -447,12 +450,12 @@
       }
       // leap ready: a gamboge ring under your feet while you can still leap
       const cap = p.hold ? world.qi.carry : world.qi.chain;
-      if (!p.grounded && p.qi > 0 && p.chain < cap) {
+      if (mine && !p.grounded && p.qi > 0 && p.chain < cap) {
         ctx.strokeStyle = K.gamboge; ctx.lineWidth = Math.max(2, S * 0.05);
         ctx.beginPath(); ctx.ellipse(X(x), Y(y) + 2, S * 0.3, S * 0.085, 0, 0, Math.PI * 2); ctx.stroke();
       }
       if (p.leapt && p.vy > 0 && Math.random() < 0.7) v.fx.push({ x: x - p.face * 0.15 + (Math.random() - 0.5) * 0.2, y: y + 0.45, vx: 0, vy: -0.4, life: 0.45, max: 0.45, kind: 'wisp', size: 0.07, g: 0 });
-      const pose = heroPose(v, p);
+      const pose = heroPose(mine ? v : { land: 0 }, p);
       const key = pose === 'run' ? (Math.floor(t * 8) % 2 ? 'run2' : 'run1') : pose;
       const P = POSES[key];
       const k = v.PH * S / 40;
@@ -466,7 +469,8 @@
         ctx.strokeStyle = K.shadow; ctx.lineWidth = 1.2;
         ctx.stroke(path('M-19,-2 L-14,-2 M14,-2 L19,-2 M-17,-5 L-13,-4 M13,-4 L17,-5'));
       }
-      paintPose(ctx, P, t, Math.hypot(p.vx, p.vy));
+      const pl = root.WInk && root.WInk.PLAYERS[p.slot || 1];
+      paintPose(ctx, P, t, Math.hypot(p.vx, p.vy), mine ? null : (pl ? pl.acc : K.vermilion));
       ctx.restore();
     }
 

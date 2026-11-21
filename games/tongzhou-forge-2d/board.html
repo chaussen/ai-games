@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Glyph Isles 2D · board</title>
-<!-- The board: this computer shows a QR code; every phone that scans it plays its own game in
-     the look and profile chosen here. Opened by ../board/board.sh, or by hand: /board?art=cut&profile=relaxed. README.md, "The board" -->
+<!-- The board: this computer shows a QR code; phones that scan it join the crew (one isle for up to four,
+     docs/CO-OP.md) or each play alone, in the look and profile chosen here. Opened by ../board/board.sh, or by hand: /board?art=cut&profile=relaxed. README.md, "The board" -->
 <style>
   @font-face { font-family: "Tongzhou Brush"; src: url("vendor/MaShanZheng-subset.woff2") format("woff2"); font-display: block; }
   :root { --ink: #1d1b1a; --soft: #5c5246; --paper: #f1e7cf; --ver: #c23a2b; --kai: "Tongzhou Brush", "Kaiti SC", "KaiTi", serif; }
@@ -29,6 +29,9 @@
   .foot { margin-top: 1.6em; font-size: 14px; color: var(--soft); }
   .foot a { color: var(--ink); }
   .warn { color: var(--ver); font-weight: 700; }
+  #roster { font-size: clamp(15px, 2.2vmin, 22px); min-height: 1.6em; }
+  .pd { display: inline-block; width: 1.1em; height: 1.1em; border-radius: 50%; border: 2px solid var(--ink); vertical-align: -0.2em; margin-right: 3px; }
+  [hidden] { display: none !important; }
   /* upright (a tablet or a turned TV): the QR code first and sized to the height, so all of it is on screen */
   @media (orientation: portrait) {
     main { padding: 3vh 5vw; gap: 2.5vh; align-content: center; }
@@ -46,10 +49,13 @@
     <h1>同舟</h1>
     <div class="py">tóng zhōu · in the same boat</div>
     <div class="name">Glyph Isles 2D</div>
-    <p class="how">Scan with a phone camera. Every phone plays its own game, in the look below.</p>
+    <p class="how" id="how">Scan with a phone camera.</p>
     <div class="url" id="url"></div>
+    <div class="row" id="crew"><b>Play</b></div>
+    <div class="row" id="roster" aria-live="polite"></div>
     <div class="row" id="arts"><b>Look</b></div>
     <div class="row" id="profiles"><b>Profile</b></div>
+    <div class="row" id="knocks"><b>Thrown stones</b></div>
     <p class="foot"><span id="note"></span> <a id="here" href="./">Play on this screen</a></p>
   </section>
   <div id="qr" aria-label="QR code for phones"></div>
