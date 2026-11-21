@@ -93,6 +93,8 @@ Night and dusk skies alternate. Maps are 36 to 46 cells wide and 10 to 15 high, 
 
 ## 6. Known gaps
 
+- (2026-11-21) **Conjure is back** (`CONJURE.md`): the writing pad for one player. Its own gaps are in `CONJURE.md` §7.
+
 - **Nobody has played these isles yet.** The routes prove each isle can be won, not that it is fun, fair or
   in the right order. The order in §2 is a first guess.
 - Isles 4 to 21 are built from the same parts (ground, gaps, walls, towers, clouds); none has the hand-shaped

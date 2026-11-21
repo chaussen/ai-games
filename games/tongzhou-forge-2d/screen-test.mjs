@@ -11,6 +11,6 @@ const ART = process.env.ART || 'ink';
 const out = process.argv[2] || path.join(here, 'screenshots', ART);
 const srv = spawn(process.execPath, [path.join(here, 'server.js')], { env: { ...process.env, PORT: String(PORT), HOST: '127.0.0.1' }, stdio: 'ignore' });
 await new Promise(r => setTimeout(r, 500));
-const r = spawnSync('python3', [path.join(here, 'screen-check.py'), String(PORT), out], { stdio: 'inherit', timeout: 300000, env: { ...process.env, ART } });
+const r = spawnSync('python3', [path.join(here, 'screen-check.py'), String(PORT), out], { stdio: 'inherit', timeout: 900000, env: { ...process.env, ART } });
 srv.kill();
 process.exit(r.status === 0 ? 0 : 1);

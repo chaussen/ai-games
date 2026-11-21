@@ -30,6 +30,26 @@
   <button id="jump" data-hud="jump" data-pad>JUMP</button>
 </div>
 
+<!-- 书 WRITE (docs/CONJURE.md): the third verb. On a touch screen it sits left of GRAB, low, so the camera keeps
+     its place; on a laptop it is the only pad button that shows (key C). -->
+<button id="write" data-hud="write" data-pad title="Write a character (C)"><span class="g">书</span><span class="py">shū</span><span class="en">WRITE</span><span class="dots" aria-label="ink"></span></button>
+
+<div id="writepad" class="sheet" data-hud="writepad" hidden>
+  <div class="wp-head"><span class="wp-title"><b>书</b> shū · write a character</span><span id="wp-ink" class="wp-ink" title="Your ink: one drop for each stone you write"></span><button id="wp-close" aria-label="Close">✕</button></div>
+  <div class="wp-square" id="wp-square">
+    <div id="wp-model" class="wp-model" hidden></div>
+    <svg class="wp-grid" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M50 0V100M0 50H100"/><path class="d" d="M0 0L100 100M100 0L0 100"/></svg>
+    <canvas id="wp-canvas" aria-label="Write here with your finger"></canvas>
+  </div>
+  <div class="wp-side">
+    <div id="wp-status" class="wp-status" role="status"></div>
+    <div id="wp-tiles" class="wp-tiles"></div>
+    <div class="wp-ideas-head">Ideas to try · tap one to copy it</div>
+    <div id="wp-ideas" class="wp-ideas"></div>
+    <div class="row"><button id="wp-clear">Clear</button><button id="wp-use" class="main" hidden></button></div>
+  </div>
+</div>
+
 <div id="title" class="sheet" data-hud="title" hidden>
   <div class="cn"></div><div class="name"></div><p class="tip"></p>
 </div>
@@ -52,13 +72,14 @@
   <label>Look <select data-k="art"><option value="ink">ink scroll 水墨</option><option value="cut">one stroke 一笔</option><option value="greybox">greybox</option></select></label>
   <label><input type="checkbox" data-k="sound"> Sound</label>
   <label><input type="checkbox" data-k="voice"> Say each new character</label>
-  <p class="keys">Keys: ← → walk · Space / ↑ jump (again in the air: 轻功) · X grab · R restart · N / P isle · Esc menu</p>
+  <p class="keys">Keys: ← → walk · Space / ↑ jump (again in the air: 轻功) · X grab · C write · R restart · N / P isle · Esc menu</p>
 </div>
 
 <script src="content.js"></script>
 <script src="rules.js"></script>
 <script src="isles.js"></script>
 <script src="sim.js"></script>
+<script src="vendor/recogniser.js"></script>
 <script src="things.js"></script>
 <script src="ink.js"></script>
 <script src="cut.js"></script>

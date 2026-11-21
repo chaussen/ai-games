@@ -31,6 +31,11 @@ try {
   }
   const font = await fetch(base + '/vendor/MaShanZheng-subset.woff2');
   ok(font.status === 200 && font.headers.get('content-type') === 'font/woff2', 'the brush font is served');
+  // the writing pad's stroke data (docs/CONJURE.md): served next to the recogniser, every character in the game
+  const sd = await fetch(base + '/vendor/strokes.json');
+  const sj = sd.status === 200 ? await sd.json() : { chars: {} };
+  ok(sd.status === 200 && (sd.headers.get('content-type') || '').startsWith('application/json'), 'the stroke data is served as JSON');
+  ok(Object.keys(require('./rules.js').GLYPHS).every(ch => sj.chars[ch]), 'the stroke data has every character in the game');
   ok((await fetch(base + '/favicon.ico')).status === 204, 'favicon: no content, no 404 in the console');
   for (const p of ['/sim-test.mjs', '/server.js', '/docs/GREYBOX.md', '/../CLAUDE.md', '/%2e%2e/CLAUDE.md', '/vendor/../sim.js.map'])
     ok((await get(p)).status === 404, 'not served: ' + p);

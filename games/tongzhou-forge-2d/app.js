@@ -24,6 +24,11 @@
     maxPx: 3.2e6,                                             // canvas pixels at most (a phone's worth): big iPads and Macs draw a little softer, not slower
     sound: qs.get('mute') === '1' ? false : store.get('sound', true),
     voice: qs.get('mute') === '1' ? false : store.get('voice', true),
+    // the writing pad (docs/CONJURE.md)
+    padPause: true,                                           // one player: the isle waits while you write (CJ2-09)
+    padMinScore: 0.65,                                        // a guess under this is not offered (scribbles score 0.5-0.7; write-test.mjs)
+    padWait: 0.5,                                             // seconds after the last stroke before the pad reads it
+    practiceMaster: 3,                                        // clean writes from memory before an idea gets its ✓
   };
   const STEP = 1 / 60;
   // tests only (docs/AUTOTEST.md §4.2): ?lockstep=1 runs exactly one sim step per animation frame, whatever
@@ -130,8 +135,10 @@
     if (e.target && e.target.tagName === 'SELECT') return;
     unlockAudio();
     const k = KEYS[e.code];
+    if (pad.open) { padKey(e); return; }
     if (e.code === 'Escape') { toggleDrawer(); return; }
     if (!$('#drawer').hidden) return;
+    if (e.code === 'KeyC') { e.preventDefault(); openPad(); return; }
     if (e.code === 'KeyR') { restart(); return; }
     if (e.code === 'KeyN') { goIsle(world.index + 1); return; }
     if (e.code === 'KeyP') { goIsle(world.index - 1); return; }
@@ -179,6 +186,7 @@
   }
   holdButton(jumpEl, () => { world.press(ME, 'jump'); input.jump = true; }, () => { input.jump = false; });
   holdButton(grabEl, () => world.press(ME, 'grab'));
+  holdButton($('#write'), () => openPad());
   addEventListener('contextmenu', e => e.preventDefault());
 
   // ---------- sound: a few sine blips, no files ----------
@@ -218,6 +226,8 @@
     ouch: () => tone(180, 0.12, 'square', 0.05, 110),
     dusk: () => { tone(330, 0.9, 'sine', 0.06, 196); tone(247, 1.1, 'triangle', 0.05, 147, 0.2); },
     dawn: () => [392, 523, 659, 784].forEach((f, k) => tone(f, 0.35, 'sine', 0.06, null, k * 0.06)),
+    write: () => { tone(660, 0.12, 'triangle', 0.07, 990); tone(990, 0.3, 'sine', 0.06, 1320, 0.08); },
+    fade: () => tone(500, 0.35, 'sine', 0.05, 250),
     win: () => [523, 659, 784, 1047, 1319].forEach((f, k) => tone(f, 0.28, 'triangle', 0.09, null, k * 0.11)),
   };
   function speak(ch) {
@@ -317,7 +327,7 @@
   function updateTitle() {
     const p = me(), el = $('#title');
     const onBoat = p.grounded && world.cell(Math.floor(p.x), Math.round(p.y) - 1) === 'b';
-    const show = onBoat && world.phase === 'play' && !title.hidden;
+    const show = onBoat && world.phase === 'play' && !title.hidden && !pad.open;
     if (show && el.hidden) {
       el.querySelector('.cn').textContent = world.L.cn;
       el.querySelector('.name').textContent = 'Isle ' + (world.index + 1) + ' of ' + IS.ISLES.length + ' · ' + world.L.name;
@@ -345,6 +355,7 @@
   }
   function toggleDrawer(open) {
     const o = open === undefined ? drawer.hidden : open;
+    if (o) closePad();
     drawer.hidden = !o;
     if (o) syncDrawer();
   }
@@ -375,6 +386,7 @@
     fx.length = 0; flashes.length = 0; winAt = 0;
     $('#win').hidden = true; title.hidden = false; card.forced = null; msgT = 0; $('#msg').className = '';
     cam.ready = false; seenOuch = false; duskF = 0; wonF = 0;
+    closePad();
   }
   function restart() { world.load(world.index); onIsle(); }
   function goIsle(i) { world.load(i); onIsle(); }
@@ -474,6 +486,23 @@
         if (e.on) { sfx.dusk(); say(B('杳') + ' yǎo, dim: dusk falls. A glow-gem shines'); }
         else { sfx.dawn(); say('Light again'); }
         break;
+      case 'write': {
+        sfx.write();
+        const k = world.stones.find(s => s.id === e.s);
+        if (k) burst(k.x, k.y + SH / 2, 14, { kind: 'ink', color: painted() ? PAINT[ART].ink : '#2a2622', v: 2, life: 0.6, size: 0.07 });
+        if (e.id === ME) {
+          const w = words(e.ch);
+          say('You wrote ' + B(e.ch) + ' ' + w.py + ' · ' + w.en + (e.held ? '' : ': your hands were full, it fell in front of you'));
+          card.forced = { ch: e.ch, until: world.clock + UI.cardForge };
+          speak(e.ch);
+        }
+        break;
+      }
+      case 'fade':
+        sfx.fade();
+        burst(e.x, e.y + SH / 2, 12, { kind: 'wisp', v: 1.2, life: 0.7, size: 0.12, g: -0.4 });
+        if (e.id === ME) say('Your older ' + B(e.ch) + ' fades: you keep ' + world.cj.own + ' written stone' + (world.cj.own > 1 ? 's' : ''));
+        break;
       case 'win':
         winAt = world.clock + UI.winDelay;
         store.set('won.' + world.L.id, true);
@@ -512,7 +541,7 @@
   function frame(now) {
     const dt = LOCK ? STEP : Math.min(0.1, (now - last) / 1000);
     last = now;
-    paused = !drawer.hidden || document.hidden;
+    paused = !drawer.hidden || document.hidden || (pad.open && UI.padPause);
     if (!paused) {
       acc = LOCK ? STEP : acc + dt;
       let n = 0;
@@ -536,6 +565,7 @@
     showCard(UI.labels === 'none' ? null : ch, fresh);
     updateTitle();
     updateGoal();
+    updateInk();
     frames++;
     requestAnimationFrame(frame);
   }
@@ -546,7 +576,9 @@
   const font = px => px.toFixed(1) + 'px "Tongzhou Brush", "Kaiti SC", "STKaiti", KaiTi, serif';
   function rr(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
 
+  let lastAlpha = 1;
   function draw(a, t) {
+    lastAlpha = a;
     if (painted()) {
       painter().draw({ ctx, W, H, S, DPR, X, Y, cam, anchorY, world, a, t, duskF, wonF, land, fx, labels: UI.labels,
         me, posOf, words, elOf, font: ART === 'cut' ? window.WCut.font : font, shapeOf, SW, SH, PW, PH, HOLD_Y,
@@ -889,10 +921,41 @@
     }
   }
 
+  // a stone someone wrote carries a small mark in its writer's colour (CJ2-01): a dot at its top-right corner
+  // (while it lies loose; in someone's hands it is theirs to see)
+  function writtenMarks() {
+    const a = lastAlpha, PL = window.WInk.PLAYERS;
+    for (const k of world.stones) {
+      // only stones lying loose: a held stone is drawn in the hands differently in each look
+      if (!k.conj || k.state !== 'loose') continue;
+      const [x, y] = posOf(k, a);
+      const w = world.players.get(k.by), col = (PL[w ? w.slot : 1] || PL[1]).acc;
+      const cx = X(x + SW) - S * 0.06, cy = Y(y + SH) + S * 0.06, r = Math.max(3, S * 0.09);
+      ctx.fillStyle = painted() ? PAINT[ART].paper : '#f8f0dc'; ctx.beginPath(); ctx.arc(cx, cy, r + Math.max(1, S * 0.03), 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = col; ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+  // the strokes you wrote, in ink over your head, drawn in to the stone as it forms
+  function inkStrokes(f, k) {
+    const st = world.stones.find(s => s.id === f.s);
+    let tx = f.x, ty = f.y;
+    if (st && st.state !== 'gone') { const [x, y] = posOf(st, lastAlpha); tx = x; ty = y + SH / 2; if (st.state === 'held') { const [hx, hy] = posOf(st.holder, lastAlpha); tx = hx; ty = hy + HOLD_Y + SH / 2; } }
+    const u = clamp((k - 0.15) / 0.45, 0, 1), e = u * u * (3 - 2 * u);   // 1 → 0.15: hold, then shrink in
+    const size = S * (0.9 + 0.9 * e), cx = X(tx + (f.x - tx) * e), cy = Y(ty + (f.y - ty) * e);
+    ctx.globalAlpha = Math.min(1, k * 2.5);
+    ctx.strokeStyle = painted() ? PAINT[ART].ink : '#2b2118'; ctx.lineWidth = Math.max(1.5, size * 0.07); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.beginPath();
+    for (const line of f.strokes) {
+      line.forEach(([px, py], i) => { const sx = cx + (px - 0.5) * size, sy = cy + (py - 0.5) * size; if (i) ctx.lineTo(sx, sy); else ctx.moveTo(sx, sy); });
+    }
+    ctx.stroke();
+  }
   function particles() {
+    writtenMarks();
     for (const f of fx) {
       const k = Math.max(0, f.life / f.max);
       ctx.globalAlpha = k;
+      if (f.kind === 'strokes') { inkStrokes(f, k); continue; }
       if (f.kind === 'glyph' && ART === 'cut') {
         // a vermilion seal presses the new character: a square with a paper frame and the glyph in paper
         const r = S * (0.55 + (1 - k) * 0.25), sx = X(f.x), sy = Y(f.y);
@@ -938,6 +1001,162 @@
     ctx.restore();
   }
 
+  // ---------- the writing pad (docs/CONJURE.md) ----------
+  // Opens blank (FG-D018): write any character you know, or tap an idea to show it as a model to copy. The
+  // recogniser (vendor/recogniser.js) reads the drawing against every character in the game; a guess this isle
+  // has no use for is shown, greyed, so the drawing is named for what it is (CJ2-04).
+  const pad = { open: false, strokes: [], cur: null, copy: null, timer: 0, guesses: [] };
+  const padEl = $('#writepad'), padCv = $('#wp-canvas'), padCtx = padCv.getContext('2d'), writeEl = $('#write');
+  const ALL_GLYPHS = Object.keys(RU.GLYPHS);
+  if (window.WRecog) window.WRecog.load(ALL_GLYPHS);
+  const practice = store.get('practice', {});
+  const WHY = {
+    want: 'That is the goal: make it from its parts.',
+    unknown: 'This isle has no use for it.',
+    ink: 'Out of ink. A drop comes back soon.',
+    cooldown: 'A moment…',
+    phase: 'The isle is done.',
+    pick: 'Write it to use it.',
+    full: 'Too many stones on the isle.',
+    away: 'You are not on the isle.',
+  };
+  const padStatus = html => { $('#wp-status').innerHTML = html; };
+  const BLANK = 'Write any character you know. Need an idea? Tap one below.';
+  function openPad() {
+    if (pad.open || world.phase !== 'play' || !$('#drawer').hidden) return;
+    pad.open = true; padEl.hidden = false;
+    // let go of everything: nothing keeps walking while you write
+    stick.id = null; stick.x = 0; stickHome(); input.jump = false; input.keys.clear();
+    pad.copy = null; clearPad(); renderIdeas(); updateInk(true);
+    sizePad();
+  }
+  function closePad() {
+    if (!pad.open) return;
+    pad.open = false; padEl.hidden = true; clearTimeout(pad.timer); pad.cur = null;
+  }
+  function sizePad() {
+    const r = padCv.getBoundingClientRect(), d = Math.min(3, devicePixelRatio || 1);
+    padCv.width = Math.max(1, Math.round(r.width * d)); padCv.height = Math.max(1, Math.round(r.height * d));
+    drawPad();
+  }
+  addEventListener('resize', () => { if (pad.open) sizePad(); });
+  function drawPad() {
+    const w = padCv.width, h = padCv.height;
+    padCtx.clearRect(0, 0, w, h);
+    padCtx.strokeStyle = painted() ? PAINT[ART].ink : '#2b2118'; padCtx.lineWidth = Math.max(3, w * 0.035); padCtx.lineCap = 'round'; padCtx.lineJoin = 'round';
+    padCtx.beginPath();
+    for (const st of pad.strokes) st.forEach(([x, y], i) => i ? padCtx.lineTo(x * w, y * h) : padCtx.moveTo(x * w, y * h));
+    padCtx.stroke();
+    for (const st of pad.strokes) if (st.length === 1) { padCtx.beginPath(); padCtx.arc(st[0][0] * w, st[0][1] * h, padCtx.lineWidth / 2, 0, Math.PI * 2); padCtx.fillStyle = padCtx.strokeStyle; padCtx.fill(); }
+  }
+  const padPt = e => { const r = padCv.getBoundingClientRect(); return [clamp((e.clientX - r.left) / r.width, 0, 1), clamp((e.clientY - r.top) / r.height, 0, 1)]; };
+  padCv.addEventListener('pointerdown', e => {
+    e.preventDefault(); clearTimeout(pad.timer);
+    if (pad.cur) return;                                    // one finger writes; a second is ignored
+    pad.cur = { id: e.pointerId, pts: [padPt(e)] }; pad.strokes.push(pad.cur.pts);
+    try { padCv.setPointerCapture(e.pointerId); } catch (_) {}
+    drawPad();
+  });
+  padCv.addEventListener('pointermove', e => {
+    if (!pad.cur || e.pointerId !== pad.cur.id) return;
+    const p = padPt(e), q = pad.cur.pts[pad.cur.pts.length - 1];
+    if (Math.hypot(p[0] - q[0], p[1] - q[1]) >= 0.008 && pad.cur.pts.length < 600) { pad.cur.pts.push(p); drawPad(); }
+  });
+  const padUp = e => {
+    if (!pad.cur || e.pointerId !== pad.cur.id) return;
+    pad.cur = null; drawPad();
+    clearTimeout(pad.timer); pad.timer = setTimeout(readPad, UI.padWait * 1000);
+  };
+  padCv.addEventListener('pointerup', padUp); padCv.addEventListener('pointercancel', padUp);
+  function clearPad() {
+    pad.strokes = []; pad.cur = null; pad.guesses = []; clearTimeout(pad.timer);
+    $('#wp-tiles').innerHTML = '';
+    drawPad(); showModel();
+  }
+  // read the drawing: the best guesses at or over padMinScore, at most three
+  function readPad() {
+    if (!pad.open || !pad.strokes.length || !window.WRecog) return;
+    const m = window.WRecog.match(pad.strokes).filter(g => g.score >= UI.padMinScore).slice(0, 3);
+    pad.guesses = m;
+    const box = $('#wp-tiles');
+    box.innerHTML = '';
+    if (!m.length) { padStatus('I can’t read that yet. Write it bigger, one stroke at a time, or tap an idea below to copy it.'); return; }
+    let usable = 0;
+    m.forEach((g, rank) => {
+      const why = world.writeWhy(ME, g.ch), w = words(g.ch), off = why === 'unknown' || why === 'want';
+      if (!off) usable++;
+      const t = document.createElement('button');
+      t.className = 'wp-tile' + (off ? ' off' : '');
+      t.dataset.ch = g.ch;
+      t.innerHTML = '<span class="ch" style="color:' + elOf(g.ch).b + '">' + g.ch + '</span><span class="py">' + w.py + '</span><span class="en">' + w.en + '</span>' + (off ? '<span class="no">' + (why === 'want' ? 'the goal' : 'not on this isle') + '</span>' : '');
+      t.addEventListener('click', () => tryWrite(g.ch, { rank }));
+      box.appendChild(t);
+    });
+    padStatus(usable ? 'Tap the one you wrote:' : 'That looks like ' + B(m[0].ch) + ' ' + words(m[0].ch).py + ' · ' + words(m[0].ch).en + '. This isle has no use for it. Try an idea below.');
+  }
+  // the isle answers: yes, the stone is yours and the pad closes; no, the pad stays open with your drawing
+  function tryWrite(ch, opt) {
+    const pick = !!opt.pick, strokes = pad.strokes.map(st => st.slice());
+    const r = world.write(ME, ch, { pick });
+    world.drain().forEach(e => { if (e.t !== 'writeNo') handle(e); });
+    if (!r.ok) {
+      const left = r.why === 'ink' ? ' (' + Math.ceil((1 - world.inkOf(ME) % 1) * world.cj.regen) + ' s)' : '';
+      padStatus(B(ch) + ': ' + (WHY[r.why] || 'not now.') + left);
+      return r;
+    }
+    // a clean write from memory: no model shown, the first guess, a real drawing (D8, on this device only)
+    if (!pick && !pad.copy && opt.rank === 0 && strokes.length) { practice[ch] = (practice[ch] || 0) + 1; store.set('practice', practice); }
+    const p = me();
+    if (strokes.length) fx.push({ kind: 'strokes', strokes, s: r.stone.id, x: p.x, y: p.y + PH + 1.4, vx: 0, vy: 0, g: 0, life: 1.1, max: 1.1 });
+    closePad();
+    return r;
+  }
+  function showModel() {
+    const m = $('#wp-model');
+    m.textContent = pad.copy || ''; m.hidden = !pad.copy;
+    const use = $('#wp-use');
+    use.hidden = !(pad.copy && world.cj.pick);
+    if (pad.copy) use.textContent = 'Use ' + pad.copy + ' without drawing';
+    for (const b of document.querySelectorAll('.wp-idea')) b.classList.toggle('selected', b.dataset.ch === pad.copy);
+    if (!pad.strokes.length) padStatus(pad.copy ? 'Copy ' + B(pad.copy) + ' ' + words(pad.copy).py + ' · ' + words(pad.copy).en + ' stroke by stroke. Tap it again to hide the model.' : BLANK);
+  }
+  function renderIdeas() {
+    const box = $('#wp-ideas');
+    box.innerHTML = '';
+    for (const ch of world.writable()) {
+      const w = words(ch), b = document.createElement('button');
+      b.className = 'wp-idea' + ((practice[ch] || 0) >= UI.practiceMaster ? ' known' : '');
+      b.dataset.ch = ch;
+      b.innerHTML = '<b style="color:' + elOf(ch).b + '">' + ch + '</b><span>' + w.py + '</span><i>' + w.en + '</i>';
+      b.title = 'Tap to copy ' + ch + ' · written from memory ' + (practice[ch] || 0) + ' time(s) here';
+      b.addEventListener('click', () => { pad.copy = pad.copy === ch ? null : ch; showModel(); });
+      box.appendChild(b);
+    }
+  }
+  $('#wp-close').addEventListener('click', closePad);
+  $('#wp-clear').addEventListener('click', () => { clearPad(); });
+  $('#wp-use').addEventListener('click', () => { if (pad.copy) tryWrite(pad.copy, { pick: true }); });
+  function padKey(e) {
+    if (e.code === 'Escape' || e.code === 'KeyC') { e.preventDefault(); closePad(); return; }
+    if (e.code === 'Backspace' || e.code === 'Delete') { e.preventDefault(); clearPad(); return; }
+    if (e.code === 'Enter') { e.preventDefault(); const g = pad.guesses.find(g => !['unknown', 'want'].includes(world.writeWhy(ME, g.ch))); if (g) tryWrite(g.ch, { rank: pad.guesses.indexOf(g) }); }
+  }
+  // your ink, as dots on the WRITE button and in the pad's header
+  let inkKey = '';
+  function dotsHTML(ink, max) {
+    let h = '';
+    for (let i = 0; i < max; i++) h += ink >= i + 1 ? '<i class="full"></i>' : ink > i ? '<i class="part" style="--fill:' + Math.round((ink - i) * 100) + '%"></i>' : '<i></i>';
+    return h;
+  }
+  function updateInk(force) {
+    const ink = world.inkOf(ME), max = world.inkMax(), key = Math.round(ink * 20) + '/' + max;
+    if (key === inkKey && !force) return;
+    inkKey = key;
+    writeEl.querySelector('.dots').innerHTML = dotsHTML(ink, max);
+    writeEl.classList.toggle('dry', ink < 1);
+    $('#wp-ink').innerHTML = dotsHTML(ink, max);
+  }
+
   // ---------- start ----------
   onIsle();
   const go = () => requestAnimationFrame(t => { last = t; requestAnimationFrame(frame); });
@@ -981,6 +1200,9 @@
     // checks only (lab/autotest/page-mind.mjs, the render check): draw the current state again, with no
     // step and no camera move, so a check can hide one thing, redraw, and see which pixels were that thing
     redraw() { draw(1, drawT); },
+    // the writing pad (screen-check.py): open, read, the guesses, write from a list of strokes (0..1, y down)
+    pad: () => ({ open: pad.open, strokes: pad.strokes.length, guesses: pad.guesses.slice(), copy: pad.copy, status: $('#wp-status').textContent }),
+    openPad, closePad, readPad,
     fx,       // the effects being drawn (particles, the forge stamp): the render check sets them aside while it measures
   };
 })();

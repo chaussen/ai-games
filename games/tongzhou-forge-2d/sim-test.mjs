@@ -4,7 +4,7 @@ import { createRequire } from 'module';
 import { run, S, DT } from './bot.mjs';
 import { ROUTES } from './routes.mjs';
 const require = createRequire(import.meta.url);
-const { World, knobs, relate, PROFILES, consts } = require('./sim.js');
+const { World, knobs, relate, PROFILES, consts, CONJURE } = require('./sim.js');
 const RU = require('./rules.js');
 const IS = require('./isles.js');
 
@@ -360,6 +360,128 @@ G('walls');
   const e = r.ev.find(x => x.t === 'springBlocked');
   ok(r.ok && e && e.ch === '木' && stone(w, '呆'), 'apricot: 呆 lying on 木\'s spot: "木 is waiting to grow back"');
   ok(!r.ev.some(x => x.t === 'regrow' && x.ch === '木'), 'apricot: and 木 does not grow under it');
+}
+
+// ---------------------------------------------------------------- write (docs/CONJURE.md)
+G('write');
+{
+  for (const name of PROFILES) ok(Object.isFrozen(knobs(name).cj) && !('profiles' in knobs(name).cj), name + ': CONJURE is a frozen group');
+  ok(knobs('relaxed').cj.ink > knobs('standard').cj.ink && knobs('strict').cj.ink < knobs('standard').cj.ink && knobs('strict').cj.pick === false, 'profiles: more ink relaxed, less and no pick strict');
+  // what an isle lets you write
+  for (const L of IS.ISLES) {
+    const w = new World(); w.load(IS.ISLES.indexOf(L));
+    const can = w.writable();
+    ok(can.length > 0 && !can.includes(L.want) && can.every(ch => RU.GLYPHS[ch]), L.id + ': writable ' + can.join('') + ' (known, never the goal)');
+    ok(can.every(ch => L.stones.some(s => s[0] === ch)) || L.write, L.id + ': writable = the stones lying there');
+  }
+  // in your hands
+  {
+    const { w, p } = fresh(isle('two-trees'));
+    ok(w.inkOf('me') === CONJURE.ink, 'a player starts the isle with full ink');
+    const r = w.write('me', '木');
+    const e = w.drain();
+    ok(r.ok && r.held && p.hold === r.stone && r.stone.ch === '木' && r.stone.state === 'held', 'empty hands: the written 木 is in your hands');
+    ok(r.stone.by === 'me' && r.stone.conj && p.wrote.includes(r.stone.id), 'it carries its writer');
+    ok(e.some(x => x.t === 'write' && x.ch === '木' && x.held) && w.started, 'a write event; the isle clock starts');
+    ok(Math.abs(w.inkOf('me') - (CONJURE.ink - 1)) < 1e-9 && p.wcd > 0, 'one drop spent, cooldown set');
+    const r2 = w.write('me', '木');
+    ok(!r2.ok && r2.why === 'cooldown' && w.drain().some(x => x.t === 'writeNo' && x.why === 'cooldown'), 'too soon: cooldown');
+    steps(w, Math.ceil(CONJURE.cooldown / DT) + 2);
+    // hands full: it drops in front of you
+    const r3 = w.write('me', '木');
+    ok(r3.ok && !r3.held && p.hold === r.stone && r3.stone.state === 'loose', 'hands full: the new one is not in your hands');
+    steps(w, 60);
+    ok(r3.stone.grounded && Math.abs(r3.stone.x - p.x) < 1.2 && r3.stone.y > consts.WATER, 'it lands in front of you');
+    ok(w.inkOf('me') < 1, 'out of ink');
+    steps(w, Math.ceil(CONJURE.cooldown / DT) + 2);
+    const r4 = w.write('me', '木');
+    ok(!r4.ok && r4.why === 'ink', 'no drop left: refused (ink)');
+    steps(w, Math.ceil(CONJURE.regen / DT));
+    ok(w.inkOf('me') >= 1 && w.inkOf('me') <= CONJURE.ink, 'ink comes back with time, never past the cap');
+    // the cap: a third written stone fades the oldest (the one in your hands)
+    const r5 = w.write('me', '木');
+    const e5 = w.drain();
+    ok(r5.ok && r.stone.state === 'gone' && e5.some(x => x.t === 'fade' && x.s === r.stone.id), 'past the cap your oldest written stone fades (held, too)');
+    ok(r5.held && p.hold === r5.stone, 'and the new one takes its place in your hands');
+    ok(p.wrote.length === CONJURE.own, 'you keep at most `own` written stones');
+    // restart refills
+    w.load(w.index);
+    ok(w.inkOf('me') === CONJURE.ink && p.wrote.length === 0 && !p.hold, 'restart: full ink, nothing written');
+  }
+  // refusals
+  {
+    const { w } = fresh(isle('two-trees'));
+    ok(w.write('me', '林').why === 'want', 'the goal cannot be written');
+    ok(w.write('me', '火').why === 'unknown', 'a character not on this isle: unknown');
+    ok(w.write('nobody', '木').why === 'away', 'no such player');
+    w.setProfile('strict');
+    ok(w.write('me', '木', { pick: true }).why === 'pick' && w.write('me', '木').ok, 'strict: no pick without drawing, but writing works');
+    w.setProfile(null);
+    w.phase = 'won';
+    ok(w.write('me', '木').why === 'phase', 'after the win: phase');
+  }
+  // a written stone is a stone: beside 木 it forges 林; over the gap it bridges; in the river it floats home
+  {
+    const { w, p } = fresh(isle('two-trees'));
+    const r = run(w, 'me', [S.take('木'), S.go(18.6), S.face(1), S.grabAs('place'), S.go(20.6), S.face(-1), S.write('木'), S.grabAs('beside'), S.event('forge', 2)], { max: 60 * 30 });
+    ok(r.ok && r.ev.some(e => e.t === 'forge' && e.ch === '林'), 'a written 木 set beside a found 木 forges 林');
+  }
+  {
+    const { w } = fresh(isle('two-trees'));
+    const r = run(w, 'me', [S.go(13.2), S.write('木'), S.grabAs('toss', -1), S.event('bridge', 3)], { max: 60 * 20 });
+    ok(r.ok, 'a written 木 thrown into the gap grows a bridge');
+  }
+  {
+    const { w, p } = fresh(isle('sun-and-moon'));
+    const safe = p.safe.slice();
+    const r = w.write('me', w.writable().find(ch => !RU.FILLS.includes(RU.GLYPHS[ch].el)));
+    let wx = -1;
+    for (let cx = 0; cx < w.w && wx < 0; cx++) if (w.groundTop(cx + 0.5, w.h) === 0 && w.cell(cx, 0) !== '_') wx = cx + 0.5;
+    w.dropHeld(p); r.stone.x = wx; r.stone.y = 3; r.stone.grounded = false;
+    const e = steps(w, 120);
+    ok(wx > 0 && e.some(x => x.t === 'stoneReturn' && x.s === r.stone.id) && Math.abs(r.stone.home[0] - safe[0]) < 1e-9 && Math.abs(r.stone.x - safe[0]) < 0.5, 'a written stone that falls in the river floats back to where its writer stood safe');
+  }
+  // four players, each with their own ink and their own stones (CJ2-01)
+  {
+    const w = new World(); w.load(isle('sun-and-moon'));
+    const ids = ['a', 'b', 'c', 'd'];
+    for (const id of ids) w.addPlayer(id);
+    ok(new Set(ids.map(id => w.players.get(id).slot)).size === 4, 'four players get four colours');
+    const can = w.writable();
+    const rs = ids.map((id, i) => w.write(id, can[i % can.length]));
+    ok(rs.every(r => r.ok && r.held), 'four players write at once, each into their own hands');
+    ok(rs.every((r, i) => r.stone.by === ids[i] && w.players.get(ids[i]).hold === r.stone), 'each stone carries its own writer');
+    ok(ids.every(id => Math.abs(w.inkOf(id) - (CONJURE.ink - 1)) < 1e-9), 'each spent only their own ink');
+    steps(w, Math.ceil(CONJURE.cooldown / DT) + 2);
+    w.write('a', can[0]); steps(w, Math.ceil(CONJURE.cooldown / DT) + 2);
+    ok(w.write('a', can[0]).why === 'ink' && w.write('b', can[0]).ok, 'a is out of ink; b still has their own');
+    // a fades only a's own stones
+    steps(w, Math.ceil(CONJURE.regen / DT) + 2);
+    const before = rs.map(r => r.stone.state);
+    w.write('a', can[0]);
+    ok(rs[1].stone.state === before[1] && rs[2].stone.state === before[2] && rs[3].stone.state === before[3], "a's write never fades another player's stone");
+  }
+  // the crew pool (the 3D rule) as a knob
+  {
+    const w = new World(); w.load(isle('sun-and-moon'));
+    w.cj = Object.freeze(Object.assign({}, w.cj, { pool: 'crew' }));
+    w.addPlayer('a'); w.addPlayer('b'); w.crewInk = w.inkMax();
+    ok(w.inkMax() === CONJURE.ink + 1, 'crew pool: cap grows by one per extra player');
+    w.write('a', w.writable()[0]);
+    ok(Math.abs(w.inkOf('b') - CONJURE.ink) < 1e-9, 'crew pool: a write by a is spent from the pool b sees');
+  }
+  // every isle: each character it lets you write appears in your hands at the spawn
+  for (const L of IS.ISLES) {
+    const w = new World(); w.load(IS.ISLES.indexOf(L)); w.setProfile('relaxed'); w.load(w.index); w.addPlayer('me');
+    const ch = w.writable()[0];
+    const r = w.write('me', ch);
+    ok(r.ok && r.held && w.players.get('me').hold.ch === ch, L.id + ': writing ' + ch + ' at the spawn puts it in your hands');
+  }
+  // determinism with writes
+  {
+    const once = () => { const { w } = fresh(isle('two-trees')); run(w, 'me', ROUTES['two-trees']({ w }).write_it, { max: 60 * 120 }); return JSON.stringify([w.time, w.phase, w.players.get('me').x, w.stones.map(s => [s.ch, s.x, s.y])]); };
+    ok(once() === once(), 'the same writes give the same isle');
+  }
 }
 
 // ---------------------------------------------------------------- routes: every isle, two ways

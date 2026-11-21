@@ -88,6 +88,21 @@
       strict:   { coyote: 0.05, buffer: 0.08, nudge: 0, keepOnFall: false, minJump: 0.08 },
     },
   };
+  // CONJURE: writing a character makes its stone (docs/CONJURE.md). Each player has their own ink and their own
+  // written stones (CJ2-01); `pool: 'crew'` shares one pool instead, the 3D game's rule (cap +1 per extra player).
+  const CONJURE = {
+    ink: 2,                           // drops a player holds at most, and starts the isle with
+    regen: 15,                        // seconds for one drop to come back
+    cooldown: 1,                      // seconds between two writes by one player
+    own: 2,                           // written stones one player may have at once: one more fades the oldest (CJ2-07)
+    pick: true,                       // "Use ... without drawing" for a chosen idea (CJ2-08)
+    pool: 'own',                      // 'own' (per player) or 'crew' (one shared pool)
+    profiles: {
+      relaxed:  { ink: 3, regen: 10, cooldown: 0.5, own: 3 },
+      standard: {},
+      strict:   { ink: 1, regen: 25, cooldown: 2, own: 1, pick: false },
+    },
+  };
   const PROFILE = 'standard';
   const PROFILES = ['relaxed', 'standard', 'strict'];
   function pick(T, name) {
@@ -98,7 +113,7 @@
   // The knobs of one profile. An unknown name falls back to the default.
   function knobs(name) {
     const p = PROFILES.includes(name) ? name : PROFILE;
-    return { profile: p, fz: pick(FORGE, p), qi: pick(QI, p), as: pick(ASSIST, p) };
+    return { profile: p, fz: pick(FORGE, p), qi: pick(QI, p), as: pick(ASSIST, p), cj: pick(CONJURE, p) };
   }
 
   const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
@@ -160,7 +175,7 @@
       const g = IS.parse(L);
       this.w = g.w; this.h = g.h; this.cells = g.cells;
       this.k = knobs(this.profileOverride || L.strict || PROFILE);
-      this.fz = this.k.fz; this.qi = this.k.qi; this.as = this.k.as;
+      this.fz = this.k.fz; this.qi = this.k.qi; this.as = this.k.as; this.cj = this.k.cj;
       this.events = [];
       this.time = 0; this.clock = 0; this.started = false;
       this.phase = 'play'; this.result = null;
@@ -183,7 +198,8 @@
         sp.stone.grounded = true;
         this.springs.push(sp);
       }
-      for (const p of this.players.values()) this.spawn(p);
+      for (const p of this.players.values()) { this.spawn(p); this.refillInk(p); }
+      this.crewInk = this.inkMax();
       this.ev('isle', { i: this.index, id: L.id, profile: this.k.profile });
     }
 
@@ -198,7 +214,9 @@
     setProfile(name) {
       this.profileOverride = PROFILES.includes(name) ? name : null;
       this.k = knobs(this.profileOverride || this.L.strict || PROFILE);
-      this.fz = this.k.fz; this.qi = this.k.qi; this.as = this.k.as;
+      this.fz = this.k.fz; this.qi = this.k.qi; this.as = this.k.as; this.cj = this.k.cj;
+      for (const p of this.players.values()) p.ink = Math.min(p.ink, this.cj.ink);
+      this.crewInk = Math.min(this.crewInk, this.inkMax());
       this.ev('profile', { profile: this.k.profile });
     }
 
@@ -282,9 +300,16 @@
         in: { x: 0, jump: false }, jb: 0, grab: false, coyote: 0, jumping: false,
         hold: null, qi: 1, chain: 0, src: new Set(), leapt: false, apex: 0, kick: 0, cd: 0, stun: 0,
         safe: [0, 0], wall: 0, gems: 0, lean: 0,
+        ink: 0, wcd: 0, wrote: [], slot: 0,
       };
+      // the player's colour on the isle (1-4, WInk.PLAYERS): the lowest one free
+      const used = new Set([...this.players.values()].map(o => o.slot));
+      for (let s = 1; s <= 4 && !p.slot; s++) if (!used.has(s)) p.slot = s;
+      p.slot = p.slot || 1 + (this.players.size % 4);
       this.players.set(id, p);
       this.spawn(p);
+      this.refillInk(p);
+      if (this.cj.pool === 'crew') this.crewInk = Math.min(this.inkMax(), (this.crewInk || 0) + 1);
       return p;
     }
     removePlayer(id) {
@@ -330,6 +355,7 @@
       this.stepSprings(dt);
       this.stepGems();
       if (this.dusk > 0) { this.dusk -= dt; if (this.dusk <= 0) this.setDusk(0); }
+      this.stepInk(dt);
       for (const c of this.clouds) if (c.t > 0) c.t -= dt;
       if (this.phase === 'play') this.checkWin();
     }
@@ -604,6 +630,72 @@
       k.state = 'loose'; k.holder = null; k.x = to[0]; k.y = to[1] + 0.5; k.vx = k.vy = 0;
       k.grounded = false; k.support = null; k.flying = false; k.snap = null;
       this.ev('stoneReturn', { s: k.id, ch: k.ch, why });
+    }
+
+    // ---------- conjure: write a character, hold its stone (docs/CONJURE.md) ----------
+    // What this isle lets you write: its `write` list, else the characters lying on it; never its goal (CJ2-03).
+    writable() {
+      const L = this.L, out = [];
+      for (const ch of L.write || L.stones.map(s => s[0])) if (ch !== L.want && RU.GLYPHS[ch] && !out.includes(ch)) out.push(ch);
+      return out;
+    }
+    inkMax() { return this.cj.pool === 'crew' ? this.cj.ink + Math.max(0, this.players.size - 1) : this.cj.ink; }
+    refillInk(p) { p.ink = this.cj.ink; p.wcd = 0; p.wrote = []; }
+    // the drops player `id` can spend now (their own, or the crew's)
+    inkOf(id) { const p = this.players.get(id); return !p ? 0 : this.cj.pool === 'crew' ? this.crewInk : p.ink; }
+    stepInk(dt) {
+      const r = dt / this.cj.regen;
+      if (this.cj.pool === 'crew') this.crewInk = Math.min(this.inkMax(), this.crewInk + r);
+      for (const p of this.players.values()) {
+        if (this.cj.pool !== 'crew') p.ink = Math.min(this.cj.ink, p.ink + r);
+        if (p.wcd > 0) p.wcd -= dt;
+      }
+    }
+    // Would a write by `id` work now? null if so, else the reason (the pad shows it before you tap).
+    writeWhy(id, ch, opt) {
+      const p = this.players.get(id);
+      if (this.phase !== 'play') return 'phase';
+      if (!p) return 'away';
+      if (ch === this.L.want) return 'want';
+      if (!this.writable().includes(ch)) return 'unknown';
+      if (opt && opt.pick && !this.cj.pick) return 'pick';
+      if (p.wcd > 0) return 'cooldown';
+      if (this.inkOf(id) < 1) return 'ink';
+      return null;
+    }
+    // Player `id` wrote `ch` (opt.pick: chose it without drawing). The stone goes into empty hands, else it
+    // drops in front of you (CJ2-05). Returns { ok, why, stone, held }.
+    write(id, ch, opt) {
+      const why = this.writeWhy(id, ch, opt);
+      if (why) { this.ev('writeNo', { id, ch, why }); return { ok: false, why }; }
+      const p = this.players.get(id);
+      // past the cap, your oldest written stone fades (never a refusal: CJ2-07)
+      p.wrote = p.wrote.filter(sid => this.stones.some(k => k.id === sid && k.state !== 'gone'));
+      while (p.wrote.length >= this.cj.own) {
+        const old = this.stones.find(k => k.id === p.wrote[0]);
+        p.wrote.shift();
+        if (old) { const at = old.holder ? { x: old.holder.x, y: old.holder.y + HOLD_Y } : { x: old.x, y: old.y }; this.consume(old); this.ev('fade', { id, s: old.id, ch: old.ch, x: at.x, y: at.y }); }
+      }
+      if (this.stones.filter(s => s.state !== 'gone').length >= MAX_STONES) { this.ev('writeNo', { id, ch, why: 'full' }); return { ok: false, why: 'full' }; }
+      const held = !p.hold && p.stun <= 0;
+      let k;
+      if (held) {
+        k = this.addStone(ch, p.x, p.y + HOLD_Y, null);
+        this.holdStone(p, k);
+      } else {
+        // just above head height in front of you, so it falls onto what is there (rock in the way: over your head)
+        let x = p.x + p.face * (PW + SW + 0.05), y = p.y + PH + 0.1;
+        if (this.overlaps(x, y, SW, SH, null, { restingOnly: true })) { x = p.x; y = p.y + HOLD_Y + SH + 0.05; }
+        k = this.addStone(ch, x, y, null);
+        k.vy = 1; k.placer = id; k.from = [x, y];
+      }
+      k.by = id; k.conj = true; k.home = [p.safe[0], p.safe[1]];
+      p.wrote.push(k.id);
+      if (this.cj.pool === 'crew') this.crewInk -= 1; else p.ink -= 1;
+      p.wcd = this.cj.cooldown;
+      if (!this.started) { this.started = true; this.ev('start', {}); }
+      this.ev('write', { id, ch, s: k.id, held, pick: !!(opt && opt.pick), x: k.x, y: k.y });
+      return { ok: true, stone: k, held };
     }
 
     // ---------- stones ----------
@@ -900,7 +992,7 @@
     }
   }
 
-  const api = { World, FORGE, QI, ASSIST, PROFILES, knobs, relate, bestRelation, STATIC,
+  const api = { World, FORGE, QI, ASSIST, CONJURE, PROFILES, knobs, relate, bestRelation, STATIC,
     consts: { G, PW, PH, SW, SH, RUN, CARRY_RUN, HOLD_Y, WATER, DUSK_TIME, REGROW, PAV_R } };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.WSim = api;

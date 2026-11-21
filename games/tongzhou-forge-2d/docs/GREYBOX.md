@@ -77,7 +77,7 @@ jump and a leap.
 
 - One player only; no server rooms, QR, board view, body forging, boost or friend's-head refill.
 - Two isles of nine; no judge; stage data is hand-written ASCII.
-- No writing pad (Conjure) and no pictograph for every root character.
+- No writing pad (Conjure) and no pictograph for every root character. (Conjure came back on 2026-11-21: `CONJURE.md`.)
 - Audio is sine blips; voice uses the browser's zh-CN voice if there is one.
 - Nobody has played it on a real phone yet: that is gate P2.
 

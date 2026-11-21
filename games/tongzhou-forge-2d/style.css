@@ -76,6 +76,84 @@ html.touch #pad { display: block; }
 #grab.mode-beside, #grab.mode-stack, #grab.mode-drop { border-color: rgba(42, 38, 34, 0.7); background: rgba(250, 244, 228, 0.7); }
 #grab:active, #jump:active, #grab.down, #jump.down { transform: scale(0.94); background: rgba(250, 244, 228, 0.7); }
 
+/* ---------- 书 WRITE (docs/CONJURE.md): left of GRAB on a touch screen; bottom-right on a laptop ---------- */
+#write {
+  position: fixed; right: var(--gap-r); bottom: var(--bot); width: 58px; height: 58px; border-radius: 50%; padding: 0; cursor: pointer;
+  border: 2px solid rgba(42, 38, 34, 0.45); background: rgba(250, 244, 228, 0.8); touch-action: none;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.05;
+}
+html.touch #write { right: calc(var(--gap-r) + 146px); bottom: var(--bot); width: 54px; height: 54px; }
+/* sideways the feet can stand where it sits upright: there it goes above JUMP instead */
+@media (orientation: landscape) { html.touch #write { right: calc(var(--gap-r) + 6px); bottom: calc(var(--bot) + 76px); } }
+#write .g { font-family: var(--kai); font-weight: 400; font-size: 22px; line-height: 1; }
+#write .py { font-size: 9px; font-weight: 500; }
+#write .en { font-size: 7.5px; font-weight: 700; letter-spacing: .06em; color: var(--ink-soft); }
+#write .dots { display: flex; gap: 2px; margin-top: 2px; height: 5px; }
+#write .dots i, .wp-ink i { width: 5px; height: 5px; border-radius: 50%; border: 1px solid var(--ink); background: transparent; }
+#write .dots i.full, .wp-ink i.full { background: var(--ink); }
+#write .dots i.part, .wp-ink i.part { background: linear-gradient(to top, var(--ink) var(--fill, 0%), transparent var(--fill, 0%)); }
+#write.dry .g { opacity: .45; }
+#write.down, #write:active { transform: scale(0.94); }
+
+/* the writing sheet: the square on top (upright) or on the left (sideways), then guesses, ideas and buttons */
+#writepad {
+  top: max(8px, env(safe-area-inset-top)); width: min(96vw, 460px); max-height: calc(100dvh - 16px); overflow: auto;
+  display: grid; gap: 8px; padding: 10px 12px; pointer-events: auto; touch-action: none; z-index: 30;
+}
+.wp-head { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+.wp-head .wp-title { flex: 1; }
+.wp-head b { font-family: var(--kai); font-weight: 400; font-size: 22px; vertical-align: -3px; }
+.wp-ink { display: flex; gap: 4px; }
+.wp-ink i { width: 12px; height: 12px; border-width: 1.5px; }
+#wp-close { width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 8px; background: #fff8ea; cursor: pointer; font-size: 16px; }
+.wp-square {
+  position: relative; justify-self: center; width: min(86vw, 42dvh, 340px); aspect-ratio: 1; background: #fffaf0;
+  border: 2px solid var(--ink); touch-action: none;
+}
+.wp-grid { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: rgba(194, 58, 43, .35); stroke-width: .6; stroke-dasharray: 2 2; vector-effect: non-scaling-stroke; pointer-events: none; }
+.wp-grid .d { stroke: rgba(194, 58, 43, .18); }
+.wp-model { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--kai); font-size: calc(min(86vw, 42dvh, 340px) * .78); line-height: 1; color: rgba(42, 38, 34, .16); pointer-events: none; }
+#wp-canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
+.wp-side { display: grid; gap: 8px; align-content: start; }
+.wp-status { font-size: 14px; line-height: 1.35; min-height: 2.7em; }
+.wp-status b { font-family: var(--kai); font-weight: 400; font-size: 1.3em; }
+.wp-tiles { display: flex; gap: 8px; min-height: 0; }
+.wp-tiles:empty { display: none; }
+.wp-tile {
+  flex: 1; display: grid; justify-items: center; padding: 4px 4px 6px; border: 2px solid var(--ink); border-radius: 10px; background: #fff8ea; cursor: pointer;
+}
+.wp-tile .ch { font-family: var(--kai); font-size: 40px; line-height: 1.05; }
+.wp-tile .py { font-size: 13px; font-weight: 600; }
+.wp-tile .en { font-size: 11px; color: var(--ink-soft); }
+.wp-tile .no { font-size: 10px; color: var(--coral); }
+.wp-tile.off { border-style: dashed; border-color: var(--line); opacity: .6; cursor: default; }
+.wp-ideas-head { font-size: 12px; color: var(--ink-soft); }
+.wp-ideas { display: flex; flex-wrap: wrap; gap: 6px; }
+.wp-idea { display: grid; justify-items: center; min-width: 58px; padding: 3px 6px 4px; border: 1px solid var(--line); border-radius: 8px; background: #fff8ea; cursor: pointer; line-height: 1.1; position: relative; }
+.wp-idea b { font-family: var(--kai); font-weight: 400; font-size: 26px; line-height: 1.1; }
+.wp-idea span { font-size: 11px; font-weight: 600; }
+.wp-idea i { font-size: 10px; font-style: normal; color: var(--ink-soft); }
+.wp-idea.selected { border: 2px solid var(--coral); }
+.wp-idea.known::after { content: "✓"; position: absolute; right: 3px; top: 1px; font-size: 11px; color: #2f7a55; }
+#writepad .row button { padding: 8px 10px; }
+/* sideways phones: the square on the left, everything else beside it */
+@media (orientation: landscape) and (max-height: 600px) {
+  #writepad { width: min(96vw, 700px); grid-template-columns: auto 1fr; grid-template-rows: auto 1fr; column-gap: 14px; }
+  .wp-head { grid-column: 1 / -1; }
+  .wp-square { width: min(calc(100dvh - 92px), 46vw); }
+  .wp-model { font-size: calc(min(calc(100dvh - 92px), 46vw) * .78); }
+  .wp-status { min-height: 0; }
+  .wp-tile .ch { font-size: 32px; }
+}
+html.ink #write { background: var(--hud-paper); border: 1.5px solid var(--ink); box-shadow: 0 0 0 2px rgba(29, 27, 26, .28); color: var(--ink); }
+html.ink #write .g { color: var(--vermilion); }
+html.ink .wp-square, html.ink .wp-tile, html.ink .wp-idea, html.ink #wp-close { border-radius: 0; }
+html.cut #write { background: var(--hud-paper); border: 3px solid var(--ink); color: var(--ink); }
+html.cut #write .g { font-weight: 900; color: var(--vermilion); }
+html.cut .wp-square, html.cut .wp-tile, html.cut .wp-idea, html.cut #wp-close { border-radius: 0; }
+html.cut .wp-tile { border-width: 3px; }
+html.cut .wp-tile .ch, html.cut .wp-idea b, html.cut .wp-model { font-weight: 900; }
+
 /* ---------- sheets: title on the boat, the win card, the menu drawer ---------- */
 .sheet {
   position: fixed; left: 50%; transform: translateX(-50%); width: min(88vw, 420px);

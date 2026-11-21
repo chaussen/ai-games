@@ -24,6 +24,14 @@ export const ROUTES = {
       S.go(22.4), S.take('木'), S.go(17.6), S.face(-1), S.grabAs('beside'), S.event('forge', 2),
       S.wait(0.6), S.take('林'), S.go(4), S.grabAs('offer'), S.event('win', 3),
     ],
+    // C (docs/CONJURE.md): write it. Never touch the isle's stones: write 木 and throw it into the gap, write
+    // another and carry it over, set it down, wait for a drop of ink, write a third and set it beside
+    write_it: [
+      S.go(13.2), S.write('木'), S.grabAs('toss', -1), S.event('bridge', 3),
+      S.ink(), S.write('木'), S.go(6), S.face(-1), S.grabAs('place'),
+      S.ink(), S.write('木'), S.grabAs('beside'), S.event('forge', 2),
+      S.wait(0.6), S.take('林'), S.go(4), S.grabAs('offer'), S.event('win', 3),
+    ],
   }),
   'sun-and-moon': () => ({
     // A: 木 bridges the gap, 火 burns the thorns, the 轻功 chain up the tower for 日, 日 left of 月

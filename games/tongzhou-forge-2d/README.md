@@ -48,6 +48,12 @@ thorns (火 burns them). ☰ → Isle lists all 21 and marks the ones you have w
 | 10 | Good 女子为好 | 好 = 女 left of 子 | 21 | Flourish 日日为昌 | 昌 = 日 on 日 |
 | 11 | Apricot 杏 | 杏 = 木 on 口 | | | |
 
+**Conjure: write a character (2026-11-21):** tap **书 shū WRITE** (laptop: **C**), write a character with your
+finger, tap the guess, and its stone is in your hands. The pad reads your writing on the device against every
+character in the game; an isle lets you write the characters lying on it (never its goal). Ink: 2 drops, one back
+every 15 s; you keep two written stones (a third fades your oldest). One player for now; the sim gives each of four
+players their own ink and colour. Plan, decisions, knobs and hand-off: **`docs/CONJURE.md`**.
+
 **Automated play-testing (research, 2026-11-20):** `docs/AUTOTEST.md`: which technologies can see, operate and
 play this game like a person, with spikes in `lab/autotest/`. Nothing in the game changed.
 
@@ -68,13 +74,13 @@ a laptop).
 ☰ also holds **Look** (ink scroll or greybox).
 
 Phone: the **stick** (touch anywhere in the lower left) walks; **跳 JUMP** jumps, and again in the air
-is 轻功 (a leap); **拿 GRAB** picks up a stone. Holding a stone, the GRAB button names the placement:
+is 轻功 (a leap); **拿 GRAB** picks up a stone, **书 WRITE** opens the writing pad (the isle waits while you write). Holding a stone, the GRAB button names the placement:
 **旁 BESIDE** (facing a stone at your level: yours goes on your side of it), **上 ON TOP** (standing on
 a stone, or in the air above one), **扔 THROW** (while walking), **放 SET DOWN** (standing still),
 **落 DROP** (in the air), **献 OFFER** (at the pavilion with the character it wants). Lean on a stone to
 push it. ☰: restart, isle, play profile (relaxed / standard / strict), pinyin on stones, sound, voice.
 
-Laptop: ← → walk, Space / ↑ jump, X grab, R restart, N / P isle, Esc menu.
+Laptop: ← → walk, Space / ↑ jump, X grab, C write (draw with the mouse; Enter takes the first guess), R restart, N / P isle, Esc menu.
 
 轻功: one leap per charge. The ground gives a charge; touching something new in the air (a wall
 face, the side of a stone, a gem, a cloud) gives another. Push into a wall to leap up it; anything
@@ -84,6 +90,7 @@ else kicks you off it. Carrying a stone you get one leap.
 
 ```sh
 node sim-test.mjs        # rules, 轻功, forging, elements and walls, two scripted wins per isle (42; pure node)
+node write-test.mjs      # the pad's recogniser on its stroke data (synthetic: not real handwriting)
 node smoke-test.mjs      # real server on port 3481: what a phone may fetch, font coverage
 node screen-test.mjs     # real server on 3482 + screen-check.py: eleven screens (phones, iPads, laptops), real touch, budget, contrast, screenshots
 ART=greybox node screen-test.mjs   # the same for the greybox look

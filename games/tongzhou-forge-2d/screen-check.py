@@ -3,8 +3,10 @@
 For each device it boots the page from the running server, plays with real input (multi-touch on
 phones through Chrome's touch events: the stick held while JUMP or GRAB is tapped; keys on a
 laptop), and checks the screen budget of docs/GREYBOX.md:
-  - nothing but goal, card, msg, menu, stick, grab, jump (plus the title on the boat, the win card,
-    the menu drawer when opened) is visible;
+  - nothing but goal, card, msg, menu, stick, grab, jump, write (plus the title on the boat, the win card,
+    the menu drawer and the writing pad when opened) is visible; write overlaps no other pad button;
+  - the writing pad (docs/CONJURE.md) opens, fits the screen, and 木 written from its stroke data with real
+    touches (the mouse on a laptop) is read as 木, and tapping the guess puts 木 in your hands;
   - no top element (goal, card, msg, menu, title) overlaps the pad;
   - your feet are on screen and not under the pad;
   - no console errors.
@@ -33,7 +35,7 @@ DEVICES = [
     ("laptop-hd", 1920, 960, 1, False),          # 1080p screen
 ]
 TOP = {"goal", "card", "msg", "menu", "title"}
-ALLOWED = TOP | {"stick", "grab", "jump", "win", "drawer"}
+ALLOWED = TOP | {"stick", "grab", "jump", "write", "win", "drawer", "writepad"}
 fails = []
 ONLY = os.environ.get("DEVICES")
 if ONLY:
@@ -155,6 +157,72 @@ def run_device(pw_browser, dev):
     page.screenshot(path=f"{OUT}/{name}-1-boat.jpg", type="jpeg", quality=70)
 
     t = Touch(page) if touch else None
+
+    # 书 WRITE: the button is in the budget and clear of the other pad buttons
+    rects = {e["name"]: e for e in page.evaluate("WF2D.visibleHud()")}
+    if "write" not in rects:
+        fails.append(f"{name}: no WRITE button")
+    else:
+        for other in ("grab", "jump", "stick"):
+            if other in rects and overlap(rects["write"], rects[other]):
+                fails.append(f"{name}: WRITE overlaps {other}")
+        if "书" not in page.inner_text("#write") or "shū" not in page.inner_text("#write"):
+            fails.append(f"{name}: WRITE lacks its character and pinyin: {page.inner_text('#write')!r}")
+    # open the pad with a real tap (C on a laptop), write 木 from its stroke medians, tap the guess
+    if touch:
+        x, y = center(page, "#write"); t.down(4, x, y); page.wait_for_timeout(60); t.up(4)
+    else:
+        page.keyboard.press("c")
+    wait(page, "the pad opens", "WF2D.pad().open")
+    wait_frames(page, 3)
+    sheet = page.evaluate("WF2D.visibleHud().find(e => e.name === 'writepad')")
+    sq = page.eval_on_selector("#wp-canvas", "e => { const r = e.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height }; }")
+    if not sheet or sheet["y"] < -1 or sheet["y"] + sheet["h"] > h + 1 or sheet["x"] < -1 or sheet["x"] + sheet["w"] > w + 1:
+        fails.append(f"{name}: the writing pad does not fit the screen {sheet}")
+    if sq["w"] < 180 or abs(sq["w"] - sq["h"]) > 2:
+        fails.append(f"{name}: the writing square is {sq['w']:.0f} x {sq['h']:.0f}")
+    c0 = page.evaluate("WF2D.world.clock")
+    if page.evaluate("new Promise(r => setTimeout(() => r(WF2D.world.clock), 250))") != c0:
+        fails.append(f"{name}: the isle did not wait while the pad was open")
+    strokes = page.evaluate("fetch('vendor/strokes.json').then(r => r.json()).then(d => d.chars['木'].m.map(st => st.map(([x, y]) => [x / 1024, (900 - y) / 1024])))")
+    for st in strokes:
+        pts = [(sq["x"] + px * sq["w"], sq["y"] + py * sq["h"]) for px, py in st]
+        # each median is a few points: walk between them in small steps, like a finger
+        if touch:
+            t.down(5, *pts[0])
+        else:
+            page.mouse.move(*pts[0]); page.mouse.down()
+        for (ax, ay), (bx, by) in zip(pts, pts[1:]):
+            for k in range(1, 7):
+                px, py = ax + (bx - ax) * k / 6, ay + (by - ay) * k / 6
+                if touch:
+                    t.move(5, px, py)
+                else:
+                    page.mouse.move(px, py)
+        if touch:
+            t.up(5)
+        else:
+            page.mouse.up()
+        page.wait_for_timeout(80)
+    wait(page, "the pad reads the drawing", "WF2D.pad().guesses.length > 0 || /read that/.test(WF2D.pad().status)", 3000)
+    pd = page.evaluate("WF2D.pad()")
+    seen["write"] = [(g["ch"], g["score"]) for g in pd["guesses"]]
+    page.screenshot(path=f"{OUT}/{name}-0-write.jpg", type="jpeg", quality=70)
+    if not pd["guesses"] or pd["guesses"][0]["ch"] != "木":
+        fails.append(f"{name}: 木 written on the pad was read as {pd['guesses']} ({pd['status']!r}, {pd['strokes']} strokes)")
+    else:
+        if touch:
+            x, y = center(page, ".wp-tile[data-ch='木']"); t.down(6, x, y); page.wait_for_timeout(60); t.up(6)
+        else:
+            page.click(".wp-tile[data-ch='木']")
+        wait(page, "the pad closes", "!WF2D.pad().open")
+        wait_frames(page, 20)
+        if page.evaluate("WF2D.me().hold && WF2D.me().hold.ch") != "木" or "木" not in page.inner_text("#msg"):
+            fails.append(f"{name}: after writing 木 you hold {page.evaluate('WF2D.me().hold && WF2D.me().hold.ch')!r}, message {page.inner_text('#msg')!r}")
+        page.screenshot(path=f"{OUT}/{name}-0b-wrote.jpg", type="jpeg", quality=70)
+        seen["wrote"] = check(page, dev, "after writing 木")
+    # put it away again so the rest of the check plays the isle as it lies
+    page.evaluate("(() => { const p = WF2D.me(); if (p.hold) WF2D.world.consume(p.hold); })()")
 
     def walk(dx_sign, secs):
         if touch:

@@ -33,7 +33,7 @@ const server = http.createServer((req, res) => {
   if (p === '/favicon.ico') { res.writeHead(204); res.end(); return; }
   if (p === '/') p = '/index.html';
   const rel = p.replace(/^\/+/, '');
-  const ok = PUBLIC.has(rel) || (/^vendor\/[\w.-]+\.(woff2|txt)$/.test(rel));
+  const ok = PUBLIC.has(rel) || (/^vendor\/[\w.-]+\.(woff2|txt|js|json)$/.test(rel));
   const file = path.join(ROOT, rel);
   if (!ok || !file.startsWith(ROOT + path.sep)) { res.writeHead(404, { 'content-type': 'text/plain' }); res.end('not found'); return; }
   fs.readFile(file, (err, buf) => {

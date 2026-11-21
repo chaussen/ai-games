@@ -112,6 +112,14 @@ export const S = {
     } };
   },
   wait: (secs) => ({ name: 'wait ' + secs, fn: ({ t }) => ({ done: t >= secs }) }),
+  // write a character on the pad (docs/CONJURE.md): the isle must say yes
+  write: (ch, opt) => ({ name: 'write ' + ch, fn: ({ w, p }) => {
+    const r = w.write(p.id, ch, opt);
+    if (!r.ok) throw new Error('write ' + ch + ': refused (' + r.why + ')');
+    return { done: true };
+  } }),
+  // wait for a drop of ink to come back
+  ink: (timeout = 30) => ({ name: 'ink', timeout, fn: ({ w, p }) => ({ done: w.inkOf(p.id) >= 1 && p.wcd <= 0 }) }),
   until: (name, cond, x = 0, timeout = 8) => ({ name, timeout, fn: (c) => ({ x: typeof x === 'function' ? x(c) : x, done: cond(c) }) }),
   event: (t, timeout = 8) => ({ name: 'event ' + t, timeout, fn: ({ take }) => ({ done: !!take(t) }) }),
   // jump moving in dir; leap at the given rise speed (vy below it, going up or down) up to n times;
