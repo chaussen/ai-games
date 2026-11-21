@@ -13,13 +13,17 @@ installs, no internet.
 | [games/wobble-works/](games/wobble-works/) | **Wobble Works** — two builds, one launcher (`--mode=2d|3d`): the original side-view **2D** chapter campaign (default, recovered from its original build session) and a free-roam **3D arena** experiment | 2–16 | Node + hand-rolled WebSocket, Cannon.js + Three.js (3D), Matter.js + Canvas 2D (2D) | `node server.js [--mode=3d]` on the LAN |
 | [games/firefly-relay/](games/firefly-relay/) | **Firefly Relay** — one-button rhythm relay; keep the spark alive from lantern to lantern | 2–12 | Node + WebSocket, Canvas 2D | `node server.js [--mode=3d]` on the LAN |
 | [games/cavern-rush/](games/cavern-rush/) | **Crystal Cavern Rush** — 90-second 3D crystal collecting race with proximity multipliers | 2–8 | Node + `ws`, Three.js | `npm install && npm start` |
-| [games/tongzhou-forge/](games/tongzhou-forge/) | **同舟 · Glyph Isles (Positional Forge, 3D)** — co-op Chinese-character isles: where a piece sits decides the character | 1–8 | Node + WebSocket, Three.js | `node server.js` on the LAN |
-| [games/tongzhou-forge-2d/](games/tongzhou-forge-2d/) | **同舟 · Glyph Isles 2D** — side-view greybox of the forge: ink on paper, 轻功 chains, phone first | 1 | static Node server, Canvas 2D | `node server.js` on the LAN |
+| [games/tongzhou-forge/](games/tongzhou-forge/) | **同舟 · Glyph Isles (Positional Forge, 3D)** — co-op Chinese-character isles: where a piece sits decides the character. Kept, no longer developed: the 2D is the core | 1–8 | Node + WebSocket, Three.js | `node server.js` on the LAN |
+| [games/tongzhou-forge-2d/](games/tongzhou-forge-2d/) | **同舟 · Glyph Isles 2D** — **the Tongzhou core**: side-view character isles, write a character with your finger (Conjure), one isle for a crew of phones; two looks (ink scroll, One Stroke) | 1–4 | Node + hand-rolled WebSocket, Canvas 2D | `board-2d` (see [games/board/](games/board/)) or `node server.js` on the LAN |
 | [games/neon-dash/](games/neon-dash/) | **Neon Dash** — single-file solo runner | 1 | one HTML file, Canvas | open the file |
 
 The production product lives at the repo root because GitHub Pages serves it
 from `master`'s root (`CNAME` → `play.caseychinese.org`). Everything
 experimental lives under `games/`.
+
+**同舟 Tongzhou** has grown several folders (the 2D core, the 3D Forge, earlier builds, a test lab and the board
+launcher). [games/TONGZHOU.md](games/TONGZHOU.md) maps them: what each is, its status, how to start it.
+[games/board/README.md](games/board/README.md) is the guide to the startup scripts (`board-2d` and the rest).
 
 ## The LAN games (same room, same Wi-Fi)
 

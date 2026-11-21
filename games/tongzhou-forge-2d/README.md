@@ -4,6 +4,9 @@
 > decision FG-D019). The 3D game stays as it is (tag `forge-3d-2026-11-19`). Never import from it or
 > any other game; this folder holds copies.
 
+**This is the Tongzhou core** (Conjure and the crew, two looks). How it relates to the other Tongzhou folders:
+[`../TONGZHOU.md`](../TONGZHOU.md). To start it for a room of phones: `board-2d` ([`../board/README.md`](../board/README.md)).
+
 **Where a piece sits decides what it means**, now on the page: 日 set beside 月 on its left makes 明;
 月 left of 日 makes nothing. 日 resting on 木 makes 杲 (sunrise); 木 on 日 makes 杳 (dusk). The isles are
 seen from the side, so beside is touching left-right and on top is resting on top, and 轻功 chains
@@ -93,7 +96,7 @@ a laptop).
 
 ## Controls
 
-☰ also holds **Look** (ink scroll or greybox).
+☰ also holds **Look** (ink scroll, One Stroke or greybox).
 
 Phone: the **stick** (touch anywhere in the lower left) walks; **跳 JUMP** jumps, and again in the air
 is 轻功 (a leap); **拿 GRAB** picks up a stone, **书 WRITE** opens the writing pad (the isle waits while you write). Holding a stone, the GRAB button names the placement:
