@@ -500,7 +500,7 @@
   }
 
   // ---------- the loop ----------
-  let last = performance.now(), acc = 0, land = 0, frames = 0, paused = false;
+  let last = performance.now(), acc = 0, land = 0, frames = 0, paused = false, drawT = 0;
   function stepOnce() {
     const p = me();
     p._px = p.x; p._py = p.y;
@@ -529,7 +529,7 @@
     }
     updateCam(dt);
     const alpha = paused || LOCK ? 1 : acc / STEP;   // lockstep draws exactly where the sim is
-    draw(alpha, now / 1000);
+    draw(alpha, drawT = now / 1000);
     const l = world.launch(me());
     updateGrab(l);
     const [ch, fresh] = pickCard(l);
@@ -978,5 +978,9 @@
     // checks only: a thumb on the stick, as a number (the same value the stick's pointermove sets)
     setStick(x) { stick.id = x === null ? null : 'check'; stick.x = x || 0; },
     stepN(n) { for (let i = 0; i < n; i++) stepOnce(); },
+    // checks only (lab/autotest/page-mind.mjs, the render check): draw the current state again, with no
+    // step and no camera move, so a check can hide one thing, redraw, and see which pixels were that thing
+    redraw() { draw(1, drawT); },
+    fx,       // the effects being drawn (particles, the forge stamp): the render check sets them aside while it measures
   };
 })();

@@ -1,0 +1,20 @@
+# S4 phone runs, 2026-11-21: ALI-NX1 (Android 15), Chrome 157.0.8103.78, over adb. Output of page-mind.mjs, verbatim.
+
+# portrait, every frame fully checked, first run of the session (one tab reused; before the T2 flush)
+two-trees      ideal/1 WON   8.5 s  frames 507  render 507/507 ok  state equal  label ok  grabs 4  restarts 0  [221 s wall, 369x720 ink]
+
+# landscape, every frame fully checked (one tab reused; after the T2 flush)
+two-trees      ideal/1 WON   8.4 s  frames 504  render 504/504 ok  state equal  label ok  grabs 4  restarts 0  [248 s wall, 776x273 ink]
+# the next isle in the same tab (sun-and-moon) received no touches at all: finding T9
+
+# fresh tab per isle (the T9 fix), render check every 30th frame, state and label every frame: --every=30
+# portrait
+two-trees      ideal/1 WON   8.4 s  frames 504  render 17/17 ok  state equal  label ok  grabs 4  restarts 0  [13 s wall, 369x720 ink]
+sun-and-moon   ideal/1 WON    11 s  frames 658  render 22/22 ok  state equal  label ok  grabs 4  restarts 0  [25 s wall, 369x720 ink]
+stove          ideal/1 WON  10.4 s  frames 623  render 21/21 ok  state equal  label ok  grabs 4  restarts 0  [19 s wall, 369x720 ink]
+dawn           ideal/1 WON  10.2 s  frames 611  render 21/21 ok  state equal  label ok  grabs 4  restarts 0  [18 s wall, 369x720 ink]
+# landscape
+two-trees      ideal/1 WON   8.4 s  frames 504  render 17/17 ok  state equal  label ok  grabs 4  restarts 0  [13 s wall, 776x273 ink]
+sun-and-moon   ideal/1 WON    11 s  frames 658  render 22/22 ok  state equal  label ok  grabs 4  restarts 0  [24 s wall, 776x273 ink]
+stove          ideal/1 WON  10.4 s  frames 623  render 21/21 ok  state equal  label ok  grabs 4  restarts 0  [19 s wall, 776x273 ink]
+dawn           ideal/1 WON  10.2 s  frames 611  render 21/21 ok  state equal  label ok  grabs 4  restarts 0  [19 s wall, 776x273 ink]

@@ -6,6 +6,70 @@ The full reasoning and evidence are in [`AUTOTEST.md`](AUTOTEST.md); the experim
 
 ---
 
+## Session 4 (2026-11-21): the mind in the real page, then on John's phone
+
+**State**
+- **Built:** `lab/autotest/page-mind.mjs` (the S3 mind playing the real page under `?lockstep=1` through CDP
+  touch) and `lab/autotest/cdp.mjs` (a zero-install CDP client for headless Chromium and for Chrome on Android
+  over `adb`). Every frame it checks:
+  - **state:** the page's world equals the lab's shadow world bit for bit;
+  - **GRAB label:** the button says what GRAB would do;
+  - **render:** each thing is hidden and the frame redrawn, so the changed pixels show where that thing is
+    drawn, against its sim box. Tolerances and why are in AUTOTEST.md §5, S4.
+- **Part 1 met:** all 21 isles won in the page, at exactly the sim mind's times, and runs repeat frame for frame.
+  - Ink: every check passed on every one of 15,061 frames.
+  - One Stroke: the same, apart from one frame (Partner f476, the hero 0.32 u sideways holding a torch out,
+    against 0.3 u).
+- **Part 2 partly met:** John's ALI-NX1 (Android 15, Chrome 157).
+  - Two Trees fully checked on every frame, in portrait and in landscape.
+  - Two Trees, Sun and Moon, Stove and Dawn in both orientations, the drawing checked every 30th frame and
+    state and label every frame. All won at the sim's times.
+- **Product change (test hooks only):** `WF2D.redraw()` (draw the current state again) and `WF2D.fx` (the effects
+  list, set aside while measuring), both in `app.js`.
+  - Passing after the change: `sim-test` 294, `smoke-test` 30 and `screen-test`.
+  - `play-test` (21/21) passed with `redraw` in place, before the one-line `fx` addition.
+- **No render defect found in the game.** All nine findings were in the test and are fixed (AUTOTEST.md §5, S4,
+  T1-T9). The ones that matter for anyone driving a real page:
+  - Chrome holds touch moves until a real frame (T2): wait one real frame after each batch of touches.
+  - On Android a tab made by CDP opens in the background (T8).
+  - A tab reused across isles at random stopped taking any touch, even real ones (T9): use a fresh tab per isle,
+    opened by an intent.
+- Logs: `lab/autotest/s4-runs/`.
+
+**Resume**
+```sh
+cd games/tongzhou-forge-2d
+PORT=3491 HOST=127.0.0.1 node server.js &                     # test port, never 3000
+PORT=3491 node lab/autotest/page-mind.mjs all                 # headless, ink, ≈17 min; exit 1 on any failed check
+PORT=3491 node lab/autotest/page-mind.mjs all --art=cut       # One Stroke
+PORT=3491 node lab/autotest/page-mind.mjs all --phone --every=30   # the phone, ≈10 min (phone unlocked, hands off)
+adb shell settings put system user_rotation 1                 # landscape for the phone; 0 to put it back
+```
+
+**For John**
+- **Landscape on your phone loses a quarter of the height to Chrome's bars:** the game gets 776 × 273 of
+  816 × 369. Options for later are full screen through Add to Home screen (a manifest), or full screen on the
+  first tap. Not built.
+- "The mobile game runs slow" during the test is the full render check: about 0.4 s a frame on the phone. The
+  game's own frame rate on the phone hasn't been measured yet (next).
+- **Conjure (your question):** the writing pad was cut from the 2D greybox ("No writing pad", GREYBOX.md §5) and
+  never came back; it isn't in BETA.md's gaps either. Not on purpose. You want it back as four players, each
+  conjuring their own objects. That is a big new mechanic, so plan and docs come first, with a review before code.
+
+**Open**
+- **S4b, finishing the phone:**
+  - all 21 isles on the phone in both orientations (`--every=30`, or fully checked if left running ≈1.5 h each);
+  - the game's own frame rate on the phone;
+  - the One Stroke hero flag (Partner f476);
+  - the T9 root cause in Chrome (not needed while fresh tabs work).
+- Not reached: the Android emulator and a WebKit (Safari engine) run.
+- Approved game work, not built: the Friends/Leaf cloud and a more forgiving ON TOP (S3 decisions). Then Conjure
+  for four players, plan first. `page-mind.mjs` is the check that the page still draws what the sim does after
+  either.
+- S5 (crew) and S6 (metrics) as planned in AUTOTEST.md §8.
+
+---
+
 ## Session 3 (2026-11-20): a mind that recovers
 
 **State**

@@ -22,7 +22,21 @@ node lab/autotest/mind-personas.mjs 8 [isle-id ...]  # acceptance 2: isle x pers
 MAX=120 node lab/autotest/mind-ablate.mjs burn kid 6 # which motor noise costs a persona time on an isle
 node lab/autotest/mind-trace.mjs dawn kid 1000       # one run: the mind's plan log, events, restarts, end state
 node lab/autotest/friends-trap.mjs 200               # Friends: back up the pillar from its far side? (random thumb)
+# session 4: the mind in the real page (CDP touch, lockstep), state + GRAB label + render checked every frame
+PORT=3491 node lab/autotest/page-mind.mjs two-trees               # one isle, headless Chromium 844x390
+PORT=3491 node lab/autotest/page-mind.mjs all [--art=cut]         # all 21 (≈17 min); exit 1 on any failed check
+PORT=3491 node lab/autotest/page-mind.mjs stove --v --every=30    # trace every 30 frames, render check every 30th
+PORT=3491 node lab/autotest/page-mind.mjs two-trees --phone --shots=DIR   # Chrome on the Android phone (below)
 ```
+
+**The phone** (`--phone`): USB debugging on, the phone unlocked and awake, Chrome installed. The runner sets up
+`adb reverse tcp:3491` (the phone reaches the laptop's server at its own localhost) and `adb forward tcp:9222
+localabstract:chrome_devtools_remote`, opens a **fresh Chrome tab for each isle** with an Android intent, and
+closes it after (a reused tab stopped taking touches at random: AUTOTEST.md §5, S4, T9). It keeps the screen on
+while plugged in and restores the setting after. Hands off the glass during a run. Landscape: `adb shell
+settings put system user_rotation 1` (auto-rotate off), and `0` afterwards. A fully checked frame costs about
+0.4 s on the phone (≈4 min an isle); `--every=30` runs at about 30 frames a second. `s4-runs/` holds the S4 logs.
+`cdp.mjs` is the CDP client both use (headless Chromium, or Chrome over adb).
 
 `mind.mjs` is the search mind: a stateless plan from the recipe tree (deliver, make, clear a wall or gap,
 send a stranded stone home by the river), a navigation graph whose edges are simulated moves on world

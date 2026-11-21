@@ -7,7 +7,8 @@ fun; it should secure a **bottom line** before real players get the game. Order 
 
 This file is the research log. Session 1 (2026-11-20) covers the technology landscape and three spikes; session 2
 (2026-11-20) adds the page's lockstep seam and a human input model; session 3 (2026-11-20) adds a test player's
-mind that plays every isle with no script and recovers from its own thumb's mistakes. The spikes live in `lab/autotest/` and run
+mind that plays every isle with no script and recovers from its own thumb's mistakes; session 4 (2026-11-21) puts that
+mind in the real page and on a real Android phone, checking state, GRAB label and drawing every frame. The spikes live in `lab/autotest/` and run
 against the real build. **Where to pick up:** [`AUTOTEST-HANDOFF.md`](AUTOTEST-HANDOFF.md), one entry per session.
 
 ---
@@ -370,6 +371,121 @@ never throw at the wrong spot) and a near soft-lock. Two caveats hold every numb
 render-state check (sim truth vs the drawn frame) was not reached and moves to session 4, where the page is
 driven anyway.
 
+### Session 4 spikes (2026-11-21): the mind in the real page, then on a real phone
+
+`lab/autotest/page-mind.mjs` runs the S3 mind against the **real page** instead of the sim. The page runs under
+`?lockstep=1` with its animation frames driven by the test (a stand-in `requestAnimationFrame` installed before
+the game's first line), so each test frame is exactly one sim step however long the checks take. The mind's
+thumbs become **CDP touch events**:
+- a stick thumb that lands in the lower left and slides (the stick floats; 40 px is full tilt);
+- JUMP held as long as the mind holds it;
+- one-frame taps on GRAB, at the buttons' measured places.
+
+A restart goes through ☰ → Restart, like a person. The whole runner is raw CDP over Node's own WebSocket
+(`lab/autotest/cdp.mjs`, zero-install), and the same code drives headless Chromium on the laptop and Chrome on
+an Android phone over `adb`.
+
+**What is checked, every frame**
+1. **State.** The mind plays on a *shadow* world in Node that replays the page world's own calls (`setInput`,
+   `press`, `step`, recorded by wrapping them). Every frame the page's state signature, every number at full
+   precision, must equal the shadow's. So the page's world is the world the mind thinks it is in, bit for bit.
+2. **GRAB label.** The button's mode (`data-mode`) must equal what `launch()` says GRAB would do now.
+3. **Render.** For the hero and every stone: hide that one thing (NaN coordinates; a carried stone gets a
+   stand-in holder that is nowhere), redraw the same state, and diff against the full frame. The pixels that
+   change are that thing. A box-sized window slid over the changed pixels finds where it is drawn, compared with
+   its sim box in world units. The redraw uses one product change, a test hook: `WF2D.redraw()` draws the current
+   state again with no step and no camera move, and `WF2D.fx` (the effects list). Pinyin tags and effects are
+   set aside while measuring (findings T3 and T6 below).
+   Tolerances, measured on Two Trees and Sun and Moon, then held for all isles:
+
+   | Thing | Must be | Why this much |
+   |---|---|---|
+   | stone at rest or falling | within 0.15 u of its box, window ≥ 30% filled | a stone is a block, "what you see is what you hit"; a landing mark beside it moves the window up to 0.10 u; the hero in front hides up to half of it |
+   | hero | sideways ≤ 0.3 u; up to 0.2 u higher (0.9 when carrying), up to 0.8 u lower; ≥ 20% filled | a figure, not a block: the carried stone above the head, the landing mark below, a tucked mid-air 轻功 step with its cloud ring |
+   | flying stone | within 0.75 u | a thrown base element opens into its thing (a log, a flame) round its spot |
+   | carried stone | within 1.0 u | ink draws it a little low on the shoulder; One Stroke draws the thing in the hand for its pose (0.85-0.89 u) |
+   | partly on screen | ≥ 15% of the visible part drawn; under 5% visible is not judged | the edge cuts the drawing too |
+   | a stone that should be seen | some pixel changes when it is hidden | otherwise it is not drawn at all |
+
+**Acceptance (S4 part 1): met.** All 21 isles in the ink look, headless 844×390 at DPR 2. 15,061 frames:
+- every isle is won, at **exactly the sim mind's time** (two-trees 8.4 s … forest 26.7 s, drench 21.2 s);
+- the state matched bit for bit on every frame of every isle;
+- the GRAB label was right on every frame;
+- the render check passed on every frame, apart from one partly visible stone (Old Leaf f258). That stone was
+  traced to the check, which was then loosened, and the isle passes on a rerun.
+
+Runs are **repeatable**: two runs give the same frames (finding T2). About 32-115 s per isle and 16.5 minutes
+for all 21, at roughly 15 checked frames a second. The same in the One Stroke look (`--art=cut`, its own renderer): 21 of 21 won at the same
+times, state and label right on every frame, the render check passing on every frame but one (Partner f476,
+the hero 0.32 u sideways while holding a torch out, against 0.3 u; left open). Logs: `lab/autotest/s4-runs/`.
+
+**Acceptance (S4 part 2): the phone, partly met.** John's ALI-NX1 (Android 15, Chrome 157) over USB:
+`adb reverse` for the game server, `adb forward` to Chrome's DevTools, the same runner with `--phone`.
+- **Fully checked, every frame:** Two Trees in portrait (507 of 507 frames, won 8.5 s, before the T2 flush) and
+  in landscape (504 of 504, won 8.4 s). About 4 minutes an isle: hiding each thing and redrawing a
+  1,200 × 2,340 canvas costs about 0.4 s a frame on the phone. That is the check's cost, not the game's.
+- **Render check every 30th frame, state and GRAB label every frame** (`--every=30`, about 30 frames a second):
+  Two Trees, Sun and Moon, Stove and Dawn in portrait **and** in landscape (776 × 273), all won at the sim's
+  exact times, every check passing.
+- Not yet: all 21 isles on the phone, fully checked (about 1.5 hours a look and orientation; a run to leave going).
+
+Logs: `lab/autotest/s4-runs/phone.txt`. Screenshots were read during the session (phone frames match the sim).
+
+**Findings in the test itself** (each traced, fixed, and re-run)
+- **T1. Live touch points.** The runner pushed the same point objects it later moved, so a queued `touchStart`
+  already carried the moved x, and the page saw no move: the hero never walked. Points are now snapshotted.
+- **T2. Chrome holds touch moves until its next real frame** (rAF-aligned input). With the page's frames driven
+  by the test, 159 of 200 moves in a probe arrived only at the next *real* frame. So a move landed before or
+  after a sim step by chance: the state still matched (the shadow replays what the page actually got), but the
+  input lag was random and runs drifted apart (Forest won in 26.8 s once, 26.4 s the next). The runner now
+  waits one real frame after each batch of touches (`__flush`). After that, runs repeat and match the sim's
+  times exactly. (An earlier phone run that stuck on Stove in landscape was T9, not this.)
+- **T3. Pinyin tags pull the window.** A grounded stone's tag is drawn on the canvas under it. On pale mist the
+  tag has more contrast than the stone's cream face, so the window slid 0.27 u down onto it (Red Earth, Old
+  Leaf, Crowd, Flourish; 0.37 u in phone landscape, where tags keep a minimum font size). Tags are off while
+  measuring.
+- **T4. Slivers at the screen edge.** A stone 1.6 × 0.6 px on screen draws nothing (Stove f247). Under 5%
+  visible is no longer judged.
+- **T5. The hero's tucked 轻功 step** is drawn with its feet on the box floor and a cloud ring under them:
+  0.70 u lower on Forest f336, past the 0.6 u first measured. Loosened to 0.8 u after looking at the frame.
+- **T6. One Stroke's forge stamp covers the new stone.** For 15 frames after a forge, the cut look draws the
+  new character as a tilted stamp over its stone; the stone's own block was in exactly the right place (shift
+  0.00) but hiding it changed only its bottom strip (fill down to 5%). Every isle in the cut look. Effects are set
+  aside while measuring (`WF2D.fx`, a second line in the test hook). In ink the stamp floats above the stone.
+- **T7. One Stroke carries things in the hand** (`cut.js`: "the thing you carry, in the pose that goes with it
+  (no block on your head)"): a carried 火 is a torch held out, 0.85-0.89 u from the spot above the head (Blaze,
+  Friends, Partner). Carried stones may now be 1.0 u from their spot; flying ones stay at 0.75.
+- **T8. Chrome on Android refuses `/json/new`** ("Could not create new page"), and a tab made with the browser
+  target's `Target.createTarget` opens **in the background**, where Chrome neither draws nor delivers touches.
+  One run drove such a tab for 2,400 frames, its screenshots frozen at the isle's start, while the phone showed
+  another tab; John noticed it first. The page must be visible or the runner stops (see T9 for how tabs are
+  opened now).
+- **T9. A reused phone tab stopped taking touches.** Isle after isle in one tab, now and then a page showed on
+  the glass but no touch reached its document: no `pointerdown`, no `touchstart`, not even from a real
+  `adb shell input tap` (recorded by a listener installed before the game's first line). Once stuck, the tab
+  stayed stuck across runs until a person's real tap. Which isle it hit was random (Sun and Moon, Stove, once
+  Two Trees). Tried and not enough: unique touch ids, lifting every finger between isles, a second CDP
+  session attached after the load, a real reset tap. What works: **a fresh tab for every isle**, opened in
+  front by an Android intent (`am start -a VIEW`, like tapping a link), reloaded with the init script, closed
+  after (8 of 8 isles, both orientations). The root cause in Chrome is not known. The runner keeps a guard: a
+  stick thumb down 10 frames with no live stick stops the run, and reports what the page received before and
+  after a real tap, with a capture of the glass.
+
+**Findings for the game.** No render defect was found: every flagged frame traced to the check, and the
+hero, every stone, the carried stone and the GRAB label are drawn where the sim says on every frame of all 21
+isles in ink (One Stroke: one frame open, above). One observation from the phone (not a defect, for John):
+- **Landscape on the phone loses a quarter of the height to Chrome.** The ALI-NX1 is 816 × 369 CSS px in
+  landscape; with the status bar and address bar the game gets **776 × 273**. Everything still works (the
+  mind wins, every check passes), but the world is drawn small. Options for later: a web app manifest with
+  `display: fullscreen` (Add to Home screen), or `requestFullscreen()` on the first tap.
+
+**Known gaps.** CDP touch enters at the browser's input layer, not the touchscreen: what Chrome does with the
+glass (palm rejection, a missed touch) is outside the test. `adb shell input` reaches deeper but runs in real
+time and can't be paired with lockstep frames. The emulator step was not reached: the real phone covers the
+mobile browser itself, and the emulator's remaining value is device variety (S5 or later). The game's own frame
+rate on the phone (outside the test, real time) was not measured; John found the phone runs slow, which is the
+full render check's 0.4 s a frame, but the game's own speed there is worth a number (`?fps` or a CDP trace).
+
 ---
 
 ## 6. Emerging shape (to be confirmed in sessions 3-5)
@@ -415,10 +531,16 @@ John:** stop and ask before starting it, as he wants to be there (S4 part 2).
 
 - **S3, a mind that recovers:** done (§5). The search mind wins every isle with no script and through the motor
   channel; persona win rates, time-to-win, restarts and ablations per isle; one sim defect fixed.
-- **S4, the page, then the real mobile browser:** first the render-state check as a real test (the mind plays
-  in the page under `?lockstep=1` through CDP touch; each frame, the hero, stones and GRAB label drawn where the
-  sim says), then the phone over `adb` (Chrome, `adb reverse` + CDP), then the Android emulator. WebKit build
-  for Safari's engine.
+- **S4, the page, then the real mobile browser:** part 1 done (§5): the mind wins all 21 isles in the page at
+  the sim's exact times with state, GRAB label and drawing checked every frame, in both looks. Part 2 partly:
+  John's Android phone, 4 isles in each orientation (drawing every 30th frame), Two Trees fully checked.
+  **To finish (S4b):** all 21 isles on the phone, left running (≈1.5 h fully checked per orientation, or
+  `--every=30` in ≈10 min); the game's own frame rate on the phone; the One Stroke hero flag (Partner f476).
+  Not reached: the Android emulator and a WebKit (Safari engine) run.
+- **Before S5, game work John has approved** (§7, S3 decisions): the cloud on the Friends/Leaf pillar's far
+  side and a more forgiving ON TOP, each measured with the mind before and after. And John's next big idea:
+  **Conjure back in the 2D, four players each conjuring their own objects** (2026-11-21), plan and docs first.
+  `page-mind.mjs` is the check that the page still draws what the sim does after either.
 - **S5, crew:** contexts + Node protocol bots + lag proxy against the 3D server, in real time.
 - **S6, metrics and thresholds** (John's questions 1 and 2), mapped to ISO 25010:2023 and CT-GaMe areas, using
   the numbers from S3-S5. Candidates from S3: zero-noise mind wins every isle (a gate, ~2 min); per persona,
