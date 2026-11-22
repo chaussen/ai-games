@@ -1,5 +1,7 @@
 # Art direction plan: 水墨江湖 · ink jianghu
 
+> **2026-11-22: the One Stroke look (§3 B, `cut.js`, `ART-BRIEF-ONE-STROKE.md`) is obsolete** by John's playtest verdict (clumsy style, design and gameplay; the hero is big and awkward, not small and supple). It is frozen, not deleted. Ink is the look. See `upgrade/OBSOLETE-ONE-STROKE.md`.
+
 Status: **ink look built and the default** (2026-11-19, §8), from Claude Design's boards. Decision FG-D020. John answered §7 the same day (see
 §7): both styles as a comparison, no sword, and Claude Design goes first, so **code waits for
 Design's frames**. He added one idea: stones show the thing they mean (§3.7). A paste-ready brief for

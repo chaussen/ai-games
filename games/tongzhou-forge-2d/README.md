@@ -4,6 +4,10 @@
 > decision FG-D019). The 3D game stays as it is (tag `forge-3d-2026-11-19`). Never import from it or
 > any other game; this folder holds copies.
 
+> **2026-11-22: upgrade planned, docs only.** After John's first playtest the isles, puzzle rules and cliffs are being redesigned:
+> start at [`docs/upgrade/UPGRADE.md`](docs/upgrade/UPGRADE.md). **One Stroke (`?art=cut`) is obsolete**: it still loads, but it is
+> frozen and no longer tested ([`docs/upgrade/OBSOLETE-ONE-STROKE.md`](docs/upgrade/OBSOLETE-ONE-STROKE.md)). The text below describes the game as it is today.
+
 **This is the Tongzhou core** (Conjure and the crew, two looks). How it relates to the other Tongzhou folders:
 [`../TONGZHOU.md`](../TONGZHOU.md). To start it for a room of phones: `board-2d` ([`../board/README.md`](../board/README.md)).
 

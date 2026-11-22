@@ -4,6 +4,14 @@ Five folders, a launcher and a test lab have grown around one idea: a crew of ch
 Chinese characters as stones, where each character does what it means. This page says what each piece is, where
 it stands, how to start it and where its docs are. Updated 2026-11-21.
 
+## Upgrade in progress (2026-11-22): fix the 2D's systematic flaws first
+
+John's first playtest of the 2D found it gets boring fast (repetitive isles, puzzles solved by walking near a stone,
+cliffs passed by stacking 口 and 十, abrupt clouds). Before anything new, the 2D gets a rules and level upgrade. **Docs
+only so far:** [`tongzhou-forge-2d/docs/upgrade/UPGRADE.md`](tongzhou-forge-2d/docs/upgrade/UPGRADE.md) is the entry; each later
+session picks a phase in its `HANDOFF.md`. **One Stroke is obsolete** (`docs/upgrade/OBSOLETE-ONE-STROKE.md`): ink and greybox are the
+maintained looks. Forging together stays frozen until this is playtested.
+
 ## Newer direction (2026-11-22): 神笔 Shenbi
 
 The name Tongzhou is retired for the next step. John wants an open sandbox where written characters become
@@ -16,11 +24,11 @@ as reference and are not archived; code is copied from them, never imported.
 From John, 2026-11-21:
 
 - **The core is Glyph Isles 2D with Conjure and co-op** (`tongzhou-forge-2d`). New work goes there.
-- **The style is not decided**, so the 2D keeps **two looks** side by side:
+- **The style (updated 2026-11-22): One Stroke is obsolete, do not touch it; ink is the look.** Originally the 2D kept **two looks** side by side:
   - ink scroll 水墨 (`ink`, the default)
   - One Stroke 一笔 (`cut`, cut paper)
 
-  Both must keep working: every screen test runs in both. Greybox is the plain third look, for testing only.
+  ~~Both must keep working: every screen test runs in both.~~ Superseded: only ink (and the greybox, for testing) are maintained and tested; One Stroke still loads but is frozen.
 - Forging one character **together** is waiting for Claude Design. The proposal is `tongzhou-forge-2d/docs/CO-OP.md`
   §6; do not build it until Design's answer comes back.
 
@@ -29,9 +37,9 @@ From John, 2026-11-21:
 | # | Piece | Folder | Status | Start it | Read first |
 |---|---|---|---|---|---|
 | 1 | **Glyph Isles 2D**: side view, Conjure (write a character), the crew (up to four phones) | `tongzhou-forge-2d/` | **core, active** | `board-2d` | `tongzhou-forge-2d/README.md` |
-| 2 | The 2D looks: ink, One Stroke, greybox | inside 1 (`ink.js`, `cut.js`, greybox in `app.js`) | two looks kept on purpose | `board-2d`, `board-2d-onestroke` | `tongzhou-forge-2d/docs/ART-DIRECTION.md` |
+| 2 | The 2D looks: ink, One Stroke, greybox | inside 1 (`ink.js`, `cut.js`, greybox in `app.js`) | ink maintained; One Stroke **obsolete** (frozen) | `board-2d`, `board-2d-onestroke` | `tongzhou-forge-2d/docs/ART-DIRECTION.md` |
 | 3 | Automated play-testing: bots and a search "mind" that play the 2D | `tongzhou-forge-2d/lab/autotest/` | research, 4 sessions done | see §3 | `tongzhou-forge-2d/docs/AUTOTEST-HANDOFF.md` |
-| 4 | Level design by data, handed to smaller models | inside 1 (`isles.js`) | **next; the hand-off is not written yet** | — | §4 below |
+| 4 | Level design by data, handed to smaller models | inside 1 (`isles.js`) | **docs written 2026-11-22; code waits for the rules phase** | — | `tongzhou-forge-2d/docs/upgrade/LEVEL-BRIEF.md`, §4 below |
 | 5 | **The Forge 3D**: the same forge in Three.js | `tongzhou-forge/` | kept, not developed (tag `forge-3d-2026-11-19`) | `board-3d` | `tongzhou-forge/docs/forge/ROADMAP.md` |
 | 6 | Earlier builds: V0.2 toy, Isles V0.5, Conjure 3D | `tongzhou/`, `tongzhou-isles/`, `tongzhou-conjure/` | history, kept runnable | `board-isles`, `board-conjure` | each README |
 | 7 | **Board launcher**: startup scripts, QR board | `board/` | active | `cd board && ./install.sh` | `board/README.md` |
@@ -121,8 +129,12 @@ the minds skip the two writing isles, and none of them plays as a crew yet (`doc
 
 ## 4. Level design by data (next: hand-off to smaller models)
 
+**Update 2026-11-22:** the hand-off is written: [`tongzhou-forge-2d/docs/upgrade/LEVEL-BRIEF.md`](tongzhou-forge-2d/docs/upgrade/LEVEL-BRIEF.md)
+(self-contained for a level agent), with the new element list in `ELEMENTS.md` and the validators in `TEST-SPEC.md` §5. It starts
+only after the rules phase lands. The notes below describe how isles work **today** and stay true until then.
+
 The plan: let smaller models design isles as **data only**, with no code changes, and have the tests decide whether
-an isle is good. **The hand-off document for this is not written yet.** These already exist to build it on:
+an isle is good. These already exist to build it on:
 
 - **The format.** Every isle is one entry in `tongzhou-forge-2d/isles.js`. The legend at the top of that file is
   the whole format: map rows of `. # ~ _ T F S b`, then `stones`, `write`, `gems`, `glow`, `clouds`, `pavilion`,

@@ -1,5 +1,8 @@
 # Rules for any model working in this folder (tongzhou-forge-2d)
 
+**2026-11-22: an upgrade is planned (docs only so far): read `docs/upgrade/UPGRADE.md` and `docs/upgrade/HANDOFF.md` before changing rules, isles or looks.
+One Stroke (`cut.js`) is obsolete: do not edit or test it (`docs/upgrade/OBSOLETE-ONE-STROKE.md`); the maintained looks are ink and greybox.**
+
 The side-view greybox of the Positional Forge. Read `README.md`, then `docs/GREYBOX.md`.
 
 - Never import from another game (`games/tongzhou-forge` included); copy and say where from.
@@ -26,5 +29,5 @@ The side-view greybox of the Positional Forge. Read `README.md`, then `docs/GREY
   must survive `snapshot()`/`restore()` (sim-test group snapshot steps a restored copy bit for bit). Body numbers are
   the `BODY` knobs. Renderers draw every player: yours with the gamboge rim, friends in `WInk.PLAYERS` colours.
   Forging together (§6) is a proposal awaiting Claude Design: do not build it without John.
-- Before committing: `node sim-test.mjs && node write-test.mjs && node write-isle-test.mjs && node smoke-test.mjs && node crew-test.mjs && node crew-check-test.mjs && node screen-test.mjs && ART=greybox node screen-test.mjs`. Never port 3000 in tests.
+- Before committing: `node sim-test.mjs && node write-test.mjs && node write-isle-test.mjs && node smoke-test.mjs && node crew-test.mjs && node crew-check-test.mjs && node screen-test.mjs && ART=greybox node screen-test.mjs` (ink and greybox only; `ART=cut` is no longer run). Never port 3000 in tests.
 - Isles live in `isles.js` (map characters in its header: `T` thorns, `F` flames, `S` shade, `_` a gap wood or earth fills). Every isle needs two winning routes in `routes.mjs` (sim-test checks the count); `bot.mjs` `S.go(x, { land })` and `S.take(ch, near)` walk like a person, so routes are mostly where to go and which placement to make. The beta's isle list and order: `docs/BETA.md`.
