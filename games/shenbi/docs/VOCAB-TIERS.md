@@ -10,7 +10,7 @@ Decision [John]: curated tiers with hand-designed behaviours, quality over bread
 | T1 | Elements and nature: 金石冰山风雨雷电云雪光星天 | ~14 | Phase 1C/3 |
 | T2 | Creatures and things: 马鸟鱼牛羊狗龙车船门刀灯桥屋 | ~14 (grow to ~35) | Phase 3 |
 | T3 | Properties and modifiers: 大小热冷快慢轻重高低 + 很不太多少 | ~15 (grow to ~25) | Phase 2-3 |
-| T4 | More compounds and phrases (forge or write): 烟泉河海花草 ... | ~40 | after |
+| T4 | More compounds and phrases (forge or write). **Proposed set (Phase 1B, recogniser-ready, no cards yet):** 江河湖海泉池波洗洒泪汗游泳 (water) · 灰炭烛烟 (fire) · 花草苗枝竹 (plant) · 坡坝墙 (earth) · 针钉锁镜 (metal) · 雾虹霞 (sky) · 伞网舟贝 (things) · 虫蛇鹿燕 (creatures) · 爸妈哥弟 (people) | 44 proposed | after |
 
 Total 100-200 once all tiers are in. **The architecture test: every tier after T1 is a content-only drop** (a
 cards.json addition, stroke data, font re-subset; no engine code). If a tier needs engine code, the engine

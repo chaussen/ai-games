@@ -45,3 +45,43 @@ child; samples are anonymous point arrays. Use them as a second test set beside 
 
 For each new character: generate stroke data with the `tools/strokes.mjs` pattern, add to the loaded set, re-run
 the confusion matrix, and record any new problem pair in this file.
+
+## 6. As built in Phase 1B (2026-11-22)
+
+Files: `vendor/recogniser.js` (copied unchanged from forge-2d), `vendor/strokes.json` (122 characters, generated
+by `tools/strokes.mjs --file tools/vocab.txt`), `tools/vocab.txt` (the set), `tools/handwriting.mjs` (the synthetic
+writer), `write-test.mjs` (26 checks), `tests/samples/` (scaffold for real samples, empty).
+
+**The set: 122 characters.** T0 36 + T1 13 (金石冰山风雨雷电云雪光星天) + T2 14 + T3 15 + 44 T4 candidates
+(proposal recorded in VOCAB-TIERS.md). All present in the repo's Make Me a Hanzi copy; strokes.json is 248 KB.
+
+**Results on synthetic writing** (8 writers per character, seeded and reproducible):
+
+| Tier | clean top-1 | clean top-3 | §2.3 target |
+|---|---|---|---|
+| T0 (36) | 100% | 100% | pass |
+| T1 (13) | 92.3% | 92.3% | pass |
+| T2 (14) | 86.6% | 91.1% | pass |
+| T3 (15) | 100% | 100% | pass |
+| T4 (44) | 97.7% | 100% | pass |
+
+Child-severity writing overall: top-1 98.1%, top-3 99.5% (976 trials). One stroke missing: top-3 94.3%; one
+extra stroke: top-3 95.9%. Modifiers 很不太多少: top-1/top-3 100%, above the set average (96.8%/98.2%).
+
+**Problem pairs recorded** (§5): 天/太 (2 of 8 child writers), 大/太 (2 of 8). 太 is the dot that decides it;
+both partners are in T3. Mitigation is already the UX: the top-3 chips show all of 大 太 天 with pinyin and
+meaning; if real samples make this worse, add the disambiguating tap (§2.2 menu). No other pair confused at
+more than 1 of 8.
+
+**The pad threshold (padMinScore) stays 0.65, measured, not inherited**: at 0.65, 98.4% of clean and child
+synthetic writing is offered, while 3.5% of random scribbles produce a chip (at 36 characters forge-2d measured
+under 3%). Raising to 0.70/0.75 cuts strays to 1.5%/0% but drops 2-5% of *real* writing — the worse loss while
+children's handwriting is unmeasured. The stray scribbles all land on tiny characters (小 十 子). Re-tune on the
+phone; the knob lives in the app, not the recogniser.
+
+**Speed**: one match against the full 122 set in node: p50 7.3 ms, p95 10.8 ms, max 11.5 ms — under the 30 ms
+budget without the §2.4 pre-filter (the recogniser's stroke-count window already does the work). **The phone
+number (p95 under 30 ms on John's Android, adb) is still to measure.**
+
+**Still to do**: real samples into `tests/samples/<ch>/*.json` and a second, honest test pass over them; the adb
+speed check; re-tune padMinScore and the recognition delay (§4: 0.5 s forge-2d value) on real phones.
