@@ -87,3 +87,15 @@ Tags in `[]`. Existing forge-2d characters keep their meaning; behaviours below 
    behaviour** in REACTIONS.md and note it in HANDOFF.md.
 3. Add stroke data (RECOGNISER.md) and re-subset the font.
 4. The pair test (REACTIONS.md §7) must still pass.
+
+## 5. As shipped in Phase 1C (2026-11-22)
+
+39 cards in `cards.json` (packed into `content.js` by `tools/pack.mjs`): the seven Phase 1A elements plus all
+36 T0 characters. Every behaviour is an existing one — the architecture test holds (a tier was a content-only
+drop; zero engine code). Two documented stand-ins (HANDOFF, session 2): the **light family** (日 明 昌 杲 早 赤
+灶) carries the `fire` tag until R17 exists — a warm light ignites and can be doused; **figures** (朋 人 从 众
+休 伙 女 子 好 口 十 呆 杏 果 叶 古) are resting toys under the explicit `living+object` no-op — they knock when
+thrown and rest when placed, and their real behaviours (helpers, riders, gaps) are Phase 5. 口's "gap you can pass" waits
+for a place-into-solid behaviour; it ships as a figure. The pad's Ideas list shows exactly
+these 39; the recogniser knows 122 (RECOGNISER.md §6), and writing a character with no card gets the gentle
+"the brush doesn't know this yet" — never a failure screen.

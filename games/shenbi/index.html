@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#f5efe0">
+<title>神笔 Shenbi</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="world" aria-label="The flat arena, seen from the side"></canvas>
+
+<!-- One message line (the reaction labels: fire + wood, singed, ...). Pinyin and meaning stay with
+     every Chinese character shown (repo rule). -->
+<div id="msg" role="status" aria-live="polite"></div>
+
+<!-- top-right: who is here, the room's knobs, calm -->
+<div id="topbar">
+  <div id="crew" title="Who is in the crew"></div>
+  <button id="calm" title="Stop being a target"><span class="g">静</span> <span class="py">jìng</span> <span class="en">calm</span></button>
+  <button id="menu" aria-label="Menu">☰</button>
+</div>
+
+<div id="menu-sheet" class="sheet" hidden>
+  <h2>神笔 Shenbi <small>the magic brush</small></h2>
+  <p class="line">Write a character, it becomes a real thing. Throw fire at your friends (they will not die).</p>
+  <div class="row" id="roomknobs">
+    <label>Play <select data-k="profile"><option>relaxed</option><option>standard</option><option>strict</option></select></label>
+    <label>Friends <select data-k="body"><option value="off">untouchable</option><option value="playful">playful</option><option value="rough">rough</option></select></label>
+  </div>
+  <p class="keys">Keys: ← → walk · Space jump · 1 2 3 = 用 投 放 · C write · H home · X calm · drag the world to aim</p>
+  <div class="row"><button data-act="close" class="main">Back to the world</button></div>
+</div>
+
+<!-- the docked pad (CHARTER §5): not a modal, the world keeps running. It docks on the right, about a
+     quarter of the width in landscape, and collapses to a thumb-sized chip. -->
+<div id="write">
+  <button id="write-open" title="Write a character (C)">
+    <span class="g">书</span><span class="py">shū</span><span class="en">WRITE</span>
+    <span class="dots" id="ink" aria-label="ink"></span>
+  </button>
+</div>
+
+<div id="pad" hidden>
+  <div class="pad-head">
+    <span class="pad-title"><b class="g">书</b> <span class="py">shū</span> write</span>
+    <span class="dots" id="pad-ink" aria-label="ink"></span>
+    <button id="pad-collapse" aria-label="Collapse the pad">▸</button>
+  </div>
+  <div class="pad-square" id="pad-square">
+    <svg class="pad-grid" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M50 0V100M0 50H100"/><path class="d" d="M0 0L100 100M100 0L0 100"/></svg>
+    <canvas id="pad-canvas" aria-label="Write here with your finger"></canvas>
+  </div>
+  <div id="pad-status" role="status"></div>
+  <div id="pad-chips"></div>
+  <div class="pad-ideas-head">Ideas · tap one to use it without writing</div>
+  <div id="pad-ideas"></div>
+  <div class="pad-row"><button id="pad-clear">Clear</button></div>
+</div>
+
+<!-- the verbs. 1C screen budget (on purpose, see README): stick, JUMP, three verbs, home, 书, calm, menu. -->
+<div id="padzone">
+  <div id="stick"><i></i></div>
+  <button id="jump" title="Jump">jump</button>
+</div>
+<div id="verbs">
+  <button id="home" data-v="home" title="Back to spawn (H)"><span class="g">家</span><span class="py">jiā</span><span class="en">home</span></button>
+  <button id="v-wield" data-v="wield" title="Use what you hold (1)"><span class="g">用</span><span class="py">yòng</span><span class="en">use</span></button>
+  <button id="v-throw" data-v="throw" title="Throw what you hold (2)"><span class="g">投</span><span class="py">tóu</span><span class="en">throw</span></button>
+  <button id="v-place" data-v="place" title="Put it down (3)"><span class="g">放</span><span class="py">fàng</span><span class="en">put</span></button>
+</div>
+
+<div id="join" class="sheet" hidden>
+  <div class="cn">神笔</div>
+  <div class="name">Shenbi</div>
+  <p class="tip" id="join-tip">Joining the crew…</p>
+</div>
+
+<script src="vendor/recogniser.js"></script>
+<script src="reactions.js"></script>
+<script src="sim.js"></script>
+<script src="content.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

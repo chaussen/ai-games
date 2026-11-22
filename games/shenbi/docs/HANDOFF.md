@@ -3,7 +3,53 @@
 Newest entry first. Every session adds an entry. Rules: update the status table, list what changed, what is
 verified, what is not, and the next step.
 
-## Session 2 (2026-11-22): Phase 1B, the recogniser
+## Session 2 (2026-11-22): Phase 1B, the recogniser, and Phase 1C, the crew server, pad and arena
+
+**State.** Phase 1 is built end to end. **1B** (see the entry below for the numbers): 122 characters, all
+RECOGNISER.md §2 targets green in `node write-test.mjs` (26 checks). **1C**: `server.js` (authoritative crew of
+1-4, zero-install, port 3500 default; grid travels as row strings only when `cellsV` moves, entity snapshots
+otherwise), `index.html`/`app.js`/`style.css` (flat arena page; the docked pad per CHARTER §5 — not a modal,
+the world keeps running, top-3 chips with pinyin and meaning, one tap puts the object in hand and clears the
+pad for chained writing, collapses to a thumb chip, Ideas list = "use without drawing"), `content.js` packed
+from `cards.json` by `tools/pack.mjs`, and the **T0 content drop**: all 36 T0 characters plus the T1 elements
+already built (冰 金 石) as cards, every behaviour from the existing library, zero new engine code (the
+architecture test holds). `smoke-test.mjs` (54 checks) boots the real server on 3501 and plays it like a phone:
+join, snapshots, writes, throws, the cooldown, an unknown character refused, the room knobs, a fifth phone
+turned away, a lost seat reclaimed. `screen-check.py` (100 checks, Playwright, adapted from forge-2d) plays the
+real page with real touches on 5 screen sizes; screenshots from the running build are in `screenshots/`.
+
+**Cards and stand-ins (issue-style notes under the docs gate).** (a) Light-family cards (日 明 昌 杲 早 赤 灶)
+carry the `fire` tag as a deliberate stand-in until R17 (light) exists: a warm light ignites, and water douses
+it — comical, readable, reversible. (b) Figure cards (朋人从众休伙女子好口十呆杏果叶古) are resting toys: a new
+explicit no-op `living+object × *` in reactions.js writes down that they only knock (R12) and land (R11); real
+creature behaviours are Phase 5. (c) 杳 uses the cold family (dim = cold) until a dark behaviour exists.
+(d) The pad's camera slides half a pad-width when open so the pad never covers you; in portrait the controls
+tuck away while you write. (e) The 1C screen budget (stick, jump, three verbs, home, 书, calm, menu) is larger
+than forge-2d's five-item budget — three verbs need three buttons; recorded here on purpose.
+
+**Sim additions for the server** (REACTIONS.md §9): `cellsV` on every `put()`; `wire()`/`applyWire()` — the
+JSON-safe network form (cells as one-char-per-cell row strings, knobs ride along so a phone follows the room);
+`setProfile()`/`setBody()` (the living-room rule); `removePlayer()` (a lost seat's things return to air). The
+full-fidelity `snapshot()`/`restore()` is unchanged for the determinism tests.
+
+**Defects found by the tests and fixed** (kept as a record): events were cleared before ever reaching a phone
+(`const e = evq; evq.length = 0` aliased the array — now a copy); typed arrays JSON-mangle to useless objects
+(why `wire()` row strings exist); the `hidden` attribute lost to `#pad { display:flex }` — the invisible pad
+ate every tap on the right half (`[hidden] { display:none !important }`); the pond drained itself into mud
+(R4) and churned `cellsV` forever (a stone basin holds it); the fifth seat raced the 30 s grace in tests (the
+page retries, as a phone would).
+
+**Verified by running:** all four suites green on this machine — 83 sim + 26 write + 54 smoke + 100 screen
+checks; screenshots in `screenshots/` are from the running build. **Not verified:** anything on a real phone
+(step time p95, recogniser speed p95, the docked pad's feel, the 1C gate "John plays on his phone"); real
+children's handwriting (samples pending, `tests/samples/` ready); two phones on real Wi-Fi.
+
+**Next.** John plays on his phone (the Phase 1 gate), then the Phase 1 retrospective is already drafted in
+`docs/RETROSPECTIVE.md` to be corrected by what he finds. Then Phase 2 (modifiers + Almanac) or Phase 4
+(co-op hardening on real Wi-Fi) per CHARTER §6. The T4 proposal (44 characters) is recogniser-ready; their
+cards are a content-only drop when their behaviours exist.
+
+## Session 2a (2026-11-22): Phase 1B, the recogniser
 
 **State.** Phase 1B is built and green: `node write-test.mjs` runs 26 checks — data coverage for all 122
 characters with licence notices, a seeded reproducible synthetic writer, the §2.3 tier targets on clean
@@ -27,9 +73,8 @@ counted 日月 which are already T0.
 yet; `tests/samples/` scaffold + format README ready for John), the phone speed (adb, p95 < 30 ms), anything on
 a screen (no UI yet).
 
-**Next.** 1C in this same effort: server (authoritative crew of 1-4), the docked pad on a flat arena page,
-content.js packed from cards.json, the T0 content drop as far as existing behaviours allow, smoke-test on port
-3500+, README. Then John plays on his phone (the 1C gate) and the retrospective closes Phase 1.
+**Next.** ~~1C in this same effort~~ — done, see the Session 2 entry above. The 1B numbers above stand; what
+remains open for 1B is only the real-sample pass and the adb speed check.
 
 ## Session 1 (2026-11-22): Phase 1A, the reaction engine
 

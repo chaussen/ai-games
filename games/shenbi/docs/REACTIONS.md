@@ -127,3 +127,23 @@ rediscover them:
   (ice over water, a landed clod) lifts the player out, or sends them home (`unstick`). `home` always works.
 - **Not built yet:** 风 and R13/R14 (wind), R15-R26, creatures, the modifier algebra, the Almanac.
 - **Phone budget not measured.** The 4 ms p95 target (section 7.5) is only checked in node.
+
+## 9. As built in Phase 1C (2026-11-22)
+
+Additions the crew server needed, all in `sim.js`, none touching the rule data:
+
+- **`cellsV`** bumps on every `put()`. The server sends the grid only when it moves; entity snapshots go
+  15 times a second regardless. A settled arena sends no grids at all.
+- **`wire()` / `applyWire()`** — the network form of a snapshot: JSON-safe, cells as row strings (one
+  character per cell, `0123456789ab` = the material index, 160×90 ≈ 15 KB), knobs (`profile`, `body`) ride
+  along so a phone follows the room when anyone changes them. A phone applies it to a `World` it never steps.
+  `snapshot()`/`restore()` stay full-fidelity for the determinism tests (typed arrays, in process).
+- **`setProfile()` / `setBody()`** — the living-room rule: anyone on the Wi-Fi may set the room's knobs
+  (POST /crew); every phone follows on the next snapshot.
+- **`removePlayer(id)`** — a lost phone's seat expires after 30 s (GONE knob on the server); its objects
+  return to air, held pointers clear.
+- **Writing is out-of-band**: the server calls `sim.give(p, ch)` when the pad's chip is tapped, replies
+  `wrote {ok, why}` (`no-ink`, `cooling`, `unknown`), and pushes a `give 火` event for everyone's label line.
+- **The arena** (server `buildArena`): stone floor rows 0-7, dirt rows 8-10, a pond held in a stone basin
+  (water on dirt makes mud and soaks away — R4 — and a single-deep pond spreads until it finds dirt; the
+  basin is the fix), wood posts and a grass patch to burn and grow. Spawns sit clear of the pond.

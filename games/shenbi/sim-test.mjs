@@ -197,7 +197,7 @@ group('pair test: no pair is left undecided');
     sets.push({ n: 'obj:' + c.ch, t: c.tags.concat('object') });
     sets.push({ n: 'thrown:' + c.ch, t: c.tags.concat('object', 'thrown') });
     sets.push({ n: 'wield:' + c.ch, t: c.tags.concat('object', 'wielded') });
-    if (c.tags.includes('wood')) sets.push({ n: 'seed:' + c.ch, t: c.tags.concat('object', 'seed') });
+    if (RX.BEHAVIOURS.place[c.verbs.place].kind === 'seed') sets.push({ n: 'seed:' + c.ch, t: c.tags.concat('object', 'seed') });
   }
   sets.push({ n: 'body', t: RX.BODY_TAGS });
   const covers = (a, b) => RULES.some(r => matches(r.a, a) && matches(r.b, b)) || NOOPS.some(o => matches(o.a, a) && matches(o.b, b));

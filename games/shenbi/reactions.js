@@ -117,6 +117,7 @@
     { a: 'plant',          b: '*',               note: 'plants are passive; they burn (R1) and grow (R5)' },
     { a: 'cold',           b: 'cold|earth|wood|plant|metal|powder|steam|fire|solid|air|wet', note: 'cold into the rest does nothing new (fire melts ice: R7)' },
     { a: 'body',           b: 'body',            note: 'players never touch each other; they act on each other through objects (R9/R10/R12/R27)' },
+    { a: 'living+object',  b: '*',               note: 'a written figure (person, friend, fruit) only knocks (R12) and lands (R11); it does not burn, melt or soak — creatures come in Phase 5' },
     { a: 'cell+solid+!cold', b: 'body',          note: 'terrain only holds you up' },
     { a: 'object+!thrown+!wielded', b: 'body',   note: 'a resting object is just a thing; nobody collides with it' },
     { a: 'wielded+!fire+!water+!cold', b: 'body', note: 'a wielded clod/stone/blade/staff does nothing to a body yet (shove and cut are R16, later)' },

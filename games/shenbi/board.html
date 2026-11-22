@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>神笔 Shenbi · board</title>
+<!-- The board: this computer shows a QR code; phones that scan it join the crew (one arena for up to
+     four, docs/CHARTER §2). The profile and the friends knob chosen here are the room's (POST /crew). -->
+<style>
+  :root { --ink: #1d1b1a; --soft: #5c5246; --paper: #f5efe0; --ver: #c23a2b; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--paper); color: var(--ink); font: 16px/1.4 system-ui, sans-serif; }
+  main { min-height: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4vmin; align-items: center; padding: 5vmin 6vmin; }
+  @media (orientation: portrait) { main { grid-template-columns: 1fr; justify-items: center; text-align: center; } }
+  h1 { margin: 0; font-size: clamp(64px, 14vmin, 160px); line-height: 1; }
+  .py { font-size: clamp(16px, 2.6vmin, 26px); color: var(--soft); margin-top: .3em; }
+  .name { font-size: clamp(20px, 3.6vmin, 38px); font-weight: 700; margin-top: .6em; }
+  .how { font-size: clamp(16px, 2.6vmin, 24px); margin: 1.2em 0 .4em; max-width: 34em; }
+  .url { font: 700 clamp(18px, 3vmin, 30px)/1.2 ui-monospace, monospace; color: var(--ver); word-break: break-all; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.4em; align-items: center; }
+  @media (orientation: portrait) { .row { justify-content: center; } }
+  .row b { font-size: 14px; color: var(--soft); margin-right: 4px; min-width: 4.5em; }
+  .chip { border: 2px solid var(--ink); background: transparent; color: var(--ink); padding: 6px 12px; font: 600 15px system-ui, sans-serif; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  #qr { background: #fff; padding: 2.4vmin; border: 3px solid var(--ink); line-height: 0; }
+  #qr img { width: min(70vmin, 520px); height: auto; image-rendering: pixelated; }
+  #roster { margin-top: 1em; font-size: 15px; }
+  .pd { display: inline-block; width: 16px; height: 16px; border-radius: 50%; border: 3px solid var(--soft); margin: 0 3px; vertical-align: middle; }
+  .foot { margin-top: 1.6em; font-size: 14px; color: var(--soft); }
+  .warn { color: var(--ver); }
+</style>
+</head>
+<body>
+<main>
+  <section>
+    <h1>神笔</h1>
+    <div class="py">shén bǐ · the magic brush</div>
+    <div class="name">Shenbi — write a character, it becomes a real thing</div>
+    <p class="how" id="how">Scan with a phone camera to join the crew: up to four on one arena, each writing their own.</p>
+    <div class="url" id="url"></div>
+    <div class="row">
+      <b>Play</b><span id="profiles"></span>
+    </div>
+    <div class="row">
+      <b>Friends</b><span id="bodies"></span>
+    </div>
+    <div id="roster">Crew — nobody yet</div>
+    <p class="foot">The Wi-Fi must allow phones to reach this computer. If github.com is blocked on that network, that does not matter here: everything is local.</p>
+  </section>
+  <section>
+    <div id="qr"></div>
+  </section>
+</main>
+<script src="config.js"></script>
+<script src="vendor/qrcode.js"></script>
+<script src="board.js"></script>
+</body>
+</html>

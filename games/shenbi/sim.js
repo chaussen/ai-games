@@ -61,10 +61,16 @@
       this.stamp = new Uint32Array(n);
       this.counts = new Int32Array(N); this.counts[AIR] = n;
       this.tick = 0; this.rng = (o.seed >>> 0) || 1; this.nextId = 1;
+      this.cellsV = 1;                                   // bumped on every cell change: the co-op server sends the
+                                                          // grid only when this moves, entity snapshots otherwise
       this.players = []; this.objs = []; this.grows = [];
       this.changes = 0; this.events = [];            // events: short strings for the tests and, later, the UI labels
       this.tagCache = new Map();
     }
+
+    // ---------- knobs, settable live by the crew server (the living-room rule) ----------
+    setProfile(name) { if (CAPS[name]) { this.profile = name; this.caps = CAPS[name]; this.conj = CONJURE[name]; } }
+    setBody(name) { if (BODY[name]) { this.bodyKnob = name; this.body = BODY[name]; } }
 
     // ---------- rng (xorshift32; the only source of randomness) ----------
     rand() { let x = this.rng; x ^= x << 13; x >>>= 0; x ^= x >>> 17; x ^= x << 5; x >>>= 0; this.rng = x; return x / 4294967296; }
@@ -86,7 +92,7 @@
       this.counts[old]--; this.counts[m]++;
       this.mat[i] = m; this.aux[i] = aux === undefined ? this.initAux(m) : aux; this.meta[i] = meta || 0;
       this.stamp[i] = this.tick + 1;                       // a cell changed this tick is not moved again this tick
-      this.changes++;
+      this.changes++; this.cellsV++;
     }
     set(x, y, m, aux, meta) { if (this.inb(x, y)) this.put(y * this.W + x, m, aux, meta); }
     fill(x0, y0, x1, y1, m) { for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) this.set(x, y, m); }
@@ -118,6 +124,14 @@
     obj(id) { return this.objs.find(o => o.id === id); }
     removeObj(o) { const i = this.objs.indexOf(o); if (i >= 0) this.objs.splice(i, 1); }
     liveOf(p) { return this.objs.filter(o => o.owner === p.id); }
+    // a lost phone keeps its seat for a while, then it and its things go back to the world's air
+    removePlayer(id) {
+      const i = this.players.findIndex(p => p.id === id);
+      if (i < 0) return;
+      for (const o of this.objs.slice()) if (o.owner === id) this.removeObj(o);
+      for (const o of this.players) if (o.held && !this.obj(o.held)) o.held = 0;
+      this.players.splice(i, 1);
+    }
 
     // ---------- writing: the recogniser's result arrives here as a character (1A has no pad yet) ----------
     give(p, ch) {
@@ -551,15 +565,57 @@
     }
 
     // ---------- snapshot / restore / hash ----------
-    snapshot() {
-      return { tick: this.tick, rng: this.rng, nextId: this.nextId, mat: this.mat.slice(), aux: this.aux.slice(), meta: this.meta.slice(),
-        stamp: this.stamp.slice(), counts: this.counts.slice(), players: JSON.parse(JSON.stringify(this.players)),
+    // snapshot({cells:false}) leaves the grid out (the determinism and soak tests use this form in-process).
+    // For the NETWORK there is wire()/applyWire() below: JSON-safe, cells as one-char-per-cell row strings.
+    snapshot(o) {
+      const cells = !(o && o.cells === false);
+      const s = { tick: this.tick, rng: this.rng, nextId: this.nextId, cellsV: this.cellsV,
+        players: JSON.parse(JSON.stringify(this.players)),
         objs: JSON.parse(JSON.stringify(this.objs)), grows: JSON.parse(JSON.stringify(this.grows)) };
+      if (cells) { s.mat = this.mat.slice(); s.aux = this.aux.slice(); s.meta = this.meta.slice();
+        s.stamp = this.stamp.slice(); s.counts = this.counts.slice(); }
+      return s;
     }
     restore(s) {
-      this.tick = s.tick; this.rng = s.rng; this.nextId = s.nextId;
-      this.mat.set(s.mat); this.aux.set(s.aux); this.meta.set(s.meta); this.stamp.set(s.stamp); this.counts.set(s.counts);
+      this.tick = s.tick; this.rng = s.rng; this.nextId = s.nextId; this.cellsV = s.cellsV;
+      if (s.mat) { this.mat.set(s.mat); this.aux.set(s.aux); this.meta.set(s.meta); this.stamp.set(s.stamp); this.counts.set(s.counts); }
       this.players = JSON.parse(JSON.stringify(s.players)); this.objs = JSON.parse(JSON.stringify(s.objs)); this.grows = JSON.parse(JSON.stringify(s.grows));
+    }
+
+    // the wire form: what a phone needs to DRAW, never what it would need to step (it never steps). Cells
+    // travel as row strings, one character per cell ('0123456789ab' = the material index), the profile and
+    // body knobs ride along so a phone follows the room when anyone changes them.
+    wire(o) {
+      const cells = !(o && o.cells === false);
+      const s = { tick: this.tick, nextId: this.nextId, cellsV: this.cellsV, profile: this.profile, body: this.bodyKnob,
+        players: JSON.parse(JSON.stringify(this.players)),
+        objs: JSON.parse(JSON.stringify(this.objs)), grows: JSON.parse(JSON.stringify(this.grows)) };
+      if (cells) { s.rows = []; for (let y = 0; y < this.H; y++) s.rows.push(this.rowStr(y)); }
+      return s;
+    }
+    rowStr(y) {
+      const CH = '0123456789ab';
+      let s = '';
+      for (let x = 0; x < this.W; x++) s += CH[this.mat[y * this.W + x]];
+      return s;
+    }
+    applyWire(s) {
+      this.tick = s.tick; this.nextId = s.nextId; this.cellsV = s.cellsV;
+      if (s.profile) this.setProfile(s.profile);
+      if (s.body) this.setBody(s.body);
+      if (s.rows) {
+        const CH = {}; for (let i = 0; i < '0123456789ab'.length; i++) CH['0123456789ab'[i]] = i;
+        for (let y = 0; y < this.H; y++) {
+          const r = s.rows[y];
+          for (let x = 0; x < this.W; x++) this.mat[y * this.W + x] = CH[r[x]];
+        }
+        this.aux.fill(0); this.meta.fill(0); this.stamp.fill(0);
+        this.counts.fill(0);
+        for (let i = 0; i < this.mat.length; i++) this.counts[this.mat[i]]++;
+      }
+      this.players = JSON.parse(JSON.stringify(s.players));
+      this.objs = JSON.parse(JSON.stringify(s.objs));
+      this.grows = JSON.parse(JSON.stringify(s.grows));
     }
     hash() {
       let h = 2166136261 >>> 0;
