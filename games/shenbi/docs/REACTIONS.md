@@ -94,3 +94,36 @@ A rule is data: `{ id, a, b, ctx, effect, note }`.
 - Keep rules symmetric where possible (water douses fire; fire boils water).
 - When a character needs a behaviour no rule gives, first ask whether a new **tag** fixes it for many characters;
   new engine code is the last resort.
+
+## 8. As built in Phase 1A (2026-11-22)
+
+Files: `reactions.js` (data: materials, rules, no-ops, behaviours, knobs), `sim.js` (world + effects),
+`cards.json` (7 cards), `sim-test.mjs` (83 checks). Decisions made while building, so the next model need not
+rediscover them:
+
+- **Full scan, no chunk sleeping.** The grid is scanned every tick; 160x90 costs about 0.25 ms in node (p95 with
+  4 wild players). Chunk sleeping is deferred to Phase 5 and only if a measurement on the phone asks for it. This
+  keeps every cell timer (`aux`) a plain per-cell counter.
+- **Tags:** every cell also has the implicit tag `cell`; air has the tag `air` (so rules can say "lands on air");
+  objects `object`; bodies `body`+`living`; a thrown object `thrown`; a wielded one `wielded`; a placed wood seed
+  `seed`. Rules tell cell from entity with these.
+- **Contexts:** `adjacent` and `on-top` run in the cell scan with a per-tick `rate`; `hit` runs once on impact
+  (rate ignored); `inside` runs each tick for a body standing in a cell.
+- **R11 is generic.** Any thrown object lands on the air cell before the impact as the cell its throw behaviour
+  names (`land`): earth -> dirt, water -> water, fire -> fire (unfed, lasts `duration`), ice -> ice, stone ->
+  stone, log and blade `stay` as objects. Cells landed = 1 + `size` (spills beside and above). So "earth builds
+  terrain" is data, not code.
+- **R2 is symmetric on purpose:** water adjacent to fire turns the fire into steam (the water is kept).
+  Consequence kept deliberately: fire melts ice (R7), the meltwater douses the fire (R2), and the remaining ice
+  freezes it again (R8). A small fire beside ice does not melt a lake.
+- **R27 (chilled)** was added to the first set because the ice card needed a body effect.
+- **Mud is solid for collision** (so a seed can rest on it) but halves your speed and jump. Mud dries to dirt after
+  about 30 s, ash fades after 10 s, steam after 1.6 s, fire after 2.2 s when it burned something (leaves ash) or
+  `duration` when it was written (leaves nothing).
+- **Caps (standard):** fire 400, water 2500, objects 32, 6000 cell changes per tick. Over the fire cap no new fire
+  starts and existing fire drains three times faster; stress test: a 3000-cell plant field under the strict cap
+  (200) never passes it and burns out.
+- **Never entomb a player:** `place` refuses a cell that overlaps any body; terrain that grows into a body
+  (ice over water, a landed clod) lifts the player out, or sends them home (`unstick`). `home` always works.
+- **Not built yet:** 风 and R13/R14 (wind), R15-R26, creatures, the modifier algebra, the Almanac.
+- **Phone budget not measured.** The 4 ms p95 target (section 7.5) is only checked in node.

@@ -3,6 +3,19 @@
 Newest entry first. Every session adds an entry. Rules: update the status table, list what changed, what is
 verified, what is not, and the next step.
 
+## Session 1 (2026-11-22): Phase 1A, the reaction engine
+
+**State.** Phase 1A is built and green: `node sim-test.mjs` runs 83 checks (truth test per rule R1-R12 and R27,
+wield/place/pour, ink and caps, home, the pair test over every material x card x body, soak with 1, 2 and 4 players
+for 3 simulated minutes each, a fire-cap stress field, determinism and restore-continues-bit-for-bit). Design
+decisions are in REACTIONS.md section 8.
+
+**Verified by running:** all of the above, in node. **Not verified:** step time on a phone (node p95 is 0.26 ms
+at 160x90), anything on a screen (there is no UI yet), co-op over a network (no server yet).
+
+**Next.** 1B recogniser (this same session, see below), then 1C: server + docked pad + a flat arena page, phones
+join over Wi-Fi.
+
 ## Session 0 (2026-11-22): the plan and the docs, no code
 
 **State.** Phase 0 is written: README, CHARTER, REACTIONS, GLYPH-CARDS, MODIFIERS, VOCAB-TIERS, RECOGNISER, and

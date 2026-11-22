@@ -3,7 +3,7 @@
 From 神笔马良 (Ma Liang and the Magic Brush): whatever the boy painted came alive. Here, whatever you **write**
 comes alive. Write 火 and you hold a fire you can throw. Write 很 first and it is a bigger fire.
 
-**Status: Phase 0, docs only. No code yet.** The design is written down so any later model or session can pick it
+**Status: Phase 1A done (reaction engine, in node). 1B and 1C in progress. See `docs/HANDOFF.md`.**
 up. Start with `docs/HANDOFF.md`.
 
 ## What it is

@@ -1,0 +1,26 @@
+{
+  "_note": "Glyph cards (docs/GLYPH-CARDS.md). One record per character. Phase 1A ships the seven that drive rules R1-R12; 风 waits for R13/R14. Engine code never names a character: it reads tags, verbs and params.",
+  "cards": [
+    { "ch": "火", "py": "huǒ", "en": "fire",  "tier": 1, "form": "element", "tags": ["fire", "hot", "light"],
+      "verbs": { "wield": "torch", "throw": "fireball", "place": "flame" },
+      "params": { "power": 1, "size": 1, "duration": 8, "speed": 1, "mass": 0.6 } },
+    { "ch": "水", "py": "shuǐ", "en": "water", "tier": 1, "form": "element", "tags": ["water", "wet", "liquid"],
+      "verbs": { "wield": "jug", "throw": "splash", "place": "pool" },
+      "params": { "power": 1, "size": 1, "duration": 8, "speed": 1, "mass": 0.8 } },
+    { "ch": "木", "py": "mù", "en": "wood",  "tier": 1, "form": "element", "tags": ["wood", "flammable", "solid", "growing"],
+      "verbs": { "wield": "staff", "throw": "log", "place": "seed" },
+      "params": { "power": 1, "size": 1, "duration": 8, "speed": 1, "mass": 1.2 } },
+    { "ch": "土", "py": "tǔ", "en": "earth", "tier": 1, "form": "element", "tags": ["earth", "solid", "heavy"],
+      "verbs": { "wield": "clod", "throw": "clodthrow", "place": "dirtblock" },
+      "params": { "power": 1, "size": 1, "duration": 8, "speed": 1, "mass": 1.6 } },
+    { "ch": "金", "py": "jīn", "en": "metal", "tier": 1, "form": "element", "tags": ["metal", "solid", "heavy", "conductor"],
+      "verbs": { "wield": "blade", "throw": "bladethrow", "place": "metalblock" },
+      "params": { "power": 1, "size": 1, "duration": 8, "speed": 1, "mass": 1.8 } },
+    { "ch": "冰", "py": "bīng", "en": "ice",   "tier": 1, "form": "element", "tags": ["cold", "solid"],
+      "verbs": { "wield": "shard", "throw": "iceshot", "place": "iceblock" },
+      "params": { "power": 1, "size": 1, "duration": 8, "speed": 1, "mass": 0.9 } },
+    { "ch": "石", "py": "shí", "en": "stone", "tier": 1, "form": "element", "tags": ["earth", "solid", "heavy", "hard"],
+      "verbs": { "wield": "clod", "throw": "stonethrow", "place": "stoneblock" },
+      "params": { "power": 1, "size": 1, "duration": 8, "speed": 1, "mass": 2.0 } }
+  ]
+}
